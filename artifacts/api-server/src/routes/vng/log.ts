@@ -4,7 +4,7 @@ import {
   getSectors,
   updateContainerStatus,
 } from "./file-store.js";
-import { getProbe, getSector } from "./client.js";
+import { getProbe, getSector, scanSector } from "./client.js";
 
 const router = Router();
 
@@ -110,6 +110,75 @@ router.get("/sectors", async (_req, res) => {
             new Date(a.lastVisitedAt).getTime()
         ),
     });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Scout any sector by coordinates without visiting it
+router.get("/scout", async (req, res) => {
+  try {
+    const x = parseInt(req.query.x as string, 10);
+    const y = parseInt(req.query.y as string, 10);
+    const z = parseInt(req.query.z as string, 10);
+    if (isNaN(x) || isNaN(y) || isNaN(z)) {
+      res.status(400).json({ error: "x, y, z must be integers" });
+      return;
+    }
+    if ((x + y + z) % 2 !== 0) {
+      res.status(400).json({ error: "x + y + z must be even (game constraint)" });
+      return;
+    }
+
+    const body = await scanSector(x, y, z);
+    const rawObjects: any[] = body?.sector?.objects ?? [];
+
+    const objects = rawObjects.map((o: any) => {
+      const base: Record<string, unknown> = {
+        id: o.id ?? null,
+        type: o.type,
+        name: o.name ?? null,
+        summary: o.summary ?? null,
+        dangerLevel: o.dangerLevel ?? null,
+        resourceTypes: o.resourceTypes ?? [],
+      };
+      if (o.type === "solar_system") {
+        base.starCount = o.starCount ?? 0;
+        base.planetCount = o.planetCount ?? 0;
+        base.orbitalBodyCount = o.orbitalBodyCount ?? 0;
+        base.bodies = (o.bookmarkTargets ?? []).map((b: any) => ({
+          id: b.id, type: b.type, name: b.name ?? null,
+          category: b.category ?? null, mass: b.mass, massUnit: b.massUnit,
+          radius: b.radius, radiusUnit: b.radiusUnit,
+          habitabilityScore: b.habitabilityScore ?? null,
+          intelligentLife: b.intelligentLife ?? null,
+        }));
+      }
+      if (o.type === "planet") {
+        base.category = o.category ?? null;
+        base.habitabilityScore = o.habitabilityScore ?? null;
+        base.intelligentLife = o.intelligentLife ?? null;
+        base.mass = o.mass ?? null; base.massUnit = o.massUnit ?? null;
+      }
+      if (o.type === "asteroid") {
+        base.composition = o.composition ?? null;
+        base.sizeCategory = o.sizeCategory ?? null;
+        base.resourceAmounts = o.resourceAmounts ?? null;
+      }
+      if (o.type === "detached_container") {
+        base.capacity = o.capacity ?? null;
+        base.mode = o.mode ?? null;
+        base.targetObjectId = o.targetObjectId ?? null;
+        base.salvageable = o.salvageable ?? false;
+      }
+      return base;
+    });
+
+    const resourceSummary: string[] = Array.from(
+      new Set(rawObjects.flatMap((o: any) => o.resourceTypes ?? []))
+    );
+
+    res.json({ x, y, z, objects, resourceSummary });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

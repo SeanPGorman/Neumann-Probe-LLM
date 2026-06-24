@@ -27,13 +27,13 @@ router.get("/state", async (_req, res) => {
     const [probeResp, manniesResp, sectorResp] = await Promise.all([
       client.getProbe(),
       client.getMannies(),
-      client.getSector(),
+      client.getSector().catch(() => null),  // unavailable during high-speed transit
     ]);
 
     const probe = probeResp.probe;
     const inv = probe.inventory ?? {};
     const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
-    const sectorObjects: any[] = sectorResp.sector?.objects ?? [];
+    const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
 
     recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
 

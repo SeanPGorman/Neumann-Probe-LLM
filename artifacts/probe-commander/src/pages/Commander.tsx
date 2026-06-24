@@ -15,7 +15,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "containers" | "sectors";
+type SideTab = "telemetry" | "containers" | "sectors" | "scout";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -405,11 +405,14 @@ function SectorObject({ o }: { o: any }) {
   if (o.type === "solar_system") {
     const planets = (o.bodies ?? []).filter((b: any) => b.type === "planet");
     const stars = (o.bodies ?? []).filter((b: any) => b.type === "star");
+    const asteroids = (o.bodies ?? []).filter((b: any) => b.type === "asteroid");
     return (
       <div className="space-y-1">
         <div className="text-foreground font-medium">{o.name ?? "Unnamed system"}</div>
         <div className="text-muted-foreground text-[10px]">
-          {stars.length} star{stars.length !== 1 ? "s" : ""} · {planets.length} planet{planets.length !== 1 ? "s" : ""} · danger: {o.dangerLevel ?? "?"}
+          {stars.length} star{stars.length !== 1 ? "s" : ""} · {planets.length} planet{planets.length !== 1 ? "s" : ""}
+          {asteroids.length > 0 && ` · ${asteroids.length} asteroid${asteroids.length !== 1 ? "s" : ""}`}
+          {` · danger: ${o.dangerLevel ?? "?"}`}
         </div>
         {planets.length > 0 && (
           <div className="pl-2 space-y-0.5">
@@ -418,14 +421,24 @@ function SectorObject({ o }: { o: any }) {
                 <span className="text-muted-foreground/50">○</span>
                 <span className="text-muted-foreground">{PLANET_CATEGORY_LABEL[p.category] ?? p.category ?? "Planet"}</span>
                 {p.habitabilityScore != null && (
-                  <span className={`${habitabilityColor(p.habitabilityScore)}`}>
+                  <span className={habitabilityColor(p.habitabilityScore)}>
                     hab {(p.habitabilityScore * 100).toFixed(0)}%
                   </span>
                 )}
-                {p.intelligentLife && (
-                  <span className="text-yellow-400 font-bold">★ INTELLIGENT LIFE</span>
-                )}
+                {p.intelligentLife && <span className="text-yellow-400 font-bold">★ LIFE</span>}
                 <span className="text-muted-foreground/40">{p.mass?.toFixed(2)}{p.massUnit}</span>
+              </div>
+            ))}
+          </div>
+        )}
+        {asteroids.length > 0 && (
+          <div className="pl-2 space-y-0.5">
+            {asteroids.map((a: any, i: number) => (
+              <div key={i} className="flex items-center gap-1.5 text-[10px]">
+                <span className="text-primary/50">◆</span>
+                <span className="text-primary/80">{a.name ?? "Asteroid"}</span>
+                {a.composition && <span className="text-muted-foreground">{a.composition.replace(/_/g, " ")}</span>}
+                <span className="text-muted-foreground/40 font-mono text-[9px]">{a.id?.slice(0, 8)}</span>
               </div>
             ))}
           </div>
@@ -541,6 +554,82 @@ function AssistantBubble({ events }: { events: SseEvent[] }) {
   );
 }
 
+function ScoutPanel() {
+  const [coords, setCoords] = useState({ x: "", y: "", z: "" });
+  const [result, setResult] = useState<any>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+
+  const scout = async () => {
+    const x = parseInt(coords.x, 10);
+    const y = parseInt(coords.y, 10);
+    const z = parseInt(coords.z, 10);
+    if ([x, y, z].some(isNaN)) { setError("Enter valid integers for x, y, z"); return; }
+    setLoading(true); setError(null); setResult(null);
+    try {
+      const r = await fetch(`${BASE}/api/vng/log/scout?x=${x}&y=${y}&z=${z}`);
+      const data = await r.json();
+      if (data.error) throw new Error(data.error);
+      setResult(data);
+    } catch (e: any) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const coord = (k: "x" | "y" | "z") => (
+    <input
+      type="number"
+      placeholder={k}
+      value={coords[k]}
+      onChange={e => setCoords(p => ({ ...p, [k]: e.target.value }))}
+      className="w-16 bg-background border border-border rounded px-2 py-1 text-xs text-center font-mono text-foreground focus:outline-none focus:border-primary"
+    />
+  );
+
+  return (
+    <div className="space-y-3">
+      <div className="text-xs text-muted-foreground tracking-widest">SECTOR SCOUT</div>
+      <div className="text-[10px] text-muted-foreground/60">
+        Query any sector's contents before travelling. Coordinates must sum to an even number.
+      </div>
+
+      <div className="flex items-center gap-1.5">
+        {coord("x")} {coord("y")} {coord("z")}
+        <button
+          onClick={scout}
+          disabled={loading}
+          className="ml-1 px-3 py-1 text-xs border border-primary text-primary rounded hover:bg-primary/10 disabled:opacity-40 transition-colors tracking-widest"
+        >
+          {loading ? "…" : "SCAN"}
+        </button>
+      </div>
+
+      {error && <div className="text-xs text-destructive">{error}</div>}
+
+      {result && (
+        <div className="space-y-2">
+          <div className="text-xs text-foreground font-bold glow-green">
+            [{result.x},{result.y},{result.z}]
+          </div>
+          {result.resourceSummary?.length > 0 && (
+            <div className="flex flex-wrap gap-1">
+              {result.resourceSummary.map((r: string) => (
+                <span key={r} className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px]">{r}</span>
+              ))}
+            </div>
+          )}
+          {result.objects?.length === 0
+            ? <div className="text-xs text-muted-foreground/40 italic">Empty sector — no objects detected.</div>
+            : <SectorObjectList objects={result.objects} />
+          }
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Commander() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([{
@@ -625,6 +714,7 @@ export default function Commander() {
     { id: "telemetry", label: "PROBE" },
     { id: "containers", label: "CNTRS" },
     { id: "sectors", label: "MAP" },
+    { id: "scout", label: "SCOUT" },
   ];
 
   return (
@@ -652,6 +742,7 @@ export default function Commander() {
           {sideTab === "telemetry" && <TelemetryPanel state={state} />}
           {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
           {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
+          {sideTab === "scout" && <ScoutPanel />}
         </div>
 
         <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">
