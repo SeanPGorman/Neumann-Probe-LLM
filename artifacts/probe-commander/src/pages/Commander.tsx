@@ -1,5 +1,6 @@
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { GlobeMap } from "./GlobeMap";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -15,7 +16,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "containers" | "sectors" | "scout";
+type SideTab = "telemetry" | "containers" | "sectors" | "scout" | "globe";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -721,11 +722,23 @@ export default function Commander() {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendCommand(); }
   };
 
+  const globeCenter = useMemo(() => {
+    const mv = state?.probe?.movement;
+    if (mv?.target) return {
+      x: mv.target.x, y: mv.target.y, z: mv.target.z,
+      isMoving: true,
+      ox: mv.origin?.x, oy: mv.origin?.y, oz: mv.origin?.z,
+    };
+    const s = state?.probe?.sector ?? { x: 0, y: 0, z: 0 };
+    return { x: s.x, y: s.y, z: s.z, isMoving: false, ox: undefined, oy: undefined, oz: undefined };
+  }, [state]);
+
   const TABS: { id: SideTab; label: string }[] = [
     { id: "telemetry", label: "PROBE" },
     { id: "containers", label: "CNTRS" },
     { id: "sectors", label: "MAP" },
     { id: "scout", label: "SCOUT" },
+    { id: "globe", label: "GLOBE" },
   ];
 
   return (
@@ -754,6 +767,17 @@ export default function Commander() {
           {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
           {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
           {sideTab === "scout" && <ScoutPanel />}
+          {sideTab === "globe" && (
+            <GlobeMap
+              probeX={globeCenter.x}
+              probeY={globeCenter.y}
+              probeZ={globeCenter.z}
+              isMoving={globeCenter.isMoving}
+              originX={globeCenter.ox}
+              originY={globeCenter.oy}
+              originZ={globeCenter.oz}
+            />
+          )}
         </div>
 
         <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">

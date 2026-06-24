@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-06-24T22:15:42.481Z",
-    "visitCount": 265,
+    "lastVisitedAt": "2026-06-24T22:31:39.329Z",
+    "visitCount": 295,
     "objects": [],
     "resourceSummary": []
   },
@@ -701,6 +701,164 @@
             "radiusUnit": "earth_radius",
             "habitabilityScore": 0.112581,
             "intelligentLife": false
+          }
+        ]
+      }
+    ],
+    "resourceSummary": []
+  },
+  {
+    "id": 5,
+    "sectorX": 3,
+    "sectorY": 2,
+    "sectorZ": 3,
+    "firstVisitedAt": "2026-06-24T22:32:10.248Z",
+    "lastVisitedAt": "2026-06-24T22:40:31.113Z",
+    "visitCount": 22,
+    "objects": [
+      {
+        "id": "a40cc7541cf713182f35",
+        "type": "solar_system",
+        "name": "System 779f0a",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 10 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 9,
+        "orbitalBodyCount": 10,
+        "bodies": [
+          {
+            "id": "807fe769460c1b1c8669",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.869029,
+            "massUnit": "solar_mass",
+            "radius": 1.089411,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "7304a6c52500455b0b05",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.760921,
+            "massUnit": "earth_mass",
+            "radius": 1.377382,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.101638,
+            "intelligentLife": false
+          },
+          {
+            "id": "252310ad02dc54d54c1e",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 4.03797,
+            "massUnit": "earth_mass",
+            "radius": 1.554915,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.036041,
+            "intelligentLife": false
+          },
+          {
+            "id": "3680f2f313a4a2d6deef",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 165.304169,
+            "massUnit": "earth_mass",
+            "radius": 5.484359,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.032223,
+            "intelligentLife": false
+          },
+          {
+            "id": "c2a96d6625ec4d60e3e2",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 17.524221,
+            "massUnit": "earth_mass",
+            "radius": 3.425861,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.031311,
+            "intelligentLife": false
+          },
+          {
+            "id": "f9050c42d8f1ea4bd13f",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.070919,
+            "massUnit": "earth_mass",
+            "radius": 0.487305,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.06406,
+            "intelligentLife": false
+          },
+          {
+            "id": "61b571d2d3ca20ecb02e",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 228.464244,
+            "massUnit": "earth_mass",
+            "radius": 7.305833,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.118555,
+            "intelligentLife": false
+          },
+          {
+            "id": "3b3ef578f8935aef7257",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 10.100512,
+            "massUnit": "earth_mass",
+            "radius": 2.951698,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.015792,
+            "intelligentLife": false
+          },
+          {
+            "id": "49757a54bbe5df128607",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 36.231773,
+            "massUnit": "earth_mass",
+            "radius": 9.940761,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.047757,
+            "intelligentLife": false
+          },
+          {
+            "id": "3b73aacf6a90d3fedd3d",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.440366,
+            "massUnit": "earth_mass",
+            "radius": 0.512471,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.169885,
+            "intelligentLife": false
+          },
+          {
+            "id": "77d614108678295dcee4",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.006194,
+            "massUnit": "earth_mass",
+            "radius": 0.147289,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
           }
         ]
       }
