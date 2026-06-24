@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "") + "/api-server";
-const RADIUS = 6;
+const RADIUS = 3;
 
 // Pre-generate all valid coordinate offsets within RADIUS
 // Valid = even sum, within sphere
@@ -82,8 +82,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     if (!canvas) return;
     const dpr = window.devicePixelRatio || 1;
 
-    // Self-resize buffer to match physical resolution; skip if not laid out yet
-    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    // getBoundingClientRect gives exact sub-pixel CSS size → crisp buffer
+    const rect = canvas.getBoundingClientRect();
+    const W = rect.width, H = rect.height;
     if (!W || !H) return;
     const bW = Math.round(W * dpr), bH = Math.round(H * dpr);
     if (canvas.width !== bW || canvas.height !== bH) {
@@ -122,105 +123,124 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       };
     });
 
-    // Back-to-front sort
+    // Back-to-front sort; store for click-hit testing
     pts.sort((a, b) => b.z2 - a.z2);
-    dotsRef.current = pts;
+
+    // Helper: project any absolute sector coordinate
+    const project = (ax: number, ay: number, az: number) => {
+      const dx = ax - probeX, dy = ay - probeY, dz = az - probeZ;
+      const x1 = dx * cosY + dz * sinY;
+      const y1 = dy;
+      const z1 = -dx * sinY + dz * cosY;
+      const x2 = x1;
+      const y2 = y1 * cosX - z1 * sinX;
+      const z2 = y1 * sinX + z1 * cosX;
+      const persp = fov / (camDist + z2);
+      return { sx: cx + x2 * persp, sy: cy + y2 * persp, z2, persp };
+    };
 
     // Faint sphere outline
     const sphereScreenR = fov / camDist * RADIUS * 0.97;
     ctx.beginPath();
     ctx.arc(cx, cy, sphereScreenR, 0, Math.PI * 2);
-    ctx.strokeStyle = "rgba(80,255,130,0.04)";
+    ctx.strokeStyle = "rgba(80,255,130,0.05)";
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // Axis indicators (very faint)
-    for (const [adx, ady, adz, label, col] of [
-      [RADIUS * 0.7, 0, 0, "X", "255,80,80"],
-      [0, RADIUS * 0.7, 0, "Y", "80,180,255"],
-      [0, 0, RADIUS * 0.7, "Z", "255,220,80"],
-    ] as [number, number, number, string, string][]) {
-      const x1 = adx * cosY + adz * sinY;
-      const y1 = ady;
-      const z1 = -adx * sinY + adz * cosY;
-      const x2 = x1;
-      const y2 = y1 * cosX - z1 * sinX;
-      const z2 = y1 * sinX + z1 * cosX;
-      const persp = fov / (camDist + z2);
-      const ex = cx + x2 * persp, ey = cy + y2 * persp;
+    // 1. Sparse uncharted lattice dots (skip probe & visited — drawn separately)
+    for (const p of pts) {
+      const { sx, sy, ax, ay, az, z2 } = p;
+      if (visitedMap.has(`${ax},${ay},${az}`)) continue;
+      if (ax === probeX && ay === probeY && az === probeZ) continue;
+      const depth = (z2 + RADIUS) / (2 * RADIUS);
       ctx.beginPath();
-      ctx.moveTo(cx, cy);
-      ctx.lineTo(ex, ey);
-      ctx.strokeStyle = `rgba(${col},0.12)`;
-      ctx.lineWidth = 1;
-      ctx.stroke();
-      ctx.fillStyle = `rgba(${col},0.18)`;
-      ctx.font = "9px monospace";
-      ctx.fillText(label, ex + 2, ey - 2);
+      ctx.arc(sx, sy, 1.5, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(80,140,220,${0.04 + depth * 0.09})`;
+      ctx.fill();
     }
 
-    // Draw dots
-    for (const p of pts) {
-      const { sx, sy, ax, ay, az, dx, dy, dz, z2 } = p;
-      const depth = (z2 + RADIUS) / (2 * RADIUS); // 0=back, 1=front
-      const persp = fov / (camDist + z2);
-      const r = Math.max(1.2, persp * 0.32);
+    // 2. Visited-sector path line (chronological order by firstVisitedAt)
+    const visitedSorted = Array.from(visitedMap.values()).sort(
+      (a, b) => new Date(a.firstVisitedAt ?? a.lastVisitedAt).getTime()
+             - new Date(b.firstVisitedAt ?? b.lastVisitedAt).getTime()
+    );
+    const visitedProj = visitedSorted.map(vs => ({
+      ...project(vs.sectorX, vs.sectorY, vs.sectorZ),
+      vs,
+    }));
 
-      const isProbe = dx === 0 && dy === 0 && dz === 0;
-      const isOrigin = isMoving && ax === originX && ay === originY && az === originZ;
-      const isVisited = visitedMap.has(`${ax},${ay},${az}`);
-      const isSelected = selected?.ax === ax && selected?.ay === ay && selected?.az === az;
-
-      let fillColor: string;
-      let alpha: number;
-      let dotR = r;
-
-      if (isProbe) {
-        fillColor = "200,255,220";
-        alpha = 1;
-        dotR = Math.max(3, r * 1.5);
-      } else if (isOrigin) {
-        fillColor = "255,200,80";
-        alpha = 0.85;
-        dotR = Math.max(2.5, r * 1.3);
-      } else if (isSelected) {
-        fillColor = "255,240,120";
-        alpha = 1;
-        dotR = Math.max(2.5, r * 1.3);
-      } else if (isVisited) {
-        fillColor = "60,220,110";
-        alpha = 0.35 + depth * 0.6;
-        dotR = Math.max(2, r * 1.1);
-      } else {
-        fillColor = "80,160,255";
-        alpha = 0.03 + depth * 0.12;
+    if (visitedProj.length > 1) {
+      ctx.beginPath();
+      ctx.moveTo(visitedProj[0].sx, visitedProj[0].sy);
+      for (let i = 1; i < visitedProj.length; i++) {
+        ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
       }
+      ctx.strokeStyle = "rgba(60,220,110,0.30)";
+      ctx.lineWidth = 1.5;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    // 3. Visited sector dots (including those outside RADIUS)
+    // Expose all visited + lattice dots to dotsRef for click-hit testing
+    const allDots: ProjectedDot[] = [
+      ...pts,
+      ...visitedProj
+        .filter(vp => !pts.some(p => p.ax === vp.vs.sectorX && p.ay === vp.vs.sectorY && p.az === vp.vs.sectorZ))
+        .map(vp => ({
+          sx: vp.sx, sy: vp.sy,
+          ax: vp.vs.sectorX, ay: vp.vs.sectorY, az: vp.vs.sectorZ,
+          dx: vp.vs.sectorX - probeX, dy: vp.vs.sectorY - probeY, dz: vp.vs.sectorZ - probeZ,
+          z2: vp.z2,
+        })),
+    ];
+    dotsRef.current = allDots;
+
+    for (const vp of visitedProj) {
+      const { sx, sy, persp, vs } = vp;
+      const isProbePos = vs.sectorX === probeX && vs.sectorY === probeY && vs.sectorZ === probeZ;
+      const isOriginPos = isMoving && vs.sectorX === originX && vs.sectorY === originY && vs.sectorZ === originZ;
+      const isSelected = selected?.ax === vs.sectorX && selected?.ay === vs.sectorY && selected?.az === vs.sectorZ;
+      const r = Math.max(2.5, persp * 0.45);
+
+      if (isProbePos) continue; // drawn last
 
       ctx.beginPath();
-      ctx.arc(sx, sy, dotR, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(${fillColor},${alpha})`;
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.fillStyle = isOriginPos
+        ? "rgba(255,200,80,0.80)"
+        : isSelected
+        ? "rgba(255,240,120,1)"
+        : "rgba(60,220,110,0.75)";
       ctx.fill();
 
-      if (isProbe) {
+      if (isSelected || isOriginPos) {
         ctx.beginPath();
-        ctx.arc(sx, sy, dotR * 3.5, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(100,255,150,0.08)";
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(sx, sy, dotR * 1.8, 0, Math.PI * 2);
-        ctx.fillStyle = "rgba(180,255,200,0.15)";
-        ctx.fill();
-      }
-
-      if (isSelected || isOrigin) {
-        ctx.beginPath();
-        ctx.arc(sx, sy, dotR + 3, 0, Math.PI * 2);
-        ctx.strokeStyle = isOrigin
-          ? `rgba(255,200,80,${0.5 + depth * 0.4})`
-          : `rgba(255,240,120,0.9)`;
+        ctx.arc(sx, sy, r + 3, 0, Math.PI * 2);
+        ctx.strokeStyle = isOriginPos ? "rgba(255,200,80,0.7)" : "rgba(255,240,120,0.9)";
         ctx.lineWidth = 1;
         ctx.stroke();
       }
+    }
+
+    // 4. Probe dot — always on top
+    const probePrj = project(probeX, probeY, probeZ);
+    {
+      const { sx, sy, persp } = probePrj;
+      const r = Math.max(3.5, persp * 0.55);
+      ctx.beginPath();
+      ctx.arc(sx, sy, r * 3.5, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(100,255,150,0.07)";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sx, sy, r * 1.7, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(160,255,190,0.14)";
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(sx, sy, r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(200,255,220,1)";
+      ctx.fill();
     }
 
     // Legend
@@ -229,7 +249,6 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ["◉ probe", "rgba(200,255,220,0.9)"],
       ...(isMoving ? [["○ origin", "rgba(255,200,80,0.7)"] as [string, string]] : []),
       ["● visited", "rgba(60,220,110,0.8)"],
-      ["· uncharted", "rgba(80,160,255,0.5)"],
     ];
     legends.forEach(([label, color], i) => {
       ctx.fillStyle = color;
