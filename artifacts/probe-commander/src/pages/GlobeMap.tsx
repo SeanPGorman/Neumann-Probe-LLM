@@ -2,7 +2,7 @@ import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 import { useQuery } from "@tanstack/react-query";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "") + "/api-server";
-const RADIUS = 9;
+const RADIUS = 6;
 
 // Pre-generate all valid coordinate offsets within RADIUS
 // Valid = even sum, within sphere
@@ -60,6 +60,8 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   const [selected, setSelected] = useState<{ ax: number; ay: number; az: number } | null>(null);
   const dragRef = useRef<{ mx: number; my: number; rx: number; ry: number } | null>(null);
   const dotsRef = useRef<ProjectedDot[]>([]);
+  const zoomRef = useRef(1.0);
+  const [zoom, setZoom] = useState(1.0);
 
   const { data: sectorsData } = useQuery({
     queryKey: ["sectors-globe"],
@@ -88,7 +90,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     const cosY = Math.cos(ry), sinY = Math.sin(ry);
     const cosX = Math.cos(rx), sinX = Math.sin(rx);
     const camDist = RADIUS * 1.7;
-    const fov = Math.min(W, H) * 0.42;
+    const fov = Math.min(W, H) * 0.42 * zoomRef.current;
 
     const pts: ProjectedDot[] = OFFSETS.map(([dx, dy, dz]) => {
       // Rotate Y then X
@@ -222,7 +224,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ctx.fillStyle = color;
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
-  }, [rot, probeX, probeY, probeZ, originX, originY, originZ, isMoving, visitedMap, selected]);
+  }, [rot, zoom, probeX, probeY, probeZ, originX, originY, originZ, isMoving, visitedMap, selected]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -240,6 +242,20 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     setSize();
     return () => ro.disconnect();
   }, [draw]);
+
+  // Non-passive wheel listener for zoom (passive:false needed to preventDefault)
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+    const onWheel = (e: WheelEvent) => {
+      e.preventDefault();
+      const factor = e.deltaY < 0 ? 1.12 : 0.89;
+      zoomRef.current = Math.max(0.25, Math.min(5.0, zoomRef.current * factor));
+      setZoom(zoomRef.current);
+    };
+    canvas.addEventListener("wheel", onWheel, { passive: false });
+    return () => canvas.removeEventListener("wheel", onWheel);
+  }, []);
 
   function ctx(c: HTMLCanvasElement) {
     const context = c.getContext("2d")!;
@@ -294,7 +310,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     <div className="flex flex-col h-full gap-2">
       <div className="text-xs text-muted-foreground tracking-widest">SECTOR GLOBE</div>
       <div className="text-[10px] text-muted-foreground/40">
-        Drag to rotate · click any dot to inspect · radius {RADIUS} coord units
+        Drag to rotate · scroll to zoom · click dot to inspect
       </div>
 
       <div
