@@ -14,22 +14,24 @@ function sse(res: import("express").Response, event: Record<string, unknown>) {
   res.write(`data: ${JSON.stringify(event)}\n\n`);
 }
 
-router.get("/state", async (req, res) => {
+router.get("/state", async (_req, res) => {
   try {
-    const [probeResp, manniesResp, sectorResp, recipesResp] = await Promise.all([
+    const [probeResp, manniesResp, sectorResp] = await Promise.all([
       client.getProbe(),
       client.getMannies(),
       client.getSector(),
-      client.getCraftingRecipes(),
     ]);
 
     const probe = probeResp.probe;
+    const inv = probe.inventory ?? {};
+    const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+
     const mannies = (manniesResp.mannies ?? []).map((m: any) => ({
       id: m.id,
       name: m.name,
       currentTask: m.currentTask,
       taskProgressPercent: m.taskProgressPercent,
-      integrity: m.integrity,
+      taskEstimatedEndTime: m.taskEstimatedEndTime ?? null,
       location: m.location ?? null,
     }));
 
@@ -41,22 +43,23 @@ router.get("/state", async (req, res) => {
       resourceTypes: o.resourceTypes ?? [],
     }));
 
-    const recipes = (recipesResp.recipes ?? []).map((r: any) =>
-      typeof r === "string" ? r : r.recipe ?? r.name ?? String(r)
-    );
-
     res.json({
       probe: {
         id: probe.id,
         name: probe.name,
         status: probe.status,
-        fuelPercent: probe.fuelPercent ?? probe.fuel_percent ?? 0,
-        integrityPercent: probe.integrityPercent ?? probe.integrity_percent ?? 0,
-        sector: probe.sector ?? { relative: { x: 0, y: 0, z: 0 } },
+        fuelDeuterium: probe.fuel?.deuterium ?? 0,
+        integrityPercent: probe.systems?.integrityPercent ?? 0,
+        sector,
+        movement: probe.movement ?? null,
+      },
+      inventory: {
+        capacity: inv.capacity ?? 0,
+        usedCapacity: inv.usedCapacity ?? 0,
+        freeCapacity: inv.freeCapacity ?? 0,
       },
       mannies,
       sectorObjects,
-      recipes,
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -79,57 +82,79 @@ router.post("/command", async (req, res) => {
   try {
     sse(res, { type: "status", message: "Fetching current probe state…" });
 
-    const [probeResp, manniesResp, sectorResp, inventoryResp, recipesResp] =
+    const [probeResp, manniesResp, sectorResp, recipesResp] =
       await Promise.all([
         client.getProbe(),
         client.getMannies(),
         client.getSector(),
-        client.getInventory(),
         client.getCraftingRecipes(),
       ]);
 
     const probe = probeResp.probe;
-    const mannies = manniesResp.mannies ?? [];
-    const sectorObjects = sectorResp.sector?.objects ?? [];
-    const inventory = inventoryResp.inventory;
-    const recipes = recipesResp.recipes ?? [];
+    const mannies: any[] = manniesResp.mannies ?? [];
+    const sectorObjects: any[] = sectorResp.sector?.objects ?? [];
+    const recipes: any[] = recipesResp.recipes ?? [];
+    const inv = probe.inventory ?? {};
+    const inventoryItems: any[] = inv.items ?? [];
+    const resourceStocks: any[] = inv.resourceStocks ?? [];
+    const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+
+    const idlemannies = mannies.filter((m: any) => !m.currentTask);
+    const busyMannies = mannies.filter((m: any) => m.currentTask);
+
+    const asteroids = sectorObjects.filter(
+      (o: any) => o.type === "asteroid" && o.id
+    );
+    const containers = inventoryItems.filter(
+      (i: any) => i.type === "storage_container"
+    );
 
     const systemPrompt = `You are the AI operator of Von Neumann Probe #${probe.id} ("${probe.name}").
-Your job is to carry out the operator's instructions by calling the provided tools against the game API.
+Your job is to carry out the operator's instructions by calling the provided tools.
 
-CURRENT STATE:
-Probe status: ${probe.status}
-Fuel: ${probe.fuelPercent ?? probe.fuel_percent ?? "?"}%
-Integrity: ${probe.integrityPercent ?? probe.integrity_percent ?? "?"}%
-Current sector (relative): x=${probe.sector?.relative?.x ?? 0}, y=${probe.sector?.relative?.y ?? 0}, z=${probe.sector?.relative?.z ?? 0}
-Movement: ${probe.movement ? `moving to ${JSON.stringify(probe.movement.destination)}, arrives ${probe.movement.arrivalAt}` : "stationary"}
+== CURRENT STATE ==
+Status: ${probe.status}
+Fuel (deuterium): ${(probe.fuel?.deuterium ?? 0).toFixed(2)} ECE
+Hull integrity: ${(probe.systems?.integrityPercent ?? 0).toFixed(1)}%
+Current sector: x=${sector.x}, y=${sector.y}, z=${sector.z}
+Movement: ${
+      probe.movement?.status === "moving"
+        ? `moving to (${probe.movement.target?.x},${probe.movement.target?.y},${probe.movement.target?.z}), arrives ${probe.movement.arrivalAt}`
+        : "stationary"
+    }
 
-MANNIES (${mannies.length}):
-${mannies.map((m: any) => `  - Manny #${m.id} "${m.name}": ${m.currentTask ? `busy (${m.currentTask}, ${m.taskProgressPercent}%)` : "IDLE"}, integrity ${m.integrity}%`).join("\n") || "  None"}
+== MANNIES (${mannies.length} total) ==
+IDLE (${idlemannies.length}):
+${idlemannies.map((m: any) => `  • ${m.name}  id="${m.id}"`).join("\n") || "  none"}
+BUSY (${busyMannies.length}):
+${busyMannies.map((m: any) => `  • ${m.name}  id="${m.id}"  task=${m.currentTask}  progress=${m.taskProgressPercent?.toFixed(1)}%  eta=${m.taskEstimatedEndTime ?? "?"}`).join("\n") || "  none"}
 
-SECTOR OBJECTS (${sectorObjects.length}):
-${sectorObjects.slice(0, 20).map((o: any) => `  - ${o.type} "${o.name ?? "unnamed"}" id=${o.id ?? "n/a"}: ${o.summary}${o.resourceTypes?.length ? ` [resources: ${o.resourceTypes.join(", ")}]` : ""}`).join("\n") || "  None visible"}
+== SECTOR OBJECTS (${sectorObjects.length}) ==
+${sectorObjects.slice(0, 30).map((o: any) => `  • [${o.type}] "${o.name ?? "unnamed"}"  id="${o.id ?? "none"}"  ${o.resourceTypes?.length ? `resources=[${o.resourceTypes.join(",")}]  ` : ""}${o.summary ?? ""}`).join("\n") || "  none"}
 
-INVENTORY CAPACITY: ${inventory?.freeCapacity ?? "?"}/${inventory?.capacity ?? "?"} free
-INVENTORY ITEMS: ${(inventory?.items ?? []).map((i: any) => `${i.name} (${i.type})`).join(", ") || "none"}
-INVENTORY RESOURCES: ${(inventory?.resourceStocks ?? []).map((s: any) => `${s.name}: ${s.amount}`).join(", ") || "none"}
-INVENTORY CONTAINERS: ${(inventory?.containers ?? []).map((c: any) => `${c.label} id=${c.id}`).join(", ") || "none"}
+== INVENTORY ==
+Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used  (${(inv.freeCapacity ?? 0).toFixed(3)} free)
+Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") || "none"}
+Storage containers aboard: ${containers.map((c: any) => `"${c.name}"  id="${c.id}"`).join(", ") || "none"}
+Other items: ${inventoryItems.filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container").map((i: any) => `${i.name}(${i.type})`).join(", ") || "none"}
 
-AVAILABLE CRAFTING RECIPES: ${Array.isArray(recipes) ? recipes.join(", ") : "unknown"}
+== CRAFTING RECIPES (use 'get_game_state' if you need full details) ==
+${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s`).join("\n")}
 
-RULES:
-- Always call get_game_state first if you need fresh data about IDs or current tasks.
-- Only use tool arguments from real data — never invent object IDs.
-- For multi-step tasks (craft → detach → mine), execute steps in sequence; each step depends on the result of the previous.
-- Mining is a long-running task — once started, the Manny is busy for real game time. Inform the operator that the task has been queued, not completed instantly.
-- Be concise and precise in your responses. State what you did and what the operator should expect next.`;
+== RULES ==
+- Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use the exact IDs shown above.
+- Always use get_game_state to refresh data if you need IDs that aren't visible above.
+- Only use IDs from real data — never invent them.
+- Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED, not finished.
+- For multi-step tasks (e.g. craft container → detach it → mine into it), execute sequentially; call get_game_state after each step to confirm IDs before the next.
+- Be concise and precise. State what you did and what the operator should expect.`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       { role: "system", content: systemPrompt },
       { role: "user", content: command },
     ];
 
-    sse(res, { type: "status", message: "Thinking…" });
+    sse(res, { type: "status", message: "AI thinking…" });
 
     let iterations = 0;
     const MAX_ITERATIONS = 10;
@@ -168,14 +193,24 @@ RULES:
         sse(res, { type: "action", tool: toolName, params: args, id: call.id });
 
         let result: unknown;
-        let success = true;
         try {
           result = await executeTool(toolName, args);
-          sse(res, { type: "result", tool: toolName, id: call.id, success: true, data: result });
+          sse(res, {
+            type: "result",
+            tool: toolName,
+            id: call.id,
+            success: true,
+            data: result,
+          });
         } catch (err: any) {
-          success = false;
           result = { error: err.message };
-          sse(res, { type: "result", tool: toolName, id: call.id, success: false, error: err.message });
+          sse(res, {
+            type: "result",
+            tool: toolName,
+            id: call.id,
+            success: false,
+            error: err.message,
+          });
         }
 
         messages.push({

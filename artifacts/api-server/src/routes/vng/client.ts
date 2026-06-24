@@ -12,16 +12,20 @@ function headers() {
 async function vngFetch(path: string, init: RequestInit = {}) {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
-    headers: { ...headers(), ...(init.headers as Record<string, string> ?? {}) },
+    headers: { ...headers(), ...((init.headers as Record<string, string>) ?? {}) },
   });
   const body = await res.json();
   if (!res.ok) {
-    const msg = (body as any)?.error?.message ?? (body as any)?.message ?? res.statusText;
+    const msg =
+      (body as any)?.error?.message ??
+      (body as any)?.message ??
+      res.statusText;
     throw new Error(`VNG API error (${res.status}): ${msg}`);
   }
   return body;
 }
 
+/** Returns probe object including probe.inventory */
 export async function getProbe() {
   return vngFetch("/api/probe");
 }
@@ -32,10 +36,6 @@ export async function getMannies() {
 
 export async function getSector() {
   return vngFetch("/api/probe/sector");
-}
-
-export async function getInventory() {
-  return vngFetch("/api/probe/inventory");
 }
 
 export async function getCraftingRecipes() {
@@ -53,15 +53,15 @@ export async function moveProbe(x: number, y: number, z: number) {
   });
 }
 
-export async function craftItem(mannyId: number, recipe: string) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/craft`, {
+export async function craftItem(mannyId: string, recipe: string) {
+  return vngFetch(`/api/probe/mannies/${encodeURIComponent(mannyId)}/craft`, {
     method: "POST",
     body: JSON.stringify({ recipe }),
   });
 }
 
 export async function mineResources(
-  mannyId: number,
+  mannyId: string,
   objectId: string,
   resources: string[],
   targetAmount: number,
@@ -69,68 +69,89 @@ export async function mineResources(
 ) {
   const body: Record<string, unknown> = { objectId, resources, targetAmount };
   if (targetContainerId) body.targetContainerId = targetContainerId;
-  return vngFetch(`/api/probe/mannies/${mannyId}/mine`, {
+  return vngFetch(`/api/probe/mannies/${encodeURIComponent(mannyId)}/mine`, {
     method: "POST",
     body: JSON.stringify(body),
   });
 }
 
-export async function repairManny(mannyId: number, integrityPercent: number) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/repair`, {
-    method: "POST",
-    body: JSON.stringify({ integrityPercent }),
-  });
+export async function repairManny(mannyId: string, integrityPercent: number) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/repair`,
+    {
+      method: "POST",
+      body: JSON.stringify({ integrityPercent }),
+    }
+  );
 }
 
-export async function recallManny(mannyId: number) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/recall`, {
-    method: "POST",
-    body: JSON.stringify({}),
-  });
+export async function recallManny(mannyId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/recall`,
+    {
+      method: "POST",
+      body: JSON.stringify({}),
+    }
+  );
 }
 
-export async function renameManny(mannyId: number, name: string) {
-  return vngFetch(`/api/probe/mannies/${mannyId}`, {
+export async function renameManny(mannyId: string, name: string) {
+  return vngFetch(`/api/probe/mannies/${encodeURIComponent(mannyId)}`, {
     method: "PATCH",
     body: JSON.stringify({ name }),
   });
 }
 
-export async function detachContainer(mannyId: number, containerId: string) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/detach-storage-container`, {
-    method: "POST",
-    body: JSON.stringify({ containerId }),
-  });
+export async function detachContainer(mannyId: string, containerId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/detach-storage-container`,
+    {
+      method: "POST",
+      body: JSON.stringify({ containerId }),
+    }
+  );
 }
 
-export async function salvageObject(mannyId: number, objectId: string) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/salvage`, {
-    method: "POST",
-    body: JSON.stringify({ objectId }),
-  });
+export async function salvageObject(mannyId: string, objectId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/salvage`,
+    {
+      method: "POST",
+      body: JSON.stringify({ objectId }),
+    }
+  );
 }
 
-export async function inspectAsteroid(mannyId: number, objectId: string) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/inspect-asteroid`, {
-    method: "POST",
-    body: JSON.stringify({ objectId }),
-  });
+export async function inspectAsteroid(mannyId: string, objectId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/inspect-asteroid`,
+    {
+      method: "POST",
+      body: JSON.stringify({ objectId }),
+    }
+  );
 }
 
 export async function jettisonItem(inventoryId: string, amount?: number) {
   const body: Record<string, unknown> = {};
   if (amount !== undefined) body.amount = amount;
-  return vngFetch(`/api/probe/inventory/${encodeURIComponent(inventoryId)}/jettison`, {
-    method: "POST",
-    body: JSON.stringify(body),
-  });
+  return vngFetch(
+    `/api/probe/inventory/${encodeURIComponent(inventoryId)}/jettison`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+    }
+  );
 }
 
-export async function recoverContainer(mannyId: number, objectId: string) {
-  return vngFetch(`/api/probe/mannies/${mannyId}/recover-storage-container`, {
-    method: "POST",
-    body: JSON.stringify({ objectId }),
-  });
+export async function recoverContainer(mannyId: string, objectId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/recover-storage-container`,
+    {
+      method: "POST",
+      body: JSON.stringify({ objectId }),
+    }
+  );
 }
 
 export async function atomicPrinterCraft(recipe: string) {

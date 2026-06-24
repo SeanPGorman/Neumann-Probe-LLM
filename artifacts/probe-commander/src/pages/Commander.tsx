@@ -63,7 +63,22 @@ function ProbePanel({ state }: { state: any }) {
       </div>
 
       <div className="space-y-2">
-        <GaugeBar label="FUEL" value={probe.fuelPercent} />
+        <div>
+          <div className="flex justify-between text-xs mb-1">
+            <span className="text-muted-foreground">FUEL</span>
+            <span className="text-primary">{(probe.fuelDeuterium ?? 0).toFixed(2)} ECE</span>
+          </div>
+          <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+            <div
+              className="h-full rounded-full"
+              style={{
+                width: `${Math.min(100, ((probe.fuelDeuterium ?? 0) / 100) * 100)}%`,
+                backgroundColor: "hsl(150 80% 45%)",
+                boxShadow: "0 0 6px hsl(150 80% 45%)",
+              }}
+            />
+          </div>
+        </div>
         <GaugeBar label="HULL" value={probe.integrityPercent} />
       </div>
 
