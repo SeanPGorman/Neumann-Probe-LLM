@@ -160,3 +160,17 @@ export async function atomicPrinterCraft(recipe: string) {
     body: JSON.stringify({ recipe }),
   });
 }
+
+export async function dropContainerOnAsteroid(
+  mannyId: string,
+  containerId: string,
+  objectId: string
+) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/drop-storage-container`,
+    {
+      method: "POST",
+      body: JSON.stringify({ containerId, objectId }),
+    }
+  );
+}

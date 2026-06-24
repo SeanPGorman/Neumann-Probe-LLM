@@ -244,6 +244,29 @@ export const TOOLS: ChatCompletionTool[] = [
   {
     type: "function",
     function: {
+      name: "drop_container_on_asteroid",
+      description:
+        "Order a Manny to carry a storage container from the probe and hide it on a specific asteroid in the current sector. The container remains retrievable later with recover_container.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "container_id", "object_id"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          container_id: {
+            type: "string",
+            description: "Inventory item ID of the storage container to drop",
+          },
+          object_id: {
+            type: "string",
+            description: "Sector object ID of the asteroid to hide the container on",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
       name: "atomic_printer_craft",
       description:
         "Use the Atomic 3D Printer to craft high-tech components. The printer runs directly on the probe (no Manny needed). Recipes: micro_conductor, ceramic_insulator, crystal_substrate, dopant_matrix, integrated_circuit.",
@@ -268,7 +291,7 @@ export async function executeTool(
         await Promise.all([
           client.getProbe(),
           client.getMannies(),
-          client.getSector(),
+          client.getSector().catch(() => null),  // unavailable during relativistic transit
           client.getCraftingRecipes(),
         ]);
       const probe = probeResp.probe;
@@ -292,7 +315,7 @@ export async function executeTool(
           location: m.location,
         })),
         sector: {
-          objects: (sectorResp.sector?.objects ?? []).map((o: any) => ({
+          objects: (sectorResp?.sector?.objects ?? []).map((o: any) => ({
             id: o.id,
             type: o.type,
             name: o.name,
@@ -378,6 +401,12 @@ export async function executeTool(
     case "recover_container":
       return client.recoverContainer(
         args.manny_id as string,
+        args.object_id as string
+      );
+    case "drop_container_on_asteroid":
+      return client.dropContainerOnAsteroid(
+        args.manny_id as string,
+        args.container_id as string,
         args.object_id as string
       );
     case "atomic_printer_craft":
