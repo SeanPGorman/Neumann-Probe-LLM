@@ -245,12 +245,12 @@ function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
 
   const sectors: any[] = data?.sectors ?? [];
 
+  const [expanded, setExpanded] = useState<number | null>(null);
+
   if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
   if (sectors.length === 0) return (
     <div className="text-xs text-muted-foreground italic">No sectors recorded yet. The current sector is logged automatically.</div>
   );
-
-  const [expanded, setExpanded] = useState<number | null>(null);
 
   return (
     <div className="space-y-2">
