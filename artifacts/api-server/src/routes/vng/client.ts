@@ -161,6 +161,10 @@ export async function atomicPrinterCraft(recipe: string) {
   });
 }
 
+export async function getVisitedSectors() {
+  return vngFetch("/api/probe/visited-sectors");
+}
+
 export async function dropContainerOnAsteroid(
   mannyId: string,
   containerId: string,

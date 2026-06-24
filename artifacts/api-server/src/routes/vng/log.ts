@@ -4,7 +4,7 @@ import {
   getSectors,
   updateContainerStatus,
 } from "./file-store.js";
-import { getProbe, getSector, scanSector } from "./client.js";
+import { getProbe, getSector, scanSector, getVisitedSectors } from "./client.js";
 
 const router = Router();
 
@@ -100,16 +100,56 @@ router.patch("/containers/:id/status", async (req, res) => {
 
 router.get("/sectors", async (_req, res) => {
   try {
-    const sectors = await getSectors();
-    res.json({
-      sectors: sectors
-        .slice()
-        .sort(
-          (a, b) =>
-            new Date(b.lastVisitedAt).getTime() -
-            new Date(a.lastVisitedAt).getTime()
-        ),
-    });
+    // Game API is authoritative for coordinates/timestamps/visitCount.
+    // Local JSON supplements with scanned objects.
+    const [gameResp, localSectors] = await Promise.all([
+      getVisitedSectors().catch(() => null),
+      getSectors().catch(() => []),
+    ]);
+
+    // Build local lookup by "x,y,z" key for objects
+    const localByKey = new Map<string, any>();
+    for (const s of localSectors as any[]) {
+      localByKey.set(`${s.sectorX},${s.sectorY},${s.sectorZ}`, s);
+    }
+
+    let sectors: any[];
+    if (gameResp?.visitedSectors?.length) {
+      sectors = (gameResp.visitedSectors as any[]).map((gs) => {
+        const x = gs.relativeCoordinates.x;
+        const y = gs.relativeCoordinates.y;
+        const z = gs.relativeCoordinates.z;
+        const local = localByKey.get(`${x},${y},${z}`);
+        return {
+          sectorX: x,
+          sectorY: y,
+          sectorZ: z,
+          firstVisitedAt: gs.firstVisitedAt,
+          lastVisitedAt: gs.lastVisitedAt,
+          visitCount: gs.visitCount,
+          objects: local?.objects ?? [],
+        };
+      });
+    } else {
+      // Fallback to local JSON if game API is unavailable
+      sectors = (localSectors as any[]).map((s) => ({
+        sectorX: s.sectorX,
+        sectorY: s.sectorY,
+        sectorZ: s.sectorZ,
+        firstVisitedAt: s.firstVisitedAt ?? s.lastVisitedAt,
+        lastVisitedAt: s.lastVisitedAt,
+        visitCount: s.visitCount,
+        objects: s.objects ?? [],
+      }));
+    }
+
+    sectors.sort(
+      (a, b) =>
+        new Date(b.lastVisitedAt).getTime() -
+        new Date(a.lastVisitedAt).getTime()
+    );
+
+    res.json({ sectors });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

@@ -80,15 +80,23 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   const draw = useCallback(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const ctx = canvas.getContext("2d")!;
     const dpr = window.devicePixelRatio || 1;
-    // Always reset to DPI-scaled identity so draw() is self-contained
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const W = canvas.offsetWidth, H = canvas.offsetHeight; // CSS pixels
+
+    // Self-resize buffer to match physical resolution; skip if not laid out yet
+    const W = canvas.offsetWidth, H = canvas.offsetHeight;
+    if (!W || !H) return;
+    const bW = Math.round(W * dpr), bH = Math.round(H * dpr);
+    if (canvas.width !== bW || canvas.height !== bH) {
+      canvas.width = bW;
+      canvas.height = bH;
+    }
+
+    const ctx = canvas.getContext("2d")!;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // draw in CSS-pixel space
+    ctx.clearRect(0, 0, W, H);
+
     const cx = W / 2, cy = H / 2;
     const { x: rx, y: ry } = rotRef.current;
-
-    ctx.clearRect(0, 0, W, H);
 
     const cosY = Math.cos(ry), sinY = Math.sin(ry);
     const cosX = Math.cos(rx), sinX = Math.sin(rx);
@@ -234,15 +242,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const setSize = () => {
-      const dpr = window.devicePixelRatio || 1;
-      canvas.width = canvas.offsetWidth * dpr;
-      canvas.height = canvas.offsetHeight * dpr;
-      draw();
-    };
-    const ro = new ResizeObserver(setSize);
+    const ro = new ResizeObserver(() => draw());
     ro.observe(canvas);
-    setSize();
+    draw(); // initial paint
     return () => ro.disconnect();
   }, [draw]);
 
