@@ -175,11 +175,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       for (let i = 1; i < visitedProj.length; i++) {
         ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
       }
-      ctx.strokeStyle = "rgba(60,220,110,0.30)";
-      ctx.lineWidth = 1.5;
-      ctx.setLineDash([4, 4]);
+      ctx.strokeStyle = "rgba(80,255,140,0.70)";
+      ctx.lineWidth = 2;
       ctx.stroke();
-      ctx.setLineDash([]);
     }
 
     // 3. Visited sector dots (including those outside RADIUS)
