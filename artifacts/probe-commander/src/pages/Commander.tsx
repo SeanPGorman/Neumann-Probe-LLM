@@ -208,6 +208,20 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
         </div>
       )}
 
+      {c.contents && c.contents.length > 0 ? (
+        <div className="bg-muted/20 border border-border rounded px-2 py-1.5 space-y-0.5">
+          <div className="text-[10px] text-muted-foreground tracking-wider">CONTENTS</div>
+          {c.contents.map((item: { resource: string; amount: number }) => (
+            <div key={item.resource} className="flex items-center justify-between text-[10px]">
+              <span className="text-foreground/80">{item.resource.replace(/_/g, " ")}</span>
+              <span className="text-primary font-mono">{item.amount.toFixed(2)} ECE</span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="text-[10px] text-muted-foreground/40 italic">empty</div>
+      )}
+
       <div className="text-muted-foreground/60 text-[10px]">
         By {c.mannyName} · {new Date(c.detachedAt).toLocaleString()}
       </div>
