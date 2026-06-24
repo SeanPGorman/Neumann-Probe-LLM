@@ -1,5 +1,7 @@
 import { Router } from "express";
 import OpenAI from "openai";
+import { db, detachedContainers, visitedSectors } from "@workspace/db";
+import { eq, and } from "drizzle-orm";
 import * as client from "./client.js";
 import { TOOLS, executeTool } from "./tools.js";
 
@@ -14,6 +16,60 @@ function sse(res: import("express").Response, event: Record<string, unknown>) {
   res.write(`data: ${JSON.stringify(event)}\n\n`);
 }
 
+async function recordSector(
+  x: number,
+  y: number,
+  z: number,
+  objects: any[]
+): Promise<void> {
+  try {
+    const resourceTypes = Array.from(
+      new Set(objects.flatMap((o: any) => o.resourceTypes ?? []))
+    );
+    const simplified = objects.map((o: any) => ({
+      id: o.id ?? null,
+      type: o.type,
+      name: o.name ?? null,
+      summary: o.summary ?? null,
+      resourceTypes: o.resourceTypes ?? [],
+    }));
+
+    const existing = await db
+      .select({ id: visitedSectors.id, visitCount: visitedSectors.visitCount })
+      .from(visitedSectors)
+      .where(
+        and(
+          eq(visitedSectors.sectorX, x),
+          eq(visitedSectors.sectorY, y),
+          eq(visitedSectors.sectorZ, z)
+        )
+      )
+      .limit(1);
+
+    if (existing.length > 0) {
+      await db
+        .update(visitedSectors)
+        .set({
+          lastVisitedAt: new Date(),
+          visitCount: existing[0].visitCount + 1,
+          objects: simplified as any,
+          resourceSummary: resourceTypes as any,
+        })
+        .where(eq(visitedSectors.id, existing[0].id));
+    } else {
+      await db.insert(visitedSectors).values({
+        sectorX: x,
+        sectorY: y,
+        sectorZ: z,
+        visitCount: 1,
+        objects: simplified as any,
+        resourceSummary: resourceTypes as any,
+      });
+    }
+  } catch {
+  }
+}
+
 router.get("/state", async (_req, res) => {
   try {
     const [probeResp, manniesResp, sectorResp] = await Promise.all([
@@ -25,6 +81,9 @@ router.get("/state", async (_req, res) => {
     const probe = probeResp.probe;
     const inv = probe.inventory ?? {};
     const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+    const sectorObjects: any[] = sectorResp.sector?.objects ?? [];
+
+    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
 
     const mannies = (manniesResp.mannies ?? []).map((m: any) => ({
       id: m.id,
@@ -35,7 +94,7 @@ router.get("/state", async (_req, res) => {
       location: m.location ?? null,
     }));
 
-    const sectorObjects = (sectorResp.sector?.objects ?? []).map((o: any) => ({
+    const sectorObjectsMapped = sectorObjects.map((o: any) => ({
       id: o.id ?? null,
       type: o.type,
       name: o.name ?? null,
@@ -59,7 +118,7 @@ router.get("/state", async (_req, res) => {
         freeCapacity: inv.freeCapacity ?? 0,
       },
       mannies,
-      sectorObjects,
+      sectorObjects: sectorObjectsMapped,
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -99,15 +158,14 @@ router.post("/command", async (req, res) => {
     const resourceStocks: any[] = inv.resourceStocks ?? [];
     const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
 
-    const idlemannies = mannies.filter((m: any) => !m.currentTask);
-    const busyMannies = mannies.filter((m: any) => m.currentTask);
+    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
 
-    const asteroids = sectorObjects.filter(
-      (o: any) => o.type === "asteroid" && o.id
-    );
-    const containers = inventoryItems.filter(
-      (i: any) => i.type === "storage_container"
-    );
+    const manniesById = new Map(mannies.map((m: any) => [m.id, m]));
+    const itemsById = new Map(inventoryItems.map((i: any) => [i.id, i]));
+
+    const idleMannies = mannies.filter((m: any) => !m.currentTask);
+    const busyMannies = mannies.filter((m: any) => m.currentTask);
+    const containers = inventoryItems.filter((i: any) => i.type === "storage_container");
 
     const systemPrompt = `You are the AI operator of Von Neumann Probe #${probe.id} ("${probe.name}").
 Your job is to carry out the operator's instructions by calling the provided tools.
@@ -124,8 +182,8 @@ Movement: ${
     }
 
 == MANNIES (${mannies.length} total) ==
-IDLE (${idlemannies.length}):
-${idlemannies.map((m: any) => `  • ${m.name}  id="${m.id}"`).join("\n") || "  none"}
+IDLE (${idleMannies.length}):
+${idleMannies.map((m: any) => `  • ${m.name}  id="${m.id}"`).join("\n") || "  none"}
 BUSY (${busyMannies.length}):
 ${busyMannies.map((m: any) => `  • ${m.name}  id="${m.id}"  task=${m.currentTask}  progress=${m.taskProgressPercent?.toFixed(1)}%  eta=${m.taskEstimatedEndTime ?? "?"}`).join("\n") || "  none"}
 
@@ -138,14 +196,14 @@ Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") 
 Storage containers aboard: ${containers.map((c: any) => `"${c.name}"  id="${c.id}"`).join(", ") || "none"}
 Other items: ${inventoryItems.filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container").map((i: any) => `${i.name}(${i.type})`).join(", ") || "none"}
 
-== CRAFTING RECIPES (use 'get_game_state' if you need full details) ==
+== CRAFTING RECIPES ==
 ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s`).join("\n")}
 
 == RULES ==
 - Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use the exact IDs shown above.
-- Always use get_game_state to refresh data if you need IDs that aren't visible above.
-- Only use IDs from real data — never invent them.
-- Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED, not finished.
+- Always use get_game_state to refresh data if you need IDs not listed above.
+- Never invent IDs — only use IDs from real data.
+- Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
 - For multi-step tasks (e.g. craft container → detach it → mine into it), execute sequentially; call get_game_state after each step to confirm IDs before the next.
 - Be concise and precise. State what you did and what the operator should expect.`;
 
@@ -193,24 +251,58 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
         sse(res, { type: "action", tool: toolName, params: args, id: call.id });
 
         let result: unknown;
+        let success = false;
         try {
           result = await executeTool(toolName, args);
-          sse(res, {
-            type: "result",
-            tool: toolName,
-            id: call.id,
-            success: true,
-            data: result,
-          });
+          success = true;
+          sse(res, { type: "result", tool: toolName, id: call.id, success: true, data: result });
         } catch (err: any) {
           result = { error: err.message };
-          sse(res, {
-            type: "result",
-            tool: toolName,
-            id: call.id,
-            success: false,
-            error: err.message,
-          });
+          sse(res, { type: "result", tool: toolName, id: call.id, success: false, error: err.message });
+        }
+
+        if (success) {
+          if (toolName === "detach_container") {
+            const mannyId = args.manny_id as string;
+            const containerId = args.container_id as string;
+            const mannyInfo = manniesById.get(mannyId);
+            const itemInfo = itemsById.get(containerId);
+            db.insert(detachedContainers).values({
+              containerId,
+              containerName: itemInfo?.name ?? containerId,
+              mannyId,
+              mannyName: mannyInfo?.name ?? mannyId,
+              sectorX: sector.x,
+              sectorY: sector.y,
+              sectorZ: sector.z,
+              status: "floating",
+            }).catch(() => {});
+          }
+
+          if (toolName === "recover_container") {
+            const objectId = args.object_id as string;
+            db.update(detachedContainers)
+              .set({ status: "recovered" })
+              .where(
+                and(
+                  eq(detachedContainers.containerId, objectId),
+                  eq(detachedContainers.status, "floating")
+                )
+              )
+              .catch(() => {});
+          }
+
+          if (toolName === "scan_sector") {
+            const scannedObjects: any[] = (result as any)?.sector?.objects ?? [];
+            recordSector(args.x as number, args.y as number, args.z as number, scannedObjects).catch(() => {});
+          }
+
+          if (toolName === "get_game_state") {
+            const gs = result as any;
+            const gsObjects = gs?.sector?.objects ?? [];
+            const gsSector = gs?.probe?.sector ?? sector;
+            recordSector(gsSector.x, gsSector.y, gsSector.z, gsObjects).catch(() => {});
+          }
         }
 
         messages.push({
