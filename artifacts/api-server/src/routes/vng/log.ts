@@ -1,16 +1,16 @@
 import { Router } from "express";
-import { db, detachedContainers, visitedSectors } from "@workspace/db";
-import { desc, and, eq } from "drizzle-orm";
+import {
+  getContainers,
+  getSectors,
+  updateContainerStatus,
+} from "./file-store.js";
 
 const router = Router();
 
 router.get("/containers", async (_req, res) => {
   try {
-    const rows = await db
-      .select()
-      .from(detachedContainers)
-      .orderBy(desc(detachedContainers.detachedAt));
-    res.json({ containers: rows });
+    const containers = await getContainers();
+    res.json({ containers: containers.slice().reverse() });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
@@ -20,10 +20,7 @@ router.patch("/containers/:id/status", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const { status, notes } = req.body as { status?: string; notes?: string };
-    const update: Record<string, unknown> = {};
-    if (status) update.status = status;
-    if (notes !== undefined) update.notes = notes;
-    await db.update(detachedContainers).set(update).where(eq(detachedContainers.id, id));
+    await updateContainerStatus(id, { status, notes });
     res.json({ ok: true });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -32,11 +29,16 @@ router.patch("/containers/:id/status", async (req, res) => {
 
 router.get("/sectors", async (_req, res) => {
   try {
-    const rows = await db
-      .select()
-      .from(visitedSectors)
-      .orderBy(desc(visitedSectors.lastVisitedAt));
-    res.json({ sectors: rows });
+    const sectors = await getSectors();
+    res.json({
+      sectors: sectors
+        .slice()
+        .sort(
+          (a, b) =>
+            new Date(b.lastVisitedAt).getTime() -
+            new Date(a.lastVisitedAt).getTime()
+        ),
+    });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

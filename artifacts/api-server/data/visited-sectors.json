@@ -1,0 +1,49 @@
+[
+  {
+    "id": 1,
+    "sectorX": 3,
+    "sectorY": 3,
+    "sectorZ": 4,
+    "firstVisitedAt": "2026-06-24T15:42:37.560Z",
+    "lastVisitedAt": "2026-06-24T15:42:37.560Z",
+    "visitCount": 1,
+    "objects": [
+      {
+        "id": "6c7ecfe26f7188309d6c",
+        "type": "solar_system",
+        "name": "System 334a21",
+        "summary": "Stellar system with 1 star(s) and 13 orbital body(ies).",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_craft_90bc914651271e7c8422e6a3",
+        "type": "detached_container",
+        "name": "MetalStorage",
+        "summary": "Detached storage container detected.",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_1980efa68fe51654a8bbacef",
+        "type": "detached_container",
+        "name": "Metal 2",
+        "summary": "Detached storage container detected.",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_craft_20cdf660bb3716f5c690352f",
+        "type": "detached_container",
+        "name": "Metal 1",
+        "summary": "Detached storage container detected.",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_craft_d17f47c8cce0397246976914",
+        "type": "detached_container",
+        "name": "Metal 3",
+        "summary": "Detached storage container detected.",
+        "resourceTypes": []
+      }
+    ],
+    "resourceSummary": []
+  }
+]

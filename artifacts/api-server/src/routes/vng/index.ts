@@ -1,9 +1,12 @@
 import { Router } from "express";
 import OpenAI from "openai";
-import { db, detachedContainers, visitedSectors } from "@workspace/db";
-import { eq, and } from "drizzle-orm";
 import * as client from "./client.js";
 import { TOOLS, executeTool } from "./tools.js";
+import {
+  addContainer,
+  markContainerRecovered,
+  recordSector,
+} from "./file-store.js";
 
 const router = Router();
 
@@ -14,60 +17,6 @@ const openai = new OpenAI({
 
 function sse(res: import("express").Response, event: Record<string, unknown>) {
   res.write(`data: ${JSON.stringify(event)}\n\n`);
-}
-
-async function recordSector(
-  x: number,
-  y: number,
-  z: number,
-  objects: any[]
-): Promise<void> {
-  try {
-    const resourceTypes = Array.from(
-      new Set(objects.flatMap((o: any) => o.resourceTypes ?? []))
-    );
-    const simplified = objects.map((o: any) => ({
-      id: o.id ?? null,
-      type: o.type,
-      name: o.name ?? null,
-      summary: o.summary ?? null,
-      resourceTypes: o.resourceTypes ?? [],
-    }));
-
-    const existing = await db
-      .select({ id: visitedSectors.id, visitCount: visitedSectors.visitCount })
-      .from(visitedSectors)
-      .where(
-        and(
-          eq(visitedSectors.sectorX, x),
-          eq(visitedSectors.sectorY, y),
-          eq(visitedSectors.sectorZ, z)
-        )
-      )
-      .limit(1);
-
-    if (existing.length > 0) {
-      await db
-        .update(visitedSectors)
-        .set({
-          lastVisitedAt: new Date(),
-          visitCount: existing[0].visitCount + 1,
-          objects: simplified as any,
-          resourceSummary: resourceTypes as any,
-        })
-        .where(eq(visitedSectors.id, existing[0].id));
-    } else {
-      await db.insert(visitedSectors).values({
-        sectorX: x,
-        sectorY: y,
-        sectorZ: z,
-        visitCount: 1,
-        objects: simplified as any,
-        resourceSummary: resourceTypes as any,
-      });
-    }
-  } catch {
-  }
 }
 
 router.get("/state", async (_req, res) => {
@@ -165,7 +114,9 @@ router.post("/command", async (req, res) => {
 
     const idleMannies = mannies.filter((m: any) => !m.currentTask);
     const busyMannies = mannies.filter((m: any) => m.currentTask);
-    const containers = inventoryItems.filter((i: any) => i.type === "storage_container");
+    const containers = inventoryItems.filter(
+      (i: any) => i.type === "storage_container"
+    );
 
     const systemPrompt = `You are the AI operator of Von Neumann Probe #${probe.id} ("${probe.name}").
 Your job is to carry out the operator's instructions by calling the provided tools.
@@ -194,18 +145,26 @@ ${sectorObjects.slice(0, 30).map((o: any) => `  • [${o.type}] "${o.name ?? "un
 Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used  (${(inv.freeCapacity ?? 0).toFixed(3)} free)
 Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") || "none"}
 Storage containers aboard: ${containers.map((c: any) => `"${c.name}"  id="${c.id}"`).join(", ") || "none"}
-Other items: ${inventoryItems.filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container").map((i: any) => `${i.name}(${i.type})`).join(", ") || "none"}
+Other items: ${inventoryItems
+      .filter(
+        (i: any) =>
+          i.type !== "manny" &&
+          i.type !== "atomic_3d_printer" &&
+          i.type !== "storage_container"
+      )
+      .map((i: any) => `${i.name}(${i.type})`)
+      .join(", ") || "none"}
 
 == CRAFTING RECIPES ==
 ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s`).join("\n")}
 
 == RULES ==
-- Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use the exact IDs shown above.
-- Always use get_game_state to refresh data if you need IDs not listed above.
+- Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use exact IDs from above.
+- Always use get_game_state to refresh if you need IDs not listed above.
 - Never invent IDs — only use IDs from real data.
 - Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
-- For multi-step tasks (e.g. craft container → detach it → mine into it), execute sequentially; call get_game_state after each step to confirm IDs before the next.
-- Be concise and precise. State what you did and what the operator should expect.`;
+- For multi-step tasks, execute sequentially; call get_game_state after each step to confirm IDs.
+- Be concise and precise.`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
       { role: "system", content: systemPrompt },
@@ -255,10 +214,22 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
         try {
           result = await executeTool(toolName, args);
           success = true;
-          sse(res, { type: "result", tool: toolName, id: call.id, success: true, data: result });
+          sse(res, {
+            type: "result",
+            tool: toolName,
+            id: call.id,
+            success: true,
+            data: result,
+          });
         } catch (err: any) {
           result = { error: err.message };
-          sse(res, { type: "result", tool: toolName, id: call.id, success: false, error: err.message });
+          sse(res, {
+            type: "result",
+            tool: toolName,
+            id: call.id,
+            success: false,
+            error: err.message,
+          });
         }
 
         if (success) {
@@ -267,7 +238,7 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
             const containerId = args.container_id as string;
             const mannyInfo = manniesById.get(mannyId);
             const itemInfo = itemsById.get(containerId);
-            db.insert(detachedContainers).values({
+            addContainer({
               containerId,
               containerName: itemInfo?.name ?? containerId,
               mannyId,
@@ -276,32 +247,35 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
               sectorY: sector.y,
               sectorZ: sector.z,
               status: "floating",
+              notes: null,
             }).catch(() => {});
           }
 
           if (toolName === "recover_container") {
-            const objectId = args.object_id as string;
-            db.update(detachedContainers)
-              .set({ status: "recovered" })
-              .where(
-                and(
-                  eq(detachedContainers.containerId, objectId),
-                  eq(detachedContainers.status, "floating")
-                )
-              )
-              .catch(() => {});
+            markContainerRecovered(args.object_id as string).catch(() => {});
           }
 
           if (toolName === "scan_sector") {
-            const scannedObjects: any[] = (result as any)?.sector?.objects ?? [];
-            recordSector(args.x as number, args.y as number, args.z as number, scannedObjects).catch(() => {});
+            const scannedObjects: any[] =
+              (result as any)?.sector?.objects ?? [];
+            recordSector(
+              args.x as number,
+              args.y as number,
+              args.z as number,
+              scannedObjects
+            ).catch(() => {});
           }
 
           if (toolName === "get_game_state") {
             const gs = result as any;
             const gsObjects = gs?.sector?.objects ?? [];
             const gsSector = gs?.probe?.sector ?? sector;
-            recordSector(gsSector.x, gsSector.y, gsSector.z, gsObjects).catch(() => {});
+            recordSector(
+              gsSector.x,
+              gsSector.y,
+              gsSector.z,
+              gsObjects
+            ).catch(() => {});
           }
         }
 

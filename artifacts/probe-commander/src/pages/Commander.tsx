@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef, useCallback } from "react";
-import { useGetProbeState } from "@workspace/api-client-react";
+import { useQuery } from "@tanstack/react-query";
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
 type SseEvent =
   | { type: "status"; message: string }
-  | { type: "thinking"; content: string }
   | { type: "message"; content: string }
   | { type: "action"; tool: string; params: Record<string, unknown>; id: string }
   | { type: "result"; tool: string; id: string; success: boolean; data?: unknown; error?: string }
@@ -14,7 +15,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+type SideTab = "telemetry" | "containers" | "sectors";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -36,32 +37,73 @@ function toolLabel(tool: string): string {
   return labels[tool] ?? tool.toUpperCase().replace(/_/g, " ");
 }
 
-function ProbePanel({ state }: { state: any }) {
-  if (!state) {
-    return (
-      <div className="border border-border border-glow rounded p-4 space-y-2 animate-pulse">
-        <div className="text-xs text-muted-foreground">LOADING TELEMETRY…</div>
-      </div>
-    );
-  }
+function objectIcon(type: string): string {
+  const icons: Record<string, string> = {
+    asteroid: "⬡",
+    planet: "○",
+    star: "★",
+    black_hole: "◉",
+    solar_system: "◎",
+    dust_cloud: "~",
+    manny: "♦",
+    drifting_item: "◇",
+    detached_container: "□",
+  };
+  return icons[type] ?? "·";
+}
 
-  const { probe, mannies, sectorObjects } = state;
-  const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
-
+function GaugeBar({ label, value, color }: { label: string; value: number; color?: string }) {
+  const pct = Math.max(0, Math.min(100, value ?? 0));
+  const c = color ?? (pct > 50 ? "hsl(150 80% 45%)" : pct > 25 ? "hsl(45 90% 50%)" : "hsl(0 70% 50%)");
   return (
-    <div className="border border-border border-glow rounded p-4 space-y-4 scanlines">
+    <div>
+      <div className="flex justify-between text-xs mb-1">
+        <span className="text-muted-foreground">{label}</span>
+        <span style={{ color: c }}>{pct.toFixed(0)}%</span>
+      </div>
+      <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-500"
+          style={{ width: `${pct}%`, backgroundColor: c, boxShadow: `0 0 6px ${c}` }} />
+      </div>
+    </div>
+  );
+}
+
+function MannyRow({ manny }: { manny: any }) {
+  const idle = !manny.currentTask;
+  return (
+    <div className="flex items-start gap-2 text-xs">
+      <span className={idle ? "text-primary mt-0.5" : "text-yellow-400 mt-0.5 pulse-active"}>
+        {idle ? "●" : "◌"}
+      </span>
+      <div className="flex-1 min-w-0">
+        <div className="text-foreground font-medium truncate">{manny.name}</div>
+        {!idle && (
+          <div className="text-muted-foreground text-[10px]">
+            {manny.currentTask?.toUpperCase().replace(/_/g, " ")} {manny.taskProgressPercent?.toFixed(0)}%
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+function TelemetryPanel({ state }: { state: any }) {
+  if (!state) {
+    return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING TELEMETRY…</div>;
+  }
+  const { probe, mannies, sectorObjects, inventory } = state;
+  const sector = probe.sector ?? { x: 0, y: 0, z: 0 };
+  return (
+    <div className="space-y-4">
       <div className="flex items-center justify-between">
         <span className="text-xs text-muted-foreground tracking-widest">PROBE TELEMETRY</span>
         <span className="text-xs text-primary glow-green">{probe.status?.toUpperCase()}</span>
       </div>
-
       <div>
         <div className="text-lg font-bold glow-green tracking-wider">{probe.name}</div>
-        <div className="text-xs text-muted-foreground mt-0.5">
-          SECTOR [{sector.x},{sector.y},{sector.z}]
-        </div>
+        <div className="text-xs text-muted-foreground mt-0.5">SECTOR [{sector.x},{sector.y},{sector.z}]</div>
       </div>
-
       <div className="space-y-2">
         <div>
           <div className="flex justify-between text-xs mb-1">
@@ -69,36 +111,26 @@ function ProbePanel({ state }: { state: any }) {
             <span className="text-primary">{(probe.fuelDeuterium ?? 0).toFixed(2)} ECE</span>
           </div>
           <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
-            <div
-              className="h-full rounded-full"
-              style={{
-                width: `${Math.min(100, ((probe.fuelDeuterium ?? 0) / 100) * 100)}%`,
-                backgroundColor: "hsl(150 80% 45%)",
-                boxShadow: "0 0 6px hsl(150 80% 45%)",
-              }}
-            />
+            <div className="h-full rounded-full"
+              style={{ width: `${Math.min(100, (probe.fuelDeuterium ?? 0))}%`, backgroundColor: "hsl(150 80% 45%)", boxShadow: "0 0 6px hsl(150 80% 45%)" }} />
           </div>
         </div>
         <GaugeBar label="HULL" value={probe.integrityPercent} />
+        <div className="flex justify-between text-xs">
+          <span className="text-muted-foreground">CARGO</span>
+          <span className="text-muted-foreground">{(inventory?.usedCapacity ?? 0).toFixed(2)}/{inventory?.capacity ?? 0} ECE</span>
+        </div>
       </div>
-
-      {mannies.length > 0 && (
+      {mannies?.length > 0 && (
         <div>
           <div className="text-xs text-muted-foreground tracking-widest mb-2">MANNIES ({mannies.length})</div>
-          <div className="space-y-1.5">
-            {mannies.map((m: any) => (
-              <MannyRow key={m.id} manny={m} />
-            ))}
-          </div>
+          <div className="space-y-1.5">{mannies.map((m: any) => <MannyRow key={m.id} manny={m} />)}</div>
         </div>
       )}
-
-      {sectorObjects.length > 0 && (
+      {sectorObjects?.length > 0 && (
         <div>
-          <div className="text-xs text-muted-foreground tracking-widest mb-2">
-            SECTOR OBJECTS ({sectorObjects.length})
-          </div>
-          <div className="space-y-1 max-h-40 overflow-y-auto">
+          <div className="text-xs text-muted-foreground tracking-widest mb-2">SECTOR ({sectorObjects.length})</div>
+          <div className="space-y-1 max-h-48 overflow-y-auto">
             {sectorObjects.map((o: any, i: number) => (
               <div key={i} className="text-xs flex gap-2">
                 <span className="text-accent shrink-0">{objectIcon(o.type)}</span>
@@ -115,147 +147,171 @@ function ProbePanel({ state }: { state: any }) {
   );
 }
 
-function GaugeBar({ label, value }: { label: string; value: number }) {
-  const pct = Math.max(0, Math.min(100, value ?? 0));
-  const color =
-    pct > 50 ? "hsl(150 80% 45%)" : pct > 25 ? "hsl(45 90% 50%)" : "hsl(0 70% 50%)";
+function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ["log-containers", refetchSignal],
+    queryFn: async () => {
+      const r = await fetch(`${BASE}/api/vng/log/containers`);
+      return r.json();
+    },
+    refetchInterval: 30000,
+  });
+
+  const containers: any[] = data?.containers ?? [];
+
+  if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
+  if (containers.length === 0) return (
+    <div className="text-xs text-muted-foreground italic">No containers detached yet.</div>
+  );
+
   return (
-    <div>
-      <div className="flex justify-between text-xs mb-1">
-        <span className="text-muted-foreground">{label}</span>
-        <span style={{ color }}>{pct.toFixed(0)}%</span>
-      </div>
-      <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
-        <div
-          className="h-full rounded-full transition-all duration-500"
-          style={{ width: `${pct}%`, backgroundColor: color, boxShadow: `0 0 6px ${color}` }}
-        />
+    <div className="space-y-2">
+      <div className="text-xs text-muted-foreground tracking-widest">DETACHED CONTAINERS ({containers.length})</div>
+      <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
+        {containers.map((c: any) => (
+          <div key={c.id} className={`border rounded p-2.5 text-xs space-y-1 ${c.status === "recovered" ? "border-border opacity-50" : "border-accent/40 border-glow"}`}>
+            <div className="flex items-center justify-between gap-2">
+              <span className="text-foreground font-bold truncate">{c.containerName}</span>
+              <span className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider ${c.status === "floating" ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"}`}>
+                {c.status.toUpperCase()}
+              </span>
+            </div>
+            <div className="text-muted-foreground">
+              Sector [{c.sectorX},{c.sectorY},{c.sectorZ}]
+            </div>
+            <div className="text-muted-foreground">
+              By {c.mannyName} · {new Date(c.detachedAt).toLocaleString()}
+            </div>
+            {c.notes && <div className="text-foreground/70 italic">{c.notes}</div>}
+          </div>
+        ))}
       </div>
     </div>
   );
 }
 
-function MannyRow({ manny }: { manny: any }) {
-  const idle = !manny.currentTask;
+function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
+  const { data, isLoading } = useQuery({
+    queryKey: ["log-sectors", refetchSignal],
+    queryFn: async () => {
+      const r = await fetch(`${BASE}/api/vng/log/sectors`);
+      return r.json();
+    },
+    refetchInterval: 30000,
+  });
+
+  const sectors: any[] = data?.sectors ?? [];
+
+  if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
+  if (sectors.length === 0) return (
+    <div className="text-xs text-muted-foreground italic">No sectors recorded yet. The current sector is logged automatically.</div>
+  );
+
   return (
-    <div className="flex items-center gap-2 text-xs">
-      <span className={idle ? "text-primary" : "text-yellow-400 pulse-active"}>
-        {idle ? "●" : "◌"}
-      </span>
-      <span className="text-foreground font-medium truncate max-w-[90px]">{manny.name}</span>
-      <span className="text-muted-foreground truncate">
-        {idle
-          ? "IDLE"
-          : `${manny.currentTask?.toUpperCase().replace(/_/g, " ")} ${manny.taskProgressPercent?.toFixed(0)}%`}
-      </span>
+    <div className="space-y-2">
+      <div className="text-xs text-muted-foreground tracking-widest">VISITED SECTORS ({sectors.length})</div>
+      <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
+        {sectors.map((s: any) => (
+          <div key={s.id} className="border border-border rounded p-2.5 text-xs space-y-1">
+            <div className="flex items-center justify-between">
+              <span className="text-foreground font-bold glow-green">
+                [{s.sectorX},{s.sectorY},{s.sectorZ}]
+              </span>
+              <span className="text-muted-foreground text-[10px]">{s.visitCount}x</span>
+            </div>
+            {(s.resourceSummary as string[])?.length > 0 && (
+              <div className="flex flex-wrap gap-1">
+                {(s.resourceSummary as string[]).map((r: string) => (
+                  <span key={r} className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px]">{r}</span>
+                ))}
+              </div>
+            )}
+            <div className="text-muted-foreground">
+              {(s.objects as any[])?.length ?? 0} objects · last {new Date(s.lastVisitedAt).toLocaleString()}
+            </div>
+            {(s.objects as any[])?.slice(0, 4).map((o: any, i: number) => (
+              <div key={i} className="flex gap-1 text-[10px] text-muted-foreground/70">
+                <span>{objectIcon(o.type)}</span>
+                <span className="truncate">{o.name ?? o.type}</span>
+              </div>
+            ))}
+            {(s.objects as any[])?.length > 4 && (
+              <div className="text-[10px] text-muted-foreground/50">+{(s.objects as any[]).length - 4} more</div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
-
-function objectIcon(type: string): string {
-  const icons: Record<string, string> = {
-    asteroid: "⬡",
-    planet: "○",
-    star: "★",
-    black_hole: "◉",
-    solar_system: "◎",
-    dust_cloud: "~",
-    manny: "♦",
-    drifting_item: "◇",
-    detached_container: "□",
-  };
-  return icons[type] ?? "·";
 }
 
 function EventRow({ event }: { event: SseEvent }) {
-  if (event.type === "status") {
-    return (
-      <div className="text-xs text-muted-foreground italic">
-        ▸ {event.message}
-      </div>
-    );
-  }
-  if (event.type === "message") {
-    return (
-      <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">
-        {event.content}
-      </div>
-    );
-  }
+  if (event.type === "status") return (
+    <div className="text-xs text-muted-foreground italic">▸ {event.message}</div>
+  );
+  if (event.type === "message") return (
+    <div className="text-sm text-foreground leading-relaxed whitespace-pre-wrap">{event.content}</div>
+  );
   if (event.type === "action") {
     const paramStr = Object.entries(event.params)
-      .map(([k, v]) => `${k}=${JSON.stringify(v)}`)
-      .join(" ");
+      .map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(" ");
     return (
-      <div className="flex flex-col gap-0.5 py-1 border-l-2 border-accent pl-3">
-        <div className="text-xs text-accent font-bold tracking-wider">
-          ⟶ {toolLabel(event.tool)}
-        </div>
-        {paramStr && (
-          <div className="text-xs text-muted-foreground font-mono break-all">{paramStr}</div>
-        )}
+      <div className="py-1 border-l-2 border-accent pl-3 space-y-0.5">
+        <div className="text-xs text-accent font-bold tracking-wider">⟶ {toolLabel(event.tool)}</div>
+        {paramStr && <div className="text-xs text-muted-foreground font-mono break-all">{paramStr}</div>}
       </div>
     );
   }
   if (event.type === "result") {
-    if (!event.success) {
-      return (
-        <div className="text-xs text-destructive pl-3 border-l-2 border-destructive">
-          ✕ ERROR: {event.error}
-        </div>
-      );
-    }
+    if (!event.success) return (
+      <div className="text-xs text-destructive pl-3 border-l-2 border-destructive">✕ {event.error}</div>
+    );
     return (
-      <div className="text-xs text-primary pl-3 border-l-2 border-primary">
-        ✓ {toolLabel(event.tool)} OK
-      </div>
+      <div className="text-xs text-primary pl-3 border-l-2 border-primary">✓ {toolLabel(event.tool)} OK</div>
     );
   }
-  if (event.type === "error") {
-    return (
-      <div className="text-xs text-destructive glow-red">
-        ⚠ {event.message}
-      </div>
-    );
-  }
+  if (event.type === "error") return (
+    <div className="text-xs text-destructive glow-red">⚠ {event.message}</div>
+  );
   return null;
 }
 
 function AssistantBubble({ events }: { events: SseEvent[] }) {
-  const messageEvents = events.filter(
-    (e) => e.type === "message" || e.type === "action" || e.type === "result" || e.type === "status" || e.type === "error"
+  const visible = events.filter(e =>
+    e.type === "message" || e.type === "action" || e.type === "result" ||
+    e.type === "status" || e.type === "error"
   );
-  if (messageEvents.length === 0) return null;
+  if (visible.length === 0) return null;
   return (
     <div className="space-y-1.5 border border-border rounded p-3 bg-card/60 border-glow">
-      {messageEvents.map((e, i) => (
-        <EventRow key={i} event={e} />
-      ))}
+      {visible.map((e, i) => <EventRow key={i} event={e} />)}
     </div>
   );
 }
 
 export default function Commander() {
   const [input, setInput] = useState("");
-  const [messages, setMessages] = useState<ChatMessage[]>([
-    {
-      role: "assistant",
-      events: [
-        {
-          type: "message",
-          content:
-            "PROBE COMMANDER ONLINE.\n\nI have direct access to your probe's systems. Give me a natural language command and I will execute the necessary operations.\n\nExamples:\n• \"Have a Manny craft an additional container, then detach it and mine 1 container of metals from the nearest asteroid\"\n• \"Repair Manny-1 to full integrity\"\n• \"Scan the sector and tell me what resources are available\"",
-        },
-      ],
-    },
-  ]);
+  const [messages, setMessages] = useState<ChatMessage[]>([{
+    role: "assistant",
+    events: [{
+      type: "message",
+      content: "PROBE COMMANDER ONLINE.\n\nGive me a natural language command and I'll execute the necessary operations.\n\nExamples:\n• \"Have a Manny craft an additional container, then detach it and mine metals into it\"\n• \"Tell me what resources the sector has\"\n• \"Recall manny-3 and repair them to full integrity\"",
+    }],
+  }]);
   const [isRunning, setIsRunning] = useState(false);
   const [liveEvents, setLiveEvents] = useState<SseEvent[]>([]);
+  const [sideTab, setSideTab] = useState<SideTab>("telemetry");
+  const [logRefetch, setLogRefetch] = useState(0);
   const bottomRef = useRef<HTMLDivElement>(null);
-  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
-  const { data: state, refetch: refetchState } = useGetProbeState({
-    query: { refetchInterval: 30000 },
+  const { data: state } = useQuery({
+    queryKey: ["probe-state"],
+    queryFn: async () => {
+      const r = await fetch(`${BASE}/api/vng/state`);
+      if (!r.ok) throw new Error(`State fetch failed: ${r.status}`);
+      return r.json();
+    },
+    refetchInterval: 30000,
   });
 
   useEffect(() => {
@@ -265,38 +321,28 @@ export default function Commander() {
   const sendCommand = useCallback(async () => {
     const cmd = input.trim();
     if (!cmd || isRunning) return;
-
     setInput("");
     setIsRunning(true);
     setLiveEvents([]);
-
-    setMessages((prev) => [...prev, { role: "user", content: cmd }]);
+    setMessages(prev => [...prev, { role: "user", content: cmd }]);
 
     const events: SseEvent[] = [];
-
     try {
       const res = await fetch(`${BASE}/api/vng/command`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ command: cmd }),
       });
-
-      if (!res.ok || !res.body) {
-        throw new Error(`Server error: ${res.status}`);
-      }
-
+      if (!res.ok || !res.body) throw new Error(`Server error: ${res.status}`);
       const reader = res.body.getReader();
       const decoder = new TextDecoder();
       let buffer = "";
-
       while (true) {
         const { done, value } = await reader.read();
         if (done) break;
         buffer += decoder.decode(value, { stream: true });
-
         const lines = buffer.split("\n");
         buffer = lines.pop() ?? "";
-
         for (const line of lines) {
           if (line.startsWith("data: ")) {
             try {
@@ -313,31 +359,50 @@ export default function Commander() {
       events.push({ type: "error", message: err.message });
     }
 
-    setMessages((prev) => [
-      ...prev,
-      { role: "assistant", events },
-    ]);
+    setMessages(prev => [...prev, { role: "assistant", events }]);
     setLiveEvents([]);
     setIsRunning(false);
-    refetchState();
-  }, [input, isRunning, refetchState]);
+    setLogRefetch(n => n + 1);
+  }, [input, isRunning]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (e.key === "Enter" && !e.shiftKey) {
-      e.preventDefault();
-      sendCommand();
-    }
+    if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendCommand(); }
   };
+
+  const TABS: { id: SideTab; label: string }[] = [
+    { id: "telemetry", label: "PROBE" },
+    { id: "containers", label: "CNTRS" },
+    { id: "sectors", label: "MAP" },
+  ];
 
   return (
     <div className="min-h-screen flex flex-col lg:flex-row gap-4 p-4 max-w-7xl mx-auto">
       {/* Sidebar */}
-      <div className="lg:w-72 shrink-0">
-        <div className="text-xs text-muted-foreground tracking-[0.3em] mb-3 glow-green">
+      <div className="lg:w-72 shrink-0 flex flex-col gap-2">
+        <div className="text-xs text-muted-foreground tracking-[0.3em] glow-green">
           VON NEUMANN PROBE
         </div>
-        <ProbePanel state={state} />
-        <div className="mt-3 text-xs text-muted-foreground text-center tracking-widest opacity-50">
+        {/* Tab bar */}
+        <div className="flex border border-border rounded overflow-hidden">
+          {TABS.map(tab => (
+            <button key={tab.id} onClick={() => setSideTab(tab.id)}
+              className={`flex-1 py-1.5 text-xs tracking-widest transition-all ${
+                sideTab === tab.id
+                  ? "bg-primary/20 text-primary"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}>
+              {tab.label}
+            </button>
+          ))}
+        </div>
+
+        <div className="border border-border border-glow rounded p-4 flex-1 scanlines">
+          {sideTab === "telemetry" && <TelemetryPanel state={state} />}
+          {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
+          {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
+        </div>
+
+        <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">
           AUTO-REFRESH 30s
         </div>
       </div>
@@ -359,44 +424,30 @@ export default function Commander() {
               ) : (
                 <div className="flex gap-2 items-start">
                   <span className="text-primary text-xs shrink-0 mt-0.5 glow-green">PROBE›</span>
-                  <div className="flex-1">
-                    <AssistantBubble events={msg.events} />
-                  </div>
+                  <div className="flex-1"><AssistantBubble events={msg.events} /></div>
                 </div>
               )}
             </div>
           ))}
 
-          {isRunning && liveEvents.length > 0 && (
+          {isRunning && (
             <div className="flex gap-2 items-start">
               <span className="text-primary text-xs shrink-0 mt-0.5 glow-green pulse-active">PROBE›</span>
               <div className="flex-1">
-                <div className="space-y-1.5 border border-border rounded p-3 bg-card/60 border-glow">
-                  {liveEvents
-                    .filter(
-                      (e) =>
-                        e.type === "message" ||
-                        e.type === "action" ||
-                        e.type === "result" ||
-                        e.type === "status" ||
-                        e.type === "error"
-                    )
-                    .map((e, i) => (
-                      <EventRow key={i} event={e} />
-                    ))}
-                  <div className="text-xs text-primary cursor-blink" />
-                </div>
+                {liveEvents.length > 0 ? (
+                  <div className="space-y-1.5 border border-border rounded p-3 bg-card/60 border-glow">
+                    {liveEvents.filter(e =>
+                      e.type === "message" || e.type === "action" || e.type === "result" ||
+                      e.type === "status" || e.type === "error"
+                    ).map((e, i) => <EventRow key={i} event={e} />)}
+                    <div className="text-xs text-primary cursor-blink" />
+                  </div>
+                ) : (
+                  <span className="text-xs text-muted-foreground pulse-active">PROCESSING…</span>
+                )}
               </div>
             </div>
           )}
-
-          {isRunning && liveEvents.length === 0 && (
-            <div className="flex gap-2 items-start">
-              <span className="text-primary text-xs shrink-0 mt-0.5 glow-green pulse-active">PROBE›</span>
-              <div className="text-xs text-muted-foreground pulse-active">PROCESSING…</div>
-            </div>
-          )}
-
           <div ref={bottomRef} />
         </div>
 
@@ -407,23 +458,14 @@ export default function Commander() {
                 COMMAND INPUT {isRunning && <span className="text-yellow-400 pulse-active">● EXECUTING</span>}
               </div>
               <textarea
-                ref={textareaRef}
-                value={input}
-                onChange={(e) => setInput(e.target.value)}
-                onKeyDown={handleKeyDown}
-                disabled={isRunning}
-                rows={2}
+                value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}
+                disabled={isRunning} rows={2}
                 placeholder="Tell your probe what to do… (Enter to send, Shift+Enter for newline)"
                 className="w-full bg-transparent text-foreground text-sm placeholder:text-muted-foreground/40 resize-none outline-none font-mono"
               />
             </div>
-            <button
-              onClick={sendCommand}
-              disabled={isRunning || !input.trim()}
-              className="shrink-0 px-4 py-2 text-xs tracking-widest font-bold border rounded transition-all
-                border-primary text-primary hover:bg-primary hover:text-primary-foreground
-                disabled:opacity-30 disabled:cursor-not-allowed"
-            >
+            <button onClick={sendCommand} disabled={isRunning || !input.trim()}
+              className="shrink-0 px-4 py-2 text-xs tracking-widest font-bold border rounded transition-all border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed">
               {isRunning ? "…" : "EXECUTE"}
             </button>
           </div>
