@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { GlobeMap } from "./GlobeMap";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+const GLOBE_BASE = BASE + "/api-server";
 
 type SseEvent =
   | { type: "status"; message: string }
@@ -665,6 +666,15 @@ export default function Commander() {
       return r.json();
     },
     refetchInterval: 30000,
+  });
+
+  // Pre-fetch globe sectors on Commander mount so the data is in TanStack Query's
+  // cache before the user opens the GLOBE tab (same queryKey as GlobeMap uses).
+  useQuery({
+    queryKey: ["sectors-globe"],
+    queryFn: () => fetch(`${GLOBE_BASE}/api/vng/log/sectors`).then(r => r.json()),
+    refetchInterval: 60_000,
+    staleTime: 30_000,
   });
 
   useEffect(() => {

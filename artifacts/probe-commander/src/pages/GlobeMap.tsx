@@ -126,7 +126,8 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     // Back-to-front sort; store for click-hit testing
     pts.sort((a, b) => b.z2 - a.z2);
 
-    // Helper: project any absolute sector coordinate
+    // Helper: project any absolute sector coordinate.
+    // Clamp denominator so far/behind-camera sectors stay on-screen.
     const project = (ax: number, ay: number, az: number) => {
       const dx = ax - probeX, dy = ay - probeY, dz = az - probeZ;
       const x1 = dx * cosY + dz * sinY;
@@ -135,7 +136,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       const x2 = x1;
       const y2 = y1 * cosX - z1 * sinX;
       const z2 = y1 * sinX + z1 * cosX;
-      const persp = fov / (camDist + z2);
+      // Clamp: never let denom go below camDist*0.7 → persp stays reasonable
+      const denom = Math.max(camDist + z2, camDist * 0.7);
+      const persp = fov / denom;
       return { sx: cx + x2 * persp, sy: cy + y2 * persp, z2, persp };
     };
 
@@ -208,19 +211,15 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
 
     // 4. Path line drawn AFTER dots so it's visible on top of them
     if (visitedProj.length > 1) {
-      // Glow pass
-      ctx.shadowColor = "rgba(80,255,140,0.6)";
-      ctx.shadowBlur = 4;
       ctx.beginPath();
       ctx.moveTo(visitedProj[0].sx, visitedProj[0].sy);
       for (let i = 1; i < visitedProj.length; i++) {
         ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
       }
-      ctx.strokeStyle = "rgba(80,255,140,0.85)";
-      ctx.lineWidth = 1.5;
+      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx.lineWidth = 3;
+      ctx.lineJoin = "round";
       ctx.stroke();
-      ctx.shadowBlur = 0;
-      ctx.shadowColor = "transparent";
     }
 
     // 5. Probe dot — always on top
@@ -252,6 +251,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   }, [rot, zoom, probeX, probeY, probeZ, originX, originY, originZ, isMoving, visitedMap, selected]);
 
   useEffect(() => { draw(); }, [draw]);
+  // Belt-and-suspenders: re-draw immediately when sectors data arrives,
+  // covering the case where the component mounted before the async fetch finished.
+  useEffect(() => { draw(); }, [draw, sectorsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -329,7 +331,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     <div className="flex flex-col h-full gap-2">
       <div className="text-xs text-muted-foreground tracking-widest">SECTOR GLOBE</div>
       <div className="text-[10px] text-muted-foreground/40">
-        Drag to rotate · scroll to zoom · click dot to inspect
+        Drag to rotate · scroll to zoom · click dot to inspect · {visitedMap.size} visited
       </div>
 
       <div
