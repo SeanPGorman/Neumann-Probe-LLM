@@ -10,6 +10,8 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: vng
+    description: Von Neumann Game operations
 paths:
   /healthz:
     get:
@@ -24,6 +26,47 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /vng/state:
+    get:
+      operationId: getProbeState
+      tags: [vng]
+      summary: Get current probe state
+      description: Fetches probe, mannies, sector, and crafting recipes from the game API
+      responses:
+        "200":
+          description: Current probe state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProbeState"
+        "500":
+          description: Error fetching state
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+  /vng/command:
+    post:
+      operationId: sendCommand
+      tags: [vng]
+      summary: Send a natural language command to the AI
+      description: >
+        Accepts a natural language command, fetches current game state,
+        and uses AI with tool-calling to execute the appropriate game API calls.
+        Returns a server-sent event stream.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommandInput"
+      responses:
+        "200":
+          description: SSE stream of command events
+          content:
+            text/event-stream:
+              schema:
+                type: string
 components:
   schemas:
     HealthStatus:
@@ -33,4 +76,90 @@ components:
           type: string
       required:
         - status
-
+    ErrorResponse:
+      type: object
+      properties:
+        error:
+          type: string
+      required:
+        - error
+    CommandInput:
+      type: object
+      required: [command]
+      properties:
+        command:
+          type: string
+          minLength: 1
+    VngManny:
+      type: object
+      required: [id, name, currentTask, taskProgressPercent, integrity]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        currentTask:
+          type: ["string", "null"]
+        taskProgressPercent:
+          type: number
+        integrity:
+          type: number
+        location:
+          type: ["string", "null"]
+    VngSectorObject:
+      type: object
+      required: [type, name, summary]
+      properties:
+        id:
+          type: ["string", "null"]
+        type:
+          type: string
+        name:
+          type: ["string", "null"]
+        summary:
+          type: string
+        resourceTypes:
+          type: array
+          items:
+            type: string
+    ProbeState:
+      type: object
+      required: [probe, mannies, sectorObjects, recipes]
+      properties:
+        probe:
+          type: object
+          required: [id, name, status, fuelPercent, integrityPercent, sector]
+          properties:
+            id:
+              type: integer
+            name:
+              type: string
+            status:
+              type: string
+            fuelPercent:
+              type: number
+            integrityPercent:
+              type: number
+            sector:
+              type: object
+              required: [relative]
+              properties:
+                relative:
+                  type: object
+                  required: [x, y, z]
+                  properties:
+                    x: { type: number }
+                    y: { type: number }
+                    z: { type: number }
+        mannies:
+          type: array
+          items:
+            $ref: "#/components/schemas/VngManny"
+        sectorObjects:
+          type: array
+          items:
+            $ref: "#/components/schemas/VngSectorObject"
+        recipes:
+          type: array
+          items:
+            type: string

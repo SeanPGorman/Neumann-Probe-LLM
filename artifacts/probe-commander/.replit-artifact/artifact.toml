@@ -1,0 +1,31 @@
+kind = "web"
+previewPath = "/"
+title = "Probe Commander"
+version = "1.0.0"
+id = "artifacts/probe-commander"
+router = "path"
+
+[[integratedSkills]]
+name = "react-vite"
+version = "1.0.0"
+
+[[services]]
+name = "web"
+paths = [ "/" ]
+localPort = 24340
+
+[services.development]
+run = "pnpm --filter @workspace/probe-commander run dev"
+
+[services.production]
+build = [ "pnpm", "--filter", "@workspace/probe-commander", "run", "build" ]
+publicDir = "artifacts/probe-commander/dist/public"
+serve = "static"
+
+[[services.production.rewrites]]
+from = "/*"
+to = "/index.html"
+
+[services.env]
+PORT = "24340"
+BASE_PATH = "/"
