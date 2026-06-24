@@ -170,79 +170,106 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
     refetchInterval: 30000,
   });
 
-  const containers: any[] = data?.containers ?? [];
-  const floating = containers.filter((c: any) => c.status === "floating");
-  const recovered = containers.filter((c: any) => c.status !== "floating");
+  const onboard: any[] = data?.onboard ?? [];
+  const floating: any[] = data?.floating ?? [];
 
   if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
-  if (containers.length === 0) return (
-    <div className="text-xs text-muted-foreground italic">No containers detached yet. Detach a container and it will be logged here automatically.</div>
-  );
+  if (!data) return <div className="text-xs text-muted-foreground italic">No data.</div>;
 
-  const ContainerCard = ({ c }: { c: any }) => (
-    <div className={`border rounded p-2.5 text-xs space-y-1.5 ${c.status === "recovered" ? "border-border opacity-40" : "border-accent/50"}`}>
-      <div className="flex items-center justify-between gap-2">
-        <span className="text-foreground font-bold">{c.containerName}</span>
-        <span className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider ${
-          c.status === "floating" ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
-        }`}>
-          {c.status.toUpperCase()}
-        </span>
+  const CapacityBar = ({ used, total }: { used: number | null; total: number | null }) => {
+    if (used == null || total == null || total === 0) return null;
+    const pct = Math.min(100, (used / total) * 100);
+    const color = pct >= 95 ? "bg-destructive" : pct >= 70 ? "bg-yellow-500" : "bg-primary";
+    return (
+      <div className="space-y-0.5">
+        <div className="h-1 bg-muted rounded-full overflow-hidden">
+          <div className={`h-full ${color} rounded-full`} style={{ width: `${pct}%` }} />
+        </div>
+        <div className="text-[10px] text-muted-foreground/60 text-right">
+          {used.toFixed(2)} / {total.toFixed(0)} ECE
+        </div>
       </div>
+    );
+  };
 
-      <div className="text-muted-foreground">
-        📍 Sector [{c.sectorX},{c.sectorY},{c.sectorZ}]
-        {c.anchorObjectName && <span className="ml-1">· anchored to {c.anchorObjectName}</span>}
-      </div>
-
-      {c.status === "floating" && c.sectorObjectId && (
-        <div className="bg-primary/5 border border-primary/20 rounded px-2 py-1.5 space-y-0.5">
-          <div className="text-[10px] text-primary/70 tracking-wider">SECTOR OBJECT ID</div>
-          <div className="flex items-start gap-1">
-            <span className="text-primary font-mono text-[10px] break-all leading-tight flex-1">
-              {c.sectorObjectId}
-            </span>
-            <CopyButton text={c.sectorObjectId} />
+  const ContentsList = ({ contents }: { contents: { resource: string; amount: number }[] }) => {
+    if (!contents || contents.length === 0)
+      return <div className="text-[10px] text-muted-foreground/40 italic">empty</div>;
+    return (
+      <div className="space-y-0.5">
+        {contents.map((item) => (
+          <div key={item.resource} className="flex items-center justify-between text-[10px]">
+            <span className="text-foreground/80">{item.resource.replace(/_/g, " ")}</span>
+            <span className="text-primary font-mono">{item.amount.toFixed(2)} ECE</span>
           </div>
-          <div className="text-[10px] text-muted-foreground/60">use for mining target or recovery</div>
-        </div>
-      )}
-
-      {c.contents && c.contents.length > 0 ? (
-        <div className="bg-muted/20 border border-border rounded px-2 py-1.5 space-y-0.5">
-          <div className="text-[10px] text-muted-foreground tracking-wider">CONTENTS</div>
-          {c.contents.map((item: { resource: string; amount: number }) => (
-            <div key={item.resource} className="flex items-center justify-between text-[10px]">
-              <span className="text-foreground/80">{item.resource.replace(/_/g, " ")}</span>
-              <span className="text-primary font-mono">{item.amount.toFixed(2)} ECE</span>
-            </div>
-          ))}
-        </div>
-      ) : (
-        <div className="text-[10px] text-muted-foreground/40 italic">empty</div>
-      )}
-
-      <div className="text-muted-foreground/60 text-[10px]">
-        By {c.mannyName} · {new Date(c.detachedAt).toLocaleString()}
+        ))}
       </div>
-      {c.notes && <div className="text-foreground/70 italic">{c.notes}</div>}
-    </div>
-  );
+    );
+  };
 
   return (
-    <div className="space-y-3">
-      {floating.length > 0 && (
-        <div className="space-y-2">
-          <div className="text-xs text-muted-foreground tracking-widest">FLOATING ({floating.length})</div>
-          {floating.map((c: any) => <ContainerCard key={c.id} c={c} />)}
-        </div>
-      )}
-      {recovered.length > 0 && (
-        <div className="space-y-2">
-          <div className="text-xs text-muted-foreground tracking-widest opacity-50">RECOVERED ({recovered.length})</div>
-          {recovered.map((c: any) => <ContainerCard key={c.id} c={c} />)}
-        </div>
-      )}
+    <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+
+      {/* On-board containers */}
+      <div className="space-y-2">
+        <div className="text-xs text-muted-foreground tracking-widest">ON-BOARD ({onboard.length})</div>
+        {onboard.length === 0
+          ? <div className="text-xs text-muted-foreground/40 italic">none</div>
+          : onboard.map((c: any) => (
+            <div key={c.id} className="border border-border rounded p-2.5 text-xs space-y-1.5">
+              <div className="font-bold text-foreground">{c.containerName}</div>
+              <CapacityBar used={c.usedCapacity} total={c.capacity} />
+              <ContentsList contents={c.contents} />
+            </div>
+          ))
+        }
+      </div>
+
+      {/* Floating containers */}
+      <div className="space-y-2">
+        <div className="text-xs text-muted-foreground tracking-widest">FLOATING ({floating.length})</div>
+        {floating.length === 0
+          ? <div className="text-xs text-muted-foreground/40 italic">none in current sector</div>
+          : floating.map((c: any) => (
+            <div key={c.id} className="border border-accent/40 rounded p-2.5 text-xs space-y-1.5">
+              <div className="flex items-center justify-between gap-2">
+                <span className="font-bold text-foreground">{c.containerName}</span>
+                <span className="text-[10px] text-muted-foreground/60">
+                  [{c.sectorX},{c.sectorY},{c.sectorZ}]
+                </span>
+              </div>
+
+              {c.anchorObjectId && (
+                <div className="text-[10px] text-muted-foreground/60">
+                  anchored · {c.anchorObjectName ?? c.anchorObjectId}
+                </div>
+              )}
+
+              <CapacityBar used={c.usedCapacity} total={c.capacity} />
+              <ContentsList contents={c.contents} />
+
+              {c.sectorObjectId && (
+                <div className="bg-primary/5 border border-primary/20 rounded px-2 py-1.5 space-y-0.5">
+                  <div className="text-[10px] text-primary/70 tracking-wider">SECTOR OBJECT ID</div>
+                  <div className="flex items-start gap-1">
+                    <span className="text-primary font-mono text-[10px] break-all leading-tight flex-1">
+                      {c.sectorObjectId}
+                    </span>
+                    <CopyButton text={c.sectorObjectId} />
+                  </div>
+                </div>
+              )}
+
+              {c.mannyName && (
+                <div className="text-muted-foreground/50 text-[10px]">
+                  By {c.mannyName} · {c.detachedAt ? new Date(c.detachedAt).toLocaleString() : ""}
+                </div>
+              )}
+            </div>
+          ))
+        }
+      </div>
+
     </div>
   );
 }

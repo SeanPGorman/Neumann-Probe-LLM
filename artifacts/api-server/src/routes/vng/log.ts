@@ -38,11 +38,25 @@ router.get("/containers", async (_req, res) => {
     // File-store lookup by sectorObjectId for metadata
     const fileByObjId = new Map(fileContainers.map((c: any) => [c.sectorObjectId, c]));
 
-    // Use live sector objects as the canonical list of floating containers
+    // On-board containers (attached to probe): kind === "container" in inventory
+    const inventoryContainers: any[] = (probeResp?.probe?.inventory?.containers ?? [])
+      .filter((c: any) => c.kind === "container");
+
+    const onboard = inventoryContainers.map((c: any) => ({
+      id: c.id,
+      containerName: c.label ?? c.id,
+      status: "onboard",
+      capacity: c.capacity ?? null,
+      usedCapacity: c.usedCapacity ?? null,
+      freeCapacity: c.freeCapacity ?? null,
+      contents: contentsByContainerId.get(c.id) ?? [],
+    }));
+
+    // Floating containers: live sector detached_container objects
     const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
     const sectorDetached = sectorObjects.filter((o: any) => o.type === "detached_container");
 
-    const containers = sectorDetached.map((o: any) => {
+    const floating = sectorDetached.map((o: any) => {
       const inventoryId = o.id.replace(/^detached-container-/, "");
       const contents = contentsByContainerId.get(inventoryId) ?? [];
       const cap = capacityByInventoryId.get(inventoryId);
@@ -67,7 +81,7 @@ router.get("/containers", async (_req, res) => {
       };
     });
 
-    res.json({ containers });
+    res.json({ onboard, floating });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
