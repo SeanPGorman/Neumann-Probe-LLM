@@ -170,6 +170,9 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
     refetchInterval: 30000,
   });
 
+  const [showOnboard, setShowOnboard] = useState(true);
+  const [showFloating, setShowFloating] = useState(true);
+
   const onboard: any[] = data?.onboard ?? [];
   const floating: any[] = data?.floating ?? [];
 
@@ -212,25 +215,37 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
 
       {/* On-board containers */}
       <div className="space-y-2">
-        <div className="text-xs text-muted-foreground tracking-widest">ON-BOARD ({onboard.length})</div>
-        {onboard.length === 0
+        <button
+          onClick={() => setShowOnboard(v => !v)}
+          className="w-full flex items-center justify-between text-xs text-muted-foreground tracking-widest hover:text-foreground transition-colors"
+        >
+          <span>ON-BOARD ({onboard.length})</span>
+          <span>{showOnboard ? "▲" : "▼"}</span>
+        </button>
+        {showOnboard && (onboard.length === 0
           ? <div className="text-xs text-muted-foreground/40 italic">none</div>
-          : onboard.map((c: any) => (
+          : <div className="space-y-2">{onboard.map((c: any) => (
             <div key={c.id} className="border border-border rounded p-2.5 text-xs space-y-1.5">
               <div className="font-bold text-foreground">{c.containerName}</div>
               <CapacityBar used={c.usedCapacity} total={c.capacity} />
               <ContentsList contents={c.contents} />
             </div>
-          ))
-        }
+          ))}</div>
+        )}
       </div>
 
       {/* Floating containers */}
       <div className="space-y-2">
-        <div className="text-xs text-muted-foreground tracking-widest">FLOATING ({floating.length})</div>
-        {floating.length === 0
+        <button
+          onClick={() => setShowFloating(v => !v)}
+          className="w-full flex items-center justify-between text-xs text-muted-foreground tracking-widest hover:text-foreground transition-colors"
+        >
+          <span>FLOATING ({floating.length})</span>
+          <span>{showFloating ? "▲" : "▼"}</span>
+        </button>
+        {showFloating && (floating.length === 0
           ? <div className="text-xs text-muted-foreground/40 italic">none in current sector</div>
-          : floating.map((c: any) => (
+          : <div className="space-y-2">{floating.map((c: any) => (
             <div key={c.id} className="border border-accent/40 rounded p-2.5 text-xs space-y-1.5">
               <div className="flex items-center justify-between gap-2">
                 <span className="font-bold text-foreground">{c.containerName}</span>
@@ -266,8 +281,8 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
                 </div>
               )}
             </div>
-          ))
-        }
+          ))}</div>
+        )}
       </div>
 
     </div>

@@ -5,8 +5,8 @@
     "sectorY": 3,
     "sectorZ": 4,
     "firstVisitedAt": "2026-06-24T16:10:07.531Z",
-    "lastVisitedAt": "2026-06-24T16:25:46.496Z",
-    "visitCount": 40,
+    "lastVisitedAt": "2026-06-24T16:26:17.258Z",
+    "visitCount": 41,
     "objects": [
       {
         "id": "6c7ecfe26f7188309d6c",
@@ -256,6 +256,17 @@
         "salvageable": true
       }
     ],
+    "resourceSummary": []
+  },
+  {
+    "id": 2,
+    "sectorX": 0,
+    "sectorY": 0,
+    "sectorZ": 0,
+    "firstVisitedAt": "2026-06-24T16:26:48.010Z",
+    "lastVisitedAt": "2026-06-24T16:42:12.983Z",
+    "visitCount": 33,
+    "objects": [],
     "resourceSummary": []
   }
 ]
