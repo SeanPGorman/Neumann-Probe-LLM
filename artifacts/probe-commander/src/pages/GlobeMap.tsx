@@ -155,7 +155,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       const depth = (z2 + RADIUS) / (2 * RADIUS);
       ctx.beginPath();
       ctx.arc(sx, sy, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(80,140,220,${0.04 + depth * 0.09})`;
+      ctx.fillStyle = `rgba(80,160,255,${0.12 + depth * 0.22})`;
       ctx.fill();
     }
 
@@ -209,10 +209,10 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
       ctx.fillStyle = isOriginPos
-        ? "rgba(255,200,80,0.80)"
+        ? "rgba(255,210,80,1)"
         : isSelected
-        ? "rgba(255,240,120,1)"
-        : "rgba(60,220,110,0.75)";
+        ? "rgba(255,250,130,1)"
+        : "rgba(80,255,140,0.95)";
       ctx.fill();
 
       if (isSelected || isOriginPos) {
