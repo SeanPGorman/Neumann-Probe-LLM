@@ -96,13 +96,13 @@ router.post("/command", async (req, res) => {
     const [probeResp, manniesResp, sectorResp, recipesResp] = await Promise.all([
       client.getProbe(),
       client.getMannies(),
-      client.getSector(),
+      client.getSector().catch(() => null),  // unavailable during relativistic transit
       client.getCraftingRecipes(),
     ]);
 
     const probe = probeResp.probe;
     const mannies: any[] = manniesResp.mannies ?? [];
-    const sectorObjects: any[] = sectorResp.sector?.objects ?? [];
+    const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
     const recipes: any[] = recipesResp.recipes ?? [];
     const inv = probe.inventory ?? {};
     const inventoryItems: any[] = inv.items ?? [];
