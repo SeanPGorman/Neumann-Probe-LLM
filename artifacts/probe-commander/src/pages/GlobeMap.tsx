@@ -159,7 +159,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ctx.fill();
     }
 
-    // 2. Visited-sector path line (chronological order by firstVisitedAt)
+    // 2. Compute visited projections (chronological) — used for both dots and path
     const visitedSorted = Array.from(visitedMap.values()).sort(
       (a, b) => new Date(a.firstVisitedAt ?? a.lastVisitedAt).getTime()
              - new Date(b.firstVisitedAt ?? b.lastVisitedAt).getTime()
@@ -169,19 +169,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       vs,
     }));
 
-    if (visitedProj.length > 1) {
-      ctx.beginPath();
-      ctx.moveTo(visitedProj[0].sx, visitedProj[0].sy);
-      for (let i = 1; i < visitedProj.length; i++) {
-        ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
-      }
-      ctx.strokeStyle = "rgba(80,255,140,0.70)";
-      ctx.lineWidth = 2;
-      ctx.stroke();
-    }
-
-    // 3. Visited sector dots (including those outside RADIUS)
-    // Expose all visited + lattice dots to dotsRef for click-hit testing
+    // Expose all dots to dotsRef for click-hit testing
     const allDots: ProjectedDot[] = [
       ...pts,
       ...visitedProj
@@ -195,22 +183,18 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     ];
     dotsRef.current = allDots;
 
+    // 3. Visited sector dots (small, so path line is visible on top)
     for (const vp of visitedProj) {
-      const { sx, sy, persp, vs } = vp;
+      const { sx, sy, vs } = vp;
       const isProbePos = vs.sectorX === probeX && vs.sectorY === probeY && vs.sectorZ === probeZ;
       const isOriginPos = isMoving && vs.sectorX === originX && vs.sectorY === originY && vs.sectorZ === originZ;
       const isSelected = selected?.ax === vs.sectorX && selected?.ay === vs.sectorY && selected?.az === vs.sectorZ;
-      const r = Math.max(2.5, persp * 0.45);
+      if (isProbePos) continue;
 
-      if (isProbePos) continue; // drawn last
-
+      const r = 3.5;
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fillStyle = isOriginPos
-        ? "rgba(255,210,80,1)"
-        : isSelected
-        ? "rgba(255,250,130,1)"
-        : "rgba(80,255,140,0.95)";
+      ctx.fillStyle = isOriginPos ? "rgba(255,210,80,1)" : isSelected ? "rgba(255,250,130,1)" : "rgba(80,255,140,0.95)";
       ctx.fill();
 
       if (isSelected || isOriginPos) {
@@ -222,7 +206,24 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       }
     }
 
-    // 4. Probe dot — always on top
+    // 4. Path line drawn AFTER dots so it's visible on top of them
+    if (visitedProj.length > 1) {
+      // Glow pass
+      ctx.shadowColor = "rgba(80,255,140,0.6)";
+      ctx.shadowBlur = 4;
+      ctx.beginPath();
+      ctx.moveTo(visitedProj[0].sx, visitedProj[0].sy);
+      for (let i = 1; i < visitedProj.length; i++) {
+        ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
+      }
+      ctx.strokeStyle = "rgba(80,255,140,0.85)";
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
+    }
+
+    // 5. Probe dot — always on top
     const probePrj = project(probeX, probeY, probeZ);
     {
       const { sx, sy, persp } = probePrj;
