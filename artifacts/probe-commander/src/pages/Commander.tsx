@@ -250,40 +250,193 @@ function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
     <div className="text-xs text-muted-foreground italic">No sectors recorded yet. The current sector is logged automatically.</div>
   );
 
+  const [expanded, setExpanded] = useState<number | null>(null);
+
   return (
     <div className="space-y-2">
       <div className="text-xs text-muted-foreground tracking-widest">VISITED SECTORS ({sectors.length})</div>
       <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
         {sectors.map((s: any) => (
-          <div key={s.id} className="border border-border rounded p-2.5 text-xs space-y-1">
-            <div className="flex items-center justify-between">
-              <span className="text-foreground font-bold glow-green">
-                [{s.sectorX},{s.sectorY},{s.sectorZ}]
-              </span>
-              <span className="text-muted-foreground text-[10px]">{s.visitCount}x</span>
-            </div>
-            {(s.resourceSummary as string[])?.length > 0 && (
-              <div className="flex flex-wrap gap-1">
-                {(s.resourceSummary as string[]).map((r: string) => (
-                  <span key={r} className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px]">{r}</span>
-                ))}
+          <div key={s.id} className="border border-border rounded text-xs overflow-hidden">
+            {/* Header — always visible */}
+            <button
+              className="w-full text-left p-2.5 space-y-1.5 hover:bg-muted/20 transition-colors"
+              onClick={() => setExpanded(expanded === s.id ? null : s.id)}
+            >
+              <div className="flex items-center justify-between">
+                <span className="text-foreground font-bold glow-green">
+                  [{s.sectorX},{s.sectorY},{s.sectorZ}]
+                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-muted-foreground text-[10px]">{s.visitCount}×</span>
+                  <span className="text-muted-foreground text-[10px]">{expanded === s.id ? "▲" : "▼"}</span>
+                </div>
               </div>
-            )}
-            <div className="text-muted-foreground">
-              {(s.objects as any[])?.length ?? 0} objects · last {new Date(s.lastVisitedAt).toLocaleString()}
-            </div>
-            {(s.objects as any[])?.slice(0, 4).map((o: any, i: number) => (
-              <div key={i} className="flex gap-1 text-[10px] text-muted-foreground/70">
-                <span>{objectIcon(o.type)}</span>
-                <span className="truncate">{o.name ?? o.type}</span>
+              {(s.resourceSummary as string[])?.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {(s.resourceSummary as string[]).map((r: string) => (
+                    <span key={r} className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px]">{r}</span>
+                  ))}
+                </div>
+              )}
+              <div className="text-muted-foreground/60 text-[10px]">
+                {(s.objects as any[])?.length ?? 0} objects · {new Date(s.lastVisitedAt).toLocaleString()}
               </div>
-            ))}
-            {(s.objects as any[])?.length > 4 && (
-              <div className="text-[10px] text-muted-foreground/50">+{(s.objects as any[]).length - 4} more</div>
+            </button>
+
+            {/* Expanded detail */}
+            {expanded === s.id && (
+              <div className="border-t border-border px-2.5 pb-2.5 pt-2 space-y-2.5">
+                <SectorObjectList objects={s.objects ?? []} />
+              </div>
             )}
           </div>
         ))}
       </div>
+    </div>
+  );
+}
+
+const PLANET_CATEGORY_LABEL: Record<string, string> = {
+  gas_giant: "Gas Giant",
+  ice_giant: "Ice Giant",
+  terrestrial: "Terrestrial",
+  lava: "Lava",
+  frozen: "Frozen",
+  dwarf: "Dwarf",
+  ocean: "Ocean",
+  desert: "Desert",
+  jungle: "Jungle",
+};
+
+function habitabilityColor(score: number): string {
+  if (score >= 0.6) return "text-primary";
+  if (score >= 0.3) return "text-yellow-400";
+  return "text-muted-foreground";
+}
+
+function SectorObjectList({ objects }: { objects: any[] }) {
+  const byType: Record<string, any[]> = {};
+  for (const o of objects) {
+    const key = o.type ?? "unknown";
+    if (!byType[key]) byType[key] = [];
+    byType[key].push(o);
+  }
+
+  const order = ["solar_system", "star", "planet", "asteroid", "dust_cloud", "black_hole", "detached_container", "drifting_item", "manny"];
+  const types = [...new Set([...order.filter(t => byType[t]), ...Object.keys(byType).filter(t => !order.includes(t))])];
+
+  return (
+    <div className="space-y-2">
+      {types.map(type => (
+        <div key={type}>
+          <div className="text-[10px] text-muted-foreground tracking-wider uppercase mb-1 flex items-center gap-1">
+            <span>{objectIcon(type)}</span>
+            <span>{type.replace(/_/g, " ")} ({byType[type].length})</span>
+          </div>
+          <div className="space-y-1 pl-2">
+            {byType[type].map((o: any, i: number) => (
+              <SectorObject key={i} o={o} />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+
+function SectorObject({ o }: { o: any }) {
+  if (o.type === "solar_system") {
+    const planets = (o.bodies ?? []).filter((b: any) => b.type === "planet");
+    const stars = (o.bodies ?? []).filter((b: any) => b.type === "star");
+    return (
+      <div className="space-y-1">
+        <div className="text-foreground font-medium">{o.name ?? "Unnamed system"}</div>
+        <div className="text-muted-foreground text-[10px]">
+          {stars.length} star{stars.length !== 1 ? "s" : ""} · {planets.length} planet{planets.length !== 1 ? "s" : ""} · danger: {o.dangerLevel ?? "?"}
+        </div>
+        {planets.length > 0 && (
+          <div className="pl-2 space-y-0.5">
+            {planets.map((p: any, i: number) => (
+              <div key={i} className="flex items-center gap-1.5 text-[10px]">
+                <span className="text-muted-foreground/50">○</span>
+                <span className="text-muted-foreground">{PLANET_CATEGORY_LABEL[p.category] ?? p.category ?? "Planet"}</span>
+                {p.habitabilityScore != null && (
+                  <span className={`${habitabilityColor(p.habitabilityScore)}`}>
+                    hab {(p.habitabilityScore * 100).toFixed(0)}%
+                  </span>
+                )}
+                {p.intelligentLife && (
+                  <span className="text-yellow-400 font-bold">★ INTELLIGENT LIFE</span>
+                )}
+                <span className="text-muted-foreground/40">{p.mass?.toFixed(2)}{p.massUnit}</span>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (o.type === "asteroid") {
+    const amounts = o.resourceAmounts ?? {};
+    const nonZero = Object.entries(amounts).filter(([, v]) => (v as number) > 0);
+    return (
+      <div className="space-y-0.5">
+        <div className="flex items-center gap-2">
+          <span className="text-foreground">{o.name ?? o.composition ?? "Asteroid"}</span>
+          {o.sizeCategory && <span className="text-muted-foreground/60 text-[10px]">{o.sizeCategory}</span>}
+        </div>
+        {o.composition && <div className="text-muted-foreground text-[10px]">{o.composition.replace(/_/g, " ")}</div>}
+        {nonZero.length > 0 && (
+          <div className="flex flex-wrap gap-x-3 text-[10px]">
+            {nonZero.map(([res, amt]) => (
+              <span key={res} className="text-primary/80">{res}: {(amt as number).toFixed(0)}</span>
+            ))}
+          </div>
+        )}
+        {o.id && <div className="text-muted-foreground/40 text-[10px] font-mono">id={o.id}</div>}
+      </div>
+    );
+  }
+
+  if (o.type === "detached_container") {
+    return (
+      <div className="space-y-0.5">
+        <div className="flex items-center gap-2">
+          <span className="text-accent">{o.name ?? "Container"}</span>
+          {o.capacity && <span className="text-muted-foreground text-[10px]">{o.capacity} ECE</span>}
+          {o.salvageable && <span className="text-yellow-400 text-[10px]">salvageable</span>}
+        </div>
+        {o.id && (
+          <div className="text-primary/60 text-[10px] font-mono break-all">
+            {o.id}
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  if (o.type === "planet") {
+    return (
+      <div className="flex items-center gap-2">
+        <span className="text-muted-foreground">{PLANET_CATEGORY_LABEL[o.category] ?? o.category ?? "Planet"}</span>
+        {o.habitabilityScore != null && (
+          <span className={`text-[10px] ${habitabilityColor(o.habitabilityScore)}`}>
+            hab {(o.habitabilityScore * 100).toFixed(0)}%
+          </span>
+        )}
+        {o.intelligentLife && <span className="text-yellow-400 text-[10px] font-bold">★ LIFE</span>}
+        {o.mass != null && <span className="text-muted-foreground/40 text-[10px]">{o.mass.toFixed(2)} {o.massUnit}</span>}
+      </div>
+    );
+  }
+
+  // Fallback for any other type
+  return (
+    <div className="text-muted-foreground">
+      {o.name ?? o.summary ?? o.type}
+      {o.id && <span className="text-[10px] text-muted-foreground/40 ml-1 font-mono">({o.id.slice(0, 8)}…)</span>}
     </div>
   );
 }

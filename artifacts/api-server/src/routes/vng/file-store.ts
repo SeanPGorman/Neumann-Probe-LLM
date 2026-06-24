@@ -152,13 +152,83 @@ export async function recordSector(
   const resourceSummary: string[] = Array.from(
     new Set((objects as any[]).flatMap((o) => o.resourceTypes ?? []))
   );
-  const simplified = (objects as any[]).map((o) => ({
-    id: o.id ?? null,
-    type: o.type,
-    name: o.name ?? null,
-    summary: o.summary ?? null,
-    resourceTypes: o.resourceTypes ?? [],
-  }));
+
+  // Store full object detail so the MAP tab can show everything
+  const simplified = (objects as any[]).map((o) => {
+    const base: Record<string, unknown> = {
+      id: o.id ?? null,
+      type: o.type,
+      name: o.name ?? null,
+      estimated: o.estimated ?? false,
+      summary: o.summary ?? null,
+      dangerLevel: o.dangerLevel ?? null,
+      resourceTypes: o.resourceTypes ?? [],
+    };
+
+    // Solar system — keep star/planet list from bookmarkTargets
+    if (o.type === "solar_system") {
+      base.starCount = o.starCount ?? 0;
+      base.planetCount = o.planetCount ?? 0;
+      base.orbitalBodyCount = o.orbitalBodyCount ?? 0;
+      base.bodies = (o.bookmarkTargets ?? []).map((b: any) => ({
+        id: b.id,
+        type: b.type,
+        name: b.name ?? null,
+        category: b.category ?? null,
+        mass: b.mass,
+        massUnit: b.massUnit,
+        radius: b.radius,
+        radiusUnit: b.radiusUnit,
+        habitabilityScore: b.habitabilityScore ?? null,
+        intelligentLife: b.intelligentLife ?? null,
+      }));
+    }
+
+    // Planet
+    if (o.type === "planet") {
+      base.category = o.category ?? null;
+      base.habitabilityScore = o.habitabilityScore ?? null;
+      base.intelligentLife = o.intelligentLife ?? null;
+      base.mass = o.mass ?? null;
+      base.massUnit = o.massUnit ?? null;
+      base.radius = o.radius ?? null;
+      base.radiusUnit = o.radiusUnit ?? null;
+    }
+
+    // Asteroid
+    if (o.type === "asteroid") {
+      base.composition = o.composition ?? null;
+      base.sizeCategory = o.sizeCategory ?? null;
+      base.mass = o.mass ?? null;
+      base.radius = o.radius ?? null;
+      base.resourceAmounts = o.resourceAmounts ?? null;
+      base.resourceComposition = o.resourceComposition ?? null;
+    }
+
+    // Detached container
+    if (o.type === "detached_container") {
+      base.capacity = o.capacity ?? null;
+      base.mode = o.mode ?? null;
+      base.targetObjectId = o.targetObjectId ?? null;
+      base.salvageable = o.salvageable ?? false;
+    }
+
+    // Star / black hole
+    if (o.type === "star" || o.type === "black_hole") {
+      base.mass = o.mass ?? null;
+      base.massUnit = o.massUnit ?? null;
+      base.radius = o.radius ?? null;
+      base.radiusUnit = o.radiusUnit ?? null;
+    }
+
+    // Dust cloud / nebula
+    if (o.type === "dust_cloud") {
+      base.radius = o.radius ?? null;
+      base.radiusUnit = o.radiusUnit ?? null;
+    }
+
+    return base;
+  });
 
   const rows = await getSectors();
   const idx = rows.findIndex(
