@@ -228,18 +228,14 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     const probePrj = project(probeX, probeY, probeZ);
     {
       const { sx, sy, persp } = probePrj;
-      const r = Math.max(3.5, persp * 0.55);
+      const r = Math.max(2, persp * 0.32);
       ctx.beginPath();
-      ctx.arc(sx, sy, r * 3.5, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(100,255,150,0.07)";
-      ctx.fill();
-      ctx.beginPath();
-      ctx.arc(sx, sy, r * 1.7, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(160,255,190,0.14)";
+      ctx.arc(sx, sy, r * 2.5, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(100,255,150,0.04)";
       ctx.fill();
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(200,255,220,1)";
+      ctx.fillStyle = "rgba(180,255,200,0.65)";
       ctx.fill();
     }
 
