@@ -5,8 +5,8 @@
     "sectorY": 3,
     "sectorZ": 4,
     "firstVisitedAt": "2026-06-24T15:42:37.560Z",
-    "lastVisitedAt": "2026-06-24T15:42:37.560Z",
-    "visitCount": 1,
+    "lastVisitedAt": "2026-06-24T16:02:18.749Z",
+    "visitCount": 25,
     "objects": [
       {
         "id": "6c7ecfe26f7188309d6c",
@@ -40,6 +40,13 @@
         "id": "detached-container-container-itm_craft_d17f47c8cce0397246976914",
         "type": "detached_container",
         "name": "Metal 3",
+        "summary": "Detached storage container detected.",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_craft_d4b75fa1e2d874b1d9fd7722",
+        "type": "detached_container",
+        "name": "IIB",
         "summary": "Detached storage container detected.",
         "resourceTypes": []
       }

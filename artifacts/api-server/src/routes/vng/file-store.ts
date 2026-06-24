@@ -25,7 +25,8 @@ async function writeFile<T>(name: string, data: T): Promise<void> {
 
 export type DetachedContainer = {
   id: number;
-  containerId: string;
+  containerId: string;        // inventory item ID (e.g. "container-itm_craft_xxx")
+  sectorObjectId: string;     // sector object ID used for mining target & recovery: "detached-container-" + containerId
   containerName: string;
   mannyId: string;
   mannyName: string;
@@ -34,6 +35,8 @@ export type DetachedContainer = {
   sectorZ: number;
   detachedAt: string;
   status: "floating" | "recovered" | "unknown";
+  anchorObjectId: string | null; // asteroid/planet object ID it is attached to (from sector after detach)
+  anchorObjectName: string | null;
   notes: string | null;
 };
 
@@ -51,6 +54,11 @@ export type VisitedSector = {
 
 const CONTAINERS_FILE = "detached-containers.json";
 const SECTORS_FILE = "visited-sectors.json";
+
+/** Derive the sector object ID from an inventory container ID. */
+export function toSectorObjectId(containerId: string): string {
+  return `detached-container-${containerId}`;
+}
 
 export async function getContainers(): Promise<DetachedContainer[]> {
   return readFile<DetachedContainer[]>(CONTAINERS_FILE, []);
@@ -83,16 +91,52 @@ export async function updateContainerStatus(
   }
 }
 
-export async function markContainerRecovered(containerId: string): Promise<void> {
+export async function updateContainerAnchor(
+  id: number,
+  anchorObjectId: string,
+  anchorObjectName: string | null
+): Promise<void> {
+  const rows = await getContainers();
+  const idx = rows.findIndex((r) => r.id === id);
+  if (idx !== -1) {
+    rows[idx].anchorObjectId = anchorObjectId;
+    rows[idx].anchorObjectName = anchorObjectName;
+    await writeFile(CONTAINERS_FILE, rows);
+  }
+}
+
+/**
+ * Mark a container as recovered. Matches by sectorObjectId first,
+ * then falls back to containerId (since the recovery tool uses the sector object ID).
+ */
+export async function markContainerRecovered(objectId: string): Promise<void> {
   const rows = await getContainers();
   let changed = false;
   for (const row of rows) {
-    if (row.containerId === containerId && row.status === "floating") {
+    if (
+      row.status === "floating" &&
+      (row.sectorObjectId === objectId || row.containerId === objectId)
+    ) {
       row.status = "recovered";
       changed = true;
     }
   }
   if (changed) await writeFile(CONTAINERS_FILE, rows);
+}
+
+export async function getFloatingContainers(
+  sectorX: number,
+  sectorY: number,
+  sectorZ: number
+): Promise<DetachedContainer[]> {
+  const rows = await getContainers();
+  return rows.filter(
+    (r) =>
+      r.status === "floating" &&
+      r.sectorX === sectorX &&
+      r.sectorY === sectorY &&
+      r.sectorZ === sectorZ
+  );
 }
 
 export async function getSectors(): Promise<VisitedSector[]> {
@@ -106,9 +150,7 @@ export async function recordSector(
   objects: object[]
 ): Promise<void> {
   const resourceSummary: string[] = Array.from(
-    new Set(
-      (objects as any[]).flatMap((o) => o.resourceTypes ?? [])
-    )
+    new Set((objects as any[]).flatMap((o) => o.resourceTypes ?? []))
   );
   const simplified = (objects as any[]).map((o) => ({
     id: o.id ?? null,

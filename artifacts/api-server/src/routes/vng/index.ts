@@ -6,6 +6,9 @@ import {
   addContainer,
   markContainerRecovered,
   recordSector,
+  toSectorObjectId,
+  updateContainerAnchor,
+  getFloatingContainers,
 } from "./file-store.js";
 
 const router = Router();
@@ -90,13 +93,12 @@ router.post("/command", async (req, res) => {
   try {
     sse(res, { type: "status", message: "Fetching current probe state…" });
 
-    const [probeResp, manniesResp, sectorResp, recipesResp] =
-      await Promise.all([
-        client.getProbe(),
-        client.getMannies(),
-        client.getSector(),
-        client.getCraftingRecipes(),
-      ]);
+    const [probeResp, manniesResp, sectorResp, recipesResp] = await Promise.all([
+      client.getProbe(),
+      client.getMannies(),
+      client.getSector(),
+      client.getCraftingRecipes(),
+    ]);
 
     const probe = probeResp.probe;
     const mannies: any[] = manniesResp.mannies ?? [];
@@ -114,9 +116,29 @@ router.post("/command", async (req, res) => {
 
     const idleMannies = mannies.filter((m: any) => !m.currentTask);
     const busyMannies = mannies.filter((m: any) => m.currentTask);
-    const containers = inventoryItems.filter(
-      (i: any) => i.type === "storage_container"
-    );
+    const boardedContainers = inventoryItems.filter((i: any) => i.type === "storage_container");
+
+    // Pull tracked floating containers for this sector
+    const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);
+
+    // Cross-reference sector objects for detached containers
+    const sectorDetached = sectorObjects.filter((o: any) => o.type === "detached_container");
+    const sectorDetachedById = new Map(sectorDetached.map((o: any) => [o.id, o]));
+
+    // Build a floating container summary with all needed IDs
+    const floatingContainerLines = trackedFloating.map((c) => {
+      const sectorObj = sectorDetachedById.get(c.sectorObjectId);
+      const anchor = sectorObj?.targetObjectId ?? c.anchorObjectId;
+      const anchorName = c.anchorObjectName ?? (anchor ? `object id="${anchor}"` : "unknown");
+      return `  • "${c.containerName}"
+      SECTOR OBJECT ID (use for target_container_id or object_id): "${c.sectorObjectId}"
+      Anchor: ${anchorName}${anchor ? `  anchor_id="${anchor}"` : ""}
+      Detached by: ${c.mannyName} on ${new Date(c.detachedAt).toISOString()}`;
+    });
+
+    // Untracked detached containers also visible in sector
+    const trackedSectorIds = new Set(trackedFloating.map((c) => c.sectorObjectId));
+    const untrackedDetached = sectorDetached.filter((o: any) => !trackedSectorIds.has(o.id));
 
     const systemPrompt = `You are the AI operator of Von Neumann Probe #${probe.id} ("${probe.name}").
 Your job is to carry out the operator's instructions by calling the provided tools.
@@ -139,19 +161,37 @@ BUSY (${busyMannies.length}):
 ${busyMannies.map((m: any) => `  • ${m.name}  id="${m.id}"  task=${m.currentTask}  progress=${m.taskProgressPercent?.toFixed(1)}%  eta=${m.taskEstimatedEndTime ?? "?"}`).join("\n") || "  none"}
 
 == SECTOR OBJECTS (${sectorObjects.length}) ==
-${sectorObjects.slice(0, 30).map((o: any) => `  • [${o.type}] "${o.name ?? "unnamed"}"  id="${o.id ?? "none"}"  ${o.resourceTypes?.length ? `resources=[${o.resourceTypes.join(",")}]  ` : ""}${o.summary ?? ""}`).join("\n") || "  none"}
+${sectorObjects
+  .filter((o: any) => o.type !== "detached_container")
+  .slice(0, 25)
+  .map((o: any) => `  • [${o.type}] "${o.name ?? "unnamed"}"  id="${o.id ?? "none"}"  ${o.resourceTypes?.length ? `resources=[${o.resourceTypes.join(",")}]  ` : ""}${o.summary ?? ""}`)
+  .join("\n") || "  none"}
+
+== FLOATING STORAGE CONTAINERS IN THIS SECTOR ==
+IMPORTANT: These containers are floating in the current sector (or anchored to nearby asteroids).
+Use the SECTOR OBJECT ID when directing mining output (target_container_id) or recovering them (object_id).
+${
+  floatingContainerLines.length > 0
+    ? floatingContainerLines.join("\n")
+    : "  none tracked"
+}
+${
+  untrackedDetached.length > 0
+    ? `\nADDITIONAL (untracked) detached containers visible in sector:\n` +
+      untrackedDetached
+        .map((o: any) => `  • "${o.name ?? "unnamed"}"  SECTOR OBJECT ID="${o.id}"  capacity=${o.capacity}ECE${o.targetObjectId ? `  anchored to object="${o.targetObjectId}"` : ""}`)
+        .join("\n")
+    : ""
+}
+
+== CONTAINERS ABOARD PROBE ==
+${boardedContainers.map((c: any) => `  • "${c.name}"  inventory_id="${c.id}"  (once detached → sector_object_id will be "detached-container-${c.id}")`).join("\n") || "  none"}
 
 == INVENTORY ==
 Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used  (${(inv.freeCapacity ?? 0).toFixed(3)} free)
 Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") || "none"}
-Storage containers aboard: ${containers.map((c: any) => `"${c.name}"  id="${c.id}"`).join(", ") || "none"}
 Other items: ${inventoryItems
-      .filter(
-        (i: any) =>
-          i.type !== "manny" &&
-          i.type !== "atomic_3d_printer" &&
-          i.type !== "storage_container"
-      )
+      .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container")
       .map((i: any) => `${i.name}(${i.type})`)
       .join(", ") || "none"}
 
@@ -160,6 +200,9 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
 
 == RULES ==
 - Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use exact IDs from above.
+- For mining into a floating container: use the SECTOR OBJECT ID (not the inventory ID) as target_container_id.
+- For recovering a container: use the SECTOR OBJECT ID as object_id.
+- Detached containers are often "hidden on asteroid" (anchored to an asteroid). This is normal — you can still mine into them or recover them using the sector object ID.
 - Always use get_game_state to refresh if you need IDs not listed above.
 - Never invent IDs — only use IDs from real data.
 - Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
@@ -214,22 +257,10 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
         try {
           result = await executeTool(toolName, args);
           success = true;
-          sse(res, {
-            type: "result",
-            tool: toolName,
-            id: call.id,
-            success: true,
-            data: result,
-          });
+          sse(res, { type: "result", tool: toolName, id: call.id, success: true, data: result });
         } catch (err: any) {
           result = { error: err.message };
-          sse(res, {
-            type: "result",
-            tool: toolName,
-            id: call.id,
-            success: false,
-            error: err.message,
-          });
+          sse(res, { type: "result", tool: toolName, id: call.id, success: false, error: err.message });
         }
 
         if (success) {
@@ -238,8 +269,11 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
             const containerId = args.container_id as string;
             const mannyInfo = manniesById.get(mannyId);
             const itemInfo = itemsById.get(containerId);
-            addContainer({
+            const sectorObjectId = toSectorObjectId(containerId);
+
+            const record = await addContainer({
               containerId,
+              sectorObjectId,
               containerName: itemInfo?.name ?? containerId,
               mannyId,
               mannyName: mannyInfo?.name ?? mannyId,
@@ -247,7 +281,26 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
               sectorY: sector.y,
               sectorZ: sector.z,
               status: "floating",
+              anchorObjectId: null,
+              anchorObjectName: null,
               notes: null,
+            });
+
+            // Refresh sector to find the anchor asteroid this container attached to
+            client.getSector().then((freshSector) => {
+              const freshObj = (freshSector.sector?.objects ?? []).find(
+                (o: any) => o.id === sectorObjectId
+              );
+              if (freshObj?.targetObjectId) {
+                const anchorObj = (freshSector.sector?.objects ?? []).find(
+                  (o: any) => o.id === freshObj.targetObjectId
+                );
+                updateContainerAnchor(
+                  record.id,
+                  freshObj.targetObjectId,
+                  anchorObj?.name ?? null
+                ).catch(() => {});
+              }
             }).catch(() => {});
           }
 
@@ -256,26 +309,15 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
           }
 
           if (toolName === "scan_sector") {
-            const scannedObjects: any[] =
-              (result as any)?.sector?.objects ?? [];
-            recordSector(
-              args.x as number,
-              args.y as number,
-              args.z as number,
-              scannedObjects
-            ).catch(() => {});
+            const scannedObjects: any[] = (result as any)?.sector?.objects ?? [];
+            recordSector(args.x as number, args.y as number, args.z as number, scannedObjects).catch(() => {});
           }
 
           if (toolName === "get_game_state") {
             const gs = result as any;
             const gsObjects = gs?.sector?.objects ?? [];
             const gsSector = gs?.probe?.sector ?? sector;
-            recordSector(
-              gsSector.x,
-              gsSector.y,
-              gsSector.z,
-              gsObjects
-            ).catch(() => {});
+            recordSector(gsSector.x, gsSector.y, gsSector.z, gsObjects).catch(() => {});
           }
         }
 

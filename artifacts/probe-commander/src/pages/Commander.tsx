@@ -147,6 +147,19 @@ function TelemetryPanel({ state }: { state: any }) {
   );
 }
 
+function CopyButton({ text }: { text: string }) {
+  const [copied, setCopied] = useState(false);
+  return (
+    <button
+      onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 1500); }}
+      className="text-[10px] text-muted-foreground hover:text-primary transition-colors px-1"
+      title="Copy ID"
+    >
+      {copied ? "✓" : "⧉"}
+    </button>
+  );
+}
+
 function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
   const { data, isLoading } = useQuery({
     queryKey: ["log-containers", refetchSignal],
@@ -158,34 +171,64 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
   });
 
   const containers: any[] = data?.containers ?? [];
+  const floating = containers.filter((c: any) => c.status === "floating");
+  const recovered = containers.filter((c: any) => c.status !== "floating");
 
   if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
   if (containers.length === 0) return (
-    <div className="text-xs text-muted-foreground italic">No containers detached yet.</div>
+    <div className="text-xs text-muted-foreground italic">No containers detached yet. Detach a container and it will be logged here automatically.</div>
+  );
+
+  const ContainerCard = ({ c }: { c: any }) => (
+    <div className={`border rounded p-2.5 text-xs space-y-1.5 ${c.status === "recovered" ? "border-border opacity-40" : "border-accent/50"}`}>
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-foreground font-bold">{c.containerName}</span>
+        <span className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider ${
+          c.status === "floating" ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"
+        }`}>
+          {c.status.toUpperCase()}
+        </span>
+      </div>
+
+      <div className="text-muted-foreground">
+        📍 Sector [{c.sectorX},{c.sectorY},{c.sectorZ}]
+        {c.anchorObjectName && <span className="ml-1">· anchored to {c.anchorObjectName}</span>}
+      </div>
+
+      {c.status === "floating" && c.sectorObjectId && (
+        <div className="bg-primary/5 border border-primary/20 rounded px-2 py-1.5 space-y-0.5">
+          <div className="text-[10px] text-primary/70 tracking-wider">SECTOR OBJECT ID</div>
+          <div className="flex items-start gap-1">
+            <span className="text-primary font-mono text-[10px] break-all leading-tight flex-1">
+              {c.sectorObjectId}
+            </span>
+            <CopyButton text={c.sectorObjectId} />
+          </div>
+          <div className="text-[10px] text-muted-foreground/60">use for mining target or recovery</div>
+        </div>
+      )}
+
+      <div className="text-muted-foreground/60 text-[10px]">
+        By {c.mannyName} · {new Date(c.detachedAt).toLocaleString()}
+      </div>
+      {c.notes && <div className="text-foreground/70 italic">{c.notes}</div>}
+    </div>
   );
 
   return (
-    <div className="space-y-2">
-      <div className="text-xs text-muted-foreground tracking-widest">DETACHED CONTAINERS ({containers.length})</div>
-      <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
-        {containers.map((c: any) => (
-          <div key={c.id} className={`border rounded p-2.5 text-xs space-y-1 ${c.status === "recovered" ? "border-border opacity-50" : "border-accent/40 border-glow"}`}>
-            <div className="flex items-center justify-between gap-2">
-              <span className="text-foreground font-bold truncate">{c.containerName}</span>
-              <span className={`shrink-0 px-1.5 py-0.5 rounded text-[10px] font-bold tracking-wider ${c.status === "floating" ? "bg-accent/20 text-accent" : "bg-muted text-muted-foreground"}`}>
-                {c.status.toUpperCase()}
-              </span>
-            </div>
-            <div className="text-muted-foreground">
-              Sector [{c.sectorX},{c.sectorY},{c.sectorZ}]
-            </div>
-            <div className="text-muted-foreground">
-              By {c.mannyName} · {new Date(c.detachedAt).toLocaleString()}
-            </div>
-            {c.notes && <div className="text-foreground/70 italic">{c.notes}</div>}
-          </div>
-        ))}
-      </div>
+    <div className="space-y-3">
+      {floating.length > 0 && (
+        <div className="space-y-2">
+          <div className="text-xs text-muted-foreground tracking-widest">FLOATING ({floating.length})</div>
+          {floating.map((c: any) => <ContainerCard key={c.id} c={c} />)}
+        </div>
+      )}
+      {recovered.length > 0 && (
+        <div className="space-y-2">
+          <div className="text-xs text-muted-foreground tracking-widest opacity-50">RECOVERED ({recovered.length})</div>
+          {recovered.map((c: any) => <ContainerCard key={c.id} c={c} />)}
+        </div>
+      )}
     </div>
   );
 }
