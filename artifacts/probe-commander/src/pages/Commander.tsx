@@ -432,13 +432,24 @@ function SectorObject({ o }: { o: any }) {
           </div>
         )}
         {asteroids.length > 0 && (
-          <div className="pl-2 space-y-0.5">
+          <div className="pl-2 space-y-1">
             {asteroids.map((a: any, i: number) => (
-              <div key={i} className="flex items-center gap-1.5 text-[10px]">
-                <span className="text-primary/50">◆</span>
-                <span className="text-primary/80">{a.name ?? "Asteroid"}</span>
-                {a.composition && <span className="text-muted-foreground">{a.composition.replace(/_/g, " ")}</span>}
-                <span className="text-muted-foreground/40 font-mono text-[9px]">{a.id?.slice(0, 8)}</span>
+              <div key={i} className="space-y-0.5">
+                <div className="flex items-center gap-1.5 text-[10px]">
+                  <span className="text-primary/50">◆</span>
+                  <span className="text-primary/80">{a.name ?? a.composition?.replace(/_/g, " ") ?? "Asteroid"}</span>
+                  {a.sizeCategory && <span className="text-muted-foreground/50">{a.sizeCategory}</span>}
+                  <span className="text-muted-foreground/40 font-mono text-[9px]">{a.id?.slice(0, 8)}</span>
+                </div>
+                {a.composition && !a.sizeCategory && (
+                  <div className="pl-3 text-[9px] text-muted-foreground/50">{a.composition.replace(/_/g, " ")}</div>
+                )}
+                {a.mass != null && (
+                  <div className="pl-3 text-[9px] text-muted-foreground/50">
+                    {a.mass.toFixed(4)} {a.massUnit} · r {a.radius?.toFixed(4)} {a.radiusUnit}
+                    {!a.composition && <span className="ml-2 text-muted-foreground/30 italic">inspect to reveal resources</span>}
+                  </div>
+                )}
               </div>
             ))}
           </div>
