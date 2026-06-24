@@ -81,7 +81,10 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d")!;
-    const W = canvas.width, H = canvas.height;
+    const dpr = window.devicePixelRatio || 1;
+    // Always reset to DPI-scaled identity so draw() is self-contained
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const W = canvas.offsetWidth, H = canvas.offsetHeight; // CSS pixels
     const cx = W / 2, cy = H / 2;
     const { x: rx, y: ry } = rotRef.current;
 
@@ -232,9 +235,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     const canvas = canvasRef.current;
     if (!canvas) return;
     const setSize = () => {
-      canvas.width = canvas.offsetWidth * devicePixelRatio;
-      canvas.height = canvas.offsetHeight * devicePixelRatio;
-      ctx(canvas).scale(devicePixelRatio, devicePixelRatio);
+      const dpr = window.devicePixelRatio || 1;
+      canvas.width = canvas.offsetWidth * dpr;
+      canvas.height = canvas.offsetHeight * dpr;
       draw();
     };
     const ro = new ResizeObserver(setSize);
