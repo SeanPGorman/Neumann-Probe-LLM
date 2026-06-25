@@ -209,7 +209,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
       const va = brightVisited;
-      ctx.fillStyle = isOriginPos ? `rgba(255,210,80,${va})` : isSelected ? `rgba(255,250,130,${va})` : `rgba(80,255,140,${0.95 * va})`;
+      ctx.fillStyle = isOriginPos ? `rgba(255,210,80,${va})` : isSelected ? `rgba(255,250,130,${va})` : `rgba(255,140,0,${0.95 * va})`;
       ctx.fill();
 
       if (isSelected || isOriginPos) {
@@ -228,7 +228,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       for (let i = 1; i < visitedProj.length; i++) {
         ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
       }
-      ctx.strokeStyle = `rgba(255,255,255,${0.9 * brightCourse})`;
+      ctx.strokeStyle = `rgba(0,220,80,${brightCourse})`;
       ctx.lineWidth = 3;
       ctx.lineJoin = "round";
       ctx.stroke();
