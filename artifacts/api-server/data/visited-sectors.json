@@ -275,13 +275,13 @@
     "sectorY": 0,
     "sectorZ": 3,
     "firstVisitedAt": "2026-06-24T19:53:30.812Z",
-    "lastVisitedAt": "2026-06-24T20:27:37.614Z",
-    "visitCount": 68,
+    "lastVisitedAt": "2026-06-25T16:55:39.083Z",
+    "visitCount": 72,
     "objects": [
       {
         "id": "68d690e30508aa1d771a",
         "type": "solar_system",
-        "name": "System 03b762",
+        "name": "WP-4-SnoozyBob | 1xDeut+Ice",
         "estimated": false,
         "summary": "Stellar system with 1 star(s) and 5 orbital body(ies).",
         "dangerLevel": "low",
@@ -365,19 +365,6 @@
         ]
       },
       {
-        "id": "detached-container-container-itm_533f37b2ff394ae7d45d5490",
-        "type": "detached_container",
-        "name": "IIB 21",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
         "id": "detached-container-container-itm_b5a1ebb2a9dac9adcee424cd",
         "type": "detached_container",
         "name": "IIB 23",
@@ -404,42 +391,29 @@
         "salvageable": true
       },
       {
-        "id": "detached-container-container-itm_craft_90bc914651271e7c8422e6a3",
+        "id": "detached-container-container-itm_533f37b2ff394ae7d45d5490",
         "type": "detached_container",
-        "name": "MetalStorage",
+        "name": "IIB 21",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
         "resourceTypes": [],
         "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "mode": "drifting",
+        "targetObjectId": null,
         "salvageable": true
       },
       {
-        "id": "detached-container-container-itm_d1f5220c778c9b9c6a6f2faf",
+        "id": "detached-container-container-itm_f97888a148fab762b99be279",
         "type": "detached_container",
-        "name": "MetalStorage B",
+        "name": "IIB 211",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
         "resourceTypes": [],
         "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "7bc77fe19191ac3d4fcb",
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_8d8b3abf9a4ccda5aa0752d4",
-        "type": "detached_container",
-        "name": "Metal 6",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "mode": "drifting",
+        "targetObjectId": null,
         "salvageable": true
       },
       {
