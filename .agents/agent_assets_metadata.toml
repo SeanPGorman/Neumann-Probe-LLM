@@ -1,0 +1,8 @@
+uploads = []
+generated = []
+
+[[outputs]]
+id = "2zhV4h2BeneHV9hgqdqu9"
+uri = "file://HomeSetup.md"
+type = "text"
+title = "HomeSetup.md — Local dev guide"
