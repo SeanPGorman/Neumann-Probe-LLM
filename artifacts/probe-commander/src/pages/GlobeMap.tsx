@@ -1,6 +1,6 @@
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 
-const RADIUS = 3;
+const RADIUS = 4;
 
 // Pre-generate all valid coordinate offsets within RADIUS
 // Valid = even sum, within sphere
