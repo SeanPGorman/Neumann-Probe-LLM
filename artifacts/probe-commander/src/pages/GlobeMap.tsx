@@ -60,8 +60,20 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   const [selected, setSelected] = useState<{ ax: number; ay: number; az: number } | null>(null);
   const dragRef = useRef<{ mx: number; my: number; rx: number; ry: number } | null>(null);
   const dotsRef = useRef<ProjectedDot[]>([]);
+  const ZOOM_LEVELS = [0.25, 0.5, 0.75, 1.0, 1.5, 2.0, 3.0, 5.0];
   const zoomRef = useRef(1.0);
   const [zoom, setZoom] = useState(1.0);
+
+  const zoomIn = useCallback(() => {
+    const next = ZOOM_LEVELS.find(z => z > zoomRef.current) ?? ZOOM_LEVELS[ZOOM_LEVELS.length - 1];
+    zoomRef.current = next;
+    setZoom(next);
+  }, []);
+  const zoomOut = useCallback(() => {
+    const prev = [...ZOOM_LEVELS].reverse().find(z => z < zoomRef.current) ?? ZOOM_LEVELS[0];
+    zoomRef.current = prev;
+    setZoom(prev);
+  }, []);
 
   // Brightness controls (0–1) for each visual element
   const [brightProbe,   setBrightProbe]   = useState(1.0);
@@ -337,7 +349,22 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
 
   return (
     <div className="flex flex-col h-full gap-2">
-      <div className="text-xs text-muted-foreground tracking-widest">SECTOR GLOBE</div>
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-muted-foreground tracking-widest">SECTOR GLOBE</div>
+        <div className="flex items-center gap-1">
+          <button
+            onClick={zoomOut}
+            disabled={zoom <= 0.25}
+            className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25 disabled:cursor-not-allowed"
+          >−</button>
+          <span className="text-[10px] font-mono text-muted-foreground/60 w-8 text-center">{zoom}×</span>
+          <button
+            onClick={zoomIn}
+            disabled={zoom >= 5.0}
+            className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25 disabled:cursor-not-allowed"
+          >+</button>
+        </div>
+      </div>
       <div className="text-[10px] text-muted-foreground/40">
         Drag to rotate · scroll to zoom · click dot to inspect · {visitedMap.size} visited
       </div>
