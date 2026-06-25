@@ -63,6 +63,12 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   const zoomRef = useRef(1.0);
   const [zoom, setZoom] = useState(1.0);
 
+  // Brightness controls (0–1) for each visual element
+  const [brightProbe,   setBrightProbe]   = useState(1.0);
+  const [brightDots,    setBrightDots]    = useState(1.0);
+  const [brightVisited, setBrightVisited] = useState(1.0);
+  const [brightCourse,  setBrightCourse]  = useState(1.0);
+
   const { data: sectorsData } = useQuery({
     queryKey: ["sectors-globe"],
     queryFn: () => fetch(`${BASE}/api/vng/log/sectors`).then(r => r.json()),
@@ -158,7 +164,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       const depth = (z2 + RADIUS) / (2 * RADIUS);
       ctx.beginPath();
       ctx.arc(sx, sy, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(80,160,255,${0.12 + depth * 0.22})`;
+      ctx.fillStyle = `rgba(80,160,255,${(0.12 + depth * 0.22) * brightDots})`;
       ctx.fill();
     }
 
@@ -197,7 +203,8 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       const r = 3.5;
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fillStyle = isOriginPos ? "rgba(255,210,80,1)" : isSelected ? "rgba(255,250,130,1)" : "rgba(80,255,140,0.95)";
+      const va = brightVisited;
+      ctx.fillStyle = isOriginPos ? `rgba(255,210,80,${va})` : isSelected ? `rgba(255,250,130,${va})` : `rgba(80,255,140,${0.95 * va})`;
       ctx.fill();
 
       if (isSelected || isOriginPos) {
@@ -216,7 +223,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       for (let i = 1; i < visitedProj.length; i++) {
         ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
       }
-      ctx.strokeStyle = "rgba(255,255,255,0.9)";
+      ctx.strokeStyle = `rgba(255,255,255,${0.9 * brightCourse})`;
       ctx.lineWidth = 3;
       ctx.lineJoin = "round";
       ctx.stroke();
@@ -229,11 +236,11 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       const r = Math.max(2, persp * 0.32);
       ctx.beginPath();
       ctx.arc(sx, sy, r * 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(100,255,150,0.04)";
+      ctx.fillStyle = `rgba(100,255,150,${0.04 * brightProbe})`;
       ctx.fill();
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fillStyle = "rgba(180,255,200,0.65)";
+      ctx.fillStyle = `rgba(180,255,200,${0.65 * brightProbe})`;
       ctx.fill();
     }
 
@@ -248,7 +255,8 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ctx.fillStyle = color;
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
-  }, [rot, zoom, probeX, probeY, probeZ, originX, originY, originZ, isMoving, visitedMap, selected]);
+  }, [rot, zoom, probeX, probeY, probeZ, originX, originY, originZ, isMoving, visitedMap, selected,
+      brightProbe, brightDots, brightVisited, brightCourse]);
 
   useEffect(() => { draw(); }, [draw]);
   // Belt-and-suspenders: re-draw immediately when sectors data arrives,
@@ -332,6 +340,28 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       <div className="text-xs text-muted-foreground tracking-widest">SECTOR GLOBE</div>
       <div className="text-[10px] text-muted-foreground/40">
         Drag to rotate · scroll to zoom · click dot to inspect · {visitedMap.size} visited
+      </div>
+
+      {/* Brightness sliders */}
+      <div className="grid grid-cols-2 gap-x-3 gap-y-1 px-0.5">
+        {(
+          [
+            ["PROBE",   brightProbe,   setBrightProbe],
+            ["DOTS",    brightDots,    setBrightDots],
+            ["VISITED", brightVisited, setBrightVisited],
+            ["COURSE",  brightCourse,  setBrightCourse],
+          ] as [string, number, (v: number) => void][]
+        ).map(([label, val, set]) => (
+          <div key={label} className="flex items-center gap-1.5 min-w-0">
+            <span className="text-[9px] font-mono text-muted-foreground/50 w-12 shrink-0">{label}</span>
+            <input
+              type="range" min={0} max={1} step={0.01}
+              value={val}
+              onChange={e => set(parseFloat(e.target.value))}
+              className="flex-1 h-1 accent-green-400 cursor-pointer"
+            />
+          </div>
+        ))}
       </div>
 
       <div
