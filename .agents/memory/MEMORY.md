@@ -1,0 +1,1 @@
+- [API routing — /api vs /api-server](api-routing.md) — client fetches must use `/api/vng/...` not `/api-server/api/vng/...`

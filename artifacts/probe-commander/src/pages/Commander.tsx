@@ -3,7 +3,6 @@ import { useQuery } from "@tanstack/react-query";
 import { GlobeMap } from "./GlobeMap";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
-const GLOBE_BASE = BASE + "/api-server";
 
 type SseEvent =
   | { type: "status"; message: string }
@@ -672,7 +671,12 @@ export default function Commander() {
   // immediately when the tab opens, regardless of when the user navigates to it.
   const { data: sectorsData } = useQuery({
     queryKey: ["sectors-globe"],
-    queryFn: () => fetch(`${GLOBE_BASE}/api/vng/log/sectors`).then(r => r.json()),
+    queryFn: async () => {
+      const r = await fetch(`${BASE}/api/vng/log/sectors`, { cache: "no-store" });
+      if (!r.ok) throw new Error(`sectors ${r.status}`);
+      return r.json();
+    },
+    retry: 1,
     refetchInterval: 60_000,
     staleTime: 30_000,
   });
