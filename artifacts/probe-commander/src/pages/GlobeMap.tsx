@@ -1,7 +1,5 @@
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
 
-const BASE = import.meta.env.BASE_URL.replace(/\/$/, "") + "/api-server";
 const RADIUS = 3;
 
 // Pre-generate all valid coordinate offsets within RADIUS
@@ -51,9 +49,10 @@ interface Props {
   originY?: number;
   originZ?: number;
   isMoving: boolean;
+  sectorsData?: { sectors: any[] };
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, isMoving }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, isMoving, sectorsData }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -80,12 +79,6 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
   const [brightDots,    setBrightDots]    = useState(1.0);
   const [brightVisited, setBrightVisited] = useState(1.0);
   const [brightCourse,  setBrightCourse]  = useState(1.0);
-
-  const { data: sectorsData } = useQuery({
-    queryKey: ["sectors-globe"],
-    queryFn: () => fetch(`${BASE}/api/vng/log/sectors`).then(r => r.json()),
-    refetchInterval: 60_000,
-  });
 
   const visitedMap = useMemo<Map<string, VisitedSector>>(() => {
     const m = new Map<string, VisitedSector>();
@@ -271,9 +264,6 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       brightProbe, brightDots, brightVisited, brightCourse]);
 
   useEffect(() => { draw(); }, [draw]);
-  // Belt-and-suspenders: re-draw immediately when sectors data arrives,
-  // covering the case where the component mounted before the async fetch finished.
-  useEffect(() => { draw(); }, [draw, sectorsData]); // eslint-disable-line react-hooks/exhaustive-deps
 
   useEffect(() => {
     const canvas = canvasRef.current;

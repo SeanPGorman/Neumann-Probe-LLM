@@ -668,9 +668,9 @@ export default function Commander() {
     refetchInterval: 30000,
   });
 
-  // Pre-fetch globe sectors on Commander mount so the data is in TanStack Query's
-  // cache before the user opens the GLOBE tab (same queryKey as GlobeMap uses).
-  useQuery({
+  // Fetch globe sectors at Commander level so GlobeMap always receives live data
+  // immediately when the tab opens, regardless of when the user navigates to it.
+  const { data: sectorsData } = useQuery({
     queryKey: ["sectors-globe"],
     queryFn: () => fetch(`${GLOBE_BASE}/api/vng/log/sectors`).then(r => r.json()),
     refetchInterval: 60_000,
@@ -786,6 +786,7 @@ export default function Commander() {
               originX={globeCenter.ox}
               originY={globeCenter.oy}
               originZ={globeCenter.oz}
+              sectorsData={sectorsData}
             />
           )}
         </div>
