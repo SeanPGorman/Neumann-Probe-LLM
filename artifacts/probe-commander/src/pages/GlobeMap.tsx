@@ -343,7 +343,7 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       </div>
 
       {/* Brightness sliders */}
-      <div className="grid grid-cols-2 gap-x-3 gap-y-1 px-0.5">
+      <div className="flex flex-col gap-1 px-0.5">
         {(
           [
             ["PROBE",   brightProbe,   setBrightProbe],
