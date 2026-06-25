@@ -566,11 +566,33 @@ function AssistantBubble({ events }: { events: SseEvent[] }) {
   );
 }
 
-function ScoutPanel() {
+function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number; z: number } | null }) {
   const [coords, setCoords] = useState({ x: "", y: "", z: "" });
   const [result, setResult] = useState<any>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (!initialTarget) return;
+    setCoords({ x: String(initialTarget.x), y: String(initialTarget.y), z: String(initialTarget.z) });
+    setResult(null);
+    setError(null);
+  }, [initialTarget]);
+
+  // Auto-fire scan when coords are populated by initialTarget
+  const prevTarget = useRef<typeof initialTarget>(null);
+  useEffect(() => {
+    if (!initialTarget) return;
+    if (prevTarget.current === initialTarget) return;
+    prevTarget.current = initialTarget;
+    const x = initialTarget.x, y = initialTarget.y, z = initialTarget.z;
+    setLoading(true); setError(null); setResult(null);
+    fetch(`${BASE}/api/vng/log/scout?x=${x}&y=${y}&z=${z}`)
+      .then(r => r.json())
+      .then(data => { if (data.error) throw new Error(data.error); setResult(data); })
+      .catch(e => setError(e.message))
+      .finally(() => setLoading(false));
+  }, [initialTarget]);
 
   const scout = async () => {
     const x = parseInt(coords.x, 10);
@@ -655,6 +677,12 @@ export default function Commander() {
   const [liveEvents, setLiveEvents] = useState<SseEvent[]>([]);
   const [sideTab, setSideTab] = useState<SideTab>("telemetry");
   const [logRefetch, setLogRefetch] = useState(0);
+  const [scoutTarget, setScoutTarget] = useState<{ x: number; y: number; z: number } | null>(null);
+
+  const handleScoutRequest = useCallback((x: number, y: number, z: number) => {
+    setScoutTarget({ x, y, z });
+    setSideTab("scout");
+  }, []);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   const { data: state } = useQuery({
@@ -780,7 +808,7 @@ export default function Commander() {
           {sideTab === "telemetry" && <TelemetryPanel state={state} />}
           {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
           {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
-          {sideTab === "scout" && <ScoutPanel />}
+          {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
           {sideTab === "globe" && (
             <GlobeMap
               probeX={globeCenter.x}
@@ -791,6 +819,7 @@ export default function Commander() {
               originY={globeCenter.oy}
               originZ={globeCenter.oz}
               sectorsData={sectorsData}
+              onScoutRequest={handleScoutRequest}
             />
           )}
         </div>

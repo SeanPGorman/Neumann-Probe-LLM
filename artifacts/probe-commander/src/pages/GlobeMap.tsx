@@ -50,9 +50,10 @@ interface Props {
   originZ?: number;
   isMoving: boolean;
   sectorsData?: { sectors: any[] };
+  onScoutRequest?: (x: number, y: number, z: number) => void;
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, isMoving, sectorsData }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, isMoving, sectorsData, onScoutRequest }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -400,9 +401,19 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       {selected ? (
         <div className="border border-border/50 rounded p-2 space-y-1.5 bg-background/60 text-xs">
           <div className="flex items-center justify-between gap-2">
-            <span className="font-mono text-foreground glow-green">
-              [{selected.ax},{selected.ay},{selected.az}]
-            </span>
+            {onScoutRequest ? (
+              <button
+                onClick={() => onScoutRequest(selected.ax, selected.ay, selected.az)}
+                className="font-mono text-foreground glow-green hover:text-primary transition-colors underline-offset-2 hover:underline cursor-pointer"
+                title="Scan this sector in Scout"
+              >
+                [{selected.ax},{selected.ay},{selected.az}]
+              </button>
+            ) : (
+              <span className="font-mono text-foreground glow-green">
+                [{selected.ax},{selected.ay},{selected.az}]
+              </span>
+            )}
             <div className="flex items-center gap-1.5 flex-wrap">
               {selIsProbe && <span className="text-[10px] text-primary font-bold">◉ PROBE</span>}
               {selIsOrigin && <span className="text-[10px] text-yellow-400">○ ORIGIN</span>}
