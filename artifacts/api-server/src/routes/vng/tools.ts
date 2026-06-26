@@ -332,21 +332,17 @@ export async function executeTool(
             name: s.name,
             amount: s.amount,
           })),
-          deployedContainers: (inv.containers ?? [])
-            .filter((c: any) => c.kind === "container")
-            .map((c: any) => ({
-              id: c.id,
-              name: c.label ?? c.id,
-              capacity: c.capacity,
-              usedCapacity: c.usedCapacity,
-              freeCapacity: c.freeCapacity,
-            })),
-          undeployedContainerItems: (inv.items ?? [])
-            .filter((i: any) => i.type === "storage_container")
-            .map((i: any) => ({ id: i.id, name: i.name, note: "crafted container in inventory, not yet deployed — use detach_container to float it" })),
+          containers: (inv.containers ?? []).map((c: any) => ({
+            id: c.id,
+            name: c.label ?? c.name ?? c.id,
+            kind: c.kind,
+            capacity: c.capacity,
+            usedCapacity: c.usedCapacity,
+            freeCapacity: c.freeCapacity,
+          })),
           items: (inv.items ?? [])
-            .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container")
-            .map((i: any) => ({ id: i.id, type: i.type, name: i.name })),
+            .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer")
+            .map((i: any) => ({ id: i.id, type: i.type, name: i.label ?? i.name })),
         },
         recipes: (recipesResp.recipes ?? []).map((r: any) => ({
           id: r.id,

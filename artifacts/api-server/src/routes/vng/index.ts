@@ -117,12 +117,14 @@ router.post("/command", async (req, res) => {
     const idleMannies = mannies.filter((m: any) => !m.currentTask);
     const busyMannies = mannies.filter((m: any) => m.currentTask);
 
-    // Deployed containers: physically attached to probe as active storage (inv.containers)
-    const boardedContainers = (inv.containers ?? []).filter((c: any) => c.kind === "container");
+    // All containers registered on the probe (no kind filter — we show everything)
+    const boardedContainers = inv.containers ?? [];
     const containersById = new Map(boardedContainers.map((c: any) => [c.id, c]));
 
-    // Undeployed container items: crafted containers sitting in inventory, not yet deployed
-    const undeployedContainerItems = inventoryItems.filter((i: any) => i.type === "storage_container");
+    // All inventory items that are not mannies or the atomic printer
+    const nonMannyItems = inventoryItems.filter(
+      (i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer"
+    );
 
     // Pull tracked floating containers for this sector
     const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);
@@ -190,19 +192,15 @@ ${
     : ""
 }
 
-== CONTAINERS ABOARD PROBE (deployed, active storage) ==
-${boardedContainers.map((c: any) => `  • "${c.label ?? c.id}"  inventory_id="${c.id}"  capacity=${c.capacity ?? "?"}ECE  used=${(c.usedCapacity ?? 0).toFixed(2)}ECE  free=${(c.freeCapacity ?? 0).toFixed(2)}ECE  (once detached → sector_object_id will be "detached-container-${c.id}")`).join("\n") || "  none"}
+== CONTAINERS ABOARD PROBE ==
+${boardedContainers.map((c: any) => `  • "${c.label ?? c.name ?? c.id}"  inventory_id="${c.id}"  kind="${c.kind ?? "?"}"  capacity=${c.capacity ?? "?"}ECE  used=${(c.usedCapacity ?? 0).toFixed(2)}ECE  free=${(c.freeCapacity ?? 0).toFixed(2)}ECE  (once detached → sector_object_id will be "detached-container-${c.id}")`).join("\n") || "  none"}
 
-== UNDEPLOYED CONTAINER ITEMS (crafted, in inventory, not yet floating) ==
-${undeployedContainerItems.map((i: any) => `  • "${i.name}"  inventory_id="${i.id}"  — can be detached into the sector by a Manny`).join("\n") || "  none"}
+== INVENTORY ITEMS (excluding mannies and atomic printer) ==
+${nonMannyItems.map((i: any) => `  • "${i.label ?? i.name ?? i.id}"  inventory_id="${i.id}"  type="${i.type ?? "?"}"`).join("\n") || "  none"}
 
 == INVENTORY ==
 Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used  (${(inv.freeCapacity ?? 0).toFixed(3)} free)
 Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") || "none"}
-Other items: ${inventoryItems
-      .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container")
-      .map((i: any) => `${i.name}(${i.type})`)
-      .join(", ") || "none"}
 
 == CRAFTING RECIPES ==
 ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s`).join("\n")}

@@ -8,6 +8,26 @@ import { getProbe, getSector, scanSector, getVisitedSectors } from "./client.js"
 
 const router = Router();
 
+// Debug: raw probe inventory structure — use this to inspect field names from the VNG API
+router.get("/inventory-debug", async (_req, res) => {
+  try {
+    const probeResp = await getProbe();
+    const inv = probeResp?.probe?.inventory ?? {};
+    res.json({
+      capacity: inv.capacity,
+      usedCapacity: inv.usedCapacity,
+      freeCapacity: inv.freeCapacity,
+      containersCount: (inv.containers ?? []).length,
+      itemsCount: (inv.items ?? []).length,
+      containers: inv.containers ?? [],
+      items: inv.items ?? [],
+      resourceStocksCount: (inv.resourceStocks ?? []).length,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.get("/containers", async (_req, res) => {
   try {
     // Live sources: probe inventory (contents + capacity) + current sector objects
