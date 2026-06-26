@@ -275,8 +275,8 @@
     "sectorY": 0,
     "sectorZ": 3,
     "firstVisitedAt": "2026-06-24T19:53:30.812Z",
-    "lastVisitedAt": "2026-06-26T18:05:26.344Z",
-    "visitCount": 109,
+    "lastVisitedAt": "2026-06-26T18:06:58.650Z",
+    "visitCount": 114,
     "objects": [
       {
         "id": "68d690e30508aa1d771a",
@@ -466,6 +466,19 @@
         "capacity": 1,
         "mode": "hidden_on_asteroid",
         "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_53158ed2494de8e08ec26467",
+        "type": "detached_container",
+        "name": "ICE FULL 2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "2c12a5a6c9bd42dc20b3",
         "salvageable": true
       }
     ],
