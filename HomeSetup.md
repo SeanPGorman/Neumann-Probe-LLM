@@ -40,23 +40,33 @@ This installs packages for every workspace in the monorepo at once.
 
 ---
 
-## Step 3 — Gather your API credentials
+## Step 3 — Get your accounts and credentials
 
-You will need three things:
+This app has two hard requirements. **Both are mandatory** — the app will show an API error in every panel without them.
 
-### 3a. VNG API key
-Your personal API key for **neumann-probe.net**. Log in at the site and find it in your account settings or profile page.
+### 3a. Von Neumann Game account + API key (required)
 
-### 3b. An OpenAI-compatible AI endpoint
-The natural-language command feature calls an OpenAI-compatible API. Pick **one** of these options:
+You must have an active account on **neumann-probe.net** with your own probe. This app talks directly to the game API using your personal API key — it cannot run without one.
+
+1. Register or log in at https://neumann-probe.net
+2. Find your API key in your account/profile settings
+3. Copy it — you'll paste it into the `.env` file in Step 4
+
+> **This key is personal to your probe.** It controls your probe and your game data. Do not share it.
+
+### 3b. An OpenAI-compatible AI endpoint (required for natural language commands)
+
+The command panel sends your text to an AI that translates it into game actions. Pick **one**:
 
 | Option | BASE_URL | API_KEY |
 |--------|----------|---------|
-| **OpenAI** (easiest) | `https://api.openai.com/v1` | Your OpenAI key from platform.openai.com |
+| **OpenAI** | `https://api.openai.com/v1` | Your key from platform.openai.com |
+| **Groq** (free tier, fast) | `https://api.groq.com/openai/v1` | Your key from console.groq.com |
 | **Local Ollama** | `http://localhost:11434/v1` | Any non-empty string (e.g. `ollama`) |
-| **Other compatible provider** | Provider's URL | Provider's key |
 
-> **Ollama note:** If you choose Ollama, install it from https://ollama.com, pull a model (`ollama pull llama3.1`), and make sure it is running (`ollama serve`) before starting the api-server. You will also need to change the model name in step 6 below.
+Groq is recommended for free usage — it has a generous daily limit and is very fast.
+
+> **Ollama note:** If you choose Ollama, install it from https://ollama.com, pull a model (`ollama pull llama3.1`), and make sure it is running (`ollama serve`) before starting the api-server. You will also need to change the model name in Step 6.
 
 ---
 
@@ -82,9 +92,21 @@ BASE_PATH=/
 
 ---
 
-## Step 5 — Add a local API proxy to Vite
+## Step 5 — Clear the sector history
 
-On Replit, a built-in proxy routes `/api/*` from the frontend to the api-server. Locally you need to tell Vite to do the same thing. Open `artifacts/probe-commander/vite.config.ts` and add a `proxy` block inside the `server` section:
+The repo contains the original author's sector visit history. Before your first run, replace it with an empty log so the globe and map start fresh for your probe:
+
+```bash
+echo '{"sectors":[]}' > artifacts/api-server/data/visited-sectors.json
+```
+
+If that file doesn't exist yet, you can skip this step — the server creates it automatically on first run.
+
+---
+
+## Step 6 — Add a local API proxy to Vite
+
+On Replit, a built-in proxy routes `/api/*` from the frontend to the api-server. Locally you need to tell Vite to do the same. Open `artifacts/probe-commander/vite.config.ts` and add a `proxy` block inside the `server` section:
 
 ```ts
 server: {
@@ -107,13 +129,13 @@ server: {
 
 This makes requests to `http://localhost:5173/api/...` forward to `http://localhost:8080/api/...`, exactly like the Replit proxy does in production.
 
-> **Important:** Do not commit this change if you want to keep the repo Replit-compatible. You can instead create a local git stash or a separate git branch for home use.
+> **Important:** Do not commit this change if you want to keep the repo Replit-compatible. You can stash it (`git stash`) or keep it on a local branch.
 
 ---
 
-## Step 6 — (Ollama only) Change the model name
+## Step 7 — (Ollama only) Change the model name
 
-If you are using a local Ollama model, open `artifacts/api-server/src/routes/vng/index.ts` and find line 226:
+If you are using a local Ollama model, open `artifacts/api-server/src/routes/vng/index.ts` and find this line:
 
 ```ts
 model: "gpt-5.4",
@@ -127,7 +149,7 @@ model: "llama3.1",
 
 ---
 
-## Step 7 — Start both servers
+## Step 8 — Start both servers
 
 Open **two terminal windows** in the repo root.
 
@@ -149,9 +171,11 @@ You should see: `VITE ready in ... ms  ➜  Local: http://localhost:5173/`
 
 ---
 
-## Step 8 — Open the app
+## Step 9 — Open the app
 
 Navigate to **http://localhost:5173** in your browser.
+
+If everything is working, the PROBE tab will show your probe's name, sector, fuel, and hull integrity within a few seconds.
 
 ---
 
@@ -159,12 +183,13 @@ Navigate to **http://localhost:5173** in your browser.
 
 | Symptom | Likely cause | Fix |
 |---------|-------------|-----|
-| `PORT environment variable is required` | Missing `.env` file | Create the `.env` files in step 4 |
-| `VNG_API_KEY not set` | Missing or wrong `.env` location | Confirm the file is at `artifacts/api-server/.env` |
-| AI commands return errors | Wrong base URL or model name | Double-check steps 3b and 6 |
-| Sector/telemetry panels show nothing | API server not running | Start terminal 1 first, check for errors |
-| Globe shows a blank canvas | Frontend can't reach `/api/*` | Confirm the Vite proxy in step 5 is saved and the dev server restarted |
+| `API ERROR` shown in every panel | Wrong or missing `VNG_API_KEY` | Confirm your key in `artifacts/api-server/.env` and that you have a neumann-probe.net account |
+| `PORT environment variable is required` | Missing `.env` file | Create the `.env` files from Step 4 |
+| AI commands return errors | Wrong base URL or model name | Double-check Steps 3b and 7 |
+| Globe shows a blank canvas | Frontend can't reach `/api/*` | Confirm the Vite proxy in Step 6 is saved and the dev server was restarted |
+| Panels say loading forever | API server not running | Start Terminal 1 first, check its output for errors |
 | Ollama errors mentioning the model | Model not pulled | Run `ollama pull <model-name>` |
+| Map shows someone else's probe path | Old sector history in the repo | Run the command in Step 5 to reset it |
 
 ---
 
@@ -172,8 +197,8 @@ Navigate to **http://localhost:5173** in your browser.
 
 | Variable | Set in | Purpose |
 |----------|--------|---------|
-| `VNG_API_KEY` | `api-server/.env` | Authenticates with neumann-probe.net |
-| `AI_INTEGRATIONS_OPENAI_BASE_URL` | `api-server/.env` | Where the AI endpoint lives |
-| `AI_INTEGRATIONS_OPENAI_API_KEY` | `api-server/.env` | Key for the AI endpoint |
+| `VNG_API_KEY` | `api-server/.env` | Authenticates with neumann-probe.net (**required**) |
+| `AI_INTEGRATIONS_OPENAI_BASE_URL` | `api-server/.env` | Where the AI endpoint lives (**required**) |
+| `AI_INTEGRATIONS_OPENAI_API_KEY` | `api-server/.env` | Key for the AI endpoint (**required**) |
 | `PORT` | both `.env` files | Which port each server binds to |
 | `BASE_PATH` | `probe-commander/.env` | URL base for the Vite build (keep as `/`) |

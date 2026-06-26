@@ -5,8 +5,8 @@
     "sectorY": 3,
     "sectorZ": 4,
     "firstVisitedAt": "2026-06-24T16:10:07.531Z",
-    "lastVisitedAt": "2026-06-26T00:31:22.052Z",
-    "visitCount": 57,
+    "lastVisitedAt": "2026-06-26T02:46:02.914Z",
+    "visitCount": 326,
     "objects": [
       {
         "id": "6c7ecfe26f7188309d6c",
@@ -204,19 +204,6 @@
         "salvageable": true
       },
       {
-        "id": "detached-container-container-itm_craft_d17f47c8cce0397246976914",
-        "type": "detached_container",
-        "name": "Metal 3",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "3161af8ba3f174a6c6ee",
-        "salvageable": true
-      },
-      {
         "id": "detached-container-container-itm_7ba00c621410b4d6477f40a3",
         "type": "detached_container",
         "name": "Metal 5",
@@ -246,6 +233,19 @@
         "id": "detached-container-container-itm_193d59e41a5964a89f9cece3",
         "type": "detached_container",
         "name": "Metal 2b",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "3161af8ba3f174a6c6ee",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_craft_d17f47c8cce0397246976914",
+        "type": "detached_container",
+        "name": "Metal 3",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",

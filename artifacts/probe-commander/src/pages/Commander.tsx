@@ -89,7 +89,20 @@ function MannyRow({ manny }: { manny: any }) {
   );
 }
 
-function TelemetryPanel({ state }: { state: any }) {
+function ApiError({ error }: { error: Error }) {
+  return (
+    <div className="border border-destructive/50 rounded p-3 space-y-1 bg-destructive/5">
+      <div className="text-xs text-destructive tracking-widest font-bold">API ERROR</div>
+      <div className="text-xs text-destructive/80 break-words font-mono">{error.message}</div>
+      <div className="text-[10px] text-muted-foreground pt-1">
+        Check that <span className="text-foreground font-mono">VNG_API_KEY</span> is set correctly in your <span className="text-foreground font-mono">api-server/.env</span> file.
+      </div>
+    </div>
+  );
+}
+
+function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
+  if (error) return <ApiError error={error} />;
   if (!state) {
     return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING TELEMETRY…</div>;
   }
@@ -162,11 +175,14 @@ function CopyButton({ text }: { text: string }) {
 }
 
 function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["log-containers", refetchSignal],
     queryFn: async () => {
       const r = await fetch(`${BASE}/api/vng/log/containers`);
-      return r.json();
+      if (!r.ok) throw new Error(`Containers fetch failed (${r.status})`);
+      const json = await r.json();
+      if (json.error) throw new Error(json.error);
+      return json;
     },
     refetchInterval: 30000,
   });
@@ -178,7 +194,7 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
   const floating: any[] = data?.floating ?? [];
 
   if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
-  if (!data) return <div className="text-xs text-muted-foreground italic">No data.</div>;
+  if (error) return <ApiError error={error as Error} />;
 
   const CapacityBar = ({ used, total }: { used: number | null; total: number | null }) => {
     if (used == null || total == null || total === 0) return null;
@@ -291,11 +307,14 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
 }
 
 function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ["log-sectors", refetchSignal],
     queryFn: async () => {
       const r = await fetch(`${BASE}/api/vng/log/sectors`);
-      return r.json();
+      if (!r.ok) throw new Error(`Sectors fetch failed (${r.status})`);
+      const json = await r.json();
+      if (json.error) throw new Error(json.error);
+      return json;
     },
     refetchInterval: 30000,
   });
@@ -305,6 +324,7 @@ function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
   const [expanded, setExpanded] = useState<number | null>(null);
 
   if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
+  if (error) return <ApiError error={error as Error} />;
   if (sectors.length === 0) return (
     <div className="text-xs text-muted-foreground italic">No sectors recorded yet. The current sector is logged automatically.</div>
   );
@@ -685,14 +705,21 @@ export default function Commander() {
   }, []);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const { data: state } = useQuery({
+  const { data: state, error: stateError } = useQuery({
     queryKey: ["probe-state"],
     queryFn: async () => {
       const r = await fetch(`${BASE}/api/vng/state`);
-      if (!r.ok) throw new Error(`State fetch failed: ${r.status}`);
-      return r.json();
+      if (!r.ok) {
+        let msg = `State fetch failed (${r.status})`;
+        try { const j = await r.json(); if (j.error) msg = j.error; } catch {}
+        throw new Error(msg);
+      }
+      const json = await r.json();
+      if (json.error) throw new Error(json.error);
+      return json;
     },
     refetchInterval: 30000,
+    retry: 1,
   });
 
   // Fetch globe sectors at Commander level so GlobeMap always receives live data
@@ -805,7 +832,7 @@ export default function Commander() {
         </div>
 
         <div className="border border-border border-glow rounded p-4 flex-1 scanlines">
-          {sideTab === "telemetry" && <TelemetryPanel state={state} />}
+          {sideTab === "telemetry" && <TelemetryPanel state={state} error={stateError as Error | null} />}
           {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
           {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
           {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
