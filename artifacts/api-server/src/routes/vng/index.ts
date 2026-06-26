@@ -117,9 +117,12 @@ router.post("/command", async (req, res) => {
     const idleMannies = mannies.filter((m: any) => !m.currentTask);
     const busyMannies = mannies.filter((m: any) => m.currentTask);
 
-    // Containers live in inv.containers (kind === "container"), NOT inv.items
+    // Deployed containers: physically attached to probe as active storage (inv.containers)
     const boardedContainers = (inv.containers ?? []).filter((c: any) => c.kind === "container");
     const containersById = new Map(boardedContainers.map((c: any) => [c.id, c]));
+
+    // Undeployed container items: crafted containers sitting in inventory, not yet deployed
+    const undeployedContainerItems = inventoryItems.filter((i: any) => i.type === "storage_container");
 
     // Pull tracked floating containers for this sector
     const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);
@@ -187,8 +190,11 @@ ${
     : ""
 }
 
-== CONTAINERS ABOARD PROBE ==
+== CONTAINERS ABOARD PROBE (deployed, active storage) ==
 ${boardedContainers.map((c: any) => `  • "${c.label ?? c.id}"  inventory_id="${c.id}"  capacity=${c.capacity ?? "?"}ECE  used=${(c.usedCapacity ?? 0).toFixed(2)}ECE  free=${(c.freeCapacity ?? 0).toFixed(2)}ECE  (once detached → sector_object_id will be "detached-container-${c.id}")`).join("\n") || "  none"}
+
+== UNDEPLOYED CONTAINER ITEMS (crafted, in inventory, not yet floating) ==
+${undeployedContainerItems.map((i: any) => `  • "${i.name}"  inventory_id="${i.id}"  — can be detached into the sector by a Manny`).join("\n") || "  none"}
 
 == INVENTORY ==
 Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used  (${(inv.freeCapacity ?? 0).toFixed(3)} free)

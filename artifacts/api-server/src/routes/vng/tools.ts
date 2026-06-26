@@ -332,7 +332,7 @@ export async function executeTool(
             name: s.name,
             amount: s.amount,
           })),
-          containers: (inv.containers ?? [])
+          deployedContainers: (inv.containers ?? [])
             .filter((c: any) => c.kind === "container")
             .map((c: any) => ({
               id: c.id,
@@ -341,6 +341,9 @@ export async function executeTool(
               usedCapacity: c.usedCapacity,
               freeCapacity: c.freeCapacity,
             })),
+          undeployedContainerItems: (inv.items ?? [])
+            .filter((i: any) => i.type === "storage_container")
+            .map((i: any) => ({ id: i.id, name: i.name, note: "crafted container in inventory, not yet deployed — use detach_container to float it" })),
           items: (inv.items ?? [])
             .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container")
             .map((i: any) => ({ id: i.id, type: i.type, name: i.name })),
