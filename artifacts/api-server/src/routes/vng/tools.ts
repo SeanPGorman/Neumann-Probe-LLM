@@ -332,11 +332,17 @@ export async function executeTool(
             name: s.name,
             amount: s.amount,
           })),
-          containers: (inv.items ?? [])
-            .filter((i: any) => i.type === "storage_container")
-            .map((c: any) => ({ id: c.id, name: c.name, space: c.containerSpace })),
+          containers: (inv.containers ?? [])
+            .filter((c: any) => c.kind === "container")
+            .map((c: any) => ({
+              id: c.id,
+              name: c.label ?? c.id,
+              capacity: c.capacity,
+              usedCapacity: c.usedCapacity,
+              freeCapacity: c.freeCapacity,
+            })),
           items: (inv.items ?? [])
-            .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer")
+            .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer" && i.type !== "storage_container")
             .map((i: any) => ({ id: i.id, type: i.type, name: i.name })),
         },
         recipes: (recipesResp.recipes ?? []).map((r: any) => ({
