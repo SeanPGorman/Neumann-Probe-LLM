@@ -264,10 +264,68 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-06-24T22:31:39.329Z",
-    "visitCount": 295,
-    "objects": [],
-    "resourceSummary": []
+    "lastVisitedAt": "2026-06-27T17:46:41.164Z",
+    "visitCount": 299,
+    "objects": [
+      {
+        "id": "starter-iron-e2ad1e3569e28ae4",
+        "type": "asteroid",
+        "name": null,
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "iron",
+        "sizeCategory": null,
+        "mass": 0.00005,
+        "radius": 0.012,
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 49.69,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        }
+      },
+      {
+        "id": "deuterium-asteroid-c182d8b1005482a57746ae11",
+        "type": "asteroid",
+        "name": "WP-001-SnoozyBob. This is 0.0.0. 1 Metal. 0 Ice. 1 Deut. 0 Organics.",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "deuterium"
+        ],
+        "composition": "deuterium",
+        "sizeCategory": null,
+        "mass": 0.00001,
+        "radius": 0.0001,
+        "resourceAmounts": {
+          "deuterium": 10,
+          "metals": 0,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "resourceComposition": {
+          "deuterium": 1,
+          "metals": 0,
+          "ice": 0,
+          "carbon_compounds": 0
+        }
+      }
+    ],
+    "resourceSummary": [
+      "metals",
+      "deuterium"
+    ]
   },
   {
     "id": 3,
@@ -275,8 +333,8 @@
     "sectorY": 0,
     "sectorZ": 3,
     "firstVisitedAt": "2026-06-24T19:53:30.812Z",
-    "lastVisitedAt": "2026-06-26T18:13:08.004Z",
-    "visitCount": 130,
+    "lastVisitedAt": "2026-06-26T20:18:17.990Z",
+    "visitCount": 246,
     "objects": [
       {
         "id": "68d690e30508aa1d771a",
@@ -363,6 +421,58 @@
             "intelligentLife": null
           }
         ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_90bc914651271e7c8422e6a3",
+        "type": "detached_container",
+        "name": "MetalStorage",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_d1f5220c778c9b9c6a6f2faf",
+        "type": "detached_container",
+        "name": "MetalStorage B",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_craft_eaa1639b7f6f07f11c627fb5",
+        "type": "detached_container",
+        "name": "BuiltComponents",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_craft_20cdf660bb3716f5c690352f",
+        "type": "detached_container",
+        "name": "Metal 1",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
       },
       {
         "id": "detached-container-container-itm_c2c9c863a36d5753084dcb98",
@@ -472,6 +582,110 @@
         "id": "detached-container-container-itm_53158ed2494de8e08ec26467",
         "type": "detached_container",
         "name": "ICE FULL 2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "2c12a5a6c9bd42dc20b3",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_729539f55a21eaabc6dc0e14",
+        "type": "detached_container",
+        "name": "ICE FULL 4",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_5a1620a9a2a5dba341d02732",
+        "type": "detached_container",
+        "name": "ICE FULL 10",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_e6e52fcef4369adf24f28d74",
+        "type": "detached_container",
+        "name": "ICE FULL 5",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_f61efb35990821e80b5836a3",
+        "type": "detached_container",
+        "name": "ICE FULL 9",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_c125f1e3f522c1dc7dd128b7",
+        "type": "detached_container",
+        "name": "ICE FULL 8",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "2c12a5a6c9bd42dc20b3",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_9690d4ccc55f70d5b2063c3a",
+        "type": "detached_container",
+        "name": "ICE FULL 7",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_8d8b3abf9a4ccda5aa0752d4",
+        "type": "detached_container",
+        "name": "Metal 6",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "7bc77fe19191ac3d4fcb",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_013904bef13ff1dd8eaa9ff5",
+        "type": "detached_container",
+        "name": "ICE FULL6",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
