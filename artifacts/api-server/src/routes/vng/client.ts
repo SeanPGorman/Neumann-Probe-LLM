@@ -49,7 +49,7 @@ export async function scanSector(x: number, y: number, z: number) {
 export async function moveProbe(x: number, y: number, z: number) {
   return vngFetch("/api/probe/move", {
     method: "POST",
-    body: JSON.stringify({ destination: { x, y, z } }),
+    body: JSON.stringify({ target: { x, y, z } }),
   });
 }
 
