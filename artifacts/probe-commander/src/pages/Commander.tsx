@@ -49,6 +49,7 @@ function objectIcon(type: string): string {
     manny: "♦",
     drifting_item: "◇",
     detached_container: "□",
+    waypoint_bookmark: "⚑",
   };
   return icons[type] ?? "·";
 }
@@ -148,7 +149,7 @@ function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
             {sectorObjects.map((o: any, i: number) => (
               <div key={i} className="text-xs flex gap-2">
                 <span className="text-accent shrink-0">{objectIcon(o.type)}</span>
-                <span className="text-muted-foreground truncate">
+                <span className={`text-muted-foreground ${o.type === "waypoint_bookmark" ? "break-words" : "truncate"}`}>
                   {o.name ?? o.type}
                   {o.resourceTypes?.length ? ` [${o.resourceTypes.join(",")}]` : ""}
                 </span>

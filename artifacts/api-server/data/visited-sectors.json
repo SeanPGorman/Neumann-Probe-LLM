@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-06-27T17:46:41.164Z",
-    "visitCount": 299,
+    "lastVisitedAt": "2026-06-28T02:02:42.362Z",
+    "visitCount": 404,
     "objects": [
       {
         "id": "starter-iron-e2ad1e3569e28ae4",
@@ -283,7 +283,7 @@
         "radius": 0.012,
         "resourceAmounts": {
           "deuterium": 0,
-          "metals": 49.69,
+          "metals": 48.79,
           "ice": 0,
           "carbon_compounds": 0
         },
@@ -1010,6 +1010,190 @@
             "intelligentLife": null
           }
         ]
+      }
+    ],
+    "resourceSummary": []
+  },
+  {
+    "id": 6,
+    "sectorX": 0,
+    "sectorY": 1,
+    "sectorZ": -1,
+    "firstVisitedAt": "2026-06-29T16:53:13.763Z",
+    "lastVisitedAt": "2026-06-29T17:21:45.679Z",
+    "visitCount": 62,
+    "objects": [
+      {
+        "id": "f79a805f065c828695c0",
+        "type": "solar_system",
+        "name": "WP-003-SnoozyBob. This is 0.1.-1. 0 Metal. 2 Ice. 1 Deut. 1 Organics.",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 10 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 8,
+        "orbitalBodyCount": 10,
+        "bodies": [
+          {
+            "id": "1f1e22791e106e6d8769",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.636392,
+            "massUnit": "solar_mass",
+            "radius": 0.684841,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "980487954bbd59cdca49",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.881698,
+            "massUnit": "earth_mass",
+            "radius": 1.653945,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.013896,
+            "intelligentLife": false
+          },
+          {
+            "id": "61d466cf7eff70cc7950",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.037034,
+            "massUnit": "earth_mass",
+            "radius": 0.501318,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.093266,
+            "intelligentLife": false
+          },
+          {
+            "id": "baab25e35d4b619b3614",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.531645,
+            "massUnit": "earth_mass",
+            "radius": 0.469613,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.128581,
+            "intelligentLife": false
+          },
+          {
+            "id": "f2cc59ea8395de4d67b3",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.970839,
+            "massUnit": "earth_mass",
+            "radius": 0.525641,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.094947,
+            "intelligentLife": false
+          },
+          {
+            "id": "2300a04c467618b7069d",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.146876,
+            "massUnit": "earth_mass",
+            "radius": 0.441403,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.124131,
+            "intelligentLife": false
+          },
+          {
+            "id": "393cd393365a9558ea1d",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.03084,
+            "massUnit": "earth_mass",
+            "radius": 1.656292,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.101363,
+            "intelligentLife": false
+          },
+          {
+            "id": "f387378084c6e3674c7a",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 4.207251,
+            "massUnit": "earth_mass",
+            "radius": 1.381199,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.040809,
+            "intelligentLife": false
+          },
+          {
+            "id": "93e4f0c0a0a1870a114b",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.70026,
+            "massUnit": "earth_mass",
+            "radius": 1.022929,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.024112,
+            "intelligentLife": false
+          },
+          {
+            "id": "6f127f689c2dd175c9a6",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.009301,
+            "massUnit": "earth_mass",
+            "radius": 0.168879,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "ae019c55bc98ffb949e5",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.017855,
+            "massUnit": "earth_mass",
+            "radius": 0.071484,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      },
+      {
+        "id": "detached-container-container-itm_d1a71938b3e8927ea683240a",
+        "type": "detached_container",
+        "name": "MT01",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "ae019c55bc98ffb949e5",
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_2bc1b9f823898e5b10f795ca",
+        "type": "detached_container",
+        "name": "MT01",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "ae019c55bc98ffb949e5",
+        "salvageable": true
       }
     ],
     "resourceSummary": []
