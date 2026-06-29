@@ -16,7 +16,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "containers" | "sectors" | "scout" | "globe";
+type SideTab = "telemetry" | "containers" | "sectors" | "scout" | "globe" | "scheduled";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -685,6 +685,70 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
   );
 }
 
+function ScheduledPanel({ refetchSignal }: { refetchSignal: number }) {
+  const { data, isLoading, error, refetch } = useQuery({
+    queryKey: ["scheduled-actions", refetchSignal],
+    queryFn: async () => {
+      const r = await fetch(`${BASE}/api/vng/scheduled`);
+      if (!r.ok) throw new Error(`Scheduled fetch failed (${r.status})`);
+      return r.json();
+    },
+    refetchInterval: 15000,
+  });
+
+  const actions: any[] = data?.actions ?? [];
+
+  const cancel = async (id: number) => {
+    await fetch(`${BASE}/api/vng/scheduled/${id}`, { method: "DELETE" });
+    refetch();
+  };
+
+  if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
+  if (error) return <ApiError error={error as Error} />;
+
+  return (
+    <div className="space-y-3">
+      <div className="text-xs text-muted-foreground tracking-widest">SCHEDULED ACTIONS</div>
+      <div className="text-[10px] text-muted-foreground/50">
+        The poller checks every 30 s and fires when the condition is met.
+      </div>
+      {actions.length === 0 ? (
+        <div className="text-xs text-muted-foreground/40 italic">No pending actions.</div>
+      ) : (
+        <div className="space-y-2">
+          {actions.map((a: any) => {
+            const cond = a.condition?.type === "manny_idle"
+              ? `when ${a.condition.mannyName ?? a.condition.mannyId} is idle`
+              : a.condition?.type === "probe_idle"
+              ? "when probe is idle"
+              : a.condition?.type ?? "?";
+            return (
+              <div key={a.id} className="border border-border rounded p-2 space-y-1">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-xs text-foreground font-mono">#{a.id}</span>
+                  <button
+                    onClick={() => cancel(a.id)}
+                    className="text-[10px] text-destructive hover:text-destructive/70 transition-colors shrink-0"
+                    title="Cancel"
+                  >
+                    ✕
+                  </button>
+                </div>
+                <div className="text-xs text-primary/90">{a.description}</div>
+                <div className="text-[10px] text-muted-foreground">⏳ {cond}</div>
+                <div className="text-[10px] text-muted-foreground/50 font-mono">
+                  action: {a.action?.type}
+                  {a.action?.type === "move_probe" ? ` → (${a.action.x},${a.action.y},${a.action.z})` : ""}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Commander() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([{
@@ -809,6 +873,7 @@ export default function Commander() {
     { id: "sectors", label: "MAP" },
     { id: "scout", label: "SCOUT" },
     { id: "globe", label: "GLOBE" },
+    { id: "scheduled", label: "SCHED" },
   ];
 
   return (
@@ -837,6 +902,7 @@ export default function Commander() {
           {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
           {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
           {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
+          {sideTab === "scheduled" && <ScheduledPanel refetchSignal={logRefetch} />}
           {sideTab === "globe" && (
             <GlobeMap
               probeX={globeCenter.x}

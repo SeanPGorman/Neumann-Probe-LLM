@@ -1,5 +1,6 @@
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
 import * as client from "./client.js";
+import { addPendingAction, cancelPendingAction } from "./file-store.js";
 
 export const TOOLS: ChatCompletionTool[] = [
   {
@@ -267,6 +268,73 @@ export const TOOLS: ChatCompletionTool[] = [
   {
     type: "function",
     function: {
+      name: "schedule_action",
+      description:
+        "Schedule an action to be executed automatically when a condition is met (e.g. 'move probe when manny-1 is idle'). The poller checks every 30 seconds. Use this instead of asking the user to re-issue the command later.",
+      parameters: {
+        type: "object",
+        required: ["description", "condition", "action"],
+        properties: {
+          description: {
+            type: "string",
+            description: "Human-readable description of what this scheduled action will do",
+          },
+          condition: {
+            type: "object",
+            description: "When to trigger this action",
+            required: ["type"],
+            properties: {
+              type: {
+                type: "string",
+                enum: ["manny_idle", "probe_idle"],
+                description: "manny_idle: wait for a specific manny to finish its task. probe_idle: wait for the probe to stop moving.",
+              },
+              mannyId: { type: "string", description: "Required when type=manny_idle: the manny's full ID" },
+              mannyName: { type: "string", description: "Required when type=manny_idle: the manny's display name (for the log)" },
+            },
+          },
+          action: {
+            type: "object",
+            description: "What to do when the condition is met",
+            required: ["type"],
+            properties: {
+              type: {
+                type: "string",
+                enum: ["move_probe", "craft_item", "mine_resources", "detach_container", "recover_container"],
+              },
+              x: { type: "number", description: "move_probe: destination X" },
+              y: { type: "number", description: "move_probe: destination Y" },
+              z: { type: "number", description: "move_probe: destination Z" },
+              mannyId: { type: "string", description: "craft_item / mine_resources / detach_container / recover_container: manny to use" },
+              recipe: { type: "string", description: "craft_item: recipe ID" },
+              objectId: { type: "string", description: "mine_resources / recover_container: sector object ID" },
+              resources: { type: "array", items: { type: "string" }, description: "mine_resources: resource types" },
+              targetAmount: { type: "number", description: "mine_resources: ECE amount" },
+              targetContainerId: { type: "string", description: "mine_resources: optional container to deposit into" },
+              containerId: { type: "string", description: "detach_container: inventory item ID of the container" },
+            },
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "cancel_scheduled_action",
+      description: "Cancel a pending scheduled action by its ID.",
+      parameters: {
+        type: "object",
+        required: ["id"],
+        properties: {
+          id: { type: "number", description: "Scheduled action ID to cancel" },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
       name: "atomic_printer_craft",
       description:
         "Use the Atomic 3D Printer to craft high-tech components. The printer runs directly on the probe (no Manny needed). Recipes: micro_conductor, ceramic_insulator, crystal_substrate, dopant_matrix, integrated_circuit.",
@@ -416,6 +484,20 @@ export async function executeTool(
       );
     case "atomic_printer_craft":
       return client.atomicPrinterCraft(args.recipe as string);
+    case "schedule_action": {
+      const entry = await addPendingAction({
+        description: args.description as string,
+        condition: args.condition as any,
+        action: args.action as any,
+      });
+      return { ok: true, scheduledActionId: entry.id, message: `Scheduled action #${entry.id}: "${entry.description}". The poller will execute it within 30 seconds of the condition being met.` };
+    }
+    case "cancel_scheduled_action": {
+      const cancelled = await cancelPendingAction(args.id as number);
+      return cancelled
+        ? { ok: true, message: `Scheduled action #${args.id} cancelled.` }
+        : { ok: false, message: `No pending scheduled action with ID ${args.id} found.` };
+    }
     default:
       throw new Error(`Unknown tool: ${name}`);
   }

@@ -40,6 +40,80 @@ export type DetachedContainer = {
   notes: string | null;
 };
 
+// ── Pending / Deferred Actions ────────────────────────────────────────────────
+
+export type ConditionMannyIdle = { type: "manny_idle"; mannyId: string; mannyName: string };
+export type ConditionProbeIdle = { type: "probe_idle" };
+export type PendingCondition = ConditionMannyIdle | ConditionProbeIdle;
+
+export type ActionMoveProbe    = { type: "move_probe"; x: number; y: number; z: number };
+export type ActionCraftItem    = { type: "craft_item"; mannyId: string; recipe: string };
+export type ActionMineResources = { type: "mine_resources"; mannyId: string; objectId: string; resources: string[]; targetAmount: number; targetContainerId?: string };
+export type ActionDetachContainer = { type: "detach_container"; mannyId: string; containerId: string };
+export type ActionRecoverContainer = { type: "recover_container"; mannyId: string; objectId: string };
+export type PendingActionPayload =
+  | ActionMoveProbe
+  | ActionCraftItem
+  | ActionMineResources
+  | ActionDetachContainer
+  | ActionRecoverContainer;
+
+export type PendingAction = {
+  id: number;
+  description: string;
+  createdAt: string;
+  condition: PendingCondition;
+  action: PendingActionPayload;
+  status: "pending" | "triggered" | "failed";
+  triggeredAt?: string;
+  error?: string;
+};
+
+const PENDING_FILE = "pending-actions.json";
+
+export async function getPendingActions(): Promise<PendingAction[]> {
+  const all = await readFile<PendingAction[]>(PENDING_FILE, []);
+  return all.filter((a) => a.status === "pending");
+}
+
+export async function addPendingAction(
+  entry: Omit<PendingAction, "id" | "createdAt" | "status">
+): Promise<PendingAction> {
+  const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
+  const newRow: PendingAction = {
+    ...entry,
+    id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
+    createdAt: new Date().toISOString(),
+    status: "pending",
+  };
+  rows.push(newRow);
+  await writeFile(PENDING_FILE, rows);
+  return newRow;
+}
+
+export async function resolvePendingAction(
+  id: number,
+  result: { status: "triggered" | "failed"; error?: string }
+): Promise<void> {
+  const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
+  const idx = rows.findIndex((r) => r.id === id);
+  if (idx !== -1) {
+    rows[idx].status = result.status;
+    rows[idx].triggeredAt = new Date().toISOString();
+    if (result.error) rows[idx].error = result.error;
+    await writeFile(PENDING_FILE, rows);
+  }
+}
+
+export async function cancelPendingAction(id: number): Promise<boolean> {
+  const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
+  const idx = rows.findIndex((r) => r.id === id && r.status === "pending");
+  if (idx === -1) return false;
+  rows.splice(idx, 1);
+  await writeFile(PENDING_FILE, rows);
+  return true;
+}
+
 export type VisitedSector = {
   id: number;
   sectorX: number;

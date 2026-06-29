@@ -4,11 +4,13 @@ import * as client from "./client.js";
 import { TOOLS, executeTool } from "./tools.js";
 import {
   addContainer,
+  cancelPendingAction,
   markContainerRecovered,
   recordSector,
   toSectorObjectId,
   updateContainerAnchor,
   getFloatingContainers,
+  getPendingActions,
 } from "./file-store.js";
 
 const router = Router();
@@ -21,6 +23,26 @@ const openai = new OpenAI({
 function sse(res: import("express").Response, event: Record<string, unknown>) {
   res.write(`data: ${JSON.stringify(event)}\n\n`);
 }
+
+router.get("/scheduled", async (_req, res) => {
+  try {
+    const actions = await getPendingActions();
+    res.json({ actions });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete("/scheduled/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const ok = await cancelPendingAction(id);
+    if (ok) res.json({ ok: true });
+    else res.status(404).json({ error: `No pending action with id ${id}` });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
 
 router.get("/state", async (_req, res) => {
   try {
@@ -205,6 +227,18 @@ Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") 
 == CRAFTING RECIPES ==
 ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s`).join("\n")}
 
+== SCHEDULED ACTIONS (pending — poller will execute these automatically) ==
+${
+  (await getPendingActions())
+    .map((a) => {
+      const cond = a.condition.type === "manny_idle"
+        ? `when ${a.condition.mannyName} (${a.condition.mannyId}) is idle`
+        : `when probe is idle`;
+      return `  • #${a.id} "${a.description}" — ${cond}`;
+    })
+    .join("\n") || "  none"
+}
+
 == RULES ==
 - Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use exact IDs from above.
 - For mining into a floating container: use the SECTOR OBJECT ID (not the inventory ID) as target_container_id.
@@ -214,6 +248,7 @@ ${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftable
 - Never invent IDs — only use IDs from real data.
 - Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
 - For multi-step tasks, execute sequentially; call get_game_state after each step to confirm IDs.
+- When the operator says "when X finishes, do Y" or "once X is done, do Y" — use schedule_action. Always confirm the scheduled action ID after creating it.
 - Be concise and precise.`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
