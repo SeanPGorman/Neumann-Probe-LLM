@@ -264,10 +264,90 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-06-29T18:05:50.125Z",
-    "visitCount": 482,
-    "objects": [],
-    "resourceSummary": []
+    "lastVisitedAt": "2026-06-29T18:59:44.443Z",
+    "visitCount": 587,
+    "objects": [
+      {
+        "id": "starter-iron-e2ad1e3569e28ae4",
+        "type": "asteroid",
+        "name": null,
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "iron",
+        "sizeCategory": null,
+        "mass": 0.00005,
+        "radius": 0.012,
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 43.96,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        }
+      },
+      {
+        "id": "deuterium-asteroid-c182d8b1005482a57746ae11",
+        "type": "asteroid",
+        "name": "WP-001-SnoozyBob. This is 0.0.0. 1 Metal. 0 Ice. 1 Deut. 0 Organics.",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "deuterium"
+        ],
+        "composition": "deuterium",
+        "sizeCategory": null,
+        "mass": 0.00001,
+        "radius": 0.0001,
+        "resourceAmounts": {
+          "deuterium": 10,
+          "metals": 0,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "resourceComposition": {
+          "deuterium": 1,
+          "metals": 0,
+          "ice": 0,
+          "carbon_compounds": 0
+        }
+      },
+      {
+        "id": "manny-mny_465d32ed9bee8a6f47d4f48a",
+        "type": "manny",
+        "name": "manny-3",
+        "estimated": false,
+        "summary": "Manny left behind by a probe.",
+        "dangerLevel": "low",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_craft_6f838479911582a82a95dc32",
+        "type": "detached_container",
+        "name": "Metal 4",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": true
+      }
+    ],
+    "resourceSummary": [
+      "metals",
+      "deuterium"
+    ]
   },
   {
     "id": 3,
@@ -962,8 +1042,8 @@
     "sectorY": 1,
     "sectorZ": -1,
     "firstVisitedAt": "2026-06-29T16:53:13.763Z",
-    "lastVisitedAt": "2026-06-29T17:27:09.383Z",
-    "visitCount": 77,
+    "lastVisitedAt": "2026-07-02T22:55:10.226Z",
+    "visitCount": 80,
     "objects": [
       {
         "id": "f79a805f065c828695c0",
@@ -1112,6 +1192,19 @@
         ]
       },
       {
+        "id": "detached-container-container-itm_craft_6f838479911582a82a95dc32",
+        "type": "detached_container",
+        "name": "Metals04",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "ae019c55bc98ffb949e5",
+        "salvageable": false
+      },
+      {
         "id": "detached-container-container-itm_d1a71938b3e8927ea683240a",
         "type": "detached_container",
         "name": "MT01",
@@ -1122,20 +1215,7 @@
         "capacity": 1,
         "mode": "hidden_on_asteroid",
         "targetObjectId": "ae019c55bc98ffb949e5",
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_2bc1b9f823898e5b10f795ca",
-        "type": "detached_container",
-        "name": "MT01",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "ae019c55bc98ffb949e5",
-        "salvageable": true
+        "salvageable": false
       }
     ],
     "resourceSummary": []
