@@ -1,0 +1,163 @@
+[
+  {
+    "description": "When Arendt is idle, recover container MT01",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_d1a71938b3e8927ea683240a"
+    },
+    "id": 1,
+    "createdAt": "2026-07-03T20:44:07.398Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T20:46:32.926Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container Icefull2",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_3530c0a3d9d9ecc8cfc861bd"
+    },
+    "id": 2,
+    "createdAt": "2026-07-03T20:44:07.400Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:33.181Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container OrganicsFull01",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_a83a85820cb223ac19bb3ff6"
+    },
+    "id": 3,
+    "createdAt": "2026-07-03T20:44:07.401Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:33.443Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container IceFull3",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_db112d2daf8d515594f0ec84"
+    },
+    "id": 4,
+    "createdAt": "2026-07-03T20:44:07.402Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:33.594Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container OrganicsFull02",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_2bc1b9f823898e5b10f795ca"
+    },
+    "id": 5,
+    "createdAt": "2026-07-03T20:44:07.404Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:33.743Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container Ice&Carbon",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_craft_ecc92006c740860b9e4ffdb3"
+    },
+    "id": 6,
+    "createdAt": "2026-07-03T20:44:07.405Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:33.893Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container Metals Dude",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76"
+    },
+    "id": 7,
+    "createdAt": "2026-07-03T20:44:07.406Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:34.040Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container Metals011",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_ef74b8d2e561bed52d91cb50"
+    },
+    "id": 8,
+    "createdAt": "2026-07-03T20:44:07.407Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:34.247Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container Metals041",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_72e2c88676d5acd551bde47b"
+    },
+    "id": 9,
+    "createdAt": "2026-07-03T20:44:07.408Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-03T20:46:34.481Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  }
+]

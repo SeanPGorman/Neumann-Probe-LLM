@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-06-29T18:59:44.443Z",
-    "visitCount": 587,
+    "lastVisitedAt": "2026-07-03T20:57:57.624Z",
+    "visitCount": 634,
     "objects": [
       {
         "id": "starter-iron-e2ad1e3569e28ae4",
@@ -283,7 +283,7 @@
         "radius": 0.012,
         "resourceAmounts": {
           "deuterium": 0,
-          "metals": 43.96,
+          "metals": 35.86,
           "ice": 0,
           "carbon_compounds": 0
         },
@@ -309,7 +309,7 @@
         "mass": 0.00001,
         "radius": 0.0001,
         "resourceAmounts": {
-          "deuterium": 10,
+          "deuterium": 8.37,
           "metals": 0,
           "ice": 0,
           "carbon_compounds": 0
@@ -322,18 +322,109 @@
         }
       },
       {
-        "id": "manny-mny_465d32ed9bee8a6f47d4f48a",
+        "id": "manny-mny_05dc76cf9e04e6ec09e20a0a",
         "type": "manny",
-        "name": "manny-3",
+        "name": "Kierkegaard",
         "estimated": false,
         "summary": "Manny left behind by a probe.",
         "dangerLevel": "low",
         "resourceTypes": []
       },
       {
+        "id": "detached-container-container-itm_be06d5e897c86a9e44293a7d",
+        "type": "detached_container",
+        "name": "Metals01",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_3530c0a3d9d9ecc8cfc861bd",
+        "type": "detached_container",
+        "name": "Icefull2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_a83a85820cb223ac19bb3ff6",
+        "type": "detached_container",
+        "name": "OrganicsFull01",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
         "id": "detached-container-container-itm_craft_6f838479911582a82a95dc32",
         "type": "detached_container",
-        "name": "Metal 4",
+        "name": "Metals04",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_db112d2daf8d515594f0ec84",
+        "type": "detached_container",
+        "name": "IceFull3",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_2bc1b9f823898e5b10f795ca",
+        "type": "detached_container",
+        "name": "OrganicsFull02",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_craft_ecc92006c740860b9e4ffdb3",
+        "type": "detached_container",
+        "name": "Ice&Carbon",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "deuterium-asteroid-c182d8b1005482a57746ae11",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
+        "type": "detached_container",
+        "name": "Metals Dude",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
@@ -341,7 +432,33 @@
         "capacity": 1,
         "mode": "hidden_on_asteroid",
         "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
-        "salvageable": true
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_ef74b8d2e561bed52d91cb50",
+        "type": "detached_container",
+        "name": "Metals011",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
+        "type": "detached_container",
+        "name": "Metals041",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": false
       }
     ],
     "resourceSummary": [
@@ -1042,8 +1159,8 @@
     "sectorY": 1,
     "sectorZ": -1,
     "firstVisitedAt": "2026-06-29T16:53:13.763Z",
-    "lastVisitedAt": "2026-07-02T22:59:59.587Z",
-    "visitCount": 90,
+    "lastVisitedAt": "2026-07-02T23:02:33.257Z",
+    "visitCount": 95,
     "objects": [
       {
         "id": "f79a805f065c828695c0",

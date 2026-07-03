@@ -54,6 +54,20 @@ async function executeAction(action: PendingAction): Promise<void> {
   }
 }
 
+/** Return the manny ID that an action will occupy, if any. */
+function actionMannyId(action: PendingAction): string | null {
+  const a = action.action;
+  if (
+    a.type === "craft_item" ||
+    a.type === "mine_resources" ||
+    a.type === "detach_container" ||
+    a.type === "recover_container"
+  ) {
+    return a.mannyId;
+  }
+  return null;
+}
+
 async function poll(): Promise<void> {
   const pending = await getPendingActions();
   if (pending.length === 0) return;
@@ -73,7 +87,29 @@ async function poll(): Promise<void> {
   const mannies: any[] = manniesResp?.mannies ?? [];
   const probe = probeResp?.probe ?? null;
 
+  // Track mannies and singleton resources claimed this cycle so we only fire
+  // one action per manny (and one probe-move) per poll tick.
+  const claimedMannies = new Set<string>();
+  let probeMoveClaimed = false;
+
   for (const action of pending) {
+    // Check if the resource this action needs is already claimed this cycle
+    const mannyId = actionMannyId(action);
+    if (mannyId && claimedMannies.has(mannyId)) {
+      logger.info(
+        { actionId: action.id, mannyId },
+        "poller: manny already claimed this cycle — deferring to next tick"
+      );
+      continue;
+    }
+    if (action.action.type === "move_probe" && probeMoveClaimed) {
+      logger.info(
+        { actionId: action.id },
+        "poller: probe move already claimed this cycle — deferring"
+      );
+      continue;
+    }
+
     let conditionMet = false;
     try {
       conditionMet = await checkCondition(action, mannies, probe);
@@ -93,6 +129,10 @@ async function poll(): Promise<void> {
       await executeAction(action);
       await resolvePendingAction(action.id, { status: "triggered" });
       logger.info({ actionId: action.id }, "poller: action triggered successfully");
+
+      // Mark the resource as claimed so subsequent actions skip this cycle
+      if (mannyId) claimedMannies.add(mannyId);
+      if (action.action.type === "move_probe") probeMoveClaimed = true;
     } catch (err: any) {
       const msg = err?.message ?? String(err);
       logger.error({ actionId: action.id, err: msg }, "poller: action execution failed");
