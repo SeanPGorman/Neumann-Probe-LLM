@@ -68,8 +68,9 @@ router.get("/state", async (_req, res) => {
       location: m.location ?? null,
     }));
 
+    const activeMannyIds = new Set((manniesResp.mannies ?? []).map((m: any) => m.id));
     const stowedMannies = ((probeResp.probe?.inventory?.items ?? []) as any[])
-      .filter((i: any) => i.type === "manny")
+      .filter((i: any) => i.type === "manny" && !activeMannyIds.has(i.id))
       .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" }));
 
     const sectorObjectsMapped = sectorObjects.map((o: any) => ({
@@ -153,8 +154,9 @@ router.post("/command", async (req, res) => {
       (i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer"
     );
 
-    // Mannies sitting in inventory (not yet deployed / activated)
-    const stowedMannies = inventoryItems.filter((i: any) => i.type === "manny");
+    // Mannies sitting in inventory (not yet deployed / activated) — exclude already-active ones
+    const activeMannyIdSet = new Set(mannies.map((m: any) => m.id));
+    const stowedMannies = inventoryItems.filter((i: any) => i.type === "manny" && !activeMannyIdSet.has(i.id));
 
     // Pull tracked floating containers for this sector
     const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);

@@ -383,6 +383,7 @@ export async function executeTool(
         ]);
       const probe = probeResp.probe;
       const inv = probe.inventory ?? {};
+      const activeMannyIds = new Set((manniesResp.mannies ?? []).map((m: any) => m.id));
       return {
         probe: {
           id: probe.id,
@@ -431,7 +432,7 @@ export async function executeTool(
             .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer")
             .map((i: any) => ({ id: i.id, type: i.type, name: i.label ?? i.name })),
           stowedMannies: (inv.items ?? [])
-            .filter((i: any) => i.type === "manny")
+            .filter((i: any) => i.type === "manny" && !activeMannyIds.has(i.id))
             .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" })),
         },
         recipes: (recipesResp.recipes ?? []).map((r: any) => ({
