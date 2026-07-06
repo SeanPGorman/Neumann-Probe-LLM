@@ -237,7 +237,12 @@ Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used 
 Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") || "none"}
 
 == CRAFTING RECIPES ==
-${recipes.slice(0, 20).map((r: any) => `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s`).join("\n")}
+${recipes.slice(0, 25).map((r: any) => {
+  const ing = (r.ingredients ?? []).map((i: any) =>
+    i.kind === "resource" ? `${i.quantity}${i.unit === "earth_container_equivalent" ? "ECE" : ""} ${i.type}` : `${i.quantity}× ${i.type}`
+  ).join(", ");
+  return `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s  needs=[${ing || "nothing"}]`;
+}).join("\n")}
 
 == SCHEDULED ACTIONS (pending — poller will execute these automatically) ==
 ${
@@ -261,7 +266,8 @@ ${
 - Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
 - For multi-step tasks, execute sequentially; call get_game_state after each step to confirm IDs.
 - When the operator says "when X finishes, do Y" or "once X is done, do Y" — use schedule_action. Always confirm the scheduled action ID after creating it.
-- PARALLEL BUILDS: When asked to build a complex item, assign independent sub-component chains to different mannies simultaneously. Example for a Linear Actuator: assign Manny A to craft steel_bar→steel_bar→steel_plate→electric_motor (sequential chain), assign Manny B to pre-craft steel_bar→steel_plate→steel_plate (the parts the actuator needs beyond the motor). Schedule the final linear_actuator assembly on either manny with condition requireItems=["electric_motor"] so it only fires once the motor is in inventory — even if that manny finishes their chain first.
+- PARALLEL BUILDS: When asked to build a complex item, FIRST compute the COMPLETE work breakdown — every ingredient at every level of the recipe tree. Then distribute ALL of that work across ALL available mannies. Do not stop after assigning one task per manny; each manny should have a full sequential chain of crafting tasks (using schedule_action with manny_idle conditions to chain them). Under-utilising mannies is a mistake.
+  Example for building a Manny with 8 workers: compute that you need e.g. 18× electric_motor, 6× linear_actuator, 4× battery_pack, 18× steel_plate, 12× steel_bar (plus sub-ingredients). Divide those totals across all 8 mannies; each manny gets a chain like: steel_bar → steel_bar → electric_motor → linear_actuator → schedule next when idle.
 - DEPENDENCY GUARD: Use requireItems in the schedule_action condition whenever a step depends on an item being produced by a *different* manny in parallel. Without it, the step could fire before its dependency is ready.
 - Be concise and precise.`;
 

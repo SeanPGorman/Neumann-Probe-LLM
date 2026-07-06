@@ -440,6 +440,12 @@ export async function executeTool(
           name: r.name,
           craftableBy: r.craftableBy,
           durationSeconds: r.durationSeconds,
+          ingredients: (r.ingredients ?? []).map((i: any) => ({
+            type: i.type,
+            quantity: i.quantity,
+            kind: i.kind,
+            unit: i.unit,
+          })),
         })),
       };
     }
