@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-07-04T00:26:31.490Z",
-    "visitCount": 1040,
+    "lastVisitedAt": "2026-07-06T16:00:48.491Z",
+    "visitCount": 1042,
     "objects": [
       {
         "id": "starter-iron-e2ad1e3569e28ae4",
@@ -273,26 +273,16 @@
         "name": null,
         "estimated": false,
         "summary": "Wandering asteroid body.",
-        "dangerLevel": "low",
+        "dangerLevel": null,
         "resourceTypes": [
           "metals"
         ],
-        "composition": "iron",
+        "composition": null,
         "sizeCategory": null,
-        "mass": 0.00005,
-        "radius": 0.012,
-        "resourceAmounts": {
-          "deuterium": 0,
-          "metals": 35.4,
-          "ice": 0,
-          "carbon_compounds": 0
-        },
-        "resourceComposition": {
-          "deuterium": 0,
-          "metals": 1,
-          "ice": 0,
-          "carbon_compounds": 0
-        }
+        "mass": null,
+        "radius": null,
+        "resourceAmounts": null,
+        "resourceComposition": null
       },
       {
         "id": "deuterium-asteroid-c182d8b1005482a57746ae11",
@@ -300,60 +290,67 @@
         "name": "WP-001-SnoozyBob. This is 0.0.0. 1 Metal. 0 Ice. 1 Deut. 0 Organics.",
         "estimated": false,
         "summary": "Wandering asteroid body.",
-        "dangerLevel": "low",
+        "dangerLevel": null,
         "resourceTypes": [
           "deuterium"
         ],
-        "composition": "deuterium",
+        "composition": null,
         "sizeCategory": null,
-        "mass": 0.00001,
-        "radius": 0.0001,
-        "resourceAmounts": {
-          "deuterium": 8.19,
-          "metals": 0,
-          "ice": 0,
-          "carbon_compounds": 0
-        },
-        "resourceComposition": {
-          "deuterium": 1,
-          "metals": 0,
-          "ice": 0,
-          "carbon_compounds": 0
-        }
-      },
-      {
-        "id": "manny-mny_05dc76cf9e04e6ec09e20a0a",
-        "type": "manny",
-        "name": "Kierkegaard",
-        "estimated": false,
-        "summary": "Manny left behind by a probe.",
-        "dangerLevel": "low",
-        "resourceTypes": []
+        "mass": null,
+        "radius": null,
+        "resourceAmounts": null,
+        "resourceComposition": null
       },
       {
         "id": "detached-container-container-itm_ef74b8d2e561bed52d91cb50",
         "type": "detached_container",
-        "name": "Metals011",
+        "name": "IceFull1",
         "estimated": false,
         "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
+        "dangerLevel": null,
         "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "capacity": null,
+        "mode": null,
+        "targetObjectId": null,
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
+        "type": "detached_container",
+        "name": "MetalsFull2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": null,
+        "resourceTypes": [],
+        "capacity": null,
+        "mode": null,
+        "targetObjectId": null,
         "salvageable": false
       },
       {
         "id": "detached-container-container-itm_be06d5e897c86a9e44293a7d",
         "type": "detached_container",
-        "name": "Metals01",
+        "name": "MetalsMT1",
         "estimated": false,
         "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
+        "dangerLevel": null,
         "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "capacity": null,
+        "mode": null,
+        "targetObjectId": null,
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
+        "type": "detached_container",
+        "name": "MetalsMT3",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": null,
+        "resourceTypes": [],
+        "capacity": null,
+        "mode": null,
+        "targetObjectId": null,
         "salvageable": false
       }
     ],
