@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-07-06T16:00:48.491Z",
-    "visitCount": 1042,
+    "lastVisitedAt": "2026-07-06T16:16:13.400Z",
+    "visitCount": 1043,
     "objects": [
       {
         "id": "starter-iron-e2ad1e3569e28ae4",
@@ -273,16 +273,26 @@
         "name": null,
         "estimated": false,
         "summary": "Wandering asteroid body.",
-        "dangerLevel": null,
+        "dangerLevel": "low",
         "resourceTypes": [
           "metals"
         ],
-        "composition": null,
+        "composition": "iron",
         "sizeCategory": null,
-        "mass": null,
-        "radius": null,
-        "resourceAmounts": null,
-        "resourceComposition": null
+        "mass": 0.00005,
+        "radius": 0.012,
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 23.93,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        }
       },
       {
         "id": "deuterium-asteroid-c182d8b1005482a57746ae11",
@@ -290,28 +300,38 @@
         "name": "WP-001-SnoozyBob. This is 0.0.0. 1 Metal. 0 Ice. 1 Deut. 0 Organics.",
         "estimated": false,
         "summary": "Wandering asteroid body.",
-        "dangerLevel": null,
+        "dangerLevel": "low",
         "resourceTypes": [
           "deuterium"
         ],
-        "composition": null,
+        "composition": "deuterium",
         "sizeCategory": null,
-        "mass": null,
-        "radius": null,
-        "resourceAmounts": null,
-        "resourceComposition": null
+        "mass": 0.00001,
+        "radius": 0.0001,
+        "resourceAmounts": {
+          "deuterium": 5.15,
+          "metals": 0,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "resourceComposition": {
+          "deuterium": 1,
+          "metals": 0,
+          "ice": 0,
+          "carbon_compounds": 0
+        }
       },
       {
-        "id": "detached-container-container-itm_ef74b8d2e561bed52d91cb50",
+        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
         "type": "detached_container",
-        "name": "IceFull1",
+        "name": "MetalsMT3",
         "estimated": false,
         "summary": "Detached storage container detected.",
-        "dangerLevel": null,
+        "dangerLevel": "low",
         "resourceTypes": [],
-        "capacity": null,
-        "mode": null,
-        "targetObjectId": null,
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
         "salvageable": false
       },
       {
@@ -320,11 +340,37 @@
         "name": "MetalsFull2",
         "estimated": false,
         "summary": "Detached storage container detected.",
-        "dangerLevel": null,
+        "dangerLevel": "low",
         "resourceTypes": [],
-        "capacity": null,
-        "mode": null,
-        "targetObjectId": null,
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_3530c0a3d9d9ecc8cfc861bd",
+        "type": "detached_container",
+        "name": "MetalsMT2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_ef74b8d2e561bed52d91cb50",
+        "type": "detached_container",
+        "name": "IceFull1",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
         "salvageable": false
       },
       {
@@ -333,24 +379,11 @@
         "name": "MetalsMT1",
         "estimated": false,
         "summary": "Detached storage container detected.",
-        "dangerLevel": null,
+        "dangerLevel": "low",
         "resourceTypes": [],
-        "capacity": null,
-        "mode": null,
-        "targetObjectId": null,
-        "salvageable": false
-      },
-      {
-        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
-        "type": "detached_container",
-        "name": "MetalsMT3",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": null,
-        "resourceTypes": [],
-        "capacity": null,
-        "mode": null,
-        "targetObjectId": null,
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
         "salvageable": false
       }
     ],
