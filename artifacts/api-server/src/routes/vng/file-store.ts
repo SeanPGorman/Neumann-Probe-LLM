@@ -42,7 +42,13 @@ export type DetachedContainer = {
 
 // ── Pending / Deferred Actions ────────────────────────────────────────────────
 
-export type ConditionMannyIdle = { type: "manny_idle"; mannyId: string; mannyName: string };
+export type ConditionMannyIdle = {
+  type: "manny_idle";
+  mannyId: string;
+  mannyName: string;
+  /** Optional: also wait until ALL of these item types exist in probe inventory (for dependency chains) */
+  requireItems?: string[];
+};
 export type ConditionProbeIdle = { type: "probe_idle" };
 export type PendingCondition = ConditionMannyIdle | ConditionProbeIdle;
 

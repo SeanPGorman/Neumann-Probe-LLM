@@ -17,7 +17,28 @@ async function checkCondition(
   const cond = action.condition;
   if (cond.type === "manny_idle") {
     const m = mannies.find((m: any) => m.id === cond.mannyId);
-    return m ? !m.currentTask : false;
+    if (!m || m.currentTask) return false;
+
+    // Optional inventory dependency guard: all required item types must exist
+    if (cond.requireItems && cond.requireItems.length > 0) {
+      const inventoryItems: any[] = probe?.inventory?.items ?? [];
+      const inventoryContainers: any[] = probe?.inventory?.containers ?? [];
+      // item types come from inv.items; container items are checked by label/name too
+      const itemTypes = new Set([
+        ...inventoryItems.map((i: any) => i.type),
+        ...inventoryContainers.map((c: any) => c.kind),
+      ]);
+      const allPresent = cond.requireItems.every((req) => itemTypes.has(req));
+      if (!allPresent) {
+        logger.info(
+          { actionId: action.id, requireItems: cond.requireItems, found: [...itemTypes] },
+          "poller: manny idle but required items not yet in inventory — waiting"
+        );
+        return false;
+      }
+    }
+
+    return true;
   }
   if (cond.type === "probe_idle") {
     return probe?.movement?.status !== "moving";

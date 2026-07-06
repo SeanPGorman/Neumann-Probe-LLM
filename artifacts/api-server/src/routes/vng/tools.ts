@@ -291,6 +291,7 @@ export const TOOLS: ChatCompletionTool[] = [
               },
               mannyId: { type: "string", description: "Required when type=manny_idle: the manny's full ID" },
               mannyName: { type: "string", description: "Required when type=manny_idle: the manny's display name (for the log)" },
+              requireItems: { type: "array", items: { type: "string" }, description: "Optional (manny_idle only): also wait until ALL of these item types exist in probe inventory before firing. Use this for parallel build dependencies — e.g. schedule the final assembly step with requireItems=['electric_motor'] so it only fires once the motor (being built in parallel by another manny) is ready." },
             },
           },
           action: {

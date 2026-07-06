@@ -249,6 +249,8 @@ ${
 - Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
 - For multi-step tasks, execute sequentially; call get_game_state after each step to confirm IDs.
 - When the operator says "when X finishes, do Y" or "once X is done, do Y" — use schedule_action. Always confirm the scheduled action ID after creating it.
+- PARALLEL BUILDS: When asked to build a complex item, assign independent sub-component chains to different mannies simultaneously. Example for a Linear Actuator: assign Manny A to craft steel_bar→steel_bar→steel_plate→electric_motor (sequential chain), assign Manny B to pre-craft steel_bar→steel_plate→steel_plate (the parts the actuator needs beyond the motor). Schedule the final linear_actuator assembly on either manny with condition requireItems=["electric_motor"] so it only fires once the motor is in inventory — even if that manny finishes their chain first.
+- DEPENDENCY GUARD: Use requireItems in the schedule_action condition whenever a step depends on an item being produced by a *different* manny in parallel. Without it, the step could fire before its dependency is ready.
 - Be concise and precise.`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
