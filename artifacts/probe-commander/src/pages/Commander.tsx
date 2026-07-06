@@ -872,13 +872,19 @@ export default function Commander() {
 
   const globeCenter = useMemo(() => {
     const mv = state?.probe?.movement;
+    // prior = last known departure point (from any completed or in-progress trip)
+    const px = mv?.origin?.x, py = mv?.origin?.y, pz = mv?.origin?.z;
+    const hasPrior = px !== undefined && py !== undefined && pz !== undefined;
     if (mv?.status === "moving" && mv?.target) return {
       x: mv.target.x, y: mv.target.y, z: mv.target.z,
       isMoving: true,
-      ox: mv.origin?.x, oy: mv.origin?.y, oz: mv.origin?.z,
+      px: hasPrior ? px : undefined, py: hasPrior ? py : undefined, pz: hasPrior ? pz : undefined,
     };
     const s = state?.probe?.sector ?? { x: 0, y: 0, z: 0 };
-    return { x: s.x, y: s.y, z: s.z, isMoving: false, ox: undefined, oy: undefined, oz: undefined };
+    return {
+      x: s.x, y: s.y, z: s.z, isMoving: false,
+      px: hasPrior ? px : undefined, py: hasPrior ? py : undefined, pz: hasPrior ? pz : undefined,
+    };
   }, [state]);
 
   const TABS: { id: SideTab; label: string }[] = [
@@ -923,9 +929,9 @@ export default function Commander() {
               probeY={globeCenter.y}
               probeZ={globeCenter.z}
               isMoving={globeCenter.isMoving}
-              originX={globeCenter.ox}
-              originY={globeCenter.oy}
-              originZ={globeCenter.oz}
+              priorX={globeCenter.px}
+              priorY={globeCenter.py}
+              priorZ={globeCenter.pz}
               sectorsData={sectorsData}
               onScoutRequest={handleScoutRequest}
             />

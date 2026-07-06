@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-07-06T17:03:32.352Z",
-    "visitCount": 1090,
+    "lastVisitedAt": "2026-07-06T17:26:46.094Z",
+    "visitCount": 1137,
     "objects": [
       {
         "id": "starter-iron-e2ad1e3569e28ae4",
@@ -283,7 +283,7 @@
         "radius": 0.012,
         "resourceAmounts": {
           "deuterium": 0,
-          "metals": 23.34,
+          "metals": 23.07,
           "ice": 0,
           "carbon_compounds": 0
         },
@@ -335,32 +335,6 @@
         "salvageable": false
       },
       {
-        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
-        "type": "detached_container",
-        "name": "MetalsMT3",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
-        "salvageable": false
-      },
-      {
-        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
-        "type": "detached_container",
-        "name": "MetalsFull2",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
-        "salvageable": false
-      },
-      {
         "id": "detached-container-container-itm_ef74b8d2e561bed52d91cb50",
         "type": "detached_container",
         "name": "IceFull1",
@@ -377,6 +351,32 @@
         "id": "detached-container-container-itm_be06d5e897c86a9e44293a7d",
         "type": "detached_container",
         "name": "MetalsMT1",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
+        "type": "detached_container",
+        "name": "MetalsMT3",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "starter-iron-e2ad1e3569e28ae4",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
+        "type": "detached_container",
+        "name": "MetalsFull2",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",

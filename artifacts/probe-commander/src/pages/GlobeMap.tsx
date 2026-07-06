@@ -45,15 +45,15 @@ interface Props {
   probeX: number;
   probeY: number;
   probeZ: number;
-  originX?: number;
-  originY?: number;
-  originZ?: number;
+  priorX?: number;
+  priorY?: number;
+  priorZ?: number;
   isMoving: boolean;
   sectorsData?: { sectors: any[] };
   onScoutRequest?: (x: number, y: number, z: number) => void;
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, isMoving, sectorsData, onScoutRequest }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onScoutRequest }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -198,11 +198,18 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     ];
     dotsRef.current = allDots;
 
+    // Helpers for special positions
+    const hasPrior = priorX !== undefined && priorY !== undefined && priorZ !== undefined;
+    const isPriorPos = (x: number, y: number, z: number) =>
+      hasPrior && x === priorX && y === priorY && z === priorZ;
+    const isHomePos = (x: number, y: number, z: number) => x === 0 && y === 0 && z === 0;
+
     // 3. Visited sector dots (small, so path line is visible on top)
     for (const vp of visitedProj) {
       const { sx, sy, vs } = vp;
       const isProbePos = vs.sectorX === probeX && vs.sectorY === probeY && vs.sectorZ === probeZ;
-      const isOriginPos = isMoving && vs.sectorX === originX && vs.sectorY === originY && vs.sectorZ === originZ;
+      const isPrior = isPriorPos(vs.sectorX, vs.sectorY, vs.sectorZ);
+      const isHome = isHomePos(vs.sectorX, vs.sectorY, vs.sectorZ);
       const isSelected = selected?.ax === vs.sectorX && selected?.ay === vs.sectorY && selected?.az === vs.sectorZ;
       if (isProbePos) continue;
 
@@ -210,13 +217,44 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
       const va = brightVisited;
-      ctx.fillStyle = isOriginPos ? `rgba(255,210,80,${va})` : isSelected ? `rgba(255,250,130,${va})` : `rgba(255,140,0,${0.95 * va})`;
+      ctx.fillStyle = isPrior
+        ? `rgba(255,210,80,${va})`
+        : isHome
+          ? `rgba(120,200,255,${va})`
+          : isSelected
+            ? `rgba(255,250,130,${va})`
+            : `rgba(255,140,0,${0.95 * va})`;
       ctx.fill();
 
-      if (isSelected || isOriginPos) {
+      if (isSelected || isPrior || isHome) {
         ctx.beginPath();
         ctx.arc(sx, sy, r + 3, 0, Math.PI * 2);
-        ctx.strokeStyle = isOriginPos ? "rgba(255,200,80,0.7)" : "rgba(255,240,120,0.9)";
+        ctx.strokeStyle = isPrior
+          ? "rgba(255,200,80,0.7)"
+          : isHome
+            ? "rgba(120,200,255,0.7)"
+            : "rgba(255,240,120,0.9)";
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
+    // 3b. Home marker even if not yet in visitedMap (uncharted [0,0,0] in range)
+    const homeInVisited = visitedMap.has("0,0,0");
+    const homeIsProbe = probeX === 0 && probeY === 0 && probeZ === 0;
+    if (!homeInVisited && !homeIsProbe) {
+      // Check if [0,0,0] is within the globe RADIUS of probe
+      const hdx = 0 - probeX, hdy = 0 - probeY, hdz = 0 - probeZ;
+      if (hdx * hdx + hdy * hdy + hdz * hdz <= RADIUS * RADIUS) {
+        const hp = project(0, 0, 0);
+        const r = 3.5;
+        ctx.beginPath();
+        ctx.arc(hp.sx, hp.sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(120,200,255,${brightVisited})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.arc(hp.sx, hp.sy, r + 3, 0, Math.PI * 2);
+        ctx.strokeStyle = "rgba(120,200,255,0.7)";
         ctx.lineWidth = 1;
         ctx.stroke();
       }
@@ -254,14 +292,15 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
     ctx.font = "9px monospace";
     const legends: [string, string][] = [
       ["◉ probe", "rgba(200,255,220,0.9)"],
-      ...(isMoving ? [["○ origin", "rgba(255,200,80,0.7)"] as [string, string]] : []),
+      ...(hasPrior ? [["○ prior", "rgba(255,200,80,0.7)"] as [string, string]] : []),
+      ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
     ];
     legends.forEach(([label, color], i) => {
       ctx.fillStyle = color;
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
-  }, [rot, zoom, probeX, probeY, probeZ, originX, originY, originZ, isMoving, visitedMap, selected,
+  }, [rot, zoom, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
       brightProbe, brightDots, brightVisited, brightCourse]);
 
   useEffect(() => { draw(); }, [draw]);
@@ -336,7 +375,8 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
 
   const selSector = selected ? visitedMap.get(`${selected.ax},${selected.ay},${selected.az}`) : null;
   const selIsProbe = selected?.ax === probeX && selected?.ay === probeY && selected?.az === probeZ;
-  const selIsOrigin = isMoving && selected?.ax === originX && selected?.ay === originY && selected?.az === originZ;
+  const selIsPrior = priorX !== undefined && selected?.ax === priorX && selected?.ay === priorY && selected?.az === priorZ;
+  const selIsHome = selected?.ax === 0 && selected?.ay === 0 && selected?.az === 0;
 
   return (
     <div className="flex flex-col h-full gap-2">
@@ -392,9 +432,9 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
         <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
       </div>
 
-      {isMoving && (
+      {isMoving && priorX !== undefined && (
         <div className="text-[10px] text-yellow-400/70 font-mono px-1">
-          ○ origin [{originX},{originY},{originZ}] → ◉ target [{probeX},{probeY},{probeZ}]
+          ○ prior [{priorX},{priorY},{priorZ}] → ◉ target [{probeX},{probeY},{probeZ}]
         </div>
       )}
 
@@ -416,7 +456,8 @@ export function GlobeMap({ probeX, probeY, probeZ, originX, originY, originZ, is
             )}
             <div className="flex items-center gap-1.5 flex-wrap">
               {selIsProbe && <span className="text-[10px] text-primary font-bold">◉ PROBE</span>}
-              {selIsOrigin && <span className="text-[10px] text-yellow-400">○ ORIGIN</span>}
+              {selIsPrior && <span className="text-[10px] text-yellow-400">○ PRIOR</span>}
+              {selIsHome && !selIsProbe && <span className="text-[10px] text-blue-300">⌂ HOME</span>}
               {selSector && (
                 <span className="text-[10px] text-green-400">
                   VISITED ×{selSector.visitCount}
