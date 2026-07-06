@@ -872,7 +872,7 @@ export default function Commander() {
 
   const globeCenter = useMemo(() => {
     const mv = state?.probe?.movement;
-    if (mv?.target) return {
+    if (mv?.status === "moving" && mv?.target) return {
       x: mv.target.x, y: mv.target.y, z: mv.target.z,
       isMoving: true,
       ox: mv.origin?.x, oy: mv.origin?.y, oz: mv.origin?.z,
