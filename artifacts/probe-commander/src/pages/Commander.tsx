@@ -27,6 +27,7 @@ function toolLabel(tool: string): string {
     repair_manny: "REPAIR MANNY",
     recall_manny: "RECALL MANNY",
     rename_manny: "RENAME MANNY",
+    deploy_manny: "DEPLOY MANNY",
     move_probe: "MOVE PROBE",
     scan_sector: "SCAN SECTOR",
     jettison_item: "JETTISON",
@@ -107,7 +108,7 @@ function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
   if (!state) {
     return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING TELEMETRY…</div>;
   }
-  const { probe, mannies, sectorObjects, inventory } = state;
+  const { probe, mannies, stowedMannies, sectorObjects, inventory } = state;
   const sector = probe.sector ?? { x: 0, y: 0, z: 0 };
   return (
     <div className="space-y-4">
@@ -136,10 +137,23 @@ function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
           <span className="text-muted-foreground">{(inventory?.usedCapacity ?? 0).toFixed(2)}/{inventory?.capacity ?? 0} ECE</span>
         </div>
       </div>
-      {mannies?.length > 0 && (
+      {(mannies?.length > 0 || stowedMannies?.length > 0) && (
         <div>
-          <div className="text-xs text-muted-foreground tracking-widest mb-2">MANNIES ({mannies.length})</div>
-          <div className="space-y-1.5">{mannies.map((m: any) => <MannyRow key={m.id} manny={m} />)}</div>
+          <div className="text-xs text-muted-foreground tracking-widest mb-2">
+            MANNIES ({mannies?.length ?? 0} active{stowedMannies?.length > 0 ? `, ${stowedMannies.length} stowed` : ""})
+          </div>
+          <div className="space-y-1.5">
+            {mannies?.map((m: any) => <MannyRow key={m.id} manny={m} />)}
+            {stowedMannies?.map((m: any) => (
+              <div key={m.itemId} className="flex items-start gap-2 text-xs opacity-50">
+                <span className="text-muted-foreground mt-0.5">◇</span>
+                <div className="flex-1 min-w-0">
+                  <div className="text-foreground font-medium truncate">{m.name}</div>
+                  <div className="text-muted-foreground text-[10px]">STOWED — say "deploy {m.name}" to activate</div>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       )}
       {sectorObjects?.length > 0 && (

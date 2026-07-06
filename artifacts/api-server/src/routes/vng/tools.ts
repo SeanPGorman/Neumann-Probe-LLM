@@ -140,6 +140,24 @@ export const TOOLS: ChatCompletionTool[] = [
   {
     type: "function",
     function: {
+      name: "deploy_manny",
+      description:
+        "Deploy a Manny from probe inventory into active service, making it available to receive tasks. Use when the operator asks to 'activate', 'deploy', or 'add' a manny that is currently stowed in inventory. The item_id comes from the STOWED IN INVENTORY section of the mannies list in the current state.",
+      parameters: {
+        type: "object",
+        required: ["item_id"],
+        properties: {
+          item_id: {
+            type: "string",
+            description: "Inventory item ID of the stowed manny (from the STOWED IN INVENTORY list)",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
       name: "move_probe",
       description:
         "Move the probe to a different sector using absolute coordinates. Check fuel first.",
@@ -412,6 +430,9 @@ export async function executeTool(
           items: (inv.items ?? [])
             .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer")
             .map((i: any) => ({ id: i.id, type: i.type, name: i.label ?? i.name })),
+          stowedMannies: (inv.items ?? [])
+            .filter((i: any) => i.type === "manny")
+            .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" })),
         },
         recipes: (recipesResp.recipes ?? []).map((r: any) => ({
           id: r.id,
@@ -445,6 +466,8 @@ export async function executeTool(
       return client.recallManny(args.manny_id as string);
     case "rename_manny":
       return client.renameManny(args.manny_id as string, args.name as string);
+    case "deploy_manny":
+      return client.deployManny(args.item_id as string);
     case "move_probe":
       return client.moveProbe(
         args.x as number,

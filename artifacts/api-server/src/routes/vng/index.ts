@@ -68,6 +68,10 @@ router.get("/state", async (_req, res) => {
       location: m.location ?? null,
     }));
 
+    const stowedMannies = ((probeResp.probe?.inventory?.items ?? []) as any[])
+      .filter((i: any) => i.type === "manny")
+      .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" }));
+
     const sectorObjectsMapped = sectorObjects.map((o: any) => ({
       id: o.id ?? null,
       type: o.type,
@@ -92,6 +96,7 @@ router.get("/state", async (_req, res) => {
         freeCapacity: inv.freeCapacity ?? 0,
       },
       mannies,
+      stowedMannies,
       sectorObjects: sectorObjectsMapped,
     });
   } catch (err: any) {
@@ -148,6 +153,9 @@ router.post("/command", async (req, res) => {
       (i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer"
     );
 
+    // Mannies sitting in inventory (not yet deployed / activated)
+    const stowedMannies = inventoryItems.filter((i: any) => i.type === "manny");
+
     // Pull tracked floating containers for this sector
     const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);
 
@@ -184,11 +192,13 @@ Movement: ${
         : "stationary"
     }
 
-== MANNIES (${mannies.length} total) ==
+== MANNIES (${mannies.length} active, ${stowedMannies.length} stowed) ==
 IDLE (${idleMannies.length}):
 ${idleMannies.map((m: any) => `  • ${m.name}  id="${m.id}"`).join("\n") || "  none"}
 BUSY (${busyMannies.length}):
 ${busyMannies.map((m: any) => `  • ${m.name}  id="${m.id}"  task=${m.currentTask}  progress=${m.taskProgressPercent?.toFixed(1)}%  eta=${m.taskEstimatedEndTime ?? "?"}`).join("\n") || "  none"}
+STOWED IN INVENTORY (${stowedMannies.length}) — call deploy_manny to activate:
+${stowedMannies.map((m: any) => `  • ${m.label ?? m.name ?? "Unnamed Manny"}  item_id="${m.id}"`).join("\n") || "  none"}
 
 == SECTOR OBJECTS (${sectorObjects.length}) ==
 ${sectorObjects

@@ -102,6 +102,14 @@ export async function renameManny(mannyId: string, name: string) {
   });
 }
 
+/** Deploy a manny from probe inventory into active service. itemId is the inventory item ID of the manny. */
+export async function deployManny(itemId: string) {
+  return vngFetch("/api/probe/mannies", {
+    method: "POST",
+    body: JSON.stringify({ itemId }),
+  });
+}
+
 export async function detachContainer(mannyId: string, containerId: string) {
   return vngFetch(
     `/api/probe/mannies/${encodeURIComponent(mannyId)}/detach-storage-container`,
