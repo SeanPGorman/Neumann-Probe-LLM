@@ -159,5 +159,141 @@
     "status": "failed",
     "triggeredAt": "2026-07-03T20:46:34.481Z",
     "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "When Arendt is idle, recover container Icefull2 onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_3530c0a3d9d9ecc8cfc861bd"
+    },
+    "id": 10,
+    "createdAt": "2026-07-03T20:58:50.125Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T20:59:06.690Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container OrganicsFull01 onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_a83a85820cb223ac19bb3ff6"
+    },
+    "id": 11,
+    "createdAt": "2026-07-03T20:58:51.533Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:04:06.762Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container IceFull3 onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_db112d2daf8d515594f0ec84"
+    },
+    "id": 12,
+    "createdAt": "2026-07-03T20:58:52.894Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:09:06.847Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container OrganicsFull02 onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_2bc1b9f823898e5b10f795ca"
+    },
+    "id": 13,
+    "createdAt": "2026-07-03T20:58:54.411Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:14:07.208Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container Ice&Carbon onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_craft_ecc92006c740860b9e4ffdb3"
+    },
+    "id": 14,
+    "createdAt": "2026-07-03T20:58:55.934Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:19:07.139Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container Metals Dude onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76"
+    },
+    "id": 15,
+    "createdAt": "2026-07-03T20:58:57.348Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:24:07.124Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container Metals011 onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_ef74b8d2e561bed52d91cb50"
+    },
+    "id": 16,
+    "createdAt": "2026-07-03T20:58:58.838Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:29:07.244Z"
+  },
+  {
+    "description": "When Arendt is idle, recover container Metals041 onto the probe.",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "objectId": "detached-container-container-itm_72e2c88676d5acd551bde47b"
+    },
+    "id": 17,
+    "createdAt": "2026-07-03T20:59:00.412Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-03T21:34:07.204Z"
   }
 ]
