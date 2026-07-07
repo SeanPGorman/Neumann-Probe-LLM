@@ -599,7 +599,8 @@
     },
     "id": 35,
     "createdAt": "2026-07-06T18:56:47.718Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T19:39:59.460Z"
   },
   {
     "description": "Locke: craft steel plate for new Manny component stock when current task finishes",
@@ -695,7 +696,8 @@
     },
     "id": 40,
     "createdAt": "2026-07-06T18:56:47.726Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T20:40:30.008Z"
   },
   {
     "description": "Locke: craft electric motor for new Manny component stock after enough steel parts exist",
@@ -1053,26 +1055,6 @@
     "triggeredAt": "2026-07-06T20:23:39.258Z"
   },
   {
-    "description": "Kierkegaard: craft electric_motor for new Manny component stock when current task finishes",
-    "condition": {
-      "type": "manny_idle",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "mannyName": "Kierkegaard",
-      "requireItems": [
-        "steel_bar",
-        "steel_plate"
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "recipe": "electric_motor"
-    },
-    "id": 60,
-    "createdAt": "2026-07-06T19:53:18.659Z",
-    "status": "pending"
-  },
-  {
     "description": "Arendt: craft electric_motor #2 for new Manny stock after bars/plates exist",
     "condition": {
       "type": "manny_idle",
@@ -1208,27 +1190,6 @@
     "createdAt": "2026-07-06T19:53:24.830Z",
     "status": "triggered",
     "triggeredAt": "2026-07-06T20:38:39.065Z"
-  },
-  {
-    "description": "Kierkegaard: craft linear_actuator for new Manny stock after motor exists",
-    "condition": {
-      "type": "manny_idle",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "mannyName": "Kierkegaard",
-      "requireItems": [
-        "electric_motor",
-        "steel_plate",
-        "steel_bar"
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "recipe": "linear_actuator"
-    },
-    "id": 68,
-    "createdAt": "2026-07-06T19:53:24.833Z",
-    "status": "pending"
   },
   {
     "description": "Arendt: craft electric_motor for new Manny component stock when idle",
@@ -1369,7 +1330,8 @@
     },
     "id": 76,
     "createdAt": "2026-07-06T21:01:31.845Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T19:45:29.331Z"
   },
   {
     "description": "Arendt: craft linear_actuator for new Manny stock after sufficient cross-manny motors and steel parts exist",
@@ -1972,27 +1934,6 @@
     "triggeredAt": "2026-07-06T23:23:24.342Z"
   },
   {
-    "description": "Kierkegaard: craft linear_actuator for new Manny stock after current task finishes and dependencies exist",
-    "condition": {
-      "type": "manny_idle",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "mannyName": "Kierkegaard",
-      "requireItems": [
-        "electric_motor",
-        "steel_plate",
-        "steel_bar"
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "recipe": "linear_actuator"
-    },
-    "id": 110,
-    "createdAt": "2026-07-06T23:17:52.183Z",
-    "status": "pending"
-  },
-  {
     "description": "Kierkegaard: craft battery_pack for new Manny stock after queued linear_actuator",
     "condition": {
       "type": "manny_idle",
@@ -2006,7 +1947,8 @@
     },
     "id": 111,
     "createdAt": "2026-07-06T23:17:52.184Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T20:05:29.188Z"
   },
   {
     "description": "Kierkegaard: craft steel_plate after second-level work",
@@ -2022,7 +1964,8 @@
     },
     "id": 112,
     "createdAt": "2026-07-06T23:17:52.186Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T20:25:29.560Z"
   },
   {
     "description": "Kierkegaard: craft steel_plate 2 after second-level work",
@@ -2038,7 +1981,8 @@
     },
     "id": 113,
     "createdAt": "2026-07-06T23:17:52.188Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T20:30:30.051Z"
   },
   {
     "description": "Kierkegaard: craft steel_bar after second-level work",
@@ -2054,23 +1998,8 @@
     },
     "id": 114,
     "createdAt": "2026-07-06T23:17:52.190Z",
-    "status": "pending"
-  },
-  {
-    "description": "Kierkegaard: craft steel_bar 2 after second-level work",
-    "condition": {
-      "type": "manny_idle",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "mannyName": "Kierkegaard"
-    },
-    "action": {
-      "type": "craft_item",
-      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
-      "recipe": "steel_bar"
-    },
-    "id": 115,
-    "createdAt": "2026-07-06T23:17:52.192Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T20:35:29.992Z"
   },
   {
     "description": "Arendt: craft electric_motor for new Manny stock when current task finishes",
