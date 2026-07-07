@@ -2071,5 +2071,158 @@
     "id": 115,
     "createdAt": "2026-07-06T23:17:52.192Z",
     "status": "pending"
+  },
+  {
+    "description": "Arendt: craft electric_motor for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 116,
+    "createdAt": "2026-07-07T12:31:47.751Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T13:01:56.916Z"
+  },
+  {
+    "description": "Arendt: craft electric_motor 3 for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 117,
+    "createdAt": "2026-07-07T12:31:47.842Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T13:31:57.041Z"
+  },
+  {
+    "description": "Arendt: craft electric_motor 4 for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 118,
+    "createdAt": "2026-07-07T12:31:47.844Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T14:01:57.550Z"
+  },
+  {
+    "description": "Beauvoir: craft electric_motor for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 119,
+    "createdAt": "2026-07-07T12:31:47.846Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T13:01:57.253Z"
+  },
+  {
+    "description": "Beauvoir: craft electric_motor 3 for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 120,
+    "createdAt": "2026-07-07T12:31:47.849Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T13:31:57.217Z"
+  },
+  {
+    "description": "Beauvoir: craft electric_motor 4 for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 121,
+    "createdAt": "2026-07-07T12:31:47.850Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T14:01:57.812Z"
+  },
+  {
+    "description": "Descartes: craft battery_pack for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "battery_pack"
+    },
+    "id": 122,
+    "createdAt": "2026-07-07T12:31:47.852Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T12:51:56.523Z"
+  },
+  {
+    "description": "Descartes: craft battery_pack 3 for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "battery_pack"
+    },
+    "id": 123,
+    "createdAt": "2026-07-07T12:31:47.854Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T13:12:26.897Z"
+  },
+  {
+    "description": "Descartes: craft battery_pack 4 for new Manny stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "battery_pack"
+    },
+    "id": 124,
+    "createdAt": "2026-07-07T12:31:47.856Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T13:32:26.982Z"
   }
 ]

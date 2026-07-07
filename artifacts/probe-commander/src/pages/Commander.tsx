@@ -214,7 +214,7 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
   const CapacityBar = ({ used, total }: { used: number | null; total: number | null }) => {
     if (used == null || total == null || total === 0) return null;
     const pct = Math.min(100, (used / total) * 100);
-    const color = pct >= 95 ? "bg-destructive" : pct >= 70 ? "bg-yellow-500" : "bg-primary";
+    const color = pct >= 70 ? "bg-primary" : pct >= 30 ? "bg-yellow-500" : "bg-destructive";
     return (
       <div className="space-y-0.5">
         <div className="h-1 bg-muted rounded-full overflow-hidden">
