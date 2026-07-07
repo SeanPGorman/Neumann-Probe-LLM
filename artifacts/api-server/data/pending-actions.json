@@ -295,5 +295,1781 @@
     "createdAt": "2026-07-03T20:59:00.412Z",
     "status": "triggered",
     "triggeredAt": "2026-07-03T21:34:07.204Z"
+  },
+  {
+    "description": "Arendt: craft steel plate #2 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 18,
+    "createdAt": "2026-07-06T18:56:41.597Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:01:37.669Z"
+  },
+  {
+    "description": "Arendt: craft steel plate #3 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 19,
+    "createdAt": "2026-07-06T18:56:41.695Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:07:07.693Z"
+  },
+  {
+    "description": "Arendt: craft steel plate #4 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 20,
+    "createdAt": "2026-07-06T18:56:41.697Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:12:08.203Z"
+  },
+  {
+    "description": "Arendt: craft steel plate #5 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 21,
+    "createdAt": "2026-07-06T18:56:41.698Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:17:08.413Z"
+  },
+  {
+    "description": "Arendt: craft battery pack #1 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "battery_pack"
+    },
+    "id": 22,
+    "createdAt": "2026-07-06T18:56:41.700Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:22:08.479Z"
+  },
+  {
+    "description": "Beauvoir: craft steel plate #2 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 23,
+    "createdAt": "2026-07-06T18:56:41.701Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:01:37.919Z"
+  },
+  {
+    "description": "Beauvoir: craft steel plate #3 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 24,
+    "createdAt": "2026-07-06T18:56:41.703Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:07:08.045Z"
+  },
+  {
+    "description": "Beauvoir: craft steel plate #4 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 25,
+    "createdAt": "2026-07-06T18:56:41.704Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:12:08.581Z"
+  },
+  {
+    "description": "Beauvoir: craft steel bar #1 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_bar"
+    },
+    "id": 26,
+    "createdAt": "2026-07-06T18:56:41.706Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:17:38.423Z"
+  },
+  {
+    "description": "Beauvoir: craft battery pack #2 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "battery_pack"
+    },
+    "id": 27,
+    "createdAt": "2026-07-06T18:56:41.707Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:23:08.324Z"
+  },
+  {
+    "description": "Hume: craft steel plate #2 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_plate"
+    },
+    "id": 28,
+    "createdAt": "2026-07-06T18:56:41.708Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:01:38.183Z"
+  },
+  {
+    "description": "Hume: craft steel bar #1 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 29,
+    "createdAt": "2026-07-06T18:56:41.710Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:07:08.319Z"
+  },
+  {
+    "description": "Hume: craft steel bar #2 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 30,
+    "createdAt": "2026-07-06T18:56:41.712Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:12:08.947Z"
+  },
+  {
+    "description": "Hume: craft steel bar #3 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 31,
+    "createdAt": "2026-07-06T18:56:41.714Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:17:38.601Z"
+  },
+  {
+    "description": "Hume: craft battery pack #3 for new Manny component stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "battery_pack"
+    },
+    "id": 32,
+    "createdAt": "2026-07-06T18:56:41.715Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:23:08.548Z"
+  },
+  {
+    "description": "Kant: craft steel plate for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 33,
+    "createdAt": "2026-07-06T18:56:47.714Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T18:57:07.225Z"
+  },
+  {
+    "description": "Hypatia: craft steel plate for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_plate"
+    },
+    "id": 34,
+    "createdAt": "2026-07-06T18:56:47.716Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:07:08.804Z"
+  },
+  {
+    "description": "Kierkegaard: craft steel plate for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_plate"
+    },
+    "id": 35,
+    "createdAt": "2026-07-06T18:56:47.718Z",
+    "status": "pending"
+  },
+  {
+    "description": "Locke: craft steel plate for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_plate"
+    },
+    "id": 36,
+    "createdAt": "2026-07-06T18:56:47.720Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:42:08.728Z"
+  },
+  {
+    "description": "Nietzsche: craft steel plate for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_plate"
+    },
+    "id": 37,
+    "createdAt": "2026-07-06T18:56:47.721Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:57:08.527Z"
+  },
+  {
+    "description": "Kant: craft electric motor for new Manny component stock after enough steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "electric_motor"
+    },
+    "id": 38,
+    "createdAt": "2026-07-06T18:56:47.722Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:02:07.491Z"
+  },
+  {
+    "description": "Hypatia: craft electric motor for new Manny component stock after enough steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "electric_motor"
+    },
+    "id": 39,
+    "createdAt": "2026-07-06T18:56:47.724Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:12:37.734Z"
+  },
+  {
+    "description": "Kierkegaard: craft electric motor for new Manny component stock after enough steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "electric_motor"
+    },
+    "id": 40,
+    "createdAt": "2026-07-06T18:56:47.726Z",
+    "status": "pending"
+  },
+  {
+    "description": "Locke: craft electric motor for new Manny component stock after enough steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "electric_motor"
+    },
+    "id": 41,
+    "createdAt": "2026-07-06T18:56:47.727Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:47:38.529Z"
+  },
+  {
+    "description": "Nietzsche: craft electric motor for new Manny component stock after enough steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "electric_motor"
+    },
+    "id": 42,
+    "createdAt": "2026-07-06T18:56:47.728Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:02:38.885Z"
+  },
+  {
+    "description": "Arendt: craft steel_bar #2 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_bar"
+    },
+    "id": 43,
+    "createdAt": "2026-07-06T19:52:59.754Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:58:08.799Z"
+  },
+  {
+    "description": "Beauvoir: craft steel_bar #2 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_bar"
+    },
+    "id": 44,
+    "createdAt": "2026-07-06T19:52:59.756Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:58:09.477Z"
+  },
+  {
+    "description": "Hume: craft steel_bar #2 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 45,
+    "createdAt": "2026-07-06T19:52:59.757Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:58:09.759Z"
+  },
+  {
+    "description": "Hypatia: craft steel_bar #2 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 46,
+    "createdAt": "2026-07-06T19:52:59.760Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:58:09.930Z"
+  },
+  {
+    "description": "Kant: craft steel_plate #2 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 47,
+    "createdAt": "2026-07-06T19:52:59.761Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T19:58:10.187Z"
+  },
+  {
+    "description": "Arendt: craft electric_motor #1 for new Manny stock after bars/plates exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 48,
+    "createdAt": "2026-07-06T19:53:10.510Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:03:38.745Z"
+  },
+  {
+    "description": "Beauvoir: craft electric_motor #1 for new Manny stock after bars/plates exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 49,
+    "createdAt": "2026-07-06T19:53:10.512Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:03:39.038Z"
+  },
+  {
+    "description": "Hume: craft electric_motor #1 for new Manny stock after bars/plates exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "electric_motor"
+    },
+    "id": 50,
+    "createdAt": "2026-07-06T19:53:10.514Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:03:39.345Z"
+  },
+  {
+    "description": "Hypatia: craft electric_motor #1 for new Manny stock after bars/plates exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "electric_motor"
+    },
+    "id": 51,
+    "createdAt": "2026-07-06T19:53:10.516Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:03:39.615Z"
+  },
+  {
+    "description": "Kant: craft steel_plate #3 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 52,
+    "createdAt": "2026-07-06T19:53:10.518Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:03:39.935Z"
+  },
+  {
+    "description": "Locke: craft electric_motor for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "electric_motor"
+    },
+    "id": 53,
+    "createdAt": "2026-07-06T19:53:10.520Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:02:39.152Z"
+  },
+  {
+    "description": "Arendt: craft steel_bar #3 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_bar"
+    },
+    "id": 54,
+    "createdAt": "2026-07-06T19:53:18.648Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:18:38.958Z"
+  },
+  {
+    "description": "Beauvoir: craft steel_bar #3 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_bar"
+    },
+    "id": 55,
+    "createdAt": "2026-07-06T19:53:18.650Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:18:39.314Z"
+  },
+  {
+    "description": "Hume: craft steel_bar #3 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 56,
+    "createdAt": "2026-07-06T19:53:18.652Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:23:39.022Z"
+  },
+  {
+    "description": "Hypatia: craft steel_bar #3 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 57,
+    "createdAt": "2026-07-06T19:53:18.654Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:29:08.680Z"
+  },
+  {
+    "description": "Kant: craft steel_plate #4 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 58,
+    "createdAt": "2026-07-06T19:53:18.656Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:09:08.823Z"
+  },
+  {
+    "description": "Nietzsche: craft electric_motor for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "electric_motor"
+    },
+    "id": 59,
+    "createdAt": "2026-07-06T19:53:18.657Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:23:39.258Z"
+  },
+  {
+    "description": "Kierkegaard: craft electric_motor for new Manny component stock when current task finishes",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "electric_motor"
+    },
+    "id": 60,
+    "createdAt": "2026-07-06T19:53:18.659Z",
+    "status": "pending"
+  },
+  {
+    "description": "Arendt: craft electric_motor #2 for new Manny stock after bars/plates exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 61,
+    "createdAt": "2026-07-06T19:53:24.818Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:23:39.493Z"
+  },
+  {
+    "description": "Beauvoir: craft electric_motor #2 for new Manny stock after bars/plates exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 62,
+    "createdAt": "2026-07-06T19:53:24.820Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:23:39.728Z"
+  },
+  {
+    "description": "Hume: craft battery_pack for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "battery_pack"
+    },
+    "id": 63,
+    "createdAt": "2026-07-06T19:53:24.822Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:29:09.018Z"
+  },
+  {
+    "description": "Hypatia: craft battery_pack for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "battery_pack"
+    },
+    "id": 64,
+    "createdAt": "2026-07-06T19:53:24.824Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:34:38.806Z"
+  },
+  {
+    "description": "Kant: craft steel_plate #5 for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 65,
+    "createdAt": "2026-07-06T19:53:24.826Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:14:38.455Z"
+  },
+  {
+    "description": "Locke: craft linear_actuator for new Manny stock after motor exists",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "linear_actuator"
+    },
+    "id": 66,
+    "createdAt": "2026-07-06T19:53:24.828Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:23:39.935Z"
+  },
+  {
+    "description": "Nietzsche: craft linear_actuator for new Manny stock after motor exists",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "linear_actuator"
+    },
+    "id": 67,
+    "createdAt": "2026-07-06T19:53:24.830Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T20:38:39.065Z"
+  },
+  {
+    "description": "Kierkegaard: craft linear_actuator for new Manny stock after motor exists",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "linear_actuator"
+    },
+    "id": 68,
+    "createdAt": "2026-07-06T19:53:24.833Z",
+    "status": "pending"
+  },
+  {
+    "description": "Arendt: craft electric_motor for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 69,
+    "createdAt": "2026-07-06T21:01:31.737Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:26:39.393Z"
+  },
+  {
+    "description": "Beauvoir: craft electric_motor for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 70,
+    "createdAt": "2026-07-06T21:01:31.831Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:26:39.693Z"
+  },
+  {
+    "description": "Hume: craft electric_motor for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "electric_motor"
+    },
+    "id": 71,
+    "createdAt": "2026-07-06T21:01:31.833Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:31:39.556Z"
+  },
+  {
+    "description": "Hypatia: craft linear_actuator for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "linear_actuator"
+    },
+    "id": 72,
+    "createdAt": "2026-07-06T21:01:31.835Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:36:39.677Z"
+  },
+  {
+    "description": "Kant: craft linear_actuator for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "linear_actuator"
+    },
+    "id": 73,
+    "createdAt": "2026-07-06T21:01:31.838Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:36:39.959Z"
+  },
+  {
+    "description": "Locke: craft battery_pack for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "battery_pack"
+    },
+    "id": 74,
+    "createdAt": "2026-07-06T21:01:31.841Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:21:39.452Z"
+  },
+  {
+    "description": "Nietzsche: craft battery_pack for new Manny component stock when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "battery_pack"
+    },
+    "id": 75,
+    "createdAt": "2026-07-06T21:01:31.843Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T21:21:39.732Z"
+  },
+  {
+    "description": "Kierkegaard: craft battery_pack for new Manny component stock after current task",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "battery_pack"
+    },
+    "id": 76,
+    "createdAt": "2026-07-06T21:01:31.845Z",
+    "status": "pending"
+  },
+  {
+    "description": "Arendt: craft linear_actuator for new Manny stock after sufficient cross-manny motors and steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "linear_actuator"
+    },
+    "id": 77,
+    "createdAt": "2026-07-06T23:17:42.294Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:37:54.332Z"
+  },
+  {
+    "description": "Arendt: craft linear_actuator second unit for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "linear_actuator"
+    },
+    "id": 78,
+    "createdAt": "2026-07-06T23:17:42.297Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:57:54.697Z"
+  },
+  {
+    "description": "Arendt: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 79,
+    "createdAt": "2026-07-06T23:17:42.298Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:54.276Z"
+  },
+  {
+    "description": "Arendt: craft steel_plate 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 80,
+    "createdAt": "2026-07-06T23:17:42.300Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:22:54.346Z"
+  },
+  {
+    "description": "Arendt: craft steel_plate 3 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 81,
+    "createdAt": "2026-07-06T23:17:42.302Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:27:54.342Z"
+  },
+  {
+    "description": "Arendt: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_bar"
+    },
+    "id": 82,
+    "createdAt": "2026-07-06T23:17:42.303Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:32:54.338Z"
+  },
+  {
+    "description": "Arendt: craft steel_bar 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_bar"
+    },
+    "id": 83,
+    "createdAt": "2026-07-06T23:17:42.305Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T00:17:54.743Z"
+  },
+  {
+    "description": "Beauvoir: craft linear_actuator for new Manny stock after sufficient cross-manny motors and steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "linear_actuator"
+    },
+    "id": 84,
+    "createdAt": "2026-07-06T23:17:42.307Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:53:54.782Z"
+  },
+  {
+    "description": "Beauvoir: craft battery_pack for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "battery_pack"
+    },
+    "id": 85,
+    "createdAt": "2026-07-06T23:17:42.309Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:54.483Z"
+  },
+  {
+    "description": "Beauvoir: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 86,
+    "createdAt": "2026-07-06T23:17:42.310Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:38:24.339Z"
+  },
+  {
+    "description": "Beauvoir: craft steel_plate 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 87,
+    "createdAt": "2026-07-06T23:17:42.312Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:43:24.279Z"
+  },
+  {
+    "description": "Beauvoir: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_bar"
+    },
+    "id": 88,
+    "createdAt": "2026-07-06T23:17:42.314Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:48:24.601Z"
+  },
+  {
+    "description": "Beauvoir: craft steel_bar 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_bar"
+    },
+    "id": 89,
+    "createdAt": "2026-07-06T23:17:42.315Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T00:13:55.060Z"
+  },
+  {
+    "description": "Hume: craft battery_pack for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "battery_pack"
+    },
+    "id": 90,
+    "createdAt": "2026-07-06T23:17:42.317Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:54.842Z"
+  },
+  {
+    "description": "Hume: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_plate"
+    },
+    "id": 91,
+    "createdAt": "2026-07-06T23:17:42.318Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:38:24.639Z"
+  },
+  {
+    "description": "Hume: craft steel_plate 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_plate"
+    },
+    "id": 92,
+    "createdAt": "2026-07-06T23:17:42.320Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:43:54.302Z"
+  },
+  {
+    "description": "Hume: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 93,
+    "createdAt": "2026-07-06T23:17:42.321Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:48:54.686Z"
+  },
+  {
+    "description": "Hypatia: craft battery_pack for new Manny stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "battery_pack"
+    },
+    "id": 94,
+    "createdAt": "2026-07-06T23:17:42.323Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:55.043Z"
+  },
+  {
+    "description": "Hypatia: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_plate"
+    },
+    "id": 95,
+    "createdAt": "2026-07-06T23:17:42.325Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:38:24.824Z"
+  },
+  {
+    "description": "Hypatia: craft steel_plate 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_plate"
+    },
+    "id": 96,
+    "createdAt": "2026-07-06T23:17:42.331Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:43:54.528Z"
+  },
+  {
+    "description": "Hypatia: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 97,
+    "createdAt": "2026-07-06T23:17:52.158Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:49:24.600Z"
+  },
+  {
+    "description": "Kant: craft electric_motor for new Manny stock after steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "electric_motor"
+    },
+    "id": 98,
+    "createdAt": "2026-07-06T23:17:52.159Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:28:24.231Z"
+  },
+  {
+    "description": "Kant: craft electric_motor second unit for new Manny stock after steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "electric_motor"
+    },
+    "id": 99,
+    "createdAt": "2026-07-06T23:17:52.161Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:53:55.094Z"
+  },
+  {
+    "description": "Kant: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 100,
+    "createdAt": "2026-07-06T23:17:52.164Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:55.420Z"
+  },
+  {
+    "description": "Kant: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_bar"
+    },
+    "id": 101,
+    "createdAt": "2026-07-06T23:17:52.166Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:23:23.888Z"
+  },
+  {
+    "description": "Locke: craft electric_motor for new Manny stock after steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "electric_motor"
+    },
+    "id": 102,
+    "createdAt": "2026-07-06T23:17:52.169Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:28:24.477Z"
+  },
+  {
+    "description": "Locke: craft electric_motor second unit for new Manny stock after steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "electric_motor"
+    },
+    "id": 103,
+    "createdAt": "2026-07-06T23:17:52.171Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:53:55.288Z"
+  },
+  {
+    "description": "Locke: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_plate"
+    },
+    "id": 104,
+    "createdAt": "2026-07-06T23:17:52.173Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:55.641Z"
+  },
+  {
+    "description": "Locke: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_bar"
+    },
+    "id": 105,
+    "createdAt": "2026-07-06T23:17:52.175Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:23:24.157Z"
+  },
+  {
+    "description": "Nietzsche: craft electric_motor for new Manny stock after steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "electric_motor"
+    },
+    "id": 106,
+    "createdAt": "2026-07-06T23:17:52.177Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:28:24.774Z"
+  },
+  {
+    "description": "Nietzsche: craft electric_motor second unit for new Manny stock after steel parts exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "electric_motor"
+    },
+    "id": 107,
+    "createdAt": "2026-07-06T23:17:52.178Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:53:55.538Z"
+  },
+  {
+    "description": "Nietzsche: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_plate"
+    },
+    "id": 108,
+    "createdAt": "2026-07-06T23:17:52.180Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:17:55.825Z"
+  },
+  {
+    "description": "Nietzsche: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_bar"
+    },
+    "id": 109,
+    "createdAt": "2026-07-06T23:17:52.181Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-06T23:23:24.342Z"
+  },
+  {
+    "description": "Kierkegaard: craft linear_actuator for new Manny stock after current task finishes and dependencies exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard",
+      "requireItems": [
+        "electric_motor",
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "linear_actuator"
+    },
+    "id": 110,
+    "createdAt": "2026-07-06T23:17:52.183Z",
+    "status": "pending"
+  },
+  {
+    "description": "Kierkegaard: craft battery_pack for new Manny stock after queued linear_actuator",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "battery_pack"
+    },
+    "id": 111,
+    "createdAt": "2026-07-06T23:17:52.184Z",
+    "status": "pending"
+  },
+  {
+    "description": "Kierkegaard: craft steel_plate after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_plate"
+    },
+    "id": 112,
+    "createdAt": "2026-07-06T23:17:52.186Z",
+    "status": "pending"
+  },
+  {
+    "description": "Kierkegaard: craft steel_plate 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_plate"
+    },
+    "id": 113,
+    "createdAt": "2026-07-06T23:17:52.188Z",
+    "status": "pending"
+  },
+  {
+    "description": "Kierkegaard: craft steel_bar after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_bar"
+    },
+    "id": 114,
+    "createdAt": "2026-07-06T23:17:52.190Z",
+    "status": "pending"
+  },
+  {
+    "description": "Kierkegaard: craft steel_bar 2 after second-level work",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_bar"
+    },
+    "id": 115,
+    "createdAt": "2026-07-06T23:17:52.192Z",
+    "status": "pending"
   }
 ]
