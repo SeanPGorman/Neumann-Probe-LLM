@@ -264,8 +264,8 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-07-07T21:18:49.624Z",
-    "visitCount": 2672,
+    "lastVisitedAt": "2026-07-07T21:52:13.252Z",
+    "visitCount": 2737,
     "objects": [
       {
         "id": "starter-iron-e2ad1e3569e28ae4",
@@ -283,7 +283,7 @@
         "radius": 0.012,
         "resourceAmounts": {
           "deuterium": 0,
-          "metals": 16.44,
+          "metals": 16.14,
           "ice": 0,
           "carbon_compounds": 0
         },
@@ -309,7 +309,7 @@
         "mass": 0.00001,
         "radius": 0.0001,
         "resourceAmounts": {
-          "deuterium": 3.54,
+          "deuterium": 3.47,
           "metals": 0,
           "ice": 0,
           "carbon_compounds": 0
