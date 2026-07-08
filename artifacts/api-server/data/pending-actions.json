@@ -2153,5 +2153,739 @@
     "createdAt": "2026-07-07T12:31:47.856Z",
     "status": "triggered",
     "triggeredAt": "2026-07-07T13:32:26.982Z"
+  },
+  {
+    "description": "Atomic printer chain: ceramic_insulator after Beauvoir finishes micro_conductor assist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "waypoint_bookmark"
+    },
+    "id": 125,
+    "createdAt": "2026-07-07T23:04:22.796Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T23:14:33.968Z"
+  },
+  {
+    "description": "Atomic printer queue step 2: start ceramic_insulator when Beauvoir becomes idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "recover_container",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "objectId": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76"
+    },
+    "id": 126,
+    "createdAt": "2026-07-07T23:04:27.572Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T23:24:34.118Z"
+  },
+  {
+    "description": "Descartes: craft linear_actuator after solar_panel",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "linear_actuator"
+    },
+    "id": 127,
+    "createdAt": "2026-07-07T23:04:27.577Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T12:42:56.426Z"
+  },
+  {
+    "description": "Hume: craft electric_motor after solar_panel",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "electric_motor"
+    },
+    "id": 128,
+    "createdAt": "2026-07-07T23:04:27.579Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T12:42:56.778Z"
+  },
+  {
+    "description": "Hypatia: craft electric_motor after battery_pack",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "electric_motor"
+    },
+    "id": 129,
+    "createdAt": "2026-07-07T23:04:30.839Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T23:24:34.342Z"
+  },
+  {
+    "description": "Kant: craft electric_motor after battery_pack",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "electric_motor"
+    },
+    "id": 130,
+    "createdAt": "2026-07-07T23:04:30.841Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T23:24:34.570Z"
+  },
+  {
+    "description": "Kierkegaard: craft battery_pack after linear_actuator",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "battery_pack"
+    },
+    "id": 131,
+    "createdAt": "2026-07-07T23:04:30.844Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-07T23:39:34.343Z"
+  },
+  {
+    "description": "Arendt: continue steel plates when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 132,
+    "createdAt": "2026-07-08T12:55:28.772Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:26.679Z"
+  },
+  {
+    "description": "Hypatia: continue steel plates when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_plate"
+    },
+    "id": 133,
+    "createdAt": "2026-07-08T12:55:28.880Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:26.942Z"
+  },
+  {
+    "description": "Kant: continue steel plates when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 134,
+    "createdAt": "2026-07-08T12:55:28.882Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:27.193Z"
+  },
+  {
+    "description": "Kierkegaard: continue steel plates when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_plate"
+    },
+    "id": 135,
+    "createdAt": "2026-07-08T12:55:28.884Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:27.486Z"
+  },
+  {
+    "description": "Locke: continue steel bars when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_bar"
+    },
+    "id": 136,
+    "createdAt": "2026-07-08T12:55:28.886Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:27.780Z"
+  },
+  {
+    "description": "Nietzsche: continue steel bars when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_bar"
+    },
+    "id": 137,
+    "createdAt": "2026-07-08T12:55:28.888Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:28.082Z"
+  },
+  {
+    "description": "Spinoza: continue steel bars when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "mannyName": "Spinoza"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "recipe": "steel_bar"
+    },
+    "id": 138,
+    "createdAt": "2026-07-08T12:55:28.894Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:00:28.267Z"
+  },
+  {
+    "description": "Descartes: switch to steel plates when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_plate"
+    },
+    "id": 139,
+    "createdAt": "2026-07-08T12:55:28.896Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:18:26.859Z"
+  },
+  {
+    "description": "Hume: switch to steel bars when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 140,
+    "createdAt": "2026-07-08T12:55:28.900Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:13:26.703Z"
+  },
+  {
+    "description": "Arendt craft steel_plate again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 141,
+    "createdAt": "2026-07-08T13:31:20.182Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:26.946Z"
+  },
+  {
+    "description": "Descartes craft steel_plate again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_plate"
+    },
+    "id": 142,
+    "createdAt": "2026-07-08T13:31:20.253Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:27.209Z"
+  },
+  {
+    "description": "Hume craft steel_plate again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_plate"
+    },
+    "id": 143,
+    "createdAt": "2026-07-08T13:31:20.255Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:27.420Z"
+  },
+  {
+    "description": "Hypatia craft steel_plate again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_plate"
+    },
+    "id": 144,
+    "createdAt": "2026-07-08T13:31:20.257Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:27.675Z"
+  },
+  {
+    "description": "Kant craft steel_bar again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_bar"
+    },
+    "id": 145,
+    "createdAt": "2026-07-08T13:31:20.260Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:27.883Z"
+  },
+  {
+    "description": "Kierkegaard craft steel_bar again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_bar"
+    },
+    "id": 146,
+    "createdAt": "2026-07-08T13:31:20.262Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:28.236Z"
+  },
+  {
+    "description": "Locke craft steel_bar again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_bar"
+    },
+    "id": 147,
+    "createdAt": "2026-07-08T13:31:20.264Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:28.476Z"
+  },
+  {
+    "description": "Nietzsche craft steel_bar again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_bar"
+    },
+    "id": 148,
+    "createdAt": "2026-07-08T13:31:20.267Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:36:28.654Z"
+  },
+  {
+    "description": "Spinoza craft steel_plate again when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "mannyName": "Spinoza"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "recipe": "steel_plate"
+    },
+    "id": 149,
+    "createdAt": "2026-07-08T13:31:20.268Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:31:26.870Z"
+  },
+  {
+    "description": "When Arendt finishes, craft steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 151,
+    "createdAt": "2026-07-08T13:44:28.216Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:26.646Z"
+  },
+  {
+    "description": "When Arendt finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_bar"
+    },
+    "id": 152,
+    "createdAt": "2026-07-08T13:44:28.288Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:26.666Z"
+  },
+  {
+    "description": "When Descartes finishes, craft steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_plate"
+    },
+    "id": 153,
+    "createdAt": "2026-07-08T13:44:28.290Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:26.923Z"
+  },
+  {
+    "description": "When Descartes finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_bar"
+    },
+    "id": 154,
+    "createdAt": "2026-07-08T13:44:28.292Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:26.993Z"
+  },
+  {
+    "description": "When Hume finishes, craft steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_plate"
+    },
+    "id": 155,
+    "createdAt": "2026-07-08T13:44:28.294Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:27.183Z"
+  },
+  {
+    "description": "When Hume finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 156,
+    "createdAt": "2026-07-08T13:44:28.296Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:27.197Z"
+  },
+  {
+    "description": "When Hypatia finishes, craft steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_plate"
+    },
+    "id": 157,
+    "createdAt": "2026-07-08T13:44:28.298Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:27.432Z"
+  },
+  {
+    "description": "When Hypatia finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 158,
+    "createdAt": "2026-07-08T13:44:28.300Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:57.061Z"
+  },
+  {
+    "description": "When Kant finishes, craft steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_plate"
+    },
+    "id": 159,
+    "createdAt": "2026-07-08T13:44:28.303Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:27.639Z"
+  },
+  {
+    "description": "When Kant finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_bar"
+    },
+    "id": 160,
+    "createdAt": "2026-07-08T13:44:28.305Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:57.327Z"
+  },
+  {
+    "description": "When Kierkegaard finishes, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_bar"
+    },
+    "id": 162,
+    "createdAt": "2026-07-08T13:44:34.047Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:27.818Z"
+  },
+  {
+    "description": "When Kierkegaard finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_bar"
+    },
+    "id": 163,
+    "createdAt": "2026-07-08T13:44:34.049Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:57.681Z"
+  },
+  {
+    "description": "When Locke finishes, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_bar"
+    },
+    "id": 164,
+    "createdAt": "2026-07-08T13:44:34.051Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:28.133Z"
+  },
+  {
+    "description": "When Locke finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_bar"
+    },
+    "id": 165,
+    "createdAt": "2026-07-08T13:44:34.053Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:57.933Z"
+  },
+  {
+    "description": "When Nietzsche finishes, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_bar"
+    },
+    "id": 166,
+    "createdAt": "2026-07-08T13:44:34.055Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:28.410Z"
+  },
+  {
+    "description": "When Nietzsche finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_bar"
+    },
+    "id": 167,
+    "createdAt": "2026-07-08T13:44:34.057Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:58.288Z"
+  },
+  {
+    "description": "When Spinoza finishes, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "mannyName": "Spinoza"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "recipe": "steel_bar"
+    },
+    "id": 168,
+    "createdAt": "2026-07-08T13:44:34.059Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:49:28.687Z"
+  },
+  {
+    "description": "When Spinoza finishes second run, craft steel_bar",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "mannyName": "Spinoza"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "recipe": "steel_bar"
+    },
+    "id": 169,
+    "createdAt": "2026-07-08T13:44:34.061Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-08T13:54:58.527Z"
   }
 ]

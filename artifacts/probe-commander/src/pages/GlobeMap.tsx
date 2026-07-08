@@ -75,11 +75,11 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     setZoom(prev);
   }, []);
 
-  // Brightness controls (0–1) for each visual element
-  const [brightProbe,   setBrightProbe]   = useState(1.0);
-  const [brightDots,    setBrightDots]    = useState(1.0);
-  const [brightVisited, setBrightVisited] = useState(1.0);
-  const [brightCourse,  setBrightCourse]  = useState(1.0);
+  // Brightness controls (0–1) for each visual element; 0.5 = full visual brightness
+  const [brightProbe,   setBrightProbe]   = useState(0.5);
+  const [brightDots,    setBrightDots]    = useState(0.5);
+  const [brightVisited, setBrightVisited] = useState(0.5);
+  const [brightCourse,  setBrightCourse]  = useState(0.5);
 
   const visitedMap = useMemo<Map<string, VisitedSector>>(() => {
     const m = new Map<string, VisitedSector>();
@@ -170,7 +170,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const depth = (z2 + RADIUS) / (2 * RADIUS);
       ctx.beginPath();
       ctx.arc(sx, sy, 1.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(80,160,255,${(0.12 + depth * 0.22) * brightDots})`;
+      ctx.fillStyle = `rgba(80,160,255,${(0.12 + depth * 0.22) * brightDots * 2})`;
       ctx.fill();
     }
 
@@ -216,7 +216,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const r = 3.5;
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      const va = brightVisited;
+      const va = Math.min(1, brightVisited * 2);
       ctx.fillStyle = isPrior
         ? `rgba(255,210,80,${va})`
         : isHome
@@ -250,7 +250,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
         const r = 3.5;
         ctx.beginPath();
         ctx.arc(hp.sx, hp.sy, r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(120,200,255,${brightVisited})`;
+        ctx.fillStyle = `rgba(120,200,255,${Math.min(1, brightVisited * 2)})`;
         ctx.fill();
         ctx.beginPath();
         ctx.arc(hp.sx, hp.sy, r + 3, 0, Math.PI * 2);
@@ -267,7 +267,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       for (let i = 1; i < visitedProj.length; i++) {
         ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
       }
-      ctx.strokeStyle = `rgba(0,220,80,${brightCourse})`;
+      ctx.strokeStyle = `rgba(0,220,80,${Math.min(1, brightCourse * 2)})`;
       ctx.lineWidth = 3;
       ctx.lineJoin = "round";
       ctx.stroke();
@@ -280,11 +280,11 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const r = Math.max(2, persp * 0.32);
       ctx.beginPath();
       ctx.arc(sx, sy, r * 2.5, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(100,255,150,${0.04 * brightProbe})`;
+      ctx.fillStyle = `rgba(100,255,150,${0.04 * brightProbe * 2})`;
       ctx.fill();
       ctx.beginPath();
       ctx.arc(sx, sy, r, 0, Math.PI * 2);
-      ctx.fillStyle = `rgba(180,255,200,${0.65 * brightProbe})`;
+      ctx.fillStyle = `rgba(180,255,200,${Math.min(1, 0.65 * brightProbe * 2)})`;
       ctx.fill();
     }
 
