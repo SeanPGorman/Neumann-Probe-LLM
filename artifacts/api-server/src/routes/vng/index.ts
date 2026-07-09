@@ -57,6 +57,11 @@ router.get("/state", async (_req, res) => {
     const inv = probe.inventory ?? {};
     const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
     const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
+    // getSector() yields null ONLY when it threw — transit or a real fetch
+    // error — which is distinct from a successful-but-empty sector. Surface it
+    // so the UI can show "data unavailable" instead of falsely claiming the
+    // sector is empty.
+    const sectorUnavailable = sectorResp === null;
 
     recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
 
@@ -109,6 +114,7 @@ router.get("/state", async (_req, res) => {
       stowedMannies,
       sectorObjects: sectorObjectsMapped,
       otherProbes: sectorResp?.sector?.probes ?? [],
+      sectorUnavailable,
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });

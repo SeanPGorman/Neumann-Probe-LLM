@@ -767,6 +767,7 @@ export default function Commander() {
               otherProbes={state?.otherProbes}
               mannies={state?.mannies}
               isMoving={globeCenter.isMoving}
+              sectorUnavailable={state?.sectorUnavailable}
               onScoutRequest={handleScoutRequest}
             />
           )}

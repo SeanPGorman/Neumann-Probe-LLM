@@ -78,6 +78,7 @@ interface Props {
   otherProbes?: any[];
   mannies?: any[];
   isMoving?: boolean;
+  sectorUnavailable?: boolean;
   onScoutRequest?: (x: number, y: number, z: number) => void;
 }
 
@@ -85,9 +86,11 @@ const MANNY_COLOR: [number, number, number] = [90, 255, 190];
 const PROBE_COLOR: [number, number, number] = [120, 230, 255];
 // A travelling manny moves once across its leg over a fixed travel time. We use
 // the game's own miningTravelSeconds when present (the real per-leg duration);
-// this fallback covers tasks that don't report one. Position = elapsed since we
-// first observed the current leg ÷ travel time, so it reflects actual progress
-// rather than a decorative loop.
+// this fallback covers tasks that don't report one. Position = time elapsed
+// since we first OBSERVED this leg ÷ travel time — a best-effort visual seeded
+// at observation, not synced to the game's true task elapsed
+// (taskProgressPercent / taskEstimatedEndTime); it restarts from the leg origin
+// on reload.
 const DEFAULT_TRAVEL_S = 600;
 
 type MannyKind = "outbound" | "inbound" | "atTarget" | "atProbe";
@@ -98,9 +101,9 @@ type MannyKind = "outbound" | "inbound" | "atTarget" | "atProbe";
 function mannyKind(m: any): MannyKind {
   const phase = String(m.taskPhase ?? "").toLowerCase();
   const task = String(m.currentTask ?? "").toLowerCase();
-  // Phase is the authoritative travel state. Match precisely and in this order:
-  // "mining" CONTAINS the substring "in", so it must be tested BEFORE any
-  // inbound check, and we must never use a bare includes("in").
+  // Phase is the authoritative travel state. The inbound test uses
+  // startsWith("in"), not includes("in"), so "mining" (which merely CONTAINS
+  // "in") can't be misread as inbound — keep it startsWith.
   if (phase) {
     if (phase.startsWith("min") || phase.includes("extract")) return "atTarget";
     if (phase.startsWith("out")) return "outbound";
@@ -109,7 +112,17 @@ function mannyKind(m: any): MannyKind {
     if (phase.includes("wait")) return "atTarget";
   }
   if (task === "returning") return "inbound";
-  if (task === "mining" || task === "salvage" || task === "inspecting_sector_object" || task === "installing_waypoint_bookmark" || task === "turning_on_scut_relay")
+  // Tasks a manny performs AT a body (so it's drawn at its target, not the
+  // probe). These payload fields are undocumented-but-observed in live data.
+  if (
+    task === "mining" ||
+    task === "salvage" ||
+    task === "inspecting_sector_object" ||
+    task === "inspecting_asteroid" ||
+    task === "installing_waypoint_bookmark" ||
+    task === "refilling_deuterium_tank" ||
+    task === "turning_on_scut_relay"
+  )
     return "atTarget";
   return "atProbe";
 }
@@ -118,11 +131,13 @@ function mannyKind(m: any): MannyKind {
 // orbital position) rather than on the orbital canvas.
 const RAIL_TYPES = new Set(["detached_container", "scut_relay"]);
 
-export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving, onScoutRequest }: Props) {
+export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving, sectorUnavailable, onScoutRequest }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const nodesRef = useRef<Node[]>([]);
-  // When we first observed each manny in its current (phase, tripIndex) — used
-  // only to stagger the shuttle loop, not to claim an exact position.
+  // When we first observed each manny in its current (phase, tripIndex): the
+  // time origin for its single traverse (see the outbound/inbound branch in
+  // draw). Observation-relative, so it doesn't claim the manny's exact real
+  // position; per-manny spread on a leg is done separately via `lane`.
   const phaseSeenRef = useRef<Record<string, { phase: string; trip: any; at: number }>>({});
   const panRef = useRef({ x: 0, y: 0 });
   const zoomRef = useRef(1.0);
@@ -282,10 +297,11 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     const maxWorldR = Math.max(outerR + 16, beltInner + beltWidth + 16, 60);
 
     // Probe position: our probe is its OWN object, not the star at the center.
-    // Pick a synthetic spot that maximises distance to every drawn body (star,
-    // planets, asteroids, loose objects, ghosts, other probes) so the marker —
-    // and the manny routes that originate from it — never sit on top of another
-    // object. Deterministic (seeded by sector) so it never jitters.
+    // Pick a synthetic spot that maximises the distance to the NEAREST drawn
+    // body (largest minimum clearance to star, planets, asteroids, loose
+    // objects, ghosts, other probes) so the marker — and the manny routes that
+    // originate from it — never sit on top of another object. Deterministic
+    // (seeded by sector) so it never jitters.
     const obstacles: [number, number][] = [
       [0, 0], // the star / system centre
       ...nodes.map((n) => [n.wx, n.wy] as [number, number]),
@@ -339,8 +355,8 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     };
   }, [sectorObjects, otherProbes, sector]);
 
-  // Stamp when each manny was first seen in its current (phase, trip) so the
-  // shuttle loop can start near the beginning for a freshly-observed leg.
+  // Stamp when each manny was first seen in its current (phase, trip) so a
+  // freshly-observed leg starts its traverse near the beginning.
   useEffect(() => {
     const now = Date.now();
     const seen = phaseSeenRef.current;
@@ -759,12 +775,13 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     counts.orbitalBodyCount > counts.enumeratedPlanets + counts.enumeratedAsteroids;
 
   // Header controls — reused by both the compact and expanded shells. The
-  // expand/collapse toggle is what lets the map grow beyond the 288px sidebar.
+  // expand/collapse toggle is what lets the map grow beyond the narrow sidebar
+  // (the `lg:w-72` column in Commander.tsx).
   const controls = (
     <div className="flex items-center gap-1">
       <button onClick={resetView} className="text-[9px] font-mono px-1.5 h-5 rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border">reset</button>
       <button onClick={zoomOut} disabled={zoom <= 0.5} className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25">−</button>
-      <span className="text-[10px] font-mono text-muted-foreground/60 w-8 text-center">{zoom}×</span>
+      <span className="text-[10px] font-mono text-muted-foreground/60 w-8 text-center">{Number(zoom.toFixed(2))}×</span>
       <button onClick={zoomIn} disabled={zoom >= 5.0} className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25">+</button>
       <button
         onClick={() => setShowLabels((v) => !v)}
@@ -801,6 +818,30 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
           <button onClick={() => setExpanded(false)} className="text-[10px] font-mono px-1.5 h-5 rounded border border-border/40 text-muted-foreground hover:text-primary hover:border-primary/50">⤡ close</button>
         </div>
         <div className="flex-1 flex items-center justify-center">{transitCard}</div>
+      </div>
+    );
+  }
+
+  // --- sector fetch failed (and we're NOT in transit — that's handled above) ---
+  // Show an honest "data unavailable" state rather than a false "empty sector":
+  // the scan threw (network/API error), it is not that the sector has no objects.
+  if (sectorUnavailable) {
+    const unavailableCard = (
+      <div className="flex flex-col h-full items-center justify-center text-center gap-2 py-10">
+        <div className="text-xs text-muted-foreground tracking-widest">SYSTEM MAP</div>
+        <div className="text-yellow-400/80 font-mono text-sm">SECTOR DATA UNAVAILABLE</div>
+        <div className="text-[10px] text-muted-foreground/50 max-w-[240px]">
+          Sector scan failed to load — a fetch error, not an empty sector. It should recover on the next refresh.
+        </div>
+      </div>
+    );
+    if (!expanded) return unavailableCard;
+    return (
+      <div className="fixed inset-0 z-50 bg-background/95 backdrop-blur-sm p-4 flex flex-col">
+        <div className="flex items-center justify-end">
+          <button onClick={() => setExpanded(false)} className="text-[10px] font-mono px-1.5 h-5 rounded border border-border/40 text-muted-foreground hover:text-primary hover:border-primary/50">⤡ close</button>
+        </div>
+        <div className="flex-1 flex items-center justify-center">{unavailableCard}</div>
       </div>
     );
   }
@@ -872,7 +913,11 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     <div className={`border border-border/30 rounded p-1.5 space-y-1 overflow-y-auto ${expanded ? "max-h-none" : "max-h-28"}`}>
       <div className="text-[9px] text-muted-foreground/50 tracking-wider uppercase">User &amp; deployed objects</div>
       {model.rail.map((o, i) => {
-            const own = o.type === "scut_relay" ? ownership(o.createdByProbeId) : (o.userCreated ? "mine" : "unknown");
+            // Only scut_relays expose a creator id (createdByProbeId). Detached
+            // containers carry NO creator field, so ownership is genuinely
+            // unknowable — never assert "mine"; show a neutral "deployed" tag.
+            const isRelay = o.type === "scut_relay";
+            const own = isRelay ? ownership(o.createdByProbeId) : "unknown";
             return (
               <button
                 key={`${o.type}:${o.id ?? i}`}
@@ -883,6 +928,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
                 <span className="truncate flex-1">{o.name ?? o.type.replace(/_/g, " ")}</span>
                 {own === "mine" && <span className="text-[8px] text-accent/80">⚑ mine</span>}
                 {own === "other" && <span className="text-[8px] text-muted-foreground/50">other</span>}
+                {!isRelay && <span className="text-[8px] text-muted-foreground/50">deployed</span>}
               </button>
             );
           })}
