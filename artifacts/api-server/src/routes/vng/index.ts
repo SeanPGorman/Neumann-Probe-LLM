@@ -12,6 +12,7 @@ import {
   getFloatingContainers,
   getPendingActions,
 } from "./file-store.js";
+import { mapSectorObjects } from "./sector-map.js";
 
 const router = Router();
 
@@ -59,27 +60,35 @@ router.get("/state", async (_req, res) => {
 
     recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
 
-    const mannies = (manniesResp.mannies ?? []).map((m: any) => ({
-      id: m.id,
-      name: m.name,
-      currentTask: m.currentTask,
-      taskProgressPercent: m.taskProgressPercent,
-      taskEstimatedEndTime: m.taskEstimatedEndTime ?? null,
-      location: m.location ?? null,
-    }));
+    const mannies = (manniesResp.mannies ?? []).map((m: any) => {
+      // A manny's `task` payload carries the fields the map needs to plot it:
+      // which body it targets, its travel phase, and the per-leg travel time.
+      const task = m.task && typeof m.task === "object" && !Array.isArray(m.task) ? m.task : null;
+      return {
+        id: m.id,
+        name: m.name,
+        currentTask: m.currentTask,
+        taskProgressPercent: m.taskProgressPercent,
+        taskEstimatedEndTime: m.taskEstimatedEndTime ?? null,
+        location: m.location ?? null,
+        taskVisibility: m.taskVisibility ?? null,
+        taskObjectId: task?.objectId ?? null,
+        taskPhase: task?.phase ?? null,
+        taskTripIndex: task?.tripIndex ?? null,
+        miningTravelSeconds: task?.miningTravelSeconds ?? null,
+        taskTargetAmount: task?.targetAmount ?? null,
+        taskDepositedAmount: task?.depositedAmount ?? null,
+      };
+    });
 
     const activeMannyIds = new Set((manniesResp.mannies ?? []).map((m: any) => m.id));
     const stowedMannies = ((probeResp.probe?.inventory?.items ?? []) as any[])
       .filter((i: any) => i.type === "manny" && !activeMannyIds.has(i.id))
       .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" }));
 
-    const sectorObjectsMapped = sectorObjects.map((o: any) => ({
-      id: o.id ?? null,
-      type: o.type,
-      name: o.name ?? null,
-      summary: o.summary,
-      resourceTypes: o.resourceTypes ?? [],
-    }));
+    // Enrich to the map-friendly superset (still carries the old
+    // {id,type,name,summary,resourceTypes} fields, so existing consumers work).
+    const sectorObjectsMapped = mapSectorObjects(sectorObjects);
 
     res.json({
       probe: {
@@ -99,6 +108,7 @@ router.get("/state", async (_req, res) => {
       mannies,
       stowedMannies,
       sectorObjects: sectorObjectsMapped,
+      otherProbes: sectorResp?.sector?.probes ?? [],
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
