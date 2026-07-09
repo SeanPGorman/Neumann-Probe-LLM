@@ -1208,8 +1208,8 @@
     "sectorY": 2,
     "sectorZ": 5,
     "firstVisitedAt": "2026-07-09T15:21:56.772Z",
-    "lastVisitedAt": "2026-07-09T15:34:45.076Z",
-    "visitCount": 2,
+    "lastVisitedAt": "2026-07-09T20:16:21.201Z",
+    "visitCount": 17,
     "objects": [
       {
         "id": "3ab3aa3f8a30f2bfd971",
@@ -1406,9 +1406,9 @@
         ]
       },
       {
-        "id": "detached-container-container-itm_f179a2bd92b2227e2623482b",
+        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
         "type": "detached_container",
-        "name": "MetalsFull1",
+        "name": "MetalsFull2",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",

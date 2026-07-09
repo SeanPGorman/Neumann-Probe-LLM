@@ -293,6 +293,16 @@ export async function recordSector(
       base.salvageable = o.salvageable ?? false;
     }
 
+    // SCUT relay — preserve range + network so the globe can draw coverage rings
+    if (o.type === "scut_relay") {
+      base.status = o.status ?? null;
+      base.coverageRadiusSectors = o.coverageRadiusSectors ?? null;
+      base.network = o.network ?? null;
+      base.createdByProbeId = o.createdByProbeId ?? null;
+      base.createdByProbeName = o.createdByProbeName ?? null;
+      base.activatedAt = o.activatedAt ?? null;
+    }
+
     // Star / black hole
     if (o.type === "star" || o.type === "black_hole") {
       base.mass = o.mass ?? null;

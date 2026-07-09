@@ -80,6 +80,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
   const [brightDots,    setBrightDots]    = useState(0.5);
   const [brightVisited, setBrightVisited] = useState(0.5);
   const [brightCourse,  setBrightCourse]  = useState(0.5);
+  const [brightRelay,   setBrightRelay]   = useState(0.5);
 
   const visitedMap = useMemo<Map<string, VisitedSector>>(() => {
     const m = new Map<string, VisitedSector>();
@@ -161,6 +162,37 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     ctx.strokeStyle = "rgba(80,255,130,0.05)";
     ctx.lineWidth = 1;
     ctx.stroke();
+
+    // 0. SCUT relay coverage rings (drawn first so they appear behind everything)
+    const relayAlpha = Math.min(1, brightRelay * 2);
+    for (const vs of visitedMap.values()) {
+      const relays = (vs.objects ?? []).filter((o: any) => o.type === "scut_relay");
+      if (!relays.length) continue;
+      const rp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
+      for (const relay of relays) {
+        const isActive = relay.status === "active";
+        const range: number | null = relay.coverageRadiusSectors ?? null;
+        if (!isActive || !range) continue;
+        // Approximate range ring: sphere of `range` sectors around relay, drawn
+        // as a dashed circle at the projected center point.
+        const ringR = range * rp.persp;
+        ctx.beginPath();
+        ctx.arc(rp.sx, rp.sy, ringR, 0, Math.PI * 2);
+        ctx.setLineDash([6, 4]);
+        ctx.strokeStyle = `rgba(0,220,220,${0.18 * relayAlpha})`;
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+        ctx.setLineDash([]);
+        // Soft fill tint
+        const grad = ctx.createRadialGradient(rp.sx, rp.sy, 0, rp.sx, rp.sy, ringR);
+        grad.addColorStop(0, `rgba(0,200,220,${0.04 * relayAlpha})`);
+        grad.addColorStop(1, "rgba(0,200,220,0)");
+        ctx.beginPath();
+        ctx.arc(rp.sx, rp.sy, ringR, 0, Math.PI * 2);
+        ctx.fillStyle = grad;
+        ctx.fill();
+      }
+    }
 
     // 1. Sparse uncharted lattice dots (skip probe & visited — drawn separately)
     for (const p of pts) {
@@ -273,6 +305,34 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.stroke();
     }
 
+    // 4b. SCUT relay markers — drawn after path, before probe
+    for (const vs of visitedMap.values()) {
+      const relays = (vs.objects ?? []).filter((o: any) => o.type === "scut_relay");
+      if (!relays.length) continue;
+      const rp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
+      const hasActive = relays.some((r: any) => r.status === "active");
+      const sz = 5;
+      // Diamond shape (rotated square)
+      ctx.beginPath();
+      ctx.moveTo(rp.sx, rp.sy - sz);     // top
+      ctx.lineTo(rp.sx + sz, rp.sy);     // right
+      ctx.lineTo(rp.sx, rp.sy + sz);     // bottom
+      ctx.lineTo(rp.sx - sz, rp.sy);     // left
+      ctx.closePath();
+      ctx.fillStyle = hasActive
+        ? `rgba(0,230,230,${0.85 * relayAlpha})`
+        : `rgba(0,160,160,${0.45 * relayAlpha})`;
+      ctx.fill();
+      // Outer glow ring for active relays
+      if (hasActive) {
+        ctx.beginPath();
+        ctx.arc(rp.sx, rp.sy, sz + 3.5, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(0,220,220,${0.4 * relayAlpha})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
+    }
+
     // 5. Probe dot — always on top
     const probePrj = project(probeX, probeY, probeZ);
     {
@@ -295,13 +355,14 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ...(hasPrior ? [["○ prior", "rgba(255,200,80,0.7)"] as [string, string]] : []),
       ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
+      ["◈ SCUT relay (◌ range)", "rgba(0,220,220,0.8)"],
     ];
     legends.forEach(([label, color], i) => {
       ctx.fillStyle = color;
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
   }, [rot, zoom, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
-      brightProbe, brightDots, brightVisited, brightCourse]);
+      brightProbe, brightDots, brightVisited, brightCourse, brightRelay]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -408,6 +469,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             ["DOTS",    brightDots,    setBrightDots],
             ["VISITED", brightVisited, setBrightVisited],
             ["COURSE",  brightCourse,  setBrightCourse],
+            ["SCUT",    brightRelay,   setBrightRelay],
           ] as [string, number, (v: number) => void][]
         ).map(([label, val, set]) => (
           <div key={label} className="flex items-center gap-1.5 min-w-0">
@@ -489,6 +551,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
 
 function SectorDetail({ sector }: { sector: VisitedSector }) {
   const stars = sector.objects?.filter((o: any) => o.type === "star") ?? [];
+  const relays: any[] = sector.objects?.filter((o: any) => o.type === "scut_relay") ?? [];
   const planets: any[] = [];
   const asteroids: any[] = [];
   const solarSystems: any[] = [];
@@ -547,6 +610,29 @@ function SectorDetail({ sector }: { sector: VisitedSector }) {
           {planets.length > 4 && (
             <div className="text-muted-foreground/30 pl-3">+{planets.length - 4} more</div>
           )}
+        </div>
+      )}
+
+      {relays.length > 0 && (
+        <div className="space-y-0.5 pl-1">
+          {relays.map((relay: any, i: number) => (
+            <div key={i} className="flex flex-wrap gap-x-2 items-baseline">
+              <span className={relay.status === "active" ? "text-cyan-400" : "text-cyan-700"}>
+                ◈ {relay.status === "active" ? "SCUT ACTIVE" : "SCUT inactive"}
+              </span>
+              {relay.coverageRadiusSectors != null && (
+                <span className="text-muted-foreground/50">
+                  range {relay.coverageRadiusSectors} sectors
+                </span>
+              )}
+              {relay.network?.name && (
+                <span className="text-cyan-600/70 font-mono">[{relay.network.name}]</span>
+              )}
+              {relay.createdByProbeName && (
+                <span className="text-muted-foreground/40">by {relay.createdByProbeName}</span>
+              )}
+            </div>
+          ))}
         </div>
       )}
 
