@@ -63,7 +63,12 @@ router.get("/state", async (_req, res) => {
     // sector is empty.
     const sectorUnavailable = sectorResp === null;
 
-    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
+    // Only persist a scan that actually succeeded. On a failed fetch
+    // sectorObjects is [] — recording that would clobber the last-known-good
+    // detail for this sector (visited-sectors store, read by the MAP/SECTORS
+    // tabs) with an empty list. Skip it, and surface write errors.
+    if (!sectorUnavailable)
+      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /state]", e));
 
     const mannies = (manniesResp.mannies ?? []).map((m: any) => {
       // A manny's `task` payload carries the fields the map needs to plot it:
@@ -153,7 +158,11 @@ router.post("/command", async (req, res) => {
     const resourceStocks: any[] = inv.resourceStocks ?? [];
     const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
 
-    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
+    // Only persist a scan that actually succeeded (see /state) — a failed
+    // getSector() yields null → sectorObjects [], and recording that would
+    // clobber the sector's last-known-good detail with an empty list.
+    if (sectorResp !== null)
+      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /command]", e));
 
     const manniesById = new Map(mannies.map((m: any) => [m.id, m]));
     const itemsById = new Map(inventoryItems.map((i: any) => [i.id, i]));
