@@ -366,6 +366,129 @@ export const TOOLS: ChatCompletionTool[] = [
       },
     },
   },
+  {
+    type: "function",
+    function: {
+      name: "refill_deuterium_tank",
+      description:
+        "Order a Manny to refill the probe's deuterium tank using a deuterium refuel station in the current sector. Duration: ~1 minute. The Manny must be idle and the sector must contain a deuterium refuel station object.",
+      parameters: {
+        type: "object",
+        required: ["manny_id"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "transfer_deuterium",
+      description:
+        "Order a Manny to transfer deuterium from this probe's reserve to another probe or drone in the same sector. Duration: ~5 minutes. Use get_game_state to find other probes visible in the sector.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "target_probe_id", "amount"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          target_probe_id: {
+            type: "number",
+            description: "Integer numeric ID of the target probe or drone (not its name — use the id field from the probe list in sector objects)",
+          },
+          amount: {
+            type: "number",
+            description: "Percentage of deuterium to transfer (0–100)",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "assemble_probe",
+      description:
+        "Order a Manny to assemble a brand-new Von Neumann probe outside the current hull. The new probe can then be piloted via SCUT or the operator can transfer their instance into it (the current probe becomes a drone). Requires two distinct empty storage containers from inventory plus the appropriate components. The Manny must be idle.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "container_ids"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          container_ids: {
+            type: "array",
+            items: { type: "string" },
+            description: "Exactly two distinct inventory item IDs of empty storage containers to use as the new probe's hull sections",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "improve_probe",
+      description:
+        "Order a Manny to install an improvement (upgrade) on the probe. Use get_game_state to check what improvements are available from the probe data.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "improvement"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          improvement: {
+            type: "string",
+            description: "Improvement ID to install (e.g. deuterium_engine)",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "install_waypoint_bookmark",
+      description:
+        "Order a Manny to install a waypoint bookmark beacon on a sector object (asteroid, planet, or star). The beacon transmits a named message readable by any probe in the sector. Requires a waypoint_bookmark item in inventory.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "object_id", "name"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          object_id: {
+            type: "string",
+            description: "Sector object ID of the asteroid, planet, or star to place the bookmark on",
+          },
+          name: {
+            type: "string",
+            description: "Name/message for the bookmark beacon",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "drop_container_on_planet",
+      description:
+        "Order a Manny to drop a storage container down onto a planet surface using an atmospheric drop kit (ablative shield + parachute). Consumes one atmospheric_drop_kit from inventory. The container descends and lands on the planet.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "container_id", "planet_id"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          container_id: {
+            type: "string",
+            description: "Inventory item ID of the storage container to drop",
+          },
+          planet_id: {
+            type: "string",
+            description: "Sector object ID of the planet to drop the container onto",
+          },
+        },
+      },
+    },
+  },
 ];
 
 export async function executeTool(
@@ -515,6 +638,33 @@ export async function executeTool(
       );
     case "atomic_printer_craft":
       return client.atomicPrinterCraft(args.recipe as string);
+    case "refill_deuterium_tank":
+      return client.refillDeuteriumTank(args.manny_id as string);
+    case "transfer_deuterium":
+      return client.transferDeuteriumToProbe(
+        args.manny_id as string,
+        args.target_probe_id as number,
+        args.amount as number
+      );
+    case "assemble_probe":
+      return client.assembleProbe(
+        args.manny_id as string,
+        args.container_ids as string[]
+      );
+    case "improve_probe":
+      return client.improveProbe(args.manny_id as string, args.improvement as string);
+    case "install_waypoint_bookmark":
+      return client.installWaypointBookmark(
+        args.manny_id as string,
+        args.object_id as string,
+        args.name as string
+      );
+    case "drop_container_on_planet":
+      return client.dropContainerOnPlanet(
+        args.manny_id as string,
+        args.container_id as string,
+        args.planet_id as string
+      );
     case "schedule_action": {
       const entry = await addPendingAction({
         description: args.description as string,

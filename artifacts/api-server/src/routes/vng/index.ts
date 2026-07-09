@@ -216,7 +216,15 @@ ${stowedMannies.map((m: any) => `  • ${m.label ?? m.name ?? "Unnamed Manny"}  
 ${sectorObjects
   .filter((o: any) => o.type !== "detached_container")
   .slice(0, 25)
-  .map((o: any) => `  • [${o.type}] "${o.name ?? "unnamed"}"  id="${o.id ?? "none"}"  ${o.resourceTypes?.length ? `resources=[${o.resourceTypes.join(",")}]  ` : ""}${o.summary ?? ""}`)
+  .map((o: any) => {
+    const extras: string[] = [];
+    if (o.resourceTypes?.length) extras.push(`resources=[${o.resourceTypes.join(",")}]`);
+    if (o.type === "deuterium_refuel_station") extras.push("⛽ USE: refill_deuterium_tank");
+    if (o.type === "scut_relay" && o.active === false) extras.push("📡 INACTIVE SCUT RELAY — can be activated with a Manny + integrated_circuit");
+    if (o.type === "scut_relay" && o.active === true) extras.push("📡 ACTIVE SCUT RELAY");
+    if (o.type === "probe") extras.push("🛸 OTHER PROBE — can receive deuterium transfer");
+    return `  • [${o.type}] "${o.name ?? "unnamed"}"  id="${o.id ?? "none"}"  ${extras.join("  ")}  ${o.summary ?? ""}`;
+  })
   .join("\n") || "  none"}
 
 == FLOATING STORAGE CONTAINERS IN THIS SECTOR ==
@@ -279,6 +287,12 @@ ${
 - PARALLEL BUILDS: When asked to build a complex item, FIRST compute the COMPLETE work breakdown — every ingredient at every level of the recipe tree. Then distribute ALL of that work across ALL available mannies. Do not stop after assigning one task per manny; each manny should have a full sequential chain of crafting tasks (using schedule_action with manny_idle conditions to chain them). Under-utilising mannies is a mistake.
   Example for building a Manny with 8 workers: compute that you need e.g. 18× electric_motor, 6× linear_actuator, 4× battery_pack, 18× steel_plate, 12× steel_bar (plus sub-ingredients). Divide those totals across all 8 mannies; each manny gets a chain like: steel_bar → steel_bar → electric_motor → linear_actuator → schedule next when idle.
 - DEPENDENCY GUARD: Use requireItems in the schedule_action condition whenever a step depends on an item being produced by a *different* manny in parallel. Without it, the step could fire before its dependency is ready.
+- DEUTERIUM REFUEL: Requires sector to contain a [deuterium_refuel_station] object. Use refill_deuterium_tank with an idle Manny. Duration ~1 min.
+- DEUTERIUM TRANSFER: Requires another probe visible as a [probe] sector object. target_probe_id is an integer (e.g. 652). amount is a percentage (0–100) of the current probe's deuterium.
+- PROBE ASSEMBLY: assemble_probe needs 2 distinct empty container inventory IDs (container_ids array). The assembled probe can be controlled via SCUT or the operator can transfer into it (current probe becomes a drone).
+- PROBE IMPROVEMENT: improve_probe installs an upgrade on the probe. improvement is the improvement ID string.
+- WAYPOINT BOOKMARK: install_waypoint_bookmark places a named beacon on a sector object. Requires waypoint_bookmark item in inventory.
+- DROP ON PLANET: drop_container_on_planet drops a container through atmosphere onto a planet. Requires atmospheric_drop_kit in inventory. planet_id is the sector object ID of the planet.
 - Be concise and precise.`;
 
     const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [

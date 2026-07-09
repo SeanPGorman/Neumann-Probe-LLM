@@ -1201,5 +1201,224 @@
       }
     ],
     "resourceSummary": []
+  },
+  {
+    "id": 8,
+    "sectorX": 5,
+    "sectorY": 2,
+    "sectorZ": 5,
+    "firstVisitedAt": "2026-07-09T15:21:56.772Z",
+    "lastVisitedAt": "2026-07-09T15:21:56.772Z",
+    "visitCount": 1,
+    "objects": [
+      {
+        "id": "3ab3aa3f8a30f2bfd971",
+        "type": "solar_system",
+        "name": "WP-012-SnoozyBob. This is 5.2.5. 1 Metal. 1 Deut. 1 Ice & 0 Organics.",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 14 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 12,
+        "orbitalBodyCount": 14,
+        "bodies": [
+          {
+            "id": "0675c9923d77e1ca1880",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.375381,
+            "massUnit": "solar_mass",
+            "radius": 0.589354,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "1450d2960d6b22366adf",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.134658,
+            "massUnit": "earth_mass",
+            "radius": 0.484509,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.128586,
+            "intelligentLife": false
+          },
+          {
+            "id": "9b314361b6b304414f12",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 1.070353,
+            "massUnit": "earth_mass",
+            "radius": 0.789455,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.17961,
+            "intelligentLife": false
+          },
+          {
+            "id": "696ae73a5bf3edefd770",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 246.103106,
+            "massUnit": "earth_mass",
+            "radius": 3.707128,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.135702,
+            "intelligentLife": false
+          },
+          {
+            "id": "265346d13deb63e88b86",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 1.447159,
+            "massUnit": "earth_mass",
+            "radius": 1.144259,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.078956,
+            "intelligentLife": false
+          },
+          {
+            "id": "2a5aab1492b1979c0370",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 4.496579,
+            "massUnit": "earth_mass",
+            "radius": 1.138953,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.016871,
+            "intelligentLife": false
+          },
+          {
+            "id": "5fbeda0cddcd37266e53",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.011805,
+            "massUnit": "earth_mass",
+            "radius": 0.563465,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.137081,
+            "intelligentLife": false
+          },
+          {
+            "id": "d5452d6f822b77b46de1",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.112528,
+            "massUnit": "earth_mass",
+            "radius": 0.194335,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.086047,
+            "intelligentLife": false
+          },
+          {
+            "id": "4c3b3cf4e7fe292a7847",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.373399,
+            "massUnit": "earth_mass",
+            "radius": 0.831224,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.078041,
+            "intelligentLife": false
+          },
+          {
+            "id": "6b899268f0f0aab9ec88",
+            "type": "planet",
+            "name": null,
+            "category": "ocean",
+            "mass": 1.678413,
+            "massUnit": "earth_mass",
+            "radius": 0.476838,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.132177,
+            "intelligentLife": false
+          },
+          {
+            "id": "55112e22463d73096beb",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 1.024159,
+            "massUnit": "earth_mass",
+            "radius": 0.860276,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.123438,
+            "intelligentLife": false
+          },
+          {
+            "id": "4493037db0fa8a335edf",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.070904,
+            "massUnit": "earth_mass",
+            "radius": 1.469221,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.085735,
+            "intelligentLife": false
+          },
+          {
+            "id": "2be75af5ec7e39522e33",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.446873,
+            "massUnit": "earth_mass",
+            "radius": 1.398368,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.085857,
+            "intelligentLife": false
+          },
+          {
+            "id": "f18ab8ac2293cf169b82",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.01012,
+            "massUnit": "earth_mass",
+            "radius": 0.164747,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "cc4448f478943d904e40",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.004741,
+            "massUnit": "earth_mass",
+            "radius": 0.10877,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      },
+      {
+        "id": "detached-container-container-itm_f179a2bd92b2227e2623482b",
+        "type": "detached_container",
+        "name": "MetalsFull1",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "f18ab8ac2293cf169b82",
+        "salvageable": false
+      }
+    ],
+    "resourceSummary": []
   }
 ]

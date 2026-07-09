@@ -186,3 +186,79 @@ export async function dropContainerOnAsteroid(
     }
   );
 }
+
+export async function dropContainerOnPlanet(
+  mannyId: string,
+  containerId: string,
+  planetId: string
+) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/drop-storage-container`,
+    {
+      method: "POST",
+      body: JSON.stringify({ containerId, planetId }),
+    }
+  );
+}
+
+export async function refillDeuteriumTank(mannyId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/refill-deuterium-tank`,
+    {
+      method: "POST",
+      body: JSON.stringify({}),
+    }
+  );
+}
+
+export async function transferDeuteriumToProbe(
+  mannyId: string,
+  targetProbeId: number,
+  amount: number
+) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/transfer-deuterium-to-probe`,
+    {
+      method: "POST",
+      body: JSON.stringify({ targetProbeId, amount }),
+    }
+  );
+}
+
+export async function assembleProbe(mannyId: string, containerIds: string[]) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/assemble-probe`,
+    {
+      method: "POST",
+      body: JSON.stringify({ containerIds }),
+    }
+  );
+}
+
+export async function improveProbe(mannyId: string, improvement: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/improve-probe`,
+    {
+      method: "POST",
+      body: JSON.stringify({ improvement }),
+    }
+  );
+}
+
+export async function installWaypointBookmark(
+  mannyId: string,
+  objectId: string,
+  name: string
+) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/install-bookmark`,
+    {
+      method: "POST",
+      body: JSON.stringify({ objectId, name }),
+    }
+  );
+}
+
+export async function getProbeList() {
+  return vngFetch("/api/probes");
+}
