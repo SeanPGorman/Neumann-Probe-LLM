@@ -28,7 +28,8 @@ export const TOOLS: ChatCompletionTool[] = [
           },
           recipe: {
             type: "string",
-            description: "Recipe ID to craft (e.g. additional_container, waypoint_bookmark, steel_bar)",
+            enum: ["waypoint_bookmark", "steel_bar", "steel_plate", "additional_container", "electric_motor", "battery_pack", "linear_actuator", "deuterium_engine", "solar_panel", "scut_relay", "thermal_protection_shell", "parachute_pack", "descent_guidance_module", "atmospheric_drop_kit", "manny"],
+            description: "Recipe ID to craft. All Manny-craftable items. Note: scut_relay must be activated separately with turn_on_relay once deployed in sector.",
           },
         },
       },
@@ -75,15 +76,24 @@ export const TOOLS: ChatCompletionTool[] = [
     function: {
       name: "detach_container",
       description:
-        "Order a Manny to detach a storage container from the probe and leave it floating in the current sector.",
+        "Order a Manny to detach a storage container from the probe. Can leave it drifting freely or hide it on a specific asteroid.",
       parameters: {
         type: "object",
-        required: ["manny_id", "container_id"],
+        required: ["manny_id", "container_id", "mode"],
         properties: {
           manny_id: { type: "string", description: "Full string ID of the Manny" },
           container_id: {
             type: "string",
             description: "Inventory item ID of the container to detach",
+          },
+          mode: {
+            type: "string",
+            enum: ["drifting", "hidden_on_asteroid"],
+            description: "drifting: leave floating in sector. hidden_on_asteroid: hide on a specific asteroid (requires asteroid_object_id).",
+          },
+          asteroid_object_id: {
+            type: "string",
+            description: "Required when mode=hidden_on_asteroid: sector object ID of the asteroid to hide the container on.",
           },
         },
       },
@@ -225,9 +235,9 @@ export const TOOLS: ChatCompletionTool[] = [
   {
     type: "function",
     function: {
-      name: "inspect_asteroid",
+      name: "inspect_sector_object",
       description:
-        "Order a Manny to inspect an asteroid to discover hidden storage containers or rare resources.",
+        "Order a Manny to inspect a sector object (asteroid, detached container, or dormant construct). Asteroids may reveal hidden containers. Dormant constructs unlock a probe improvement. Remote Mannies can inspect via SCUT.",
       parameters: {
         type: "object",
         required: ["manny_id", "object_id"],
@@ -235,7 +245,7 @@ export const TOOLS: ChatCompletionTool[] = [
           manny_id: { type: "string", description: "Full string ID of the Manny" },
           object_id: {
             type: "string",
-            description: "Asteroid object ID in the current sector",
+            description: "Sector object ID to inspect",
           },
         },
       },
@@ -356,12 +366,81 @@ export const TOOLS: ChatCompletionTool[] = [
     function: {
       name: "atomic_printer_craft",
       description:
-        "Use the Atomic 3D Printer to craft high-tech components. The printer runs directly on the probe (no Manny needed). Recipes: micro_conductor, ceramic_insulator, crystal_substrate, dopant_matrix, integrated_circuit.",
+        "Use the Atomic 3D Printer to craft high-tech components. A free Manny is automatically reserved as assistant. Recipes: micro_conductor, ceramic_insulator, crystal_substrate, dopant_matrix, integrated_circuit, atomic_printer_part.",
       parameters: {
         type: "object",
         required: ["recipe"],
         properties: {
-          recipe: { type: "string", description: "Atomic printer recipe ID to start" },
+          recipe: {
+            type: "string",
+            enum: ["micro_conductor", "ceramic_insulator", "crystal_substrate", "dopant_matrix", "integrated_circuit", "atomic_printer_part"],
+            description: "Atomic printer recipe ID to start",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "turn_on_relay",
+      description:
+        "Order a Manny to activate an inactive SCUT relay in the current sector. Duration: ~5 minutes. Consumes one integrated_circuit from inventory. The sector must contain a star (solar power). Once active the relay creates or extends a SCUT network allowing long-range probe communication and remote Manny tasking.",
+      parameters: {
+        type: "object",
+        required: ["manny_id", "relay_id"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the Manny" },
+          relay_id: {
+            type: "number",
+            description: "Integer ID of the inactive SCUT relay sector object. SCUT relay sector objects have purely numeric IDs (e.g. sector object id='42' → relay_id=42). Use get_game_state to see relays in sector.",
+          },
+          network_name: {
+            type: "string",
+            description: "Optional: name for a new SCUT network if this relay starts an isolated one. Ignored when relay joins existing coverage.",
+          },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "drop_manny_cargo",
+      description:
+        "Discard the cargo of a Manny that is currently waiting outside the probe for storage space, then retry docking. Resource cargo is permanently lost. Recoverable objects (salvaged Mannies, drifting items, detached containers) are restored to the sector as drifting objects. Use when a Manny is stuck waiting and you want to free it.",
+      parameters: {
+        type: "object",
+        required: ["manny_id"],
+        properties: {
+          manny_id: { type: "string", description: "Full string ID of the waiting Manny" },
+        },
+      },
+    },
+  },
+  {
+    type: "function",
+    function: {
+      name: "send_message",
+      description:
+        "Send a message to another probe or an inhabited planet. Probe recipients must be in the same sector or reachable via a shared SCUT relay network. Planet recipients must be inhabited planets in the current sector.",
+      parameters: {
+        type: "object",
+        required: ["recipient_type", "recipient_id", "body"],
+        properties: {
+          recipient_type: {
+            type: "string",
+            enum: ["probe", "planet"],
+            description: "Type of recipient",
+          },
+          recipient_id: {
+            type: "string",
+            description: "Probe numeric ID (e.g. '652') or planet sector object ID (e.g. 'planet-abc123')",
+          },
+          body: {
+            type: "string",
+            description: "Message text (max 2000 characters)",
+          },
         },
       },
     },
@@ -497,12 +576,13 @@ export async function executeTool(
 ): Promise<unknown> {
   switch (name) {
     case "get_game_state": {
-      const [probeResp, manniesResp, sectorResp, recipesResp] =
+      const [probeResp, manniesResp, sectorResp, recipesResp, improvementsResp] =
         await Promise.all([
           client.getProbe(),
           client.getMannies(),
           client.getSector().catch(() => null),  // unavailable during relativistic transit
           client.getCraftingRecipes(),
+          client.getProbeImprovements().catch(() => null),
         ]);
       const probe = probeResp.probe;
       const inv = probe.inventory ?? {};
@@ -570,6 +650,21 @@ export async function executeTool(
             unit: i.unit,
           })),
         })),
+        probe_improvements: (improvementsResp?.improvements ?? []).map((imp: any) => ({
+          id: imp.id,
+          name: imp.name,
+          description: imp.description,
+          available: imp.available,
+          done: imp.done,
+          durationSeconds: imp.durationSeconds,
+          ingredients: (imp.ingredients ?? []).map((i: any) => ({
+            type: i.type,
+            quantity: i.quantity,
+            kind: i.kind,
+            unit: i.unit,
+          })),
+          effects: imp.effects,
+        })),
       };
     }
     case "craft_item":
@@ -585,7 +680,9 @@ export async function executeTool(
     case "detach_container":
       return client.detachContainer(
         args.manny_id as string,
-        args.container_id as string
+        args.container_id as string,
+        (args.mode as "drifting" | "hidden_on_asteroid") ?? "drifting",
+        args.asteroid_object_id as string | undefined
       );
     case "repair_manny":
       return client.repairManny(
@@ -620,8 +717,9 @@ export async function executeTool(
         args.manny_id as string,
         args.object_id as string
       );
+    case "inspect_sector_object":
     case "inspect_asteroid":
-      return client.inspectAsteroid(
+      return client.inspectSectorObject(
         args.manny_id as string,
         args.object_id as string
       );
@@ -664,6 +762,20 @@ export async function executeTool(
         args.manny_id as string,
         args.container_id as string,
         args.planet_id as string
+      );
+    case "turn_on_relay":
+      return client.turnOnRelay(
+        args.manny_id as string,
+        args.relay_id as number,
+        args.network_name as string | undefined
+      );
+    case "drop_manny_cargo":
+      return client.dropMannyCargo(args.manny_id as string);
+    case "send_message":
+      return client.sendMessage(
+        args.recipient_type as "probe" | "planet",
+        args.recipient_id as string,
+        args.body as string
       );
     case "schedule_action": {
       const entry = await addPendingAction({

@@ -110,12 +110,19 @@ export async function deployManny(itemId: string) {
   });
 }
 
-export async function detachContainer(mannyId: string, containerId: string) {
+export async function detachContainer(
+  mannyId: string,
+  containerId: string,
+  mode: "drifting" | "hidden_on_asteroid" = "drifting",
+  asteroidObjectId?: string
+) {
+  const body: Record<string, unknown> = { containerId, mode };
+  if (mode === "hidden_on_asteroid" && asteroidObjectId) body.objectId = asteroidObjectId;
   return vngFetch(
     `/api/probe/mannies/${encodeURIComponent(mannyId)}/detach-storage-container`,
     {
       method: "POST",
-      body: JSON.stringify({ containerId }),
+      body: JSON.stringify(body),
     }
   );
 }
@@ -130,14 +137,20 @@ export async function salvageObject(mannyId: string, objectId: string) {
   );
 }
 
-export async function inspectAsteroid(mannyId: string, objectId: string) {
+/** Inspect any inspectable sector object (asteroids, detached containers, dormant constructs). Replaces deprecated inspect-asteroid. */
+export async function inspectSectorObject(mannyId: string, objectId: string) {
   return vngFetch(
-    `/api/probe/mannies/${encodeURIComponent(mannyId)}/inspect-asteroid`,
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/inspect-sector-object`,
     {
       method: "POST",
       body: JSON.stringify({ objectId }),
     }
   );
+}
+
+/** @deprecated Use inspectSectorObject instead */
+export async function inspectAsteroid(mannyId: string, objectId: string) {
+  return inspectSectorObject(mannyId, objectId);
 }
 
 export async function jettisonItem(inventoryId: string, amount?: number) {
@@ -261,4 +274,55 @@ export async function installWaypointBookmark(
 
 export async function getProbeList() {
   return vngFetch("/api/probes");
+}
+
+/**
+ * Activate an inactive SCUT relay. relayId is the integer from the sector object id
+ * (SCUT relay sector objects have purely numeric ids, e.g. "42" → pass 42).
+ * Requires a star in the current sector and one integrated_circuit in inventory.
+ */
+export async function turnOnRelay(
+  mannyId: string,
+  relayId: number,
+  networkName?: string
+) {
+  const body: Record<string, unknown> = { relayId };
+  if (networkName) body.networkName = networkName;
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/turn-on-relay`,
+    {
+      method: "POST",
+      body: JSON.stringify(body),
+    }
+  );
+}
+
+/** Drop a waiting Manny's cargo so it can dock (resource cargo is lost; recoverable items go back to sector). */
+export async function dropMannyCargo(mannyId: string) {
+  return vngFetch(
+    `/api/probe/mannies/${encodeURIComponent(mannyId)}/drop-manny-cargo`,
+    { method: "POST", body: JSON.stringify({}) }
+  );
+}
+
+/** Send a message to another probe (in same sector or same SCUT network) or an inhabited planet (same sector). */
+export async function sendMessage(
+  recipientType: "probe" | "planet",
+  recipientId: number | string,
+  body: string
+) {
+  return vngFetch("/api/probe/messages", {
+    method: "POST",
+    body: JSON.stringify({ recipient: { type: recipientType, id: recipientId }, body }),
+  });
+}
+
+/** List available (and installed) probe improvements with ingredient requirements. */
+export async function getProbeImprovements() {
+  return vngFetch("/api/probe/probe-improvements-available");
+}
+
+/** List active player missions. */
+export async function getMissions() {
+  return vngFetch("/api/probe/missions");
 }
