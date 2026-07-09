@@ -5,6 +5,7 @@ import {
   updateContainerStatus,
 } from "./file-store.js";
 import { getProbe, getSector, scanSector, getVisitedSectors } from "./client.js";
+import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
 
 const router = Router();
 
@@ -193,50 +194,8 @@ router.get("/scout", async (req, res) => {
     const body = await scanSector(x, y, z);
     const rawObjects: any[] = body?.sector?.objects ?? [];
 
-    const objects = rawObjects.map((o: any) => {
-      const base: Record<string, unknown> = {
-        id: o.id ?? null,
-        type: o.type,
-        name: o.name ?? null,
-        summary: o.summary ?? null,
-        dangerLevel: o.dangerLevel ?? null,
-        resourceTypes: o.resourceTypes ?? [],
-      };
-      if (o.type === "solar_system") {
-        base.starCount = o.starCount ?? 0;
-        base.planetCount = o.planetCount ?? 0;
-        base.orbitalBodyCount = o.orbitalBodyCount ?? 0;
-        base.bodies = (o.bookmarkTargets ?? []).map((b: any) => ({
-          id: b.id, type: b.type, name: b.name ?? null,
-          category: b.category ?? null, mass: b.mass, massUnit: b.massUnit,
-          radius: b.radius, radiusUnit: b.radiusUnit,
-          habitabilityScore: b.habitabilityScore ?? null,
-          intelligentLife: b.intelligentLife ?? null,
-        }));
-      }
-      if (o.type === "planet") {
-        base.category = o.category ?? null;
-        base.habitabilityScore = o.habitabilityScore ?? null;
-        base.intelligentLife = o.intelligentLife ?? null;
-        base.mass = o.mass ?? null; base.massUnit = o.massUnit ?? null;
-      }
-      if (o.type === "asteroid") {
-        base.composition = o.composition ?? null;
-        base.sizeCategory = o.sizeCategory ?? null;
-        base.resourceAmounts = o.resourceAmounts ?? null;
-      }
-      if (o.type === "detached_container") {
-        base.capacity = o.capacity ?? null;
-        base.mode = o.mode ?? null;
-        base.targetObjectId = o.targetObjectId ?? null;
-        base.salvageable = o.salvageable ?? false;
-      }
-      return base;
-    });
-
-    const resourceSummary: string[] = Array.from(
-      new Set(rawObjects.flatMap((o: any) => o.resourceTypes ?? []))
-    );
+    const objects = mapSectorObjects(rawObjects);
+    const resourceSummary = sectorResourceSummary(rawObjects);
 
     res.json({ x, y, z, objects, resourceSummary });
   } catch (err: any) {
