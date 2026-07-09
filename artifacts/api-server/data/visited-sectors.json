@@ -264,146 +264,10 @@
     "sectorY": 0,
     "sectorZ": 0,
     "firstVisitedAt": "2026-06-24T16:26:48.010Z",
-    "lastVisitedAt": "2026-07-08T16:23:08.472Z",
-    "visitCount": 3084,
-    "objects": [
-      {
-        "id": "starter-iron-e2ad1e3569e28ae4",
-        "type": "asteroid",
-        "name": null,
-        "estimated": false,
-        "summary": "Wandering asteroid body.",
-        "dangerLevel": "low",
-        "resourceTypes": [
-          "metals"
-        ],
-        "composition": "iron",
-        "sizeCategory": null,
-        "mass": 0.00005,
-        "radius": 0.012,
-        "resourceAmounts": {
-          "deuterium": 0,
-          "metals": 15.49,
-          "ice": 0,
-          "carbon_compounds": 0
-        },
-        "resourceComposition": {
-          "deuterium": 0,
-          "metals": 1,
-          "ice": 0,
-          "carbon_compounds": 0
-        }
-      },
-      {
-        "id": "deuterium-asteroid-c182d8b1005482a57746ae11",
-        "type": "asteroid",
-        "name": "WP-001-SnoozyBob. This is 0.0.0. 1 Metal. 0 Ice. 1 Deut. 0 Organics.",
-        "estimated": false,
-        "summary": "Wandering asteroid body.",
-        "dangerLevel": "low",
-        "resourceTypes": [
-          "deuterium"
-        ],
-        "composition": "deuterium",
-        "sizeCategory": null,
-        "mass": 0.00001,
-        "radius": 0.0001,
-        "resourceAmounts": {
-          "deuterium": 2.28,
-          "metals": 0,
-          "ice": 0,
-          "carbon_compounds": 0
-        },
-        "resourceComposition": {
-          "deuterium": 1,
-          "metals": 0,
-          "ice": 0,
-          "carbon_compounds": 0
-        }
-      },
-      {
-        "id": "detached-container-container-itm_db112d2daf8d515594f0ec84",
-        "type": "detached_container",
-        "name": "IceMT1",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_3530c0a3d9d9ecc8cfc861bd",
-        "type": "detached_container",
-        "name": "MetalMT2",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_72e2c88676d5acd551bde47b",
-        "type": "detached_container",
-        "name": "MetalsMT3",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_2bc1b9f823898e5b10f795ca",
-        "type": "detached_container",
-        "name": "OrganicsMT3",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_a83a85820cb223ac19bb3ff6",
-        "type": "detached_container",
-        "name": "OrganicsMT2",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_craft_df3ce965ab06ccf576ed3a46",
-        "type": "detached_container",
-        "name": "OrganicsMT1",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      }
-    ],
-    "resourceSummary": [
-      "metals",
-      "deuterium"
-    ]
+    "lastVisitedAt": "2026-07-08T22:00:38.637Z",
+    "visitCount": 3089,
+    "objects": [],
+    "resourceSummary": []
   },
   {
     "id": 3,
@@ -1272,6 +1136,68 @@
         "mode": "hidden_on_asteroid",
         "targetObjectId": "ae019c55bc98ffb949e5",
         "salvageable": false
+      }
+    ],
+    "resourceSummary": []
+  },
+  {
+    "id": 7,
+    "sectorX": 3,
+    "sectorY": 3,
+    "sectorZ": 2,
+    "firstVisitedAt": "2026-07-09T01:03:08.509Z",
+    "lastVisitedAt": "2026-07-09T01:07:37.939Z",
+    "visitCount": 10,
+    "objects": [
+      {
+        "id": "606e0b0291de03ca3f80",
+        "type": "solar_system",
+        "name": "WP-009-SnoozyBob. This is 3.3.2. 0 Metal. 0 Deut. 0 Ice & Organics.",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 2 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 2,
+        "orbitalBodyCount": 2,
+        "bodies": [
+          {
+            "id": "c1983b473519e8829a1a",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.179434,
+            "massUnit": "solar_mass",
+            "radius": 0.179179,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "50494bb01b7407e2699e",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.442717,
+            "massUnit": "earth_mass",
+            "radius": 1.556283,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.105505,
+            "intelligentLife": false
+          },
+          {
+            "id": "88c89a838e88c41f2bfd",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 4.967849,
+            "massUnit": "earth_mass",
+            "radius": 1.240476,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.000233,
+            "intelligentLife": false
+          }
+        ]
       }
     ],
     "resourceSummary": []
