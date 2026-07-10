@@ -147,7 +147,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
 
     const cosY = Math.cos(ry), sinY = Math.sin(ry);
     const cosX = Math.cos(rx), sinX = Math.sin(rx);
-    const camDist = radius * 1.7;
+    const camDist = DEFAULT_RADIUS * 1.7; // fixed at baseline so sphere scales with radius
     const fov = Math.min(W, H) * 0.42 * zoomRef.current;
 
     const pts: ProjectedDot[] = OFFSETS.map(([dx, dy, dz]) => {

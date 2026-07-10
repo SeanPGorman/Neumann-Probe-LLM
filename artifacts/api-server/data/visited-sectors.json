@@ -1920,13 +1920,13 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-10T21:38:29.719Z",
-    "visitCount": 17,
+    "lastVisitedAt": "2026-07-10T21:54:53.983Z",
+    "visitCount": 29,
     "objects": [
       {
         "id": "7d1f75ee83e4d598fc0f",
         "type": "solar_system",
-        "name": "System 21b0e1",
+        "name": "WP-015-SnoozyBob. This is 4.7.1. 1 Metal. 1 Deut. 1 Ice. 0 Organics.",
         "estimated": false,
         "summary": "Stellar system with 1 star(s) and 2 orbital body(ies).",
         "dangerLevel": "low",
