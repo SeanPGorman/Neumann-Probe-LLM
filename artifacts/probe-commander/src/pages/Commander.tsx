@@ -773,7 +773,6 @@ export default function Commander() {
               priorY={globeCenter.py}
               priorZ={globeCenter.pz}
               sectorsData={sectorsData}
-              onScoutRequest={handleScoutRequest}
               onRefreshSectors={handleRefreshSectors}
             />
           )}
