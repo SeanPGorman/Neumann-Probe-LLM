@@ -241,6 +241,7 @@ router.get("/scout", async (req, res) => {
 
     res.json({ x, y, z, objects, resourceSummary });
   } catch (err: any) {
+    console.error(`[scout] failed for (${req.query.x},${req.query.y},${req.query.z}):`, err.message);
     res.status(500).json({ error: err.message });
   }
 });
