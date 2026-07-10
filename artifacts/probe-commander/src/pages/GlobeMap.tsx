@@ -1,4 +1,15 @@
 import { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import { SectorObjectList } from "../components/SectorObject";
+
+const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
+
+async function fetchJson<T = any>(url: string): Promise<T> {
+  const r = await fetch(url);
+  if (!r.ok) throw new Error(`Request failed (${r.status})`);
+  const json = await r.json();
+  if (json.error) throw new Error(json.error);
+  return json as T;
+}
 
 const DEFAULT_RADIUS = 4;
 const MIN_RADIUS = 2;
@@ -50,11 +61,10 @@ interface Props {
   priorZ?: number;
   isMoving: boolean;
   sectorsData?: { sectors: any[] };
-  onScoutRequest?: (x: number, y: number, z: number) => void;
   onRefreshSectors?: () => Promise<void>;
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onScoutRequest, onRefreshSectors }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -86,6 +96,9 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
   const OFFSETS = useMemo(() => computeOffsets(radius), [radius]);
   const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshMsg, setRefreshMsg] = useState<string | null>(null);
+  const [scoutResult, setScoutResult] = useState<any>(null);
+  const [scoutLoading, setScoutLoading] = useState(false);
+  const [scoutError, setScoutError] = useState<string | null>(null);
 
   const handleRefresh = useCallback(async () => {
     if (!onRefreshSectors || isRefreshing) return;
@@ -380,6 +393,16 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     return () => canvas.removeEventListener("wheel", onWheel);
   }, []);
 
+  useEffect(() => {
+    if (!selected) { setScoutResult(null); setScoutError(null); return; }
+    const { ax: x, ay: y, az: z } = selected;
+    setScoutResult(null); setScoutError(null); setScoutLoading(true);
+    fetchJson(`${BASE}/api/vng/log/scout?x=${x}&y=${y}&z=${z}`)
+      .then(data => setScoutResult(data))
+      .catch(e => setScoutError(e.message))
+      .finally(() => setScoutLoading(false));
+  }, [selected]);
+
   function ctx(c: HTMLCanvasElement) {
     const context = c.getContext("2d")!;
     context.setTransform(1, 0, 0, 1, 0, 0);
@@ -519,40 +542,55 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       {selected ? (
         <div className="border border-border/50 rounded p-2 space-y-1.5 bg-background/60 text-xs">
           <div className="flex items-center justify-between gap-2">
-            {onScoutRequest ? (
-              <button
-                onClick={() => onScoutRequest(selected.ax, selected.ay, selected.az)}
-                className="font-mono text-foreground glow-green hover:text-primary transition-colors underline-offset-2 hover:underline cursor-pointer"
-                title="Scan this sector in Scout"
-              >
-                [{selected.ax},{selected.ay},{selected.az}]
-              </button>
-            ) : (
-              <span className="font-mono text-foreground glow-green">
-                [{selected.ax},{selected.ay},{selected.az}]
-              </span>
-            )}
+            <span className="font-mono text-foreground glow-green">
+              [{selected.ax},{selected.ay},{selected.az}]
+            </span>
             <div className="flex items-center gap-1.5 flex-wrap">
               {selIsProbe && <span className="text-[10px] text-primary font-bold">◉ PROBE</span>}
               {selIsPrior && <span className="text-[10px] text-yellow-400">○ PRIOR</span>}
               {selIsHome && !selIsProbe && <span className="text-[10px] text-blue-300">⌂ HOME</span>}
-              {selSector && (
-                <span className="text-[10px] text-green-400">
-                  VISITED ×{selSector.visitCount}
-                </span>
-              )}
+              {selSector && <span className="text-[10px] text-green-400">VISITED ×{selSector.visitCount}</span>}
             </div>
             <button
-              onClick={() => setSelected(null)}
+              onClick={() => { setSelected(null); setScoutResult(null); setScoutError(null); }}
               className="text-muted-foreground/30 hover:text-muted-foreground ml-auto text-[10px]"
             >✕</button>
           </div>
 
-          {selSector ? (
-            <SectorDetail sector={selSector} />
-          ) : (
-            <div className="text-[10px] text-muted-foreground/40 italic">
-              Uncharted — use SCOUT tab to scan remotely.
+          {selSector && (
+            <div className="text-[10px] text-muted-foreground/40">
+              Last visited {new Date(selSector.lastVisitedAt).toLocaleString()}
+            </div>
+          )}
+
+          {scoutLoading && (
+            <div className="text-[10px] text-muted-foreground/60 animate-pulse">Scanning…</div>
+          )}
+          {scoutError && (
+            <div className="text-[10px] text-destructive">{scoutError}</div>
+          )}
+          {scoutResult?.unavailable && (
+            <div className="flex items-start gap-1.5 text-[10px] text-amber-400/80 bg-amber-400/5 border border-amber-400/20 rounded p-1.5">
+              <span>⏳</span>
+              <div>
+                Sensor data not ready.
+                {scoutResult.retryIn && <span className="text-muted-foreground ml-1">Try again in {scoutResult.retryIn}.</span>}
+              </div>
+            </div>
+          )}
+          {scoutResult && !scoutResult.unavailable && (
+            <div className="space-y-1.5">
+              {scoutResult.resourceSummary?.length > 0 && (
+                <div className="flex flex-wrap gap-1">
+                  {scoutResult.resourceSummary.map((r: string) => (
+                    <span key={r} className="px-1.5 py-0.5 bg-primary/10 text-primary rounded text-[10px]">{r}</span>
+                  ))}
+                </div>
+              )}
+              {scoutResult.objects?.length === 0
+                ? <div className="text-[10px] text-muted-foreground/40 italic">Empty sector — no objects detected.</div>
+                : <SectorObjectList objects={scoutResult.objects} />
+              }
             </div>
           )}
         </div>

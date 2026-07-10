@@ -101,12 +101,36 @@ function ApiError({ error }: { error: Error }) {
   );
 }
 
+function ScanReadinessBar({ scan }: { scan: { currentSectorResidenceSeconds: number; requiredResidenceSeconds: number; scanQuality: number } | null }) {
+  if (!scan) return null;
+  const { currentSectorResidenceSeconds: current, requiredResidenceSeconds: required, scanQuality } = scan;
+  const pct = required > 0 ? Math.min(100, (current / required) * 100) : 100;
+  const ready = scanQuality >= 1;
+  const remainingSec = Math.max(0, required - current);
+  const mins = Math.floor(remainingSec / 60);
+  const secs = remainingSec % 60;
+  const label = ready ? "READY" : mins > 0 ? `${mins}m ${secs}s` : `${secs}s`;
+  const color = ready ? "hsl(150 80% 45%)" : "hsl(38 95% 55%)";
+  return (
+    <div>
+      <div className="flex justify-between text-xs mb-1">
+        <span className="text-muted-foreground">SCAN</span>
+        <span style={{ color }}>{label}</span>
+      </div>
+      <div className="h-1.5 bg-secondary rounded-full overflow-hidden">
+        <div className="h-full rounded-full transition-all duration-1000"
+          style={{ width: `${pct}%`, backgroundColor: color, boxShadow: ready ? `0 0 6px ${color}` : "none" }} />
+      </div>
+    </div>
+  );
+}
+
 function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
   if (error) return <ApiError error={error} />;
   if (!state) {
     return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING TELEMETRY…</div>;
   }
-  const { probe, mannies, stowedMannies, sectorObjects, inventory } = state;
+  const { probe, mannies, stowedMannies, sectorObjects, inventory, scan } = state;
   const sector = probe.sector ?? { x: 0, y: 0, z: 0 };
   return (
     <div className="space-y-4">
@@ -130,6 +154,7 @@ function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
           </div>
         </div>
         <GaugeBar label="HULL" value={probe.integrityPercent} />
+        <ScanReadinessBar scan={scan} />
         <div className="flex justify-between text-xs">
           <span className="text-muted-foreground">CARGO</span>
           <span className="text-muted-foreground">{(inventory?.usedCapacity ?? 0).toFixed(2)}/{inventory?.capacity ?? 0} ECE</span>
@@ -486,7 +511,19 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
 
       {error && <div className="text-xs text-destructive">{error}</div>}
 
-      {result && (
+      {result?.unavailable && (
+        <div className="flex items-start gap-2 text-xs text-amber-400/80 bg-amber-400/5 border border-amber-400/20 rounded p-2">
+          <span className="mt-0.5">⏳</span>
+          <div>
+            <div>Sensor data not ready — probe still collecting readings for this sector.</div>
+            {result.retryIn && (
+              <div className="text-muted-foreground mt-0.5">Try again in {result.retryIn}.</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {result && !result.unavailable && (
         <div className="space-y-2">
           <div className="text-xs text-foreground font-bold glow-green">
             [{result.x},{result.y},{result.z}]
@@ -766,6 +803,37 @@ export default function Commander() {
           />
         )}
       </div>
+        <div className="border border-border border-glow rounded p-4 flex-1 scanlines">
+          {sideTab === "telemetry" && <TelemetryPanel state={state} error={stateError as Error | null} />}
+          {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
+          {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
+          {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
+          {sideTab === "scheduled" && <ScheduledPanel refetchSignal={logRefetch} />}
+          {sideTab === "globe" && (
+            <GlobeMap
+              probeX={globeCenter.x}
+              probeY={globeCenter.y}
+              probeZ={globeCenter.z}
+              isMoving={globeCenter.isMoving}
+              priorX={globeCenter.px}
+              priorY={globeCenter.py}
+              priorZ={globeCenter.pz}
+              sectorsData={sectorsData}
+              onRefreshSectors={handleRefreshSectors}
+            />
+          )}
+          {sideTab === "system" && (
+            <SystemMap
+              probe={state?.probe}
+              sectorObjects={state?.sectorObjects}
+              otherProbes={state?.otherProbes}
+              mannies={state?.mannies}
+              isMoving={globeCenter.isMoving}
+              sectorUnavailable={state?.sectorUnavailable}
+              onScoutRequest={handleScoutRequest}
+            />
+          )}
+        </div>
 
       <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">
         AUTO-REFRESH 30s

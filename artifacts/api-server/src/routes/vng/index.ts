@@ -129,6 +129,7 @@ router.get("/state", async (_req, res) => {
       sectorObjects: mapSectorObjects(sectorObjects),
       otherProbes: sectorResp?.sector?.probes ?? [],
       sectorUnavailable,
+      scan: sectorResp?.sector?.scan ?? null,
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
