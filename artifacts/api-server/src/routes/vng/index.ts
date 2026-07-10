@@ -25,6 +25,24 @@ function sse(res: import("express").Response, event: Record<string, unknown>) {
   res.write(`data: ${JSON.stringify(event)}\n\n`);
 }
 
+// ── Shared state extraction ───────────────────────────────────────────────────
+function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
+  const probe = probeResp.probe;
+  const inv = probe.inventory ?? {};
+  const sector: { x: number; y: number; z: number } = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+  const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
+  const mannies: any[] = manniesResp.mannies ?? [];
+  const inventoryItems: any[] = inv.items ?? [];
+  const activeMannyIds = new Set(mannies.map((m: any) => m.id));
+  const stowedMannies = inventoryItems.filter(
+    (i: any) => i.type === "manny" && !activeMannyIds.has(i.id)
+  );
+  recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
+  return { probe, inv, sector, sectorObjects, mannies, inventoryItems, activeMannyIds, stowedMannies };
+}
+
+// ── Routes ────────────────────────────────────────────────────────────────────
+
 router.get("/scheduled", async (_req, res) => {
   try {
     const actions = await getPendingActions();
@@ -50,19 +68,13 @@ router.get("/state", async (_req, res) => {
     const [probeResp, manniesResp, sectorResp] = await Promise.all([
       client.getProbe(),
       client.getMannies(),
-      client.getSector().catch(() => null),  // unavailable during high-speed transit
+      client.getSector().catch(() => null),
     ]);
 
-    const probe = probeResp.probe;
-    const inv = probe.inventory ?? {};
-    const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
-    const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
+    const { probe, inv, sector, sectorObjects, mannies, activeMannyIds, stowedMannies } =
+      extractCoreState(probeResp, manniesResp, sectorResp);
 
-    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
-
-    const mannies = (manniesResp.mannies ?? []).map((m: any) => {
-      // A manny's `task` payload carries the fields the map needs to plot it:
-      // which body it targets, its travel phase, and the per-leg travel time.
+    const manniesNorm = mannies.map((m: any) => {
       const task = m.task && typeof m.task === "object" && !Array.isArray(m.task) ? m.task : null;
       return {
         id: m.id,
@@ -81,14 +93,9 @@ router.get("/state", async (_req, res) => {
       };
     });
 
-    const activeMannyIds = new Set((manniesResp.mannies ?? []).map((m: any) => m.id));
-    const stowedMannies = ((probeResp.probe?.inventory?.items ?? []) as any[])
+    const stowedNorm = ((probeResp.probe?.inventory?.items ?? []) as any[])
       .filter((i: any) => i.type === "manny" && !activeMannyIds.has(i.id))
       .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" }));
-
-    // Enrich to the map-friendly superset (still carries the old
-    // {id,type,name,summary,resourceTypes} fields, so existing consumers work).
-    const sectorObjectsMapped = mapSectorObjects(sectorObjects);
 
     res.json({
       probe: {
@@ -105,9 +112,9 @@ router.get("/state", async (_req, res) => {
         usedCapacity: inv.usedCapacity ?? 0,
         freeCapacity: inv.freeCapacity ?? 0,
       },
-      mannies,
-      stowedMannies,
-      sectorObjects: sectorObjectsMapped,
+      mannies: manniesNorm,
+      stowedMannies: stowedNorm,
+      sectorObjects: mapSectorObjects(sectorObjects),
       otherProbes: sectorResp?.sector?.probes ?? [],
     });
   } catch (err: any) {
@@ -134,20 +141,15 @@ router.post("/command", async (req, res) => {
     const [probeResp, manniesResp, sectorResp, recipesResp] = await Promise.all([
       client.getProbe(),
       client.getMannies(),
-      client.getSector().catch(() => null),  // unavailable during relativistic transit
+      client.getSector().catch(() => null),
       client.getCraftingRecipes(),
     ]);
 
-    const probe = probeResp.probe;
-    const mannies: any[] = manniesResp.mannies ?? [];
-    const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
-    const recipes: any[] = recipesResp.recipes ?? [];
-    const inv = probe.inventory ?? {};
-    const inventoryItems: any[] = inv.items ?? [];
-    const resourceStocks: any[] = inv.resourceStocks ?? [];
-    const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+    const { probe, inv, sector, sectorObjects, mannies, inventoryItems, stowedMannies } =
+      extractCoreState(probeResp, manniesResp, sectorResp);
 
-    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
+    const recipes: any[] = recipesResp.recipes ?? [];
+    const resourceStocks: any[] = inv.resourceStocks ?? [];
 
     const manniesById = new Map(mannies.map((m: any) => [m.id, m]));
     const itemsById = new Map(inventoryItems.map((i: any) => [i.id, i]));
@@ -155,27 +157,18 @@ router.post("/command", async (req, res) => {
     const idleMannies = mannies.filter((m: any) => !m.currentTask);
     const busyMannies = mannies.filter((m: any) => m.currentTask);
 
-    // All containers registered on the probe (no kind filter — we show everything)
     const boardedContainers = inv.containers ?? [];
     const containersById = new Map(boardedContainers.map((c: any) => [c.id, c]));
 
-    // All inventory items that are not mannies or the atomic printer
     const nonMannyItems = inventoryItems.filter(
       (i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer"
     );
 
-    // Mannies sitting in inventory (not yet deployed / activated) — exclude already-active ones
-    const activeMannyIdSet = new Set(mannies.map((m: any) => m.id));
-    const stowedMannies = inventoryItems.filter((i: any) => i.type === "manny" && !activeMannyIdSet.has(i.id));
-
-    // Pull tracked floating containers for this sector
     const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);
 
-    // Cross-reference sector objects for detached containers
     const sectorDetached = sectorObjects.filter((o: any) => o.type === "detached_container");
     const sectorDetachedById = new Map(sectorDetached.map((o: any) => [o.id, o]));
 
-    // Build a floating container summary with all needed IDs
     const floatingContainerLines = trackedFloating.map((c) => {
       const sectorObj = sectorDetachedById.get(c.sectorObjectId);
       const anchor = sectorObj?.targetObjectId ?? c.anchorObjectId;
@@ -186,7 +179,6 @@ router.post("/command", async (req, res) => {
       Detached by: ${c.mannyName} on ${new Date(c.detachedAt).toISOString()}`;
     });
 
-    // Untracked detached containers also visible in sector
     const trackedSectorIds = new Set(trackedFloating.map((c) => c.sectorObjectId));
     const untrackedDetached = sectorDetached.filter((o: any) => !trackedSectorIds.has(o.id));
 
@@ -329,18 +321,12 @@ ${
         sse(res, { type: "message", content: msg.content });
       }
 
-      if (!msg.tool_calls || msg.tool_calls.length === 0) {
-        break;
-      }
+      if (!msg.tool_calls || msg.tool_calls.length === 0) break;
 
       for (const call of msg.tool_calls) {
         const toolName = call.function.name;
         let args: Record<string, unknown> = {};
-        try {
-          args = JSON.parse(call.function.arguments);
-        } catch {
-          args = {};
-        }
+        try { args = JSON.parse(call.function.arguments); } catch { args = {}; }
 
         sse(res, { type: "action", tool: toolName, params: args, id: call.id });
 
@@ -369,16 +355,11 @@ ${
               containerName: itemInfo?.label ?? itemInfo?.name ?? containerId,
               mannyId,
               mannyName: mannyInfo?.name ?? mannyId,
-              sectorX: sector.x,
-              sectorY: sector.y,
-              sectorZ: sector.z,
+              sectorX: sector.x, sectorY: sector.y, sectorZ: sector.z,
               status: "floating",
-              anchorObjectId: null,
-              anchorObjectName: null,
-              notes: null,
+              anchorObjectId: null, anchorObjectName: null, notes: null,
             });
 
-            // Refresh sector to find the anchor asteroid this container attached to
             client.getSector().then((freshSector) => {
               const freshObj = (freshSector.sector?.objects ?? []).find(
                 (o: any) => o.id === sectorObjectId
@@ -387,11 +368,7 @@ ${
                 const anchorObj = (freshSector.sector?.objects ?? []).find(
                   (o: any) => o.id === freshObj.targetObjectId
                 );
-                updateContainerAnchor(
-                  record.id,
-                  freshObj.targetObjectId,
-                  anchorObj?.name ?? null
-                ).catch(() => {});
+                updateContainerAnchor(record.id, freshObj.targetObjectId, anchorObj?.name ?? null).catch(() => {});
               }
             }).catch(() => {});
           }
@@ -413,11 +390,7 @@ ${
           }
         }
 
-        messages.push({
-          role: "tool",
-          tool_call_id: call.id,
-          content: JSON.stringify(result),
-        });
+        messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(result) });
       }
     }
 

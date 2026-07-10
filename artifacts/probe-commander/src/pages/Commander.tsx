@@ -6,6 +6,14 @@ import { objectIcon, SectorObjectList } from "../components/SectorObject";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
+async function fetchJson<T = any>(url: string, init?: RequestInit): Promise<T> {
+  const r = await fetch(url, init);
+  if (!r.ok) throw new Error(`Request failed (${r.status})`);
+  const json = await r.json();
+  if (json.error) throw new Error(json.error);
+  return json as T;
+}
+
 type SseEvent =
   | { type: "status"; message: string }
   | { type: "message"; content: string }
@@ -178,13 +186,7 @@ function CopyButton({ text }: { text: string }) {
 function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
   const { data, isLoading, error } = useQuery({
     queryKey: ["log-containers", refetchSignal],
-    queryFn: async () => {
-      const r = await fetch(`${BASE}/api/vng/log/containers`);
-      if (!r.ok) throw new Error(`Containers fetch failed (${r.status})`);
-      const json = await r.json();
-      if (json.error) throw new Error(json.error);
-      return json;
-    },
+    queryFn: () => fetchJson(`${BASE}/api/vng/log/containers`),
     refetchInterval: 30000,
   });
 
@@ -310,13 +312,7 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
 function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
   const { data, isLoading, error } = useQuery({
     queryKey: ["log-sectors", refetchSignal],
-    queryFn: async () => {
-      const r = await fetch(`${BASE}/api/vng/log/sectors`);
-      if (!r.ok) throw new Error(`Sectors fetch failed (${r.status})`);
-      const json = await r.json();
-      if (json.error) throw new Error(json.error);
-      return json;
-    },
+    queryFn: () => fetchJson(`${BASE}/api/vng/log/sectors`),
     refetchInterval: 30000,
   });
 
@@ -425,44 +421,35 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (!initialTarget) return;
-    setCoords({ x: String(initialTarget.x), y: String(initialTarget.y), z: String(initialTarget.z) });
-    setResult(null);
-    setError(null);
-  }, [initialTarget]);
-
-  // Auto-fire scan when coords are populated by initialTarget
-  const prevTarget = useRef<typeof initialTarget>(null);
-  useEffect(() => {
-    if (!initialTarget) return;
-    if (prevTarget.current === initialTarget) return;
-    prevTarget.current = initialTarget;
-    const x = initialTarget.x, y = initialTarget.y, z = initialTarget.z;
-    setLoading(true); setError(null); setResult(null);
-    fetch(`${BASE}/api/vng/log/scout?x=${x}&y=${y}&z=${z}`)
-      .then(r => r.json())
-      .then(data => { if (data.error) throw new Error(data.error); setResult(data); })
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false));
-  }, [initialTarget]);
-
-  const scout = async () => {
-    const x = parseInt(coords.x, 10);
-    const y = parseInt(coords.y, 10);
-    const z = parseInt(coords.z, 10);
-    if ([x, y, z].some(isNaN)) { setError("Enter valid integers for x, y, z"); return; }
+  const doScout = useCallback(async (x: number, y: number, z: number) => {
     setLoading(true); setError(null); setResult(null);
     try {
-      const r = await fetch(`${BASE}/api/vng/log/scout?x=${x}&y=${y}&z=${z}`);
-      const data = await r.json();
-      if (data.error) throw new Error(data.error);
+      const data = await fetchJson(`${BASE}/api/vng/log/scout?x=${x}&y=${y}&z=${z}`);
       setResult(data);
     } catch (e: any) {
       setError(e.message);
     } finally {
       setLoading(false);
     }
+  }, []);
+
+  useEffect(() => {
+    if (!initialTarget) return;
+    setCoords({ x: String(initialTarget.x), y: String(initialTarget.y), z: String(initialTarget.z) });
+    setResult(null); setError(null);
+  }, [initialTarget]);
+
+  const prevTarget = useRef<typeof initialTarget>(null);
+  useEffect(() => {
+    if (!initialTarget || prevTarget.current === initialTarget) return;
+    prevTarget.current = initialTarget;
+    doScout(initialTarget.x, initialTarget.y, initialTarget.z);
+  }, [initialTarget, doScout]);
+
+  const scout = () => {
+    const x = parseInt(coords.x, 10), y = parseInt(coords.y, 10), z = parseInt(coords.z, 10);
+    if ([x, y, z].some(isNaN)) { setError("Enter valid integers for x, y, z"); return; }
+    doScout(x, y, z);
   };
 
   const coord = (k: "x" | "y" | "z") => (
@@ -520,11 +507,7 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
 function ScheduledPanel({ refetchSignal }: { refetchSignal: number }) {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["scheduled-actions", refetchSignal],
-    queryFn: async () => {
-      const r = await fetch(`${BASE}/api/vng/scheduled`);
-      if (!r.ok) throw new Error(`Scheduled fetch failed (${r.status})`);
-      return r.json();
-    },
+    queryFn: () => fetchJson(`${BASE}/api/vng/scheduled`),
     refetchInterval: 15000,
   });
 
@@ -604,17 +587,7 @@ export default function Commander() {
 
   const { data: state, error: stateError } = useQuery({
     queryKey: ["probe-state"],
-    queryFn: async () => {
-      const r = await fetch(`${BASE}/api/vng/state`);
-      if (!r.ok) {
-        let msg = `State fetch failed (${r.status})`;
-        try { const j = await r.json(); if (j.error) msg = j.error; } catch {}
-        throw new Error(msg);
-      }
-      const json = await r.json();
-      if (json.error) throw new Error(json.error);
-      return json;
-    },
+    queryFn: () => fetchJson(`${BASE}/api/vng/state`),
     refetchInterval: 30000,
     retry: 1,
   });
@@ -625,11 +598,7 @@ export default function Commander() {
   // immediately when the tab opens, regardless of when the user navigates to it.
   const { data: sectorsData } = useQuery({
     queryKey: ["sectors-globe"],
-    queryFn: async () => {
-      const r = await fetch(`${BASE}/api/vng/log/sectors`, { cache: "no-store" });
-      if (!r.ok) throw new Error(`sectors ${r.status}`);
-      return r.json();
-    },
+    queryFn: () => fetchJson(`${BASE}/api/vng/log/sectors`, { cache: "no-store" }),
     retry: 1,
     refetchInterval: 60_000,
     staleTime: 30_000,
