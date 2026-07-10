@@ -1,8 +1,12 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
+import { Maximize2, Minimize2 } from "lucide-react";
 import { GlobeMap } from "./GlobeMap";
 import { SystemMap } from "./SystemMap";
 import { objectIcon, SectorObjectList } from "../components/SectorObject";
+import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
+import { useIsDesktop } from "@/hooks/use-media-query";
+import { cn } from "@/lib/utils";
 
 const BASE = import.meta.env.BASE_URL.replace(/\/$/, "");
 
@@ -256,7 +260,7 @@ function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
   };
 
   return (
-    <div className="space-y-4 max-h-[calc(100vh-200px)] overflow-y-auto">
+    <div className="space-y-4">
 
       {/* On-board containers */}
       <div className="space-y-2">
@@ -354,7 +358,7 @@ function SectorsPanel({ refetchSignal }: { refetchSignal: number }) {
   return (
     <div className="space-y-2">
       <div className="text-xs text-muted-foreground tracking-widest">VISITED SECTORS ({sectors.length})</div>
-      <div className="space-y-2 max-h-[calc(100vh-300px)] overflow-y-auto">
+      <div className="space-y-2">
         {sectors.map((s: any) => (
           <div key={s.id} className="border border-border rounded text-xs overflow-hidden">
             {/* Header — always visible */}
@@ -616,6 +620,16 @@ export default function Commander() {
   const [logRefetch, setLogRefetch] = useState(0);
   const [scoutTarget, setScoutTarget] = useState<{ x: number; y: number; z: number } | null>(null);
 
+  // Fill-window-width preference. Pane sizes persist via the panel group's
+  // autoSaveId; this boolean is the only value we hand-persist.
+  const [fillWidth, setFillWidth] = useState<boolean>(() => {
+    try { return localStorage.getItem("pc-fill-width") === "1"; } catch { return false; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem("pc-fill-width", fillWidth ? "1" : "0"); } catch {}
+  }, [fillWidth]);
+  const isDesktop = useIsDesktop();
+
   const handleScoutRequest = useCallback((x: number, y: number, z: number) => {
     setScoutTarget({ x, y, z });
     setSideTab("scout");
@@ -736,27 +750,59 @@ export default function Commander() {
     { id: "scheduled", label: "SCHED" },
   ];
 
-  return (
-    <div className="min-h-screen flex flex-col lg:flex-row gap-4 p-4 max-w-7xl mx-auto">
-      {/* Sidebar */}
-      <div className="lg:w-72 shrink-0 flex flex-col gap-2">
-        <div className="text-xs text-muted-foreground tracking-[0.3em] glow-green">
-          VON NEUMANN PROBE
-        </div>
-        {/* Tab bar */}
-        <div className="flex border border-border rounded overflow-hidden">
-          {TABS.map(tab => (
-            <button key={tab.id} onClick={() => setSideTab(tab.id)}
-              className={`flex-1 py-1.5 px-0.5 text-[10px] tracking-wide whitespace-nowrap transition-all ${
-                sideTab === tab.id
-                  ? "bg-primary/20 text-primary"
-                  : "text-muted-foreground hover:text-foreground"
-              }`}>
-              {tab.label}
-            </button>
-          ))}
-        </div>
+  const leftContent = (
+    <>
+      <div className="text-xs text-muted-foreground tracking-[0.3em] glow-green">
+        VON NEUMANN PROBE
+      </div>
+      {/* Tab bar */}
+      <div className="flex border border-border rounded overflow-hidden">
+        {TABS.map(tab => (
+          <button key={tab.id} onClick={() => setSideTab(tab.id)}
+            className={`flex-1 py-1.5 px-0.5 text-[10px] tracking-wide whitespace-nowrap transition-all ${
+              sideTab === tab.id
+                ? "bg-primary/20 text-primary"
+                : "text-muted-foreground hover:text-foreground"
+            }`}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
 
+      {/* min-h-0 + overflow-y-auto: react-resizable-panels forces overflow:hidden
+          on the panel, so tab content must scroll here, inside the panel. */}
+      <div className="border border-border border-glow rounded p-4 flex-1 min-h-0 overflow-y-auto scanlines">
+        {sideTab === "telemetry" && <TelemetryPanel state={state} error={stateError as Error | null} />}
+        {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
+        {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
+        {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
+        {sideTab === "scheduled" && <ScheduledPanel refetchSignal={logRefetch} />}
+        {sideTab === "globe" && (
+          <GlobeMap
+            probeX={globeCenter.x}
+            probeY={globeCenter.y}
+            probeZ={globeCenter.z}
+            isMoving={globeCenter.isMoving}
+            priorX={globeCenter.px}
+            priorY={globeCenter.py}
+            priorZ={globeCenter.pz}
+            sectorsData={sectorsData}
+            onScoutRequest={handleScoutRequest}
+            onRefreshSectors={handleRefreshSectors}
+          />
+        )}
+        {sideTab === "system" && (
+          <SystemMap
+            probe={state?.probe}
+            sectorObjects={state?.sectorObjects}
+            otherProbes={state?.otherProbes}
+            mannies={state?.mannies}
+            isMoving={globeCenter.isMoving}
+            sectorUnavailable={state?.sectorUnavailable}
+            onScoutRequest={handleScoutRequest}
+          />
+        )}
+      </div>
         <div className="border border-border border-glow rounded p-4 flex-1 scanlines">
           {sideTab === "telemetry" && <TelemetryPanel state={state} error={stateError as Error | null} />}
           {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
@@ -789,75 +835,110 @@ export default function Commander() {
           )}
         </div>
 
-        <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">
-          AUTO-REFRESH 30s
-        </div>
+      <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">
+        AUTO-REFRESH 30s
+      </div>
+    </>
+  );
+
+  const rightContent = (
+    <>
+      <div className="text-xs text-muted-foreground tracking-[0.3em] mb-3 glow-cyan">
+        OPERATOR TERMINAL
       </div>
 
-      {/* Chat */}
-      <div className="flex-1 flex flex-col min-h-0">
-        <div className="text-xs text-muted-foreground tracking-[0.3em] mb-3 glow-cyan">
-          OPERATOR TERMINAL
-        </div>
+      <div className="flex-1 min-h-0 border border-border border-glow rounded overflow-y-auto p-4 space-y-4 bg-card/30 scanlines">
+        {messages.map((msg, i) => (
+          <div key={i}>
+            {msg.role === "user" ? (
+              <div className="flex gap-2 items-start">
+                <span className="text-accent text-xs shrink-0 mt-0.5 glow-cyan">OPERATOR›</span>
+                <span className="text-foreground text-sm">{msg.content}</span>
+              </div>
+            ) : (
+              <div className="flex gap-2 items-start">
+                <span className="text-primary text-xs shrink-0 mt-0.5 glow-green">PROBE›</span>
+                <div className="flex-1"><AssistantBubble events={msg.events} /></div>
+              </div>
+            )}
+          </div>
+        ))}
 
-        <div className="flex-1 border border-border border-glow rounded overflow-y-auto p-4 space-y-4 min-h-[400px] max-h-[calc(100vh-220px)] bg-card/30 scanlines">
-          {messages.map((msg, i) => (
-            <div key={i}>
-              {msg.role === "user" ? (
-                <div className="flex gap-2 items-start">
-                  <span className="text-accent text-xs shrink-0 mt-0.5 glow-cyan">OPERATOR›</span>
-                  <span className="text-foreground text-sm">{msg.content}</span>
+        {isRunning && (
+          <div className="flex gap-2 items-start">
+            <span className="text-primary text-xs shrink-0 mt-0.5 glow-green pulse-active">PROBE›</span>
+            <div className="flex-1">
+              {liveEvents.length > 0 ? (
+                <div className="space-y-1.5 border border-border rounded p-3 bg-card/60 border-glow">
+                  {liveEvents.filter(e =>
+                    e.type === "message" || e.type === "action" || e.type === "result" ||
+                    e.type === "status" || e.type === "error"
+                  ).map((e, i) => <EventRow key={i} event={e} />)}
+                  <div className="text-xs text-primary cursor-blink" />
                 </div>
               ) : (
-                <div className="flex gap-2 items-start">
-                  <span className="text-primary text-xs shrink-0 mt-0.5 glow-green">PROBE›</span>
-                  <div className="flex-1"><AssistantBubble events={msg.events} /></div>
-                </div>
+                <span className="text-xs text-muted-foreground pulse-active">PROCESSING…</span>
               )}
             </div>
-          ))}
-
-          {isRunning && (
-            <div className="flex gap-2 items-start">
-              <span className="text-primary text-xs shrink-0 mt-0.5 glow-green pulse-active">PROBE›</span>
-              <div className="flex-1">
-                {liveEvents.length > 0 ? (
-                  <div className="space-y-1.5 border border-border rounded p-3 bg-card/60 border-glow">
-                    {liveEvents.filter(e =>
-                      e.type === "message" || e.type === "action" || e.type === "result" ||
-                      e.type === "status" || e.type === "error"
-                    ).map((e, i) => <EventRow key={i} event={e} />)}
-                    <div className="text-xs text-primary cursor-blink" />
-                  </div>
-                ) : (
-                  <span className="text-xs text-muted-foreground pulse-active">PROCESSING…</span>
-                )}
-              </div>
-            </div>
-          )}
-          <div ref={bottomRef} />
-        </div>
-
-        <div className="mt-3 border border-border border-glow rounded p-3 bg-card/30">
-          <div className="flex gap-3 items-end">
-            <div className="flex-1">
-              <div className="text-xs text-muted-foreground mb-1.5 tracking-widest">
-                COMMAND INPUT {isRunning && <span className="text-yellow-400 pulse-active">● EXECUTING</span>}
-              </div>
-              <textarea
-                value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}
-                disabled={isRunning} rows={2}
-                placeholder="Tell your probe what to do… (Enter to send, Shift+Enter for newline)"
-                className="w-full bg-transparent text-foreground text-sm placeholder:text-muted-foreground/40 resize-none outline-none font-mono"
-              />
-            </div>
-            <button onClick={sendCommand} disabled={isRunning || !input.trim()}
-              className="shrink-0 px-4 py-2 text-xs tracking-widest font-bold border rounded transition-all border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed">
-              {isRunning ? "…" : "EXECUTE"}
-            </button>
           </div>
+        )}
+        <div ref={bottomRef} />
+      </div>
+
+      <div className="mt-3 border border-border border-glow rounded p-3 bg-card/30">
+        <div className="flex gap-3 items-end">
+          <div className="flex-1">
+            <div className="text-xs text-muted-foreground mb-1.5 tracking-widest">
+              COMMAND INPUT {isRunning && <span className="text-yellow-400 pulse-active">● EXECUTING</span>}
+            </div>
+            <textarea
+              value={input} onChange={e => setInput(e.target.value)} onKeyDown={handleKeyDown}
+              disabled={isRunning} rows={2}
+              placeholder="Tell your probe what to do… (Enter to send, Shift+Enter for newline)"
+              className="w-full bg-transparent text-foreground text-sm placeholder:text-muted-foreground/40 resize-none outline-none font-mono"
+            />
+          </div>
+          <button onClick={sendCommand} disabled={isRunning || !input.trim()}
+            className="shrink-0 px-4 py-2 text-xs tracking-widest font-bold border rounded transition-all border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed">
+            {isRunning ? "…" : "EXECUTE"}
+          </button>
         </div>
       </div>
-    </div>
+    </>
+  );
+
+  return (
+    <>
+      <button
+        onClick={() => setFillWidth(v => !v)}
+        aria-pressed={fillWidth}
+        aria-label={fillWidth ? "Constrain width" : "Fill window width"}
+        title={fillWidth ? "Constrain width" : "Fill window width"}
+        className="fixed top-2 right-2 z-50 p-1.5 border border-border rounded bg-card/60 text-muted-foreground transition-all hover:text-primary hover:border-primary focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+      >
+        {fillWidth ? <Minimize2 className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
+      </button>
+
+      <div className={cn("min-h-screen p-4", !fillWidth && "max-w-7xl mx-auto")}>
+        {isDesktop ? (
+          // Fixed height (p-4 = 2rem vertical) gives the group a resolved height for
+          // its drag math; parent stays min-h-screen so the mobile stack can grow.
+          <ResizablePanelGroup direction="horizontal" autoSaveId="pc-panes" className="h-[calc(100vh-2rem)]">
+            <ResizablePanel defaultSize={22} minSize={18} maxSize={45} className="flex flex-col gap-2 min-h-0">
+              {leftContent}
+            </ResizablePanel>
+            <ResizableHandle withHandle className="mx-2" />
+            <ResizablePanel defaultSize={78} minSize={40} className="flex flex-col min-h-0">
+              {rightContent}
+            </ResizablePanel>
+          </ResizablePanelGroup>
+        ) : (
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">{leftContent}</div>
+            <div className="flex flex-col min-h-[70vh]">{rightContent}</div>
+          </div>
+        )}
+      </div>
+    </>
   );
 }
