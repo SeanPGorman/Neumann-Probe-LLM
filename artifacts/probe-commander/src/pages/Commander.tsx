@@ -482,7 +482,19 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
 
       {error && <div className="text-xs text-destructive">{error}</div>}
 
-      {result && (
+      {result?.unavailable && (
+        <div className="flex items-start gap-2 text-xs text-amber-400/80 bg-amber-400/5 border border-amber-400/20 rounded p-2">
+          <span className="mt-0.5">⏳</span>
+          <div>
+            <div>Sensor data not ready — probe still collecting readings for this sector.</div>
+            {result.retryIn && (
+              <div className="text-muted-foreground mt-0.5">Try again in {result.retryIn}.</div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {result && !result.unavailable && (
         <div className="space-y-2">
           <div className="text-xs text-foreground font-bold glow-green">
             [{result.x},{result.y},{result.z}]
