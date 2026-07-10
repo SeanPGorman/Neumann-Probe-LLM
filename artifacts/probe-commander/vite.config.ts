@@ -46,6 +46,9 @@ export default defineConfig({
         ]
       : []),
   ],
+  optimizeDeps: {
+    include: ["react", "react-dom", "react-resizable-panels"],
+  },
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),

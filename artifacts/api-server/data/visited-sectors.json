@@ -1913,5 +1913,67 @@
       }
     ],
     "resourceSummary": []
+  },
+  {
+    "id": 16,
+    "sectorX": 4,
+    "sectorY": 7,
+    "sectorZ": 1,
+    "firstVisitedAt": "2026-07-10T21:33:00.603Z",
+    "lastVisitedAt": "2026-07-10T21:34:30.208Z",
+    "visitCount": 7,
+    "objects": [
+      {
+        "id": "7d1f75ee83e4d598fc0f",
+        "type": "solar_system",
+        "name": "System 21b0e1",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 2 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 0,
+        "orbitalBodyCount": 2,
+        "bodies": [
+          {
+            "id": "8031b2c4d6fdedc2c495",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.379844,
+            "massUnit": "solar_mass",
+            "radius": 0.216528,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "3ef0de1cc7e211086189",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.015292,
+            "massUnit": "earth_mass",
+            "radius": 0.189377,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "8b3cd67b25d0bda41395",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.006678,
+            "massUnit": "earth_mass",
+            "radius": 0.05982,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      }
+    ],
+    "resourceSummary": []
   }
 ]
