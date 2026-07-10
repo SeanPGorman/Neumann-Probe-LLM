@@ -1,4 +1,3 @@
-@ -1,64 +1,74 @@
 import { Router } from "express";
 import OpenAI from "openai";
 import * as client from "./client.js";
@@ -26,6 +25,24 @@ function sse(res: import("express").Response, event: Record<string, unknown>) {
   res.write(`data: ${JSON.stringify(event)}\n\n`);
 }
 
+// ── Shared state extraction ───────────────────────────────────────────────────
+function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
+  const probe = probeResp.probe;
+  const inv = probe.inventory ?? {};
+  const sector: { x: number; y: number; z: number } = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+  const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
+  const mannies: any[] = manniesResp.mannies ?? [];
+  const inventoryItems: any[] = inv.items ?? [];
+  const activeMannyIds = new Set(mannies.map((m: any) => m.id));
+  const stowedMannies = inventoryItems.filter(
+    (i: any) => i.type === "manny" && !activeMannyIds.has(i.id)
+  );
+  recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
+  return { probe, inv, sector, sectorObjects, mannies, inventoryItems, activeMannyIds, stowedMannies };
+}
+
+// ── Routes ────────────────────────────────────────────────────────────────────
+
 router.get("/scheduled", async (_req, res) => {
   try {
     const actions = await getPendingActions();
@@ -51,48 +68,339 @@ router.get("/state", async (_req, res) => {
     const [probeResp, manniesResp, sectorResp] = await Promise.all([
       client.getProbe(),
       client.getMannies(),
-      client.getSector().catch(() => null),  // unavailable during high-speed transit
+      client.getSector().catch(() => null),
     ]);
 
-    const probe = probeResp.probe;
-    const inv = probe.inventory ?? {};
-    const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
-    const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
+    const { probe, inv, sector, sectorObjects, mannies, activeMannyIds, stowedMannies } =
+      extractCoreState(probeResp, manniesResp, sectorResp);
 
-    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
-    // getSector() yields null ONLY when it threw — transit or a real fetch
-    // error — which is distinct from a successful-but-empty sector. Surface it
-    // so the UI can show "data unavailable" instead of falsely claiming the
-    // sector is empty.
-    const sectorUnavailable = sectorResp === null;
+    const manniesNorm = mannies.map((m: any) => {
+      const task = m.task && typeof m.task === "object" && !Array.isArray(m.task) ? m.task : null;
+      return {
+        id: m.id,
+        name: m.name,
+        currentTask: m.currentTask,
+        taskProgressPercent: m.taskProgressPercent,
+        taskEstimatedEndTime: m.taskEstimatedEndTime ?? null,
+        location: m.location ?? null,
+        taskVisibility: m.taskVisibility ?? null,
+        taskObjectId: task?.objectId ?? null,
+        taskPhase: task?.phase ?? null,
+        taskTripIndex: task?.tripIndex ?? null,
+        miningTravelSeconds: task?.miningTravelSeconds ?? null,
+        taskTargetAmount: task?.targetAmount ?? null,
+        taskDepositedAmount: task?.depositedAmount ?? null,
+      };
+    });
 
-    // Only persist a scan that actually succeeded. On a failed fetch
-    // sectorObjects is [] — recording that would clobber the last-known-good
-    // detail for this sector (visited-sectors store, read by the MAP/SECTORS
-    // tabs) with an empty list. Skip it, and surface write errors.
-    if (!sectorUnavailable)
-      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /state]", e));
+    const stowedNorm = ((probeResp.probe?.inventory?.items ?? []) as any[])
+      .filter((i: any) => i.type === "manny" && !activeMannyIds.has(i.id))
+      .map((i: any) => ({ itemId: i.id, name: i.label ?? i.name ?? "Unnamed Manny" }));
 
-    const mannies = (manniesResp.mannies ?? []).map((m: any) => {
-      // A manny's `task` payload carries the fields the map needs to plot it:
-@ -109,6 +119,7 @@ router.get("/state", async (_req, res) => {
-      stowedMannies,
-      sectorObjects: sectorObjectsMapped,
+    res.json({
+      probe: {
+        id: probe.id,
+        name: probe.name,
+        status: probe.status,
+        fuelDeuterium: probe.fuel?.deuterium ?? 0,
+        integrityPercent: probe.systems?.integrityPercent ?? 0,
+        sector,
+        movement: probe.movement ?? null,
+      },
+      inventory: {
+        capacity: inv.capacity ?? 0,
+        usedCapacity: inv.usedCapacity ?? 0,
+        freeCapacity: inv.freeCapacity ?? 0,
+      },
+      mannies: manniesNorm,
+      stowedMannies: stowedNorm,
+      sectorObjects: mapSectorObjects(sectorObjects),
       otherProbes: sectorResp?.sector?.probes ?? [],
-      sectorUnavailable,
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
-@ -147,7 +158,11 @@ router.post("/command", async (req, res) => {
-    const resourceStocks: any[] = inv.resourceStocks ?? [];
-    const sector = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+  }
+});
 
-    recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
-    // Only persist a scan that actually succeeded (see /state) — a failed
-    // getSector() yields null → sectorObjects [], and recording that would
-    // clobber the sector's last-known-good detail with an empty list.
-    if (sectorResp !== null)
-      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /command]", e));
+router.post("/command", async (req, res) => {
+  const { command } = req.body as { command: string };
+
+  if (!command?.trim()) {
+    res.status(400).json({ error: "command is required" });
+    return;
+  }
+
+  res.setHeader("Content-Type", "text/event-stream");
+  res.setHeader("Cache-Control", "no-cache");
+  res.setHeader("Connection", "keep-alive");
+  res.flushHeaders();
+
+  try {
+    sse(res, { type: "status", message: "Fetching current probe state…" });
+
+    const [probeResp, manniesResp, sectorResp, recipesResp] = await Promise.all([
+      client.getProbe(),
+      client.getMannies(),
+      client.getSector().catch(() => null),
+      client.getCraftingRecipes(),
+    ]);
+
+    const { probe, inv, sector, sectorObjects, mannies, inventoryItems, stowedMannies } =
+      extractCoreState(probeResp, manniesResp, sectorResp);
+
+    const recipes: any[] = recipesResp.recipes ?? [];
+    const resourceStocks: any[] = inv.resourceStocks ?? [];
 
     const manniesById = new Map(mannies.map((m: any) => [m.id, m]));
     const itemsById = new Map(inventoryItems.map((i: any) => [i.id, i]));
+
+    const idleMannies = mannies.filter((m: any) => !m.currentTask);
+    const busyMannies = mannies.filter((m: any) => m.currentTask);
+
+    const boardedContainers = inv.containers ?? [];
+    const containersById = new Map(boardedContainers.map((c: any) => [c.id, c]));
+
+    const nonMannyItems = inventoryItems.filter(
+      (i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer"
+    );
+
+    const trackedFloating = await getFloatingContainers(sector.x, sector.y, sector.z);
+
+    const sectorDetached = sectorObjects.filter((o: any) => o.type === "detached_container");
+    const sectorDetachedById = new Map(sectorDetached.map((o: any) => [o.id, o]));
+
+    const floatingContainerLines = trackedFloating.map((c) => {
+      const sectorObj = sectorDetachedById.get(c.sectorObjectId);
+      const anchor = sectorObj?.targetObjectId ?? c.anchorObjectId;
+      const anchorName = c.anchorObjectName ?? (anchor ? `object id="${anchor}"` : "unknown");
+      return `  • "${c.containerName}"
+      SECTOR OBJECT ID (use for target_container_id or object_id): "${c.sectorObjectId}"
+      Anchor: ${anchorName}${anchor ? `  anchor_id="${anchor}"` : ""}
+      Detached by: ${c.mannyName} on ${new Date(c.detachedAt).toISOString()}`;
+    });
+
+    const trackedSectorIds = new Set(trackedFloating.map((c) => c.sectorObjectId));
+    const untrackedDetached = sectorDetached.filter((o: any) => !trackedSectorIds.has(o.id));
+
+    const systemPrompt = `You are the AI operator of Von Neumann Probe #${probe.id} ("${probe.name}").
+Your job is to carry out the operator's instructions by calling the provided tools.
+
+== CURRENT STATE ==
+Status: ${probe.status}
+Fuel (deuterium): ${(probe.fuel?.deuterium ?? 0).toFixed(2)} ECE
+Hull integrity: ${(probe.systems?.integrityPercent ?? 0).toFixed(1)}%
+Current sector: x=${sector.x}, y=${sector.y}, z=${sector.z}
+Movement: ${
+      probe.movement?.status === "moving"
+        ? `moving to (${probe.movement.target?.x},${probe.movement.target?.y},${probe.movement.target?.z}), arrives ${probe.movement.arrivalAt}`
+        : "stationary"
+    }
+
+== MANNIES (${mannies.length} active, ${stowedMannies.length} stowed) ==
+IDLE (${idleMannies.length}):
+${idleMannies.map((m: any) => `  • ${m.name}  id="${m.id}"`).join("\n") || "  none"}
+BUSY (${busyMannies.length}):
+${busyMannies.map((m: any) => `  • ${m.name}  id="${m.id}"  task=${m.currentTask}  progress=${m.taskProgressPercent?.toFixed(1)}%  eta=${m.taskEstimatedEndTime ?? "?"}`).join("\n") || "  none"}
+STOWED IN INVENTORY (${stowedMannies.length}) — call deploy_manny to activate:
+${stowedMannies.map((m: any) => `  • ${m.label ?? m.name ?? "Unnamed Manny"}  item_id="${m.id}"`).join("\n") || "  none"}
+
+== SECTOR OBJECTS (${sectorObjects.length}) ==
+${sectorObjects
+  .filter((o: any) => o.type !== "detached_container")
+  .slice(0, 25)
+  .map((o: any) => {
+    const extras: string[] = [];
+    if (o.resourceTypes?.length) extras.push(`resources=[${o.resourceTypes.join(",")}]`);
+    if (o.type === "deuterium_refuel_station") extras.push("⛽ USE: refill_deuterium_tank");
+    if (o.type === "scut_relay" && o.active === false) extras.push("📡 INACTIVE SCUT RELAY — can be activated with a Manny + integrated_circuit");
+    if (o.type === "scut_relay" && o.active === true) extras.push("📡 ACTIVE SCUT RELAY");
+    if (o.type === "probe") extras.push("🛸 OTHER PROBE — can receive deuterium transfer");
+    return `  • [${o.type}] "${o.name ?? "unnamed"}"  id="${o.id ?? "none"}"  ${extras.join("  ")}  ${o.summary ?? ""}`;
+  })
+  .join("\n") || "  none"}
+
+== FLOATING STORAGE CONTAINERS IN THIS SECTOR ==
+IMPORTANT: These containers are floating in the current sector (or anchored to nearby asteroids).
+Use the SECTOR OBJECT ID when directing mining output (target_container_id) or recovering them (object_id).
+${
+  floatingContainerLines.length > 0
+    ? floatingContainerLines.join("\n")
+    : "  none tracked"
+}
+${
+  untrackedDetached.length > 0
+    ? `\nADDITIONAL (untracked) detached containers visible in sector:\n` +
+      untrackedDetached
+        .map((o: any) => `  • "${o.name ?? "unnamed"}"  SECTOR OBJECT ID="${o.id}"  capacity=${o.capacity}ECE${o.targetObjectId ? `  anchored to object="${o.targetObjectId}"` : ""}`)
+        .join("\n")
+    : ""
+}
+
+== CONTAINERS ABOARD PROBE ==
+${boardedContainers.map((c: any) => `  • "${c.label ?? c.name ?? c.id}"  inventory_id="${c.id}"  kind="${c.kind ?? "?"}"  capacity=${c.capacity ?? "?"}ECE  used=${(c.usedCapacity ?? 0).toFixed(2)}ECE  free=${(c.freeCapacity ?? 0).toFixed(2)}ECE  (once detached → sector_object_id will be "detached-container-${c.id}")`).join("\n") || "  none"}
+
+== INVENTORY ITEMS (excluding mannies and atomic printer) ==
+${nonMannyItems.map((i: any) => `  • "${i.label ?? i.name ?? i.id}"  inventory_id="${i.id}"  type="${i.type ?? "?"}"`).join("\n") || "  none"}
+
+== INVENTORY ==
+Capacity: ${(inv.usedCapacity ?? 0).toFixed(3)} / ${inv.capacity ?? 0} ECE used  (${(inv.freeCapacity ?? 0).toFixed(3)} free)
+Resources: ${resourceStocks.map((s: any) => `${s.name}=${s.amount}`).join(", ") || "none"}
+
+== CRAFTING RECIPES ==
+${recipes.slice(0, 25).map((r: any) => {
+  const ing = (r.ingredients ?? []).map((i: any) =>
+    i.kind === "resource" ? `${i.quantity}${i.unit === "earth_container_equivalent" ? "ECE" : ""} ${i.type}` : `${i.quantity}× ${i.type}`
+  ).join(", ");
+  return `  • ${r.id} — "${r.name}"  craftableBy=[${(r.craftableBy ?? []).join(",")}]  duration=${r.durationSeconds}s  needs=[${ing || "nothing"}]`;
+}).join("\n")}
+
+== SCHEDULED ACTIONS (pending — poller will execute these automatically) ==
+${
+  (await getPendingActions())
+    .map((a) => {
+      const cond = a.condition.type === "manny_idle"
+        ? `when ${a.condition.mannyName} (${a.condition.mannyId}) is idle`
+        : `when probe is idle`;
+      return `  • #${a.id} "${a.description}" — ${cond}`;
+    })
+    .join("\n") || "  none"
+}
+
+== RULES ==
+- Manny IDs are long strings like "mny_e84fa37181de693e8e831147" — use exact IDs from above.
+- For mining into a floating container: use the SECTOR OBJECT ID (not the inventory ID) as target_container_id.
+- For recovering a container: use the SECTOR OBJECT ID as object_id.
+- Detached containers are often "hidden on asteroid" (anchored to an asteroid). This is normal — you can still mine into them or recover them using the sector object ID.
+- Always use get_game_state to refresh if you need IDs not listed above.
+- Never invent IDs — only use IDs from real data.
+- Mining, crafting, and salvage are long-running tasks — once started the Manny is busy for real game time. Tell the operator the task has been QUEUED.
+- For multi-step tasks, execute sequentially; call get_game_state after each step to confirm IDs.
+- When the operator says "when X finishes, do Y" or "once X is done, do Y" — use schedule_action. Always confirm the scheduled action ID after creating it.
+- PARALLEL BUILDS: When asked to build a complex item, FIRST compute the COMPLETE work breakdown — every ingredient at every level of the recipe tree. Then distribute ALL of that work across ALL available mannies. Do not stop after assigning one task per manny; each manny should have a full sequential chain of crafting tasks (using schedule_action with manny_idle conditions to chain them). Under-utilising mannies is a mistake.
+  Example for building a Manny with 8 workers: compute that you need e.g. 18× electric_motor, 6× linear_actuator, 4× battery_pack, 18× steel_plate, 12× steel_bar (plus sub-ingredients). Divide those totals across all 8 mannies; each manny gets a chain like: steel_bar → steel_bar → electric_motor → linear_actuator → schedule next when idle.
+- DEPENDENCY GUARD: Use requireItems in the schedule_action condition whenever a step depends on an item being produced by a *different* manny in parallel. Without it, the step could fire before its dependency is ready.
+- DETACH CONTAINER: detach_container requires a mode field: "drifting" (free float in sector) or "hidden_on_asteroid" (hidden; also requires asteroid_object_id).
+- INSPECT: Use inspect_sector_object for asteroids, drifting containers, AND dormant constructs. Dormant constructs unlock a new probe improvement when inspected. (inspect_asteroid is a deprecated alias and still works.)
+- SCUT RELAY ACTIVATION: turn_on_relay requires relay_id (integer — SCUT relay sector object IDs are purely numeric strings, e.g. id="42" → relay_id=42), one integrated_circuit in inventory, and a star in the current sector. Duration ~5 min.
+- DEUTERIUM REFUEL: refill_deuterium_tank requires sector to contain a [deuterium_refuel_station] object. Duration ~1 min.
+- DEUTERIUM TRANSFER: transfer_deuterium requires another probe as a [probe] sector object. target_probe_id is an integer (e.g. 652). amount is deuterium percentage points to transfer (must be < current reserve).
+- PROBE ASSEMBLY: assemble_probe needs 2 distinct empty container inventory IDs (container_ids array). The assembled probe can be controlled via SCUT or the operator can transfer into it (current probe becomes a drone).
+- PROBE IMPROVEMENT: improve_probe installs an upgrade. Use get_game_state to see available improvements (probe_improvements list includes ingredients and effects).
+- WAYPOINT BOOKMARK: install_waypoint_bookmark places a named beacon on a sector object. Requires waypoint_bookmark item in inventory.
+- DROP ON PLANET: drop_container_on_planet drops a container through atmosphere. Requires atmospheric_drop_kit in inventory. planet_id is the sector object ID of the planet.
+- DROP MANNY CARGO: drop_manny_cargo discards cargo of a Manny stuck waiting outside for space, then retries docking. Resource cargo is lost; recoverable items returned to sector.
+- MESSAGES: send_message sends text to another probe (same sector or shared SCUT network) or an inhabited planet (same sector). recipient_type="probe"|"planet", recipient_id is the numeric probe ID or planet object ID.
+- CRAFTING: Mannies can now also craft scut_relay, solar_panel, thermal_protection_shell, parachute_pack, descent_guidance_module, atmospheric_drop_kit. Atomic printer can now craft atomic_printer_part.
+- Be concise and precise.`;
+
+    const messages: OpenAI.Chat.ChatCompletionMessageParam[] = [
+      { role: "system", content: systemPrompt },
+      { role: "user", content: command },
+    ];
+
+    sse(res, { type: "status", message: "AI thinking…" });
+
+    let iterations = 0;
+    const MAX_ITERATIONS = 10;
+
+    while (iterations < MAX_ITERATIONS) {
+      iterations++;
+
+      const completion = await openai.chat.completions.create({
+        model: "gpt-5.4",
+        max_completion_tokens: 8192,
+        messages,
+        tools: TOOLS,
+        tool_choice: "auto",
+      });
+
+      const msg = completion.choices[0].message;
+      messages.push(msg);
+
+      if (msg.content) {
+        sse(res, { type: "message", content: msg.content });
+      }
+
+      if (!msg.tool_calls || msg.tool_calls.length === 0) break;
+
+      for (const call of msg.tool_calls) {
+        const toolName = call.function.name;
+        let args: Record<string, unknown> = {};
+        try { args = JSON.parse(call.function.arguments); } catch { args = {}; }
+
+        sse(res, { type: "action", tool: toolName, params: args, id: call.id });
+
+        let result: unknown;
+        let success = false;
+        try {
+          result = await executeTool(toolName, args);
+          success = true;
+          sse(res, { type: "result", tool: toolName, id: call.id, success: true, data: result });
+        } catch (err: any) {
+          result = { error: err.message };
+          sse(res, { type: "result", tool: toolName, id: call.id, success: false, error: err.message });
+        }
+
+        if (success) {
+          if (toolName === "detach_container") {
+            const mannyId = args.manny_id as string;
+            const containerId = args.container_id as string;
+            const mannyInfo = manniesById.get(mannyId);
+            const itemInfo = containersById.get(containerId) ?? itemsById.get(containerId);
+            const sectorObjectId = toSectorObjectId(containerId);
+
+            const record = await addContainer({
+              containerId,
+              sectorObjectId,
+              containerName: itemInfo?.label ?? itemInfo?.name ?? containerId,
+              mannyId,
+              mannyName: mannyInfo?.name ?? mannyId,
+              sectorX: sector.x, sectorY: sector.y, sectorZ: sector.z,
+              status: "floating",
+              anchorObjectId: null, anchorObjectName: null, notes: null,
+            });
+
+            client.getSector().then((freshSector) => {
+              const freshObj = (freshSector.sector?.objects ?? []).find(
+                (o: any) => o.id === sectorObjectId
+              );
+              if (freshObj?.targetObjectId) {
+                const anchorObj = (freshSector.sector?.objects ?? []).find(
+                  (o: any) => o.id === freshObj.targetObjectId
+                );
+                updateContainerAnchor(record.id, freshObj.targetObjectId, anchorObj?.name ?? null).catch(() => {});
+              }
+            }).catch(() => {});
+          }
+
+          if (toolName === "recover_container") {
+            markContainerRecovered(args.object_id as string).catch(() => {});
+          }
+
+          if (toolName === "scan_sector") {
+            const scannedObjects: any[] = (result as any)?.sector?.objects ?? [];
+            recordSector(args.x as number, args.y as number, args.z as number, scannedObjects).catch(() => {});
+          }
+
+          if (toolName === "get_game_state") {
+            const gs = result as any;
+            const gsObjects = gs?.sector?.objects ?? [];
+            const gsSector = gs?.probe?.sector ?? sector;
+            recordSector(gsSector.x, gsSector.y, gsSector.z, gsObjects).catch(() => {});
+          }
+        }
+
+        messages.push({ role: "tool", tool_call_id: call.id, content: JSON.stringify(result) });
+      }
+    }
+
+    sse(res, { type: "done" });
+  } catch (err: any) {
+    sse(res, { type: "error", message: err.message });
+    sse(res, { type: "done" });
+  } finally {
+    res.end();
+  }
+});
+
+export default router;
