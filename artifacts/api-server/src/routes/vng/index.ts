@@ -37,7 +37,6 @@ function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
   const stowedMannies = inventoryItems.filter(
     (i: any) => i.type === "manny" && !activeMannyIds.has(i.id)
   );
-  recordSector(sector.x, sector.y, sector.z, sectorObjects).catch(() => {});
   return { probe, inv, sector, sectorObjects, mannies, inventoryItems, activeMannyIds, stowedMannies };
 }
 
@@ -73,6 +72,19 @@ router.get("/state", async (_req, res) => {
 
     const { probe, inv, sector, sectorObjects, mannies, activeMannyIds, stowedMannies } =
       extractCoreState(probeResp, manniesResp, sectorResp);
+
+    // getSector() yields null ONLY when it threw — transit or a real fetch
+    // error — which is distinct from a successful-but-empty sector. Surface it
+    // so the UI can show "data unavailable" instead of falsely claiming the
+    // sector is empty.
+    const sectorUnavailable = sectorResp === null;
+
+    // Only persist a scan that actually succeeded. On a failed fetch
+    // sectorObjects is [] — recording that would clobber the last-known-good
+    // detail for this sector (visited-sectors store, read by the MAP/SECTORS
+    // tabs) with an empty list.
+    if (!sectorUnavailable)
+      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /state]", e));
 
     const manniesNorm = mannies.map((m: any) => {
       const task = m.task && typeof m.task === "object" && !Array.isArray(m.task) ? m.task : null;
@@ -116,6 +128,7 @@ router.get("/state", async (_req, res) => {
       stowedMannies: stowedNorm,
       sectorObjects: mapSectorObjects(sectorObjects),
       otherProbes: sectorResp?.sector?.probes ?? [],
+      sectorUnavailable,
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
@@ -147,6 +160,12 @@ router.post("/command", async (req, res) => {
 
     const { probe, inv, sector, sectorObjects, mannies, inventoryItems, stowedMannies } =
       extractCoreState(probeResp, manniesResp, sectorResp);
+
+    // Only persist a scan that actually succeeded (see /state) — a failed
+    // getSector() yields null → sectorObjects [], and recording that would
+    // clobber the sector's last-known-good detail with an empty list.
+    if (sectorResp !== null)
+      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /command]", e));
 
     const recipes: any[] = recipesResp.recipes ?? [];
     const resourceStocks: any[] = inv.resourceStocks ?? [];
