@@ -180,36 +180,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     ctx.lineWidth = 1;
     ctx.stroke();
 
-    // 0. SCUT relay coverage rings (drawn first so they appear behind everything)
     const relayAlpha = Math.min(1, brightRelay * 2);
-    for (const vs of visitedMap.values()) {
-      const relays = (vs.objects ?? []).filter((o: any) => o.type === "scut_relay");
-      if (!relays.length) continue;
-      const rp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
-      for (const relay of relays) {
-        const isActive = relay.status === "active" || relay.status === "on";
-        const range: number | null = relay.coverageRadiusSectors ?? null;
-        if (!isActive || !range) continue;
-        // Approximate range ring: sphere of `range` sectors around relay, drawn
-        // as a dashed circle at the projected center point.
-        const ringR = range * rp.persp;
-        ctx.beginPath();
-        ctx.arc(rp.sx, rp.sy, ringR, 0, Math.PI * 2);
-        ctx.setLineDash([6, 4]);
-        ctx.strokeStyle = `rgba(0,220,220,${0.18 * relayAlpha})`;
-        ctx.lineWidth = 1.5;
-        ctx.stroke();
-        ctx.setLineDash([]);
-        // Soft fill tint
-        const grad = ctx.createRadialGradient(rp.sx, rp.sy, 0, rp.sx, rp.sy, ringR);
-        grad.addColorStop(0, `rgba(0,200,220,${0.04 * relayAlpha})`);
-        grad.addColorStop(1, "rgba(0,200,220,0)");
-        ctx.beginPath();
-        ctx.arc(rp.sx, rp.sy, ringR, 0, Math.PI * 2);
-        ctx.fillStyle = grad;
-        ctx.fill();
-      }
-    }
 
     // 1. Sparse uncharted lattice dots (skip probe & visited — drawn separately)
     for (const p of pts) {
@@ -372,7 +343,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ...(hasPrior ? [["○ prior", "rgba(255,200,80,0.7)"] as [string, string]] : []),
       ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
-      ["◈ SCUT relay (◌ range)", "rgba(0,220,220,0.8)"],
+      ["◈ SCUT relay", "rgba(0,220,220,0.8)"],
     ];
     legends.forEach(([label, color], i) => {
       ctx.fillStyle = color;
