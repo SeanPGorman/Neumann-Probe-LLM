@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { GlobeMap } from "./GlobeMap";
 import { SystemMap } from "./SystemMap";
 import { objectIcon, SectorObjectList } from "../components/SectorObject";
@@ -619,6 +619,8 @@ export default function Commander() {
     retry: 1,
   });
 
+  const queryClient = useQueryClient();
+
   // Fetch globe sectors at Commander level so GlobeMap always receives live data
   // immediately when the tab opens, regardless of when the user navigates to it.
   const { data: sectorsData } = useQuery({
@@ -632,6 +634,14 @@ export default function Commander() {
     refetchInterval: 60_000,
     staleTime: 30_000,
   });
+
+  // Scan all visited sectors via SCUT/scout API, then refetch globe data
+  const handleRefreshSectors = useCallback(async () => {
+    const r = await fetch(`${BASE}/api/vng/log/sectors/refresh`, { method: "POST" });
+    if (!r.ok) throw new Error(`Refresh failed: ${r.status}`);
+    await queryClient.invalidateQueries({ queryKey: ["sectors-globe"] });
+    await queryClient.refetchQueries({ queryKey: ["sectors-globe"] });
+  }, [queryClient]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -758,6 +768,7 @@ export default function Commander() {
               priorZ={globeCenter.pz}
               sectorsData={sectorsData}
               onScoutRequest={handleScoutRequest}
+              onRefreshSectors={handleRefreshSectors}
             />
           )}
           {sideTab === "system" && (

@@ -1208,8 +1208,8 @@
     "sectorY": 2,
     "sectorZ": 5,
     "firstVisitedAt": "2026-07-09T15:21:56.772Z",
-    "lastVisitedAt": "2026-07-09T20:16:21.201Z",
-    "visitCount": 17,
+    "lastVisitedAt": "2026-07-10T01:45:36.284Z",
+    "visitCount": 97,
     "objects": [
       {
         "id": "3ab3aa3f8a30f2bfd971",
@@ -1406,16 +1406,16 @@
         ]
       },
       {
-        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
+        "id": "detached-container-container-itm_841974742a8d91aebd0a9482",
         "type": "detached_container",
-        "name": "MetalsFull2",
+        "name": "IceFull1",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
         "resourceTypes": [],
         "capacity": 1,
         "mode": "hidden_on_asteroid",
-        "targetObjectId": "f18ab8ac2293cf169b82",
+        "targetObjectId": "cc4448f478943d904e40",
         "salvageable": false
       }
     ],

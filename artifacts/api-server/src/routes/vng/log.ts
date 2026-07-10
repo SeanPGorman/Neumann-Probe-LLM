@@ -3,6 +3,7 @@ import {
   getContainers,
   getSectors,
   updateContainerStatus,
+  recordSector,
 } from "./file-store.js";
 import { getProbe, getSector, scanSector, getVisitedSectors } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
@@ -171,6 +172,47 @@ router.get("/sectors", async (_req, res) => {
     );
 
     res.json({ sectors });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Scan all visited sectors and store their objects — fixes stale/empty object lists.
+// Fires concurrent scanSector calls (up to 12 sectors typically) and persists results.
+router.post("/sectors/refresh", async (_req, res) => {
+  try {
+    const gameResp = await getVisitedSectors().catch(() => null);
+    const visitedList: { x: number; y: number; z: number }[] = (
+      gameResp?.visitedSectors ?? []
+    ).map((gs: any) => ({
+      x: gs.relativeCoordinates.x,
+      y: gs.relativeCoordinates.y,
+      z: gs.relativeCoordinates.z,
+    }));
+
+    if (!visitedList.length) {
+      res.json({ refreshed: 0, sectors: [] });
+      return;
+    }
+
+    // Scan all sectors concurrently, tolerate individual failures
+    const results = await Promise.allSettled(
+      visitedList.map(async ({ x, y, z }) => {
+        const body = await scanSector(x, y, z);
+        const rawObjects: any[] = body?.sector?.objects ?? [];
+        const objects = mapSectorObjects(rawObjects);
+        const resourceSummary = sectorResourceSummary(rawObjects);
+        await recordSector(x, y, z, rawObjects);
+        return { x, y, z, objectCount: objects.length, resourceSummary };
+      })
+    );
+
+    const succeeded = results
+      .filter((r) => r.status === "fulfilled")
+      .map((r) => (r as PromiseFulfilledResult<any>).value);
+    const failed = results.filter((r) => r.status === "rejected").length;
+
+    res.json({ refreshed: succeeded.length, failed, sectors: succeeded });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

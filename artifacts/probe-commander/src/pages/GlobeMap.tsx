@@ -1,4 +1,4 @@
-import { useRef, useEffect, useState, useCallback, useMemo } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo, useTransition } from "react";
 
 const RADIUS = 4;
 
@@ -51,9 +51,10 @@ interface Props {
   isMoving: boolean;
   sectorsData?: { sectors: any[] };
   onScoutRequest?: (x: number, y: number, z: number) => void;
+  onRefreshSectors?: () => Promise<void>;
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onScoutRequest }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onScoutRequest, onRefreshSectors }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -81,6 +82,22 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
   const [brightVisited, setBrightVisited] = useState(0.5);
   const [brightCourse,  setBrightCourse]  = useState(0.5);
   const [brightRelay,   setBrightRelay]   = useState(0.5);
+  const [isRefreshing, startRefresh] = useTransition();
+  const [refreshMsg, setRefreshMsg] = useState<string | null>(null);
+
+  const handleRefresh = useCallback(() => {
+    if (!onRefreshSectors) return;
+    startRefresh(async () => {
+      try {
+        await onRefreshSectors();
+        setRefreshMsg("Scanned all sectors");
+        setTimeout(() => setRefreshMsg(null), 3000);
+      } catch {
+        setRefreshMsg("Scan failed");
+        setTimeout(() => setRefreshMsg(null), 3000);
+      }
+    });
+  }, [onRefreshSectors]);
 
   const visitedMap = useMemo<Map<string, VisitedSector>>(() => {
     const m = new Map<string, VisitedSector>();
@@ -443,20 +460,35 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     <div className="flex flex-col h-full gap-2">
       <div className="flex items-center justify-between">
         <div className="text-xs text-muted-foreground tracking-widest">SECTOR GLOBE</div>
-        <div className="flex items-center gap-1">
-          <button
-            onClick={zoomOut}
-            disabled={zoom <= 0.25}
-            className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25 disabled:cursor-not-allowed"
-          >−</button>
-          <span className="text-[10px] font-mono text-muted-foreground/60 w-8 text-center">{zoom}×</span>
-          <button
-            onClick={zoomIn}
-            disabled={zoom >= 5.0}
-            className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25 disabled:cursor-not-allowed"
-          >+</button>
+        <div className="flex items-center gap-2">
+          {onRefreshSectors && (
+            <button
+              onClick={handleRefresh}
+              disabled={isRefreshing}
+              title="Scan all visited sectors to update relay and object data"
+              className="text-[10px] font-mono px-1.5 h-5 flex items-center gap-1 rounded border border-border/40 text-cyan-500/70 hover:text-cyan-400 hover:border-cyan-500/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+            >
+              {isRefreshing ? "…" : "↺"} SCAN
+            </button>
+          )}
+          <div className="flex items-center gap-1">
+            <button
+              onClick={zoomOut}
+              disabled={zoom <= 0.25}
+              className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25 disabled:cursor-not-allowed"
+            >−</button>
+            <span className="text-[10px] font-mono text-muted-foreground/60 w-8 text-center">{zoom}×</span>
+            <button
+              onClick={zoomIn}
+              disabled={zoom >= 5.0}
+              className="text-[11px] font-mono w-5 h-5 flex items-center justify-center rounded border border-border/40 text-muted-foreground hover:text-foreground hover:border-border disabled:opacity-25 disabled:cursor-not-allowed"
+            >+</button>
+          </div>
         </div>
       </div>
+      {refreshMsg && (
+        <div className="text-[10px] font-mono text-cyan-400/80">{refreshMsg}</div>
+      )}
       <div className="text-[10px] text-muted-foreground/40">
         Drag to rotate · scroll to zoom · click dot to inspect · {visitedMap.size} visited
       </div>
