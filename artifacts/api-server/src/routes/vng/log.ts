@@ -244,7 +244,10 @@ router.get("/scout", async (req, res) => {
     console.error(`[scout] failed for (${req.query.x},${req.query.y},${req.query.z}):`, err.message);
     // VNG rate-limits remote scans until the probe has sufficient dwell data —
     // surface this as a soft unavailability rather than a hard error.
-    if (err.message.includes("not collected enough data")) {
+    if (
+      err.message.includes("not collected enough data") ||
+      err.message.includes("Insufficient data collection time")
+    ) {
       const retryIn = err.message.match(/Try again in (.+?)\.?\s*$/)?.[1] ?? null;
       res.json({ unavailable: true, retryIn });
       return;
