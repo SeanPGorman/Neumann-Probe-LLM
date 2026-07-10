@@ -187,7 +187,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       if (!relays.length) continue;
       const rp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
       for (const relay of relays) {
-        const isActive = relay.status === "active";
+        const isActive = relay.status === "active" || relay.status === "on";
         const range: number | null = relay.coverageRadiusSectors ?? null;
         if (!isActive || !range) continue;
         // Approximate range ring: sphere of `range` sectors around relay, drawn
@@ -327,7 +327,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const relays = (vs.objects ?? []).filter((o: any) => o.type === "scut_relay");
       if (!relays.length) continue;
       const rp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
-      const hasActive = relays.some((r: any) => r.status === "active");
+      const hasActive = relays.some((r: any) => r.status === "active" || r.status === "on");
       const sz = 5;
       // Diamond shape (rotated square)
       ctx.beginPath();
@@ -649,8 +649,8 @@ function SectorDetail({ sector }: { sector: VisitedSector }) {
         <div className="space-y-0.5 pl-1">
           {relays.map((relay: any, i: number) => (
             <div key={i} className="flex flex-wrap gap-x-2 items-baseline">
-              <span className={relay.status === "active" ? "text-cyan-400" : "text-cyan-700"}>
-                ◈ {relay.status === "active" ? "SCUT ACTIVE" : "SCUT inactive"}
+              <span className={(relay.status === "active" || relay.status === "on") ? "text-cyan-400" : "text-cyan-700"}>
+                ◈ {(relay.status === "active" || relay.status === "on") ? "SCUT ACTIVE" : "SCUT inactive"}
               </span>
               {relay.coverageRadiusSectors != null && (
                 <span className="text-muted-foreground/50">
