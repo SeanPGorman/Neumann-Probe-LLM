@@ -787,7 +787,6 @@ export default function Commander() {
             priorY={globeCenter.py}
             priorZ={globeCenter.pz}
             sectorsData={sectorsData}
-            onScoutRequest={handleScoutRequest}
             onRefreshSectors={handleRefreshSectors}
           />
         )}
@@ -803,37 +802,6 @@ export default function Commander() {
           />
         )}
       </div>
-        <div className="border border-border border-glow rounded p-4 flex-1 scanlines">
-          {sideTab === "telemetry" && <TelemetryPanel state={state} error={stateError as Error | null} />}
-          {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
-          {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
-          {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
-          {sideTab === "scheduled" && <ScheduledPanel refetchSignal={logRefetch} />}
-          {sideTab === "globe" && (
-            <GlobeMap
-              probeX={globeCenter.x}
-              probeY={globeCenter.y}
-              probeZ={globeCenter.z}
-              isMoving={globeCenter.isMoving}
-              priorX={globeCenter.px}
-              priorY={globeCenter.py}
-              priorZ={globeCenter.pz}
-              sectorsData={sectorsData}
-              onRefreshSectors={handleRefreshSectors}
-            />
-          )}
-          {sideTab === "system" && (
-            <SystemMap
-              probe={state?.probe}
-              sectorObjects={state?.sectorObjects}
-              otherProbes={state?.otherProbes}
-              mannies={state?.mannies}
-              isMoving={globeCenter.isMoving}
-              sectorUnavailable={state?.sectorUnavailable}
-              onScoutRequest={handleScoutRequest}
-            />
-          )}
-        </div>
 
       <div className="text-xs text-muted-foreground text-center tracking-widest opacity-40">
         AUTO-REFRESH 30s
