@@ -1,22 +1,22 @@
-import { useRef, useEffect, useState, useCallback, useMemo, useTransition } from "react";
+import { useRef, useEffect, useState, useCallback, useMemo } from "react";
 
-const RADIUS = 4;
+const DEFAULT_RADIUS = 4;
+const MIN_RADIUS = 2;
+const MAX_RADIUS = 6;
 
-// Pre-generate all valid coordinate offsets within RADIUS
-// Valid = even sum, within sphere
-const OFFSETS: [number, number, number][] = (() => {
+function computeOffsets(radius: number): [number, number, number][] {
   const pts: [number, number, number][] = [];
-  const r2 = RADIUS * RADIUS;
-  for (let dx = -RADIUS; dx <= RADIUS; dx++) {
-    for (let dy = -RADIUS; dy <= RADIUS; dy++) {
-      for (let dz = -RADIUS; dz <= RADIUS; dz++) {
+  const r2 = radius * radius;
+  for (let dx = -radius; dx <= radius; dx++) {
+    for (let dy = -radius; dy <= radius; dy++) {
+      for (let dz = -radius; dz <= radius; dz++) {
         if (dx * dx + dy * dy + dz * dz <= r2 && (dx + dy + dz) % 2 === 0)
           pts.push([dx, dy, dz]);
       }
     }
   }
   return pts;
-})();
+}
 
 interface VisitedSector {
   sectorX: number;
@@ -82,22 +82,25 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
   const [brightVisited, setBrightVisited] = useState(0.5);
   const [brightCourse,  setBrightCourse]  = useState(0.5);
   const [brightRelay,   setBrightRelay]   = useState(0.5);
-  const [isRefreshing, startRefresh] = useTransition();
+  const [radius, setRadius] = useState(DEFAULT_RADIUS);
+  const OFFSETS = useMemo(() => computeOffsets(radius), [radius]);
+  const [isRefreshing, setIsRefreshing] = useState(false);
   const [refreshMsg, setRefreshMsg] = useState<string | null>(null);
 
-  const handleRefresh = useCallback(() => {
-    if (!onRefreshSectors) return;
-    startRefresh(async () => {
-      try {
-        await onRefreshSectors();
-        setRefreshMsg("Scanned all sectors");
-        setTimeout(() => setRefreshMsg(null), 3000);
-      } catch {
-        setRefreshMsg("Scan failed");
-        setTimeout(() => setRefreshMsg(null), 3000);
-      }
-    });
-  }, [onRefreshSectors]);
+  const handleRefresh = useCallback(async () => {
+    if (!onRefreshSectors || isRefreshing) return;
+    setIsRefreshing(true);
+    try {
+      await onRefreshSectors();
+      setRefreshMsg("Scanned all sectors");
+      setTimeout(() => setRefreshMsg(null), 3000);
+    } catch {
+      setRefreshMsg("Scan failed");
+      setTimeout(() => setRefreshMsg(null), 3000);
+    } finally {
+      setIsRefreshing(false);
+    }
+  }, [onRefreshSectors, isRefreshing]);
 
   const visitedMap = useMemo<Map<string, VisitedSector>>(() => {
     const m = new Map<string, VisitedSector>();
@@ -131,7 +134,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
 
     const cosY = Math.cos(ry), sinY = Math.sin(ry);
     const cosX = Math.cos(rx), sinX = Math.sin(rx);
-    const camDist = RADIUS * 1.7;
+    const camDist = radius * 1.7;
     const fov = Math.min(W, H) * 0.42 * zoomRef.current;
 
     const pts: ProjectedDot[] = OFFSETS.map(([dx, dy, dz]) => {
@@ -173,7 +176,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     };
 
     // Faint sphere outline
-    const sphereScreenR = fov / camDist * RADIUS * 0.97;
+    const sphereScreenR = fov / camDist * radius * 0.97;
     ctx.beginPath();
     ctx.arc(cx, cy, sphereScreenR, 0, Math.PI * 2);
     ctx.strokeStyle = "rgba(80,255,130,0.05)";
@@ -187,7 +190,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const { sx, sy, ax, ay, az, z2 } = p;
       if (visitedMap.has(`${ax},${ay},${az}`)) continue;
       if (ax === probeX && ay === probeY && az === probeZ) continue;
-      const depth = (z2 + RADIUS) / (2 * RADIUS);
+      const depth = (z2 + radius) / (2 * radius);
       ctx.beginPath();
       ctx.arc(sx, sy, 1.5, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(80,160,255,${(0.12 + depth * 0.22) * brightDots * 2})`;
@@ -265,7 +268,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
     if (!homeInVisited && !homeIsProbe) {
       // Check if [0,0,0] is within the globe RADIUS of probe
       const hdx = 0 - probeX, hdy = 0 - probeY, hdz = 0 - probeZ;
-      if (hdx * hdx + hdy * hdy + hdz * hdz <= RADIUS * RADIUS) {
+      if (hdx * hdx + hdy * hdy + hdz * hdz <= radius * radius) {
         const hp = project(0, 0, 0);
         const r = 3.5;
         ctx.beginPath();
@@ -349,8 +352,8 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.fillStyle = color;
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
-  }, [rot, zoom, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
-      brightProbe, brightDots, brightVisited, brightCourse, brightRelay]);
+  }, [rot, zoom, radius, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
+      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, OFFSETS]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -485,6 +488,16 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             />
           </div>
         ))}
+        <div className="flex items-center gap-1.5 min-w-0">
+          <span className="text-[9px] font-mono text-muted-foreground/50 w-12 shrink-0">RANGE</span>
+          <input
+            type="range" min={MIN_RADIUS} max={MAX_RADIUS} step={1}
+            value={radius}
+            onChange={e => setRadius(parseInt(e.target.value))}
+            className="flex-1 h-1 accent-green-400 cursor-pointer"
+          />
+          <span className="text-[9px] font-mono text-muted-foreground/40 w-4 text-right">{radius}</span>
+        </div>
       </div>
 
       <div
