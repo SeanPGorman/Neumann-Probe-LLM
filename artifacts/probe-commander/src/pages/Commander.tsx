@@ -125,13 +125,24 @@ function ScanReadinessBar({ scan }: { scan: { currentSectorResidenceSeconds: num
   );
 }
 
-function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
+type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean };
+
+function TelemetryPanel({
+  state, error, probeList = [], selectedProbeId = null, onSelectProbe = () => {},
+}: {
+  state: any; error: Error | null;
+  probeList?: ProbeEntry[];
+  selectedProbeId?: number | null;
+  onSelectProbe?: (id: number | null) => void;
+}) {
   if (error) return <ApiError error={error} />;
   if (!state) {
     return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING TELEMETRY…</div>;
   }
   const { probe, mannies, stowedMannies, sectorObjects, inventory, scan } = state;
-  const sector = probe.sector ?? { x: 0, y: 0, z: 0 };
+  const sector = probe.sector ?? probe.movement?.target ?? probe.movement?.origin ?? { x: 0, y: 0, z: 0 };
+  const defaultId = probeList.find(p => p.isDefault)?.id ?? probeList[0]?.id ?? null;
+  const currentId = selectedProbeId ?? defaultId;
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -139,8 +150,34 @@ function TelemetryPanel({ state, error }: { state: any; error: Error | null }) {
         <span className="text-xs text-primary glow-green">{probe.status?.toUpperCase()}</span>
       </div>
       <div>
-        <div className="text-lg font-bold glow-green tracking-wider">{probe.name}</div>
-        <div className="text-xs text-muted-foreground mt-0.5">SECTOR [{sector.x},{sector.y},{sector.z}]</div>
+        {probeList.length > 1 ? (
+          <div className="relative flex items-center gap-1">
+            <select
+              value={currentId ?? ""}
+              onChange={e => {
+                const id = Number(e.target.value);
+                onSelectProbe(id === defaultId ? null : id);
+              }}
+              className="text-lg font-bold tracking-wider bg-transparent border-none outline-none cursor-pointer text-primary glow-green flex-1 pr-4"
+              style={{ WebkitAppearance: "none", appearance: "none" }}
+              title="Switch probe"
+            >
+              {probeList.map(p => (
+                <option key={p.id} value={p.id} style={{ background: "hsl(222 20% 8%)", color: "hsl(150 80% 55%)" }}>
+                  {p.name}
+                </option>
+              ))}
+            </select>
+            <span className="text-primary text-xs pointer-events-none shrink-0 -ml-4">▾</span>
+          </div>
+        ) : (
+          <div className="text-lg font-bold glow-green tracking-wider">{probe.name}</div>
+        )}
+        <div className="text-xs text-muted-foreground mt-0.5">
+          {probe.status === "accelerating" || probe.status === "cruising" || probe.status === "decelerating"
+            ? `→ [${sector.x},${sector.y},${sector.z}]`
+            : `SECTOR [${sector.x},${sector.y},${sector.z}]`}
+        </div>
       </div>
       <div className="space-y-2">
         <div>
@@ -619,6 +656,7 @@ export default function Commander() {
   const [sideTab, setSideTab] = useState<SideTab>("telemetry");
   const [logRefetch, setLogRefetch] = useState(0);
   const [scoutTarget, setScoutTarget] = useState<{ x: number; y: number; z: number } | null>(null);
+  const [selectedProbeId, setSelectedProbeId] = useState<number | null>(null);
 
   // Fill-window-width preference. Pane sizes persist via the panel group's
   // autoSaveId; this boolean is the only value we hand-persist.
@@ -636,9 +674,25 @@ export default function Commander() {
   }, []);
   const bottomRef = useRef<HTMLDivElement>(null);
 
+  const { data: probeListData } = useQuery({
+    queryKey: ["probe-list"],
+    queryFn: () => fetchJson(`${BASE}/api/vng/probes`),
+    refetchInterval: 60000,
+    staleTime: 30000,
+  });
+
+  const probeList: ProbeEntry[] = (probeListData?.probes ?? []).map((p: any) => ({
+    id: p.id,
+    name: p.name,
+    status: p.status,
+    isDefault: p.isDefault ?? (p.id === probeListData?.defaultProbeId),
+  }));
+
   const { data: state, error: stateError } = useQuery({
-    queryKey: ["probe-state"],
-    queryFn: () => fetchJson(`${BASE}/api/vng/state`),
+    queryKey: ["probe-state", selectedProbeId],
+    queryFn: () => fetchJson(
+      `${BASE}/api/vng/state${selectedProbeId ? `?probeId=${selectedProbeId}` : ""}`
+    ),
     refetchInterval: 30000,
     retry: 1,
   });
@@ -772,7 +826,15 @@ export default function Commander() {
       {/* min-h-0 + overflow-y-auto: react-resizable-panels forces overflow:hidden
           on the panel, so tab content must scroll here, inside the panel. */}
       <div className="border border-border border-glow rounded p-4 flex-1 min-h-0 overflow-y-auto scanlines">
-        {sideTab === "telemetry" && <TelemetryPanel state={state} error={stateError as Error | null} />}
+        {sideTab === "telemetry" && (
+          <TelemetryPanel
+            state={state}
+            error={stateError as Error | null}
+            probeList={probeList}
+            selectedProbeId={selectedProbeId}
+            onSelectProbe={setSelectedProbeId}
+          />
+        )}
         {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
         {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
         {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}

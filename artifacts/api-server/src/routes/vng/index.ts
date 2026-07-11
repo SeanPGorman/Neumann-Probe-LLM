@@ -29,7 +29,10 @@ function sse(res: import("express").Response, event: Record<string, unknown>) {
 function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
   const probe = probeResp.probe;
   const inv = probe.inventory ?? {};
-  const sector: { x: number; y: number; z: number } = probe.sector?.relative ?? { x: 0, y: 0, z: 0 };
+  const sector: { x: number; y: number; z: number } =
+    probe.sector?.relative ??
+    sectorResp?.sector?.relativeCoordinates ??
+    { x: 0, y: 0, z: 0 };
   const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
   const mannies: any[] = manniesResp.mannies ?? [];
   const inventoryItems: any[] = inv.items ?? [];
@@ -62,12 +65,22 @@ router.delete("/scheduled/:id", async (req, res) => {
   }
 });
 
-router.get("/state", async (_req, res) => {
+router.get("/probes", async (_req, res) => {
+  try {
+    const data = await client.getProbeList();
+    res.json(data);
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/state", async (req, res) => {
+  const probeId = req.query.probeId ? Number(req.query.probeId) : null;
   try {
     const [probeResp, manniesResp, sectorResp] = await Promise.all([
-      client.getProbe(),
-      client.getMannies(),
-      client.getSector().catch(() => null),
+      probeId ? client.getProbeById(probeId) : client.getProbe(),
+      probeId ? client.getManniesById(probeId) : client.getMannies(),
+      (probeId ? client.getSectorById(probeId) : client.getSector()).catch(() => null),
     ]);
 
     const { probe, inv, sector, sectorObjects, mannies, activeMannyIds, stowedMannies } =

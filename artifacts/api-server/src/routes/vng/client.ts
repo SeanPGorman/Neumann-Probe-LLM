@@ -38,6 +38,11 @@ const mannyPost = (mannyId: string, suffix: string, body: Record<string, unknown
 export const getProbe            = () => vngFetch("/api/probe");
 export const getMannies          = () => vngFetch("/api/probe/mannies");
 export const getSector           = () => vngFetch("/api/probe/sector");
+
+// Parameterized probe endpoints — used for owned probes / drones
+export const getProbeById   = (id: number) => vngFetch(`/api/probe/${id}`);
+export const getManniesById = (id: number) => vngFetch(`/api/probe/${id}/mannies`);
+export const getSectorById  = (id: number) => vngFetch(`/api/probe/${id}/sector`);
 export const getCraftingRecipes  = () => vngFetch("/api/crafting-recipes");
 export const getVisitedSectors   = () => vngFetch("/api/probe/visited-sectors");
 export const getProbeList        = () => vngFetch("/api/probes");
