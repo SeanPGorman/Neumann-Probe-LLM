@@ -2887,5 +2887,230 @@
     "createdAt": "2026-07-08T13:44:34.061Z",
     "status": "triggered",
     "triggeredAt": "2026-07-08T13:54:58.527Z"
+  },
+  {
+    "description": "Kant: craft steel_bar for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "steel_bar"
+    },
+    "id": 170,
+    "createdAt": "2026-07-10T22:07:06.459Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:12:24.034Z"
+  },
+  {
+    "description": "Kant: craft electric_motor for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "electric_motor"
+    },
+    "id": 171,
+    "createdAt": "2026-07-10T22:07:06.464Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:17:24.090Z"
+  },
+  {
+    "description": "Kant: craft linear_actuator for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mannyName": "Kant",
+      "requireItems": [
+        "electric_motor",
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "linear_actuator"
+    },
+    "id": 172,
+    "createdAt": "2026-07-10T22:07:06.466Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:32:24.546Z"
+  },
+  {
+    "description": "Kierkegaard: craft steel_bar for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "steel_bar"
+    },
+    "id": 173,
+    "createdAt": "2026-07-10T22:07:06.469Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:12:24.317Z"
+  },
+  {
+    "description": "Kierkegaard: craft electric_motor for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard",
+      "requireItems": [
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "electric_motor"
+    },
+    "id": 174,
+    "createdAt": "2026-07-10T22:07:06.471Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:17:24.343Z"
+  },
+  {
+    "description": "Kierkegaard: craft linear_actuator for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "mannyName": "Kierkegaard",
+      "requireItems": [
+        "electric_motor",
+        "steel_bar",
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_05dc76cf9e04e6ec09e20a0a",
+      "recipe": "linear_actuator"
+    },
+    "id": 175,
+    "createdAt": "2026-07-10T22:07:06.473Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:32:24.822Z"
+  },
+  {
+    "description": "Locke: craft steel_plate for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_plate"
+    },
+    "id": 176,
+    "createdAt": "2026-07-10T22:07:06.475Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:12:24.634Z"
+  },
+  {
+    "description": "Locke: craft steel_plate for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_plate"
+    },
+    "id": 177,
+    "createdAt": "2026-07-10T22:07:06.478Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:17:54.155Z"
+  },
+  {
+    "description": "Nietzsche: craft battery_pack for requested build batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "battery_pack"
+    },
+    "id": 178,
+    "createdAt": "2026-07-10T22:07:06.480Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-10T22:12:24.918Z"
+  },
+  {
+    "description": "When Hypatia is idle, atomic printer craft micro_conductor for requested batch",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_8a97ad41a36a0cb0de71600c",
+      "recipe": "waypoint_bookmark"
+    },
+    "id": 179,
+    "createdAt": "2026-07-10T22:07:11.267Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-10T22:45:24.775Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "Arendt: craft steel_plate for requested solar panels when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 180,
+    "createdAt": "2026-07-10T22:07:11.270Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-10T23:18:56.076Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
+    "description": "Beauvoir: craft steel_plate for requested solar panels when idle",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 181,
+    "createdAt": "2026-07-10T22:07:11.273Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-10T23:18:56.405Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
   }
 ]
