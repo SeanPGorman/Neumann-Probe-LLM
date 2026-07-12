@@ -153,6 +153,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
   // readout-only mirror — it must NEVER enter draw's dependency array, or the
   // manny RAF effect (which depends on draw) re-subscribes every tilt frame.
   const tiltRef = useRef(0); // radians, 0..MAX_TILT
+  const lastTiltDegRef = useRef(0); // last whole-degree pushed to `tilt` state (render throttle)
   const [tilt, setTilt] = useState(0);
   const dragRef = useRef<{ mx: number; my: number; px: number; py: number; mode: "pan" | "tilt"; t0: number } | null>(null);
   const [selected, setSelected] = useState<any | null>(null);
@@ -163,7 +164,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
   // return so the hook order stays stable regardless of transit/empty state.
   useEffect(() => {
     if (!expanded) return;
-    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") setExpanded(false); };
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") { dragRef.current = null; setExpanded(false); } };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
   }, [expanded]);
@@ -439,11 +440,15 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     // Screen-px elevation. Star is pinned to lift=0 — it sits at the shared
     // ring center (world origin), so lifting it would float it off its own
     // rings with no ring to anchor a shadow to.
-    const lift = (n: Node) => (n.kind === "star" ? 0 : K_LIFT * n.r) * sinT;
-    // Aesthetic sort tiebreak (not physically exact — see plan). Dominated by
-    // the wy*scale*sinT term; +lift only resolves same-row overlaps and
-    // deliberately keeps the star/low bodies on top. Do not "fix" the sign.
-    const depth = (n: Node) => lift(n) * cosT - n.wy * scale * sinT;
+    const liftR = (r: number) => K_LIFT * r * sinT; // screen-px elevation for a radius-r thing on the plane
+    const lift = (n: Node) => (n.kind === "star" ? 0 : liftR(n.r));
+    // Back-to-front sort key = in-plane depth only (far/top = -wy, drawn first).
+    // The elevation term is deliberately EXCLUDED: lift is a fixed screen-px
+    // amount while wy*scale shrinks with zoom, so mixing them inverts occlusion
+    // at low zoom (a small far body drawing in front of a large near one). At
+    // tilt=0, sinT=0 => depth=0 for every node, so order() alone reproduces the
+    // flat layering (regression gate).
+    const depth = (n: Node) => -n.wy * scale * sinT;
 
     // Faint orbit rings. An origin-centered circle under this oblique
     // projection is exactly an origin-centered ellipse with minor axis
@@ -524,7 +529,9 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       // depth() sort direction. No-op at tilt=0 (sinT===0 => dimAlpha===1),
       // so this can't touch the regression gate.
       const depthT = Math.max(0, Math.min(1, (model.maxWorldR - n.wy) / (2 * model.maxWorldR)));
-      const dimAlpha = 1 - DIM * sinT * depthT;
+      // Star (the frontmost anchor at world origin) is exempt from depth-dimming
+      // — same as its lift exemption — so a single-star sector never dims it.
+      const dimAlpha = n.kind === "star" ? 1 : 1 - DIM * sinT * depthT;
       const fill = `rgba(${r},${g},${b},${(0.95 * dimAlpha).toFixed(3)})`;
       const isSel = selKey != null && (n.obj?.id ?? `${n.obj?.type}:${n.obj?.name}`) === selKey;
 
@@ -640,29 +647,38 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
         if (!routeDrawn.has(rk)) {
           routeDrawn.add(rk);
           const a = proj(PX, PY), b = proj(target.wx, target.wy);
+          // Meet the ELEVATED probe & body markers, not their ground points, so
+          // the route doesn't visibly stop short under tilt.
+          const aLift = liftR(6), bLift = lift(target);
           ctx.save();
           ctx.setLineDash([3, 4]);
           ctx.lineDashOffset = (kind === "inbound" ? 1 : -1) * ((now / 50) % 7);
           ctx.strokeStyle = "rgba(90,255,190,0.16)";
           ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.moveTo(a.sx, a.sy);
-          ctx.lineTo(b.sx, b.sy);
+          ctx.moveTo(a.sx, a.sy - aLift);
+          ctx.lineTo(b.sx, b.sy - bLift);
           ctx.stroke();
           ctx.restore();
         }
       }
 
-      // World position by travel direction (probe ⇄ target).
-      let wx = PX, wy = PY, alpha = 0.95, pulse = 0;
+      // World position by travel direction (probe ⇄ target). `elev` tracks the
+      // plane elevation at the manny's anchor so it rides WITH the tilted bodies
+      // (the probe marker and the target body are both lifted); a traveller
+      // interpolates between the two so it rises/settles across the leg.
+      let wx = PX, wy = PY, alpha = 0.95, pulse = 0, elev = 0;
+      const probeLift = liftR(6); // matches the self-probe marker's lift below
       if (kind === "atProbe") {
         const ang = lane * Math.PI * 2;
         wx = PX + Math.cos(ang) * 12; wy = PY + Math.sin(ang) * 12;
         pulse = 0.5 + 0.5 * Math.sin(now / 500 + lane * 6);
+        elev = probeLift;
       } else if (kind === "atTarget" && target) {
         const ang = lane * Math.PI * 2 + now / 3000;
         wx = target.wx + Math.cos(ang) * 9; wy = target.wy + Math.sin(ang) * 9;
         pulse = 0.5 + 0.5 * Math.sin(now / 400 + lane * 6);
+        elev = lift(target);
       } else if (target) {
         // outbound / inbound: a single traverse over a fixed travel time based
         // on how long we've observed this leg. Consecutive legs share endpoints
@@ -677,32 +693,36 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
         const len = Math.hypot(vx, vy) || 1;
         const off = (lane - 0.5) * 12;
         wx = px + (-vy / len) * off; wy = py + (vx / len) * off;
+        const tgtLift = lift(target);
+        const [oLift, dLift] = kind === "inbound" ? [tgtLift, probeLift] : [probeLift, tgtLift];
+        elev = oLift + (dLift - oLift) * f;
       }
 
       const { sx, sy } = proj(wx, wy);
+      const my = sy - elev; // elevated to the plane, like the bodies it travels between
       const [mr, mg, mb] = MANNY_COLOR;
       const rad = 3.2 + pulse * 1.1;
       const isSel = selected?.type === "manny" && String(selected.id) === String(m.id);
 
       ctx.beginPath();
-      ctx.arc(sx, sy, rad, 0, Math.PI * 2);
+      ctx.arc(sx, my, rad, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(${mr},${mg},${mb},${alpha.toFixed(3)})`;
       ctx.fill();
       if (kind === "atTarget" && m.taskProgressPercent != null) {
         ctx.beginPath();
-        ctx.arc(sx, sy, rad + 2.5, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (m.taskProgressPercent / 100));
+        ctx.arc(sx, my, rad + 2.5, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * (m.taskProgressPercent / 100));
         ctx.strokeStyle = `rgba(${mr},${mg},${mb},0.8)`;
         ctx.lineWidth = 1.3;
         ctx.stroke();
       }
       if (isSel) {
         ctx.beginPath();
-        ctx.arc(sx, sy, rad + 5, 0, Math.PI * 2);
+        ctx.arc(sx, my, rad + 5, 0, Math.PI * 2);
         ctx.strokeStyle = "rgba(255,250,130,0.95)";
         ctx.lineWidth = 1.5;
         ctx.stroke();
       }
-      hit.push({ key: `manny:${m.id}`, obj: { ...m, type: "manny" }, wx: sx, wy: sy, r: Math.max(7, rad + 3), kind: "probe", color: MANNY_COLOR });
+      hit.push({ key: `manny:${m.id}`, obj: { ...m, type: "manny" }, wx: sx, wy: my, r: Math.max(7, rad + 3), kind: "probe", color: MANNY_COLOR });
     }
 
     // --- Our probe: a distinct off-centre marker (drawn on top) ---
@@ -710,17 +730,31 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       const { sx, sy } = proj(model.probePos.wx, model.probePos.wy);
       const [pr, pg, pb] = PROBE_COLOR;
       const s = 6;
+      const my = sy - liftR(s); // float on the plane like the bodies
       const isSel = selected?.type === "self_probe";
+      // Ground shadow + stalk (only when tilted), matching the body depth layer.
+      if (sinT > 0.001) {
+        ctx.beginPath();
+        ctx.ellipse(sx, sy, s * 0.9, s * 0.9 * cosT, 0, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(0,0,0,${(0.25 * sinT).toFixed(3)})`;
+        ctx.fill();
+        ctx.beginPath();
+        ctx.moveTo(sx, sy);
+        ctx.lineTo(sx, my);
+        ctx.strokeStyle = `rgba(255,255,255,${(0.12 * sinT).toFixed(3)})`;
+        ctx.lineWidth = 1;
+        ctx.stroke();
+      }
       ctx.beginPath();
-      ctx.arc(sx, sy, s + 3, 0, Math.PI * 2);
+      ctx.arc(sx, my, s + 3, 0, Math.PI * 2);
       ctx.strokeStyle = `rgba(${pr},${pg},${pb},0.45)`;
       ctx.lineWidth = 1;
       ctx.stroke();
       ctx.beginPath();
-      ctx.moveTo(sx, sy - s);
-      ctx.lineTo(sx + s, sy);
-      ctx.lineTo(sx, sy + s);
-      ctx.lineTo(sx - s, sy);
+      ctx.moveTo(sx, my - s);
+      ctx.lineTo(sx + s, my);
+      ctx.lineTo(sx, my + s);
+      ctx.lineTo(sx - s, my);
       ctx.closePath();
       ctx.fillStyle = `rgba(${pr},${pg},${pb},0.95)`;
       ctx.fill();
@@ -729,7 +763,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       ctx.stroke();
       if (isSel) {
         ctx.beginPath();
-        ctx.arc(sx, sy, s + 6, 0, Math.PI * 2);
+        ctx.arc(sx, my, s + 6, 0, Math.PI * 2);
         ctx.strokeStyle = "rgba(255,250,130,0.95)";
         ctx.lineWidth = 1.5;
         ctx.stroke();
@@ -737,9 +771,9 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       if (showLabels) {
         ctx.font = "9px monospace";
         ctx.fillStyle = `rgba(${pr},${pg},${pb},0.9)`;
-        ctx.fillText("PROBE", sx + s + 4, sy + 3);
+        ctx.fillText("PROBE", sx + s + 4, my + 3);
       }
-      hit.push({ key: "self_probe", obj: { ...(probe ?? {}), type: "self_probe" }, wx: sx, wy: sy, r: s + 4, kind: "probe", color: PROBE_COLOR });
+      hit.push({ key: "self_probe", obj: { ...(probe ?? {}), type: "self_probe" }, wx: sx, wy: my, r: s + 4, kind: "probe", color: PROBE_COLOR });
     }
 
     nodesRef.current = hit;
@@ -829,9 +863,12 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     const drag = dragRef.current;
     if (!drag) return;
     if (drag.mode === "tilt") {
-      // Drag up = more tilt.
+      // Drag up = more tilt. draw() every move via tiltRef; but only push React
+      // `tilt` state when the whole-degree readout changes, so a fast drag
+      // doesn't re-render the whole component (header/rail/detail) per event.
       tiltRef.current = Math.max(0, Math.min(MAX_TILT, drag.t0 + (drag.my - e.clientY) * TILT_SENS));
-      setTilt(tiltRef.current);
+      const deg = Math.round((tiltRef.current * 180) / Math.PI);
+      if (deg !== lastTiltDegRef.current) { lastTiltDegRef.current = deg; setTilt(tiltRef.current); }
       draw();
       return;
     }
@@ -848,7 +885,14 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     (e.currentTarget as HTMLElement).style.cursor = "crosshair";
     // Read mode (and the button) BEFORE the selection logic: a sub-6px tilt
     // tweak or a bare right-click must never fall through to selection.
-    if (drag.mode === "tilt" || e.button === 2) return;
+    if (drag.mode === "tilt") {
+      // Sync the exact final tilt to state (moves between whole degrees were
+      // throttled out above).
+      setTilt(tiltRef.current);
+      lastTiltDegRef.current = Math.round((tiltRef.current * 180) / Math.PI);
+      return;
+    }
+    if (e.button === 2) return;
 
     const moved = Math.hypot(e.clientX - drag.mx, e.clientY - drag.my);
     if (moved > 6) return; // drag, not click
@@ -867,11 +911,20 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     setSelected(best?.obj ?? null);
   };
 
+  // A drag can be yanked away without a pointerup (touch-scroll steal, pen
+  // barrel-click, OS gesture). Without this the ns-resize cursor sticks and
+  // dragRef leaks stale coords into the next gesture.
+  const onPointerCancel = (e: React.PointerEvent) => {
+    dragRef.current = null;
+    (e.currentTarget as HTMLElement).style.cursor = "crosshair";
+  };
+
   const resetView = useCallback(() => {
     panRef.current = { x: 0, y: 0 };
     zoomRef.current = 1.0;
     setZoom(1.0);
     tiltRef.current = 0;
+    lastTiltDegRef.current = 0;
     setTilt(0);
     dragRef.current = null;
     draw();
@@ -881,6 +934,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
   // target (see `controls` below).
   const flattenTilt = useCallback(() => {
     tiltRef.current = 0;
+    lastTiltDegRef.current = 0;
     setTilt(0);
     draw();
   }, [draw]);
@@ -995,6 +1049,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       onPointerDown={onPointerDown}
       onPointerMove={onPointerMove}
       onPointerUp={onPointerUp}
+      onPointerCancel={onPointerCancel}
       onContextMenu={(e) => e.preventDefault()}
       style={{ cursor: "crosshair", ...(expanded ? {} : { height: 300 }) }}
     >
