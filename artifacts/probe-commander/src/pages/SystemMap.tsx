@@ -68,6 +68,8 @@ const MAX_TILT = Math.PI / 3; // clamp so cosT never collapses rings to a line
 const K_LIFT = 2.5; // elevation-per-radius-px, scaled by sinT (0 at tilt=0)
 const TILT_SENS = MAX_TILT / 220; // px of drag -> radians
 const DIM = 0.4; // max depth-dimming fraction at full tilt, farthest body
+const PROBE_MARKER_R = 6; // self-probe marker radius; mannies anchor their lift to it
+const toDeg = (rad: number) => Math.round((rad * 180) / Math.PI);
 
 interface Node {
   key: string;
@@ -450,6 +452,26 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     // flat layering (regression gate).
     const depth = (n: Node) => -n.wy * scale * sinT;
 
+    // Pseudo-3D depth mark: a soft ground shadow + a faint stalk from the
+    // elevated marker (my) back down to its ground point (sx,sy). Gated on
+    // sinT so it's invisible at tilt=0. Alpha strings depend only on sinT, so
+    // they're built once per frame here rather than per marker.
+    const shadowFill = `rgba(0,0,0,${(0.25 * sinT).toFixed(3)})`;
+    const stalkStroke = `rgba(255,255,255,${(0.12 * sinT).toFixed(3)})`;
+    const drawGroundShadow = (sx: number, sy: number, my: number, r: number) => {
+      if (sinT <= 0.001) return;
+      ctx.beginPath();
+      ctx.ellipse(sx, sy, r * 0.9, r * 0.9 * cosT, 0, 0, Math.PI * 2);
+      ctx.fillStyle = shadowFill;
+      ctx.fill();
+      ctx.beginPath();
+      ctx.moveTo(sx, sy);
+      ctx.lineTo(sx, my);
+      ctx.strokeStyle = stalkStroke;
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    };
+
     // Faint orbit rings. An origin-centered circle under this oblique
     // projection is exactly an origin-centered ellipse with minor axis
     // R*scale*cosT (cx,cy already carry pan+zoom).
@@ -505,23 +527,10 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       const { sx, sy } = proj(n.wx, n.wy); // ground point
       const my = sy - lift(n); // elevated marker point
 
-      // Pseudo-3D depth layer, drawn first (behind the marker): a soft ground
-      // shadow + a faint stalk connecting the elevated marker back down to its
-      // ground point. Draw-only — never pushed to `hit`, so clicks always
-      // select the marker, never its shadow. Alpha ∝ sinT => invisible at
-      // tilt=0 (regression gate holds).
-      if (sinT > 0.001) {
-        ctx.beginPath();
-        ctx.ellipse(sx, sy, n.r * 0.9, n.r * 0.9 * cosT, 0, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,0,0,${(0.25 * sinT).toFixed(3)})`;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(sx, sy);
-        ctx.lineTo(sx, my);
-        ctx.strokeStyle = `rgba(255,255,255,${(0.12 * sinT).toFixed(3)})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
+      // Ground shadow + stalk, drawn first (behind the marker). Draw-only —
+      // never pushed to `hit`, so clicks always select the marker, not its
+      // shadow.
+      drawGroundShadow(sx, sy, my, n.r);
 
       const [r, g, b] = n.color;
       // Depth-keyed dimming: bodies further toward the back of the tilted
@@ -637,6 +646,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     const now = Date.now();
     const PX = model.probePos.wx, PY = model.probePos.wy;
     const routeDrawn = new Set<string>();
+    const probeLift = liftR(PROBE_MARKER_R); // shared by route ends, mannies, and the self-probe marker
     for (const pm of mannyModel.plotted) {
       const { m, kind, target, lane } = pm;
       const seenAt = phaseSeenRef.current[String(m.id)]?.at ?? now;
@@ -649,7 +659,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
           const a = proj(PX, PY), b = proj(target.wx, target.wy);
           // Meet the ELEVATED probe & body markers, not their ground points, so
           // the route doesn't visibly stop short under tilt.
-          const aLift = liftR(6), bLift = lift(target);
+          const aLift = probeLift, bLift = lift(target);
           ctx.save();
           ctx.setLineDash([3, 4]);
           ctx.lineDashOffset = (kind === "inbound" ? 1 : -1) * ((now / 50) % 7);
@@ -668,7 +678,6 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       // (the probe marker and the target body are both lifted); a traveller
       // interpolates between the two so it rises/settles across the leg.
       let wx = PX, wy = PY, alpha = 0.95, pulse = 0, elev = 0;
-      const probeLift = liftR(6); // matches the self-probe marker's lift below
       if (kind === "atProbe") {
         const ang = lane * Math.PI * 2;
         wx = PX + Math.cos(ang) * 12; wy = PY + Math.sin(ang) * 12;
@@ -729,22 +738,10 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     {
       const { sx, sy } = proj(model.probePos.wx, model.probePos.wy);
       const [pr, pg, pb] = PROBE_COLOR;
-      const s = 6;
-      const my = sy - liftR(s); // float on the plane like the bodies
+      const s = PROBE_MARKER_R;
+      const my = sy - probeLift; // float on the plane like the bodies
       const isSel = selected?.type === "self_probe";
-      // Ground shadow + stalk (only when tilted), matching the body depth layer.
-      if (sinT > 0.001) {
-        ctx.beginPath();
-        ctx.ellipse(sx, sy, s * 0.9, s * 0.9 * cosT, 0, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0,0,0,${(0.25 * sinT).toFixed(3)})`;
-        ctx.fill();
-        ctx.beginPath();
-        ctx.moveTo(sx, sy);
-        ctx.lineTo(sx, my);
-        ctx.strokeStyle = `rgba(255,255,255,${(0.12 * sinT).toFixed(3)})`;
-        ctx.lineWidth = 1;
-        ctx.stroke();
-      }
+      drawGroundShadow(sx, sy, my, s); // ground shadow + stalk, matching the body depth layer
       ctx.beginPath();
       ctx.arc(sx, my, s + 3, 0, Math.PI * 2);
       ctx.strokeStyle = `rgba(${pr},${pg},${pb},0.45)`;
@@ -867,7 +864,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       // `tilt` state when the whole-degree readout changes, so a fast drag
       // doesn't re-render the whole component (header/rail/detail) per event.
       tiltRef.current = Math.max(0, Math.min(MAX_TILT, drag.t0 + (drag.my - e.clientY) * TILT_SENS));
-      const deg = Math.round((tiltRef.current * 180) / Math.PI);
+      const deg = toDeg(tiltRef.current);
       if (deg !== lastTiltDegRef.current) { lastTiltDegRef.current = deg; setTilt(tiltRef.current); }
       draw();
       return;
@@ -889,7 +886,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
       // Sync the exact final tilt to state (moves between whole degrees were
       // throttled out above).
       setTilt(tiltRef.current);
-      lastTiltDegRef.current = Math.round((tiltRef.current * 180) / Math.PI);
+      lastTiltDegRef.current = toDeg(tiltRef.current);
       return;
     }
     if (e.button === 2) return;
@@ -919,17 +916,6 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     (e.currentTarget as HTMLElement).style.cursor = "crosshair";
   };
 
-  const resetView = useCallback(() => {
-    panRef.current = { x: 0, y: 0 };
-    zoomRef.current = 1.0;
-    setZoom(1.0);
-    tiltRef.current = 0;
-    lastTiltDegRef.current = 0;
-    setTilt(0);
-    dragRef.current = null;
-    draw();
-  }, [draw]);
-
   // Flatten only the tilt, keeping pan/zoom — the degree readout's own click
   // target (see `controls` below).
   const flattenTilt = useCallback(() => {
@@ -938,6 +924,14 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
     setTilt(0);
     draw();
   }, [draw]);
+
+  const resetView = useCallback(() => {
+    panRef.current = { x: 0, y: 0 };
+    zoomRef.current = 1.0;
+    setZoom(1.0);
+    dragRef.current = null;
+    flattenTilt(); // also zeroes tilt state and repaints
+  }, [flattenTilt]);
 
   const counts = model.counts;
   const undetailed =
@@ -959,7 +953,7 @@ export function SystemMap({ probe, sectorObjects, otherProbes, mannies, isMoving
           title="Flatten tilt (keeps pan/zoom)"
           className="text-[9px] font-mono px-1.5 h-5 rounded border border-primary/50 text-primary hover:border-primary"
         >
-          {Math.round((tilt * 180) / Math.PI)}°
+          {toDeg(tilt)}°
         </button>
       )}
       <button
