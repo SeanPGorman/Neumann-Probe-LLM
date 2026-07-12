@@ -1774,8 +1774,8 @@
     "sectorY": 6,
     "sectorZ": 2,
     "firstVisitedAt": "2026-07-10T17:36:44.692Z",
-    "lastVisitedAt": "2026-07-10T20:03:52.656Z",
-    "visitCount": 197,
+    "lastVisitedAt": "2026-07-11T22:57:04.680Z",
+    "visitCount": 199,
     "objects": [
       {
         "id": "fb44ee668617ad439860",
@@ -1910,6 +1910,45 @@
             "intelligentLife": null
           }
         ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_c43c5112c178af2e3c947a09",
+        "type": "detached_container",
+        "name": "Drone A",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "4dae6bc8cb70da7a2411",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_3691a58406b6e939ec587ec7",
+        "type": "detached_container",
+        "name": "OrganicsMT",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "4dae6bc8cb70da7a2411",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_0ad93d3ed5ce24ff7ef54576",
+        "type": "detached_container",
+        "name": "Drone C",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "4dae6bc8cb70da7a2411",
+        "salvageable": false
       }
     ],
     "resourceSummary": []
@@ -1920,8 +1959,8 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-11T14:30:18.205Z",
-    "visitCount": 224,
+    "lastVisitedAt": "2026-07-12T02:40:19.092Z",
+    "visitCount": 241,
     "objects": [
       {
         "id": "7d1f75ee83e4d598fc0f",
@@ -1974,9 +2013,9 @@
         ]
       },
       {
-        "id": "detached-container-container-itm_craft_8b715944e74f3030a53bb48d",
+        "id": "detached-container-container-itm_craft_bfb7b45ff34ee600d21614c5",
         "type": "detached_container",
-        "name": "Metals 2",
+        "name": "Drone B",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
@@ -1987,16 +2026,16 @@
         "salvageable": false
       },
       {
-        "id": "detached-container-container-itm_841974742a8d91aebd0a9482",
+        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
         "type": "detached_container",
-        "name": "IceFull1",
+        "name": "Metals 1",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
         "resourceTypes": [],
         "capacity": 1,
         "mode": "hidden_on_asteroid",
-        "targetObjectId": "8b3cd67b25d0bda41395",
+        "targetObjectId": "3ef0de1cc7e211086189",
         "salvageable": false
       }
     ],
