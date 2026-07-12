@@ -74,6 +74,38 @@ router.get("/containers", async (_req, res) => {
       contents: contentsByContainerId.get(c.id) ?? [],
     }));
 
+    // Probe hull storage: total inventory minus the sum of attached container capacities
+    const inv = probeResp?.probe?.inventory ?? {};
+    const containerCapacityTotal = inventoryContainers.reduce((s: number, c: any) => s + (c.capacity ?? 0), 0);
+    const containerUsedTotal = inventoryContainers.reduce((s: number, c: any) => s + (c.usedCapacity ?? 0), 0);
+    const hullCapacity = (inv.capacity ?? 0) - containerCapacityTotal;
+    const hullUsed = (inv.usedCapacity ?? 0) - containerUsedTotal;
+
+    // Hull contents: resourceStocks amounts not allocated to any inventory container
+    const containerIdSet = new Set(inventoryContainers.map((c: any) => c.id));
+    const hullContents: { resource: string; amount: number }[] = [];
+    for (const stock of resourceStocks) {
+      const inContainers = (stock.containers ?? [])
+        .filter((e: any) => containerIdSet.has(e.container?.id))
+        .reduce((s: number, e: any) => s + (e.amount ?? 0), 0);
+      const inHull = (stock.amount ?? 0) - inContainers;
+      if (inHull > 0.0005) hullContents.push({ resource: stock.type ?? stock.name, amount: inHull });
+    }
+
+    // Inventory items stored in the hull (non-manny, non-printer)
+    const inventoryItems: any[] = inv.items ?? [];
+    const hullItems = inventoryItems
+      .filter((i: any) => i.type !== "manny" && i.type !== "atomic_3d_printer")
+      .map((i: any) => ({ name: i.label ?? i.name ?? i.type ?? i.id, type: i.type ?? "" }));
+
+    const probeStorage = {
+      capacity: hullCapacity,
+      usedCapacity: hullUsed,
+      freeCapacity: hullCapacity - hullUsed,
+      contents: hullContents,
+      items: hullItems,
+    };
+
     // Floating containers: live sector detached_container objects
     const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
     const sectorDetached = sectorObjects.filter((o: any) => o.type === "detached_container");
@@ -103,7 +135,7 @@ router.get("/containers", async (_req, res) => {
       };
     });
 
-    res.json({ onboard, floating });
+    res.json({ probeStorage, onboard, floating });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
