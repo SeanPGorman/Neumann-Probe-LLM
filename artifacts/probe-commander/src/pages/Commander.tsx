@@ -753,7 +753,7 @@ export default function Commander() {
       const res = await fetch(`${BASE}/api/vng/command`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ command: cmd }),
+        body: JSON.stringify({ command: cmd, probeId: selectedProbeId }),
       });
       if (!res.ok || !res.body) throw new Error(`Server error: ${res.status}`);
       const reader = res.body.getReader();
@@ -785,7 +785,7 @@ export default function Commander() {
     setLiveEvents([]);
     setIsRunning(false);
     setLogRefetch(n => n + 1);
-  }, [input, isRunning]);
+  }, [input, isRunning, selectedProbeId]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendCommand(); }

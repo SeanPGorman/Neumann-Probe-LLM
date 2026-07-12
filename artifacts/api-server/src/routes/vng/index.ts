@@ -150,7 +150,8 @@ router.get("/state", async (req, res) => {
 });
 
 router.post("/command", async (req, res) => {
-  const { command } = req.body as { command: string };
+  const { command, probeId: rawProbeId } = req.body as { command: string; probeId?: number | null };
+  const probeId: number | null = rawProbeId != null ? Number(rawProbeId) : null;
 
   if (!command?.trim()) {
     res.status(400).json({ error: "command is required" });
@@ -165,10 +166,11 @@ router.post("/command", async (req, res) => {
   try {
     sse(res, { type: "status", message: "Fetching current probe state…" });
 
+    const c = client.clientFor(probeId);
     const [probeResp, manniesResp, sectorResp, recipesResp] = await Promise.all([
-      client.getProbe(),
-      client.getMannies(),
-      client.getSector().catch(() => null),
+      c.getProbe(),
+      c.getMannies(),
+      c.getSector().catch(() => null),
       client.getCraftingRecipes(),
     ]);
 
@@ -366,7 +368,7 @@ ${
         let result: unknown;
         let success = false;
         try {
-          result = await executeTool(toolName, args);
+          result = await executeTool(toolName, args, probeId);
           success = true;
           sse(res, { type: "result", tool: toolName, id: call.id, success: true, data: result });
         } catch (err: any) {

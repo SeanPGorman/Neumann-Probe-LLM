@@ -1785,8 +1785,8 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-12T14:49:43.014Z",
-    "visitCount": 943,
+    "lastVisitedAt": "2026-07-12T17:14:08.847Z",
+    "visitCount": 1004,
     "objects": [
       {
         "id": "7d1f75ee83e4d598fc0f",
@@ -1839,61 +1839,22 @@
         ]
       },
       {
-        "id": "detached-container-container-itm_craft_0ad93d3ed5ce24ff7ef54576",
+        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
         "type": "detached_container",
-        "name": "Drone C",
+        "name": "Organics MT2",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
         "resourceTypes": [],
         "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "3ef0de1cc7e211086189",
+        "salvageable": false
       },
       {
         "id": "detached-container-container-itm_craft_bfb7b45ff34ee600d21614c5",
         "type": "detached_container",
         "name": "Drone B",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "drifting",
-        "targetObjectId": null,
-        "salvageable": true
-      },
-      {
-        "id": "detached-container-container-itm_craft_8b715944e74f3030a53bb48d",
-        "type": "detached_container",
-        "name": "Metals 2",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "3ef0de1cc7e211086189",
-        "salvageable": false
-      },
-      {
-        "id": "detached-container-container-itm_craft_c43c5112c178af2e3c947a09",
-        "type": "detached_container",
-        "name": "Drone A",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "3ef0de1cc7e211086189",
-        "salvageable": false
-      },
-      {
-        "id": "detached-container-container-itm_craft_3691a58406b6e939ec587ec7",
-        "type": "detached_container",
-        "name": "OrganicsMT",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",

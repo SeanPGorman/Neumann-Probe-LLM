@@ -1,5 +1,6 @@
 import type { ChatCompletionTool } from "openai/resources/chat/completions";
 import * as client from "./client.js";
+import { clientFor } from "./client.js";
 import { addPendingAction, cancelPendingAction } from "./file-store.js";
 
 // ── Shared schema property fragments ─────────────────────────────────────────
@@ -293,14 +294,15 @@ export const TOOLS: ChatCompletionTool[] = [
 // ── Tool handlers ─────────────────────────────────────────────────────────────
 type A = Record<string, unknown>;
 
-async function handleGetGameState(_a: A): Promise<unknown> {
+async function handleGetGameState(_a: A, probeId?: number | null): Promise<unknown> {
+  const c = clientFor(probeId);
   const [probeResp, manniesResp, sectorResp, recipesResp, improvementsResp] =
     await Promise.all([
-      client.getProbe(),
-      client.getMannies(),
-      client.getSector().catch(() => null),
+      c.getProbe(),
+      c.getMannies(),
+      c.getSector().catch(() => null),
       client.getCraftingRecipes(),
-      client.getProbeImprovements().catch(() => null),
+      c.getProbeImprovements().catch(() => null),
     ]);
   const probe = probeResp.probe;
   const inv = probe.inventory ?? {};
@@ -378,51 +380,57 @@ async function handleGetGameState(_a: A): Promise<unknown> {
   };
 }
 
-const HANDLERS: Record<string, (a: A) => Promise<unknown>> = {
-  get_game_state:             handleGetGameState,
-  craft_item:                 (a) => client.craftItem(a.manny_id as string, a.recipe as string),
-  mine_resources:             (a) => client.mineResources(a.manny_id as string, a.object_id as string, a.resources as string[], a.target_amount as number, a.target_container_id as string | undefined),
-  detach_container:           (a) => client.detachContainer(a.manny_id as string, a.container_id as string, (a.mode as "drifting" | "hidden_on_asteroid") ?? "drifting", a.asteroid_object_id as string | undefined),
-  repair_manny:               (a) => client.repairManny(a.manny_id as string, a.integrity_percent as number),
-  recall_manny:               (a) => client.recallManny(a.manny_id as string),
-  rename_manny:               (a) => client.renameManny(a.manny_id as string, a.name as string),
-  deploy_manny:               (a) => client.deployManny(a.item_id as string),
-  move_probe:                 (a) => client.moveProbe(a.x as number, a.y as number, a.z as number),
-  scan_sector:                (a) => client.scanSector(a.x as number, a.y as number, a.z as number),
-  jettison_item:              (a) => client.jettisonItem(a.inventory_id as string, a.amount as number | undefined),
-  salvage_object:             (a) => client.salvageObject(a.manny_id as string, a.object_id as string),
-  inspect_sector_object:      (a) => client.inspectSectorObject(a.manny_id as string, a.object_id as string),
-  inspect_asteroid:           (a) => client.inspectSectorObject(a.manny_id as string, a.object_id as string),
-  recover_container:          (a) => client.recoverContainer(a.manny_id as string, a.object_id as string),
-  drop_container_on_asteroid: (a) => client.dropContainerOnAsteroid(a.manny_id as string, a.container_id as string, a.object_id as string),
-  atomic_printer_craft:       (a) => client.atomicPrinterCraft(a.recipe as string),
-  refill_deuterium_tank:      (a) => client.refillDeuteriumTank(a.manny_id as string),
-  transfer_deuterium:         (a) => client.transferDeuteriumToProbe(a.manny_id as string, a.target_probe_id as number, a.amount as number),
-  assemble_probe:             (a) => client.assembleProbe(a.manny_id as string, a.container_ids as string[]),
-  improve_probe:              (a) => client.improveProbe(a.manny_id as string, a.improvement as string),
-  install_waypoint_bookmark:  (a) => client.installWaypointBookmark(a.manny_id as string, a.object_id as string, a.name as string),
-  drop_container_on_planet:   (a) => client.dropContainerOnPlanet(a.manny_id as string, a.container_id as string, a.planet_id as string),
-  turn_on_relay:              (a) => client.turnOnRelay(a.manny_id as string, a.relay_id as number, a.network_name as string | undefined),
-  drop_manny_cargo:           (a) => client.dropMannyCargo(a.manny_id as string),
-  send_message:               (a) => client.sendMessage(a.recipient_type as "probe" | "planet", a.recipient_id as string, a.body as string),
-  schedule_action: async (a) => {
-    const entry = await addPendingAction({
-      description: a.description as string,
-      condition: a.condition as any,
-      action: a.action as any,
-    });
-    return { ok: true, scheduledActionId: entry.id, message: `Scheduled action #${entry.id}: "${entry.description}". The poller will execute it within 30 seconds of the condition being met.` };
-  },
-  cancel_scheduled_action: async (a) => {
-    const cancelled = await cancelPendingAction(a.id as number);
-    return cancelled
-      ? { ok: true, message: `Scheduled action #${a.id} cancelled.` }
-      : { ok: false, message: `No pending scheduled action with ID ${a.id} found.` };
-  },
-};
+type Handler = (a: A, probeId?: number | null) => Promise<unknown>;
 
-export async function executeTool(name: string, args: A): Promise<unknown> {
-  const handler = HANDLERS[name];
+function makeHandlers(probeId?: number | null): Record<string, Handler> {
+  const c = clientFor(probeId);
+  return {
+    get_game_state:             (a) => handleGetGameState(a, probeId),
+    craft_item:                 (a) => c.craftItem(a.manny_id as string, a.recipe as string),
+    mine_resources:             (a) => c.mineResources(a.manny_id as string, a.object_id as string, a.resources as string[], a.target_amount as number, a.target_container_id as string | undefined),
+    detach_container:           (a) => c.detachContainer(a.manny_id as string, a.container_id as string, (a.mode as "drifting" | "hidden_on_asteroid") ?? "drifting", a.asteroid_object_id as string | undefined),
+    repair_manny:               (a) => c.repairManny(a.manny_id as string, a.integrity_percent as number),
+    recall_manny:               (a) => c.recallManny(a.manny_id as string),
+    rename_manny:               (a) => c.renameManny(a.manny_id as string, a.name as string),
+    deploy_manny:               (a) => c.deployManny(a.item_id as string),
+    move_probe:                 (a) => c.moveProbe(a.x as number, a.y as number, a.z as number),
+    scan_sector:                (a) => client.scanSector(a.x as number, a.y as number, a.z as number),
+    jettison_item:              (a) => c.jettisonItem(a.inventory_id as string, a.amount as number | undefined),
+    salvage_object:             (a) => c.salvageObject(a.manny_id as string, a.object_id as string),
+    inspect_sector_object:      (a) => c.inspectSectorObject(a.manny_id as string, a.object_id as string),
+    inspect_asteroid:           (a) => c.inspectSectorObject(a.manny_id as string, a.object_id as string),
+    recover_container:          (a) => c.recoverContainer(a.manny_id as string, a.object_id as string),
+    drop_container_on_asteroid: (a) => c.dropContainerOnAsteroid(a.manny_id as string, a.container_id as string, a.object_id as string),
+    atomic_printer_craft:       (a) => c.atomicPrinterCraft(a.recipe as string),
+    refill_deuterium_tank:      (a) => c.refillDeuteriumTank(a.manny_id as string),
+    transfer_deuterium:         (a) => c.transferDeuteriumToProbe(a.manny_id as string, a.target_probe_id as number, a.amount as number),
+    assemble_probe:             (a) => c.assembleProbe(a.manny_id as string, a.container_ids as string[]),
+    improve_probe:              (a) => c.improveProbe(a.manny_id as string, a.improvement as string),
+    install_waypoint_bookmark:  (a) => c.installWaypointBookmark(a.manny_id as string, a.object_id as string, a.name as string),
+    drop_container_on_planet:   (a) => c.dropContainerOnPlanet(a.manny_id as string, a.container_id as string, a.planet_id as string),
+    turn_on_relay:              (a) => c.turnOnRelay(a.manny_id as string, a.relay_id as number, a.network_name as string | undefined),
+    drop_manny_cargo:           (a) => c.dropMannyCargo(a.manny_id as string),
+    send_message:               (a) => c.sendMessage(a.recipient_type as "probe" | "planet", a.recipient_id as string, a.body as string),
+    schedule_action: async (a) => {
+      const entry = await addPendingAction({
+        description: a.description as string,
+        condition: a.condition as any,
+        action: a.action as any,
+      });
+      return { ok: true, scheduledActionId: entry.id, message: `Scheduled action #${entry.id}: "${entry.description}". The poller will execute it within 30 seconds of the condition being met.` };
+    },
+    cancel_scheduled_action: async (a) => {
+      const cancelled = await cancelPendingAction(a.id as number);
+      return cancelled
+        ? { ok: true, message: `Scheduled action #${a.id} cancelled.` }
+        : { ok: false, message: `No pending scheduled action with ID ${a.id} found.` };
+    },
+  };
+}
+
+export async function executeTool(name: string, args: A, probeId?: number | null): Promise<unknown> {
+  const handlers = makeHandlers(probeId);
+  const handler = handlers[name];
   if (!handler) throw new Error(`Unknown tool: ${name}`);
-  return handler(args);
+  return handler(args, probeId);
 }
