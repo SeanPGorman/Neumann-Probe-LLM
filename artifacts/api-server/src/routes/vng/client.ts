@@ -9,7 +9,7 @@ function headers() {
   };
 }
 
-async function vngFetch(path: string, init: RequestInit = {}) {
+async function vngFetch(path: string, init: RequestInit = {}): Promise<any> {
   const res = await fetch(`${BASE}${path}`, {
     ...init,
     headers: { ...headers(), ...((init.headers as Record<string, string>) ?? {}) },
