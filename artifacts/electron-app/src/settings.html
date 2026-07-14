@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'" />
+  <title>Probe Commander — Setup</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      background: #0a0e0a;
+      color: #22c55e;
+      padding: 28px 32px 24px;
+      height: 100vh;
+      overflow: hidden;
+      user-select: none;
+    }
+
+    .header {
+      border-bottom: 1px solid #166534;
+      padding-bottom: 14px;
+      margin-bottom: 22px;
+    }
+
+    .title {
+      font-size: 16px;
+      font-weight: bold;
+      letter-spacing: 0.12em;
+      color: #4ade80;
+    }
+
+    .subtitle {
+      font-size: 11px;
+      color: #166534;
+      margin-top: 4px;
+      letter-spacing: 0.06em;
+    }
+
+    .field {
+      margin-bottom: 16px;
+    }
+
+    label {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: #16a34a;
+      margin-bottom: 5px;
+      text-transform: uppercase;
+    }
+
+    input, select {
+      width: 100%;
+      background: #0d1a0d;
+      border: 1px solid #166534;
+      color: #22c55e;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      padding: 7px 10px;
+      outline: none;
+      border-radius: 2px;
+      transition: border-color 0.15s;
+    }
+
+    input:focus, select:focus {
+      border-color: #22c55e;
+    }
+
+    input::placeholder {
+      color: #166534;
+    }
+
+    select option {
+      background: #0d1a0d;
+    }
+
+    .hint {
+      font-size: 10px;
+      color: #166534;
+      margin-top: 4px;
+      line-height: 1.4;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #14532d;
+      margin: 20px 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 20px;
+    }
+
+    button {
+      flex: 1;
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 13px;
+      font-weight: bold;
+      letter-spacing: 0.1em;
+      padding: 9px 0;
+      border-radius: 2px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+    }
+
+    .btn-primary {
+      background: #166534;
+      color: #4ade80;
+      border: 1px solid #16a34a;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      background: #15803d;
+      color: #86efac;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .error {
+      font-size: 11px;
+      color: #f87171;
+      margin-top: 10px;
+      min-height: 16px;
+    }
+
+    .saved-banner {
+      display: none;
+      font-size: 11px;
+      color: #86efac;
+      margin-top: 10px;
+      letter-spacing: 0.06em;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="header">
+    <div class="title">VON NEUMANN PROBE</div>
+    <div class="subtitle">PROBE COMMANDER — CREDENTIAL SETUP</div>
+  </div>
+
+  <form id="setup-form" autocomplete="off">
+
+    <div class="field">
+      <label for="vng-key">neumann-probe.net API Key</label>
+      <input
+        id="vng-key"
+        type="password"
+        placeholder="Paste your API key here"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <div class="hint">
+        Found in your account settings at neumann-probe.net
+      </div>
+    </div>
+
+    <hr class="divider" />
+
+    <div class="field">
+      <label for="provider">AI Provider</label>
+      <select id="provider">
+        <option value="groq">Groq (free &amp; fast — recommended)</option>
+        <option value="openai">OpenAI</option>
+        <option value="ollama">Ollama (local, runs on your PC)</option>
+        <option value="custom">Custom endpoint</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label for="base-url">AI Base URL</label>
+      <input
+        id="base-url"
+        type="text"
+        spellcheck="false"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="field" id="api-key-field">
+      <label for="ai-key">AI API Key</label>
+      <input
+        id="ai-key"
+        type="password"
+        placeholder="Paste your API key here"
+        autocomplete="off"
+        spellcheck="false"
+      />
+      <div class="hint" id="api-key-hint"></div>
+    </div>
+
+    <div class="actions">
+      <button type="submit" class="btn-primary" id="save-btn">SAVE &amp; LAUNCH</button>
+    </div>
+
+    <div class="error" id="error-msg"></div>
+    <div class="saved-banner" id="saved-banner">&#x25BA; Configuration saved. Launching app…</div>
+
+  </form>
+
+  <script>
+    const PROVIDER_URLS = {
+      groq:   'https://api.groq.com/openai/v1',
+      openai: 'https://api.openai.com/v1',
+      ollama: 'http://localhost:11434/v1',
+      custom: '',
+    };
+
+    const providerSel = document.getElementById('provider');
+    const baseUrlInput = document.getElementById('base-url');
+    const aiKeyInput   = document.getElementById('ai-key');
+    const apiKeyField  = document.getElementById('api-key-field');
+    const apiKeyHint   = document.getElementById('api-key-hint');
+    const vngKeyInput  = document.getElementById('vng-key');
+    const saveBtn      = document.getElementById('save-btn');
+    const errorMsg     = document.getElementById('error-msg');
+    const savedBanner  = document.getElementById('saved-banner');
+
+    function applyProvider(provider) {
+      baseUrlInput.value = PROVIDER_URLS[provider] ?? '';
+      baseUrlInput.readOnly = provider !== 'custom';
+
+      if (provider === 'ollama') {
+        apiKeyField.style.display = 'block';
+        aiKeyInput.placeholder = 'Any value (e.g. ollama)';
+        apiKeyHint.textContent = 'Ollama does not check this — type anything.';
+        if (!aiKeyInput.value) aiKeyInput.value = 'ollama';
+      } else if (provider === 'groq') {
+        apiKeyField.style.display = 'block';
+        aiKeyInput.placeholder = 'Paste your Groq API key';
+        apiKeyHint.textContent = 'Get a free key at console.groq.com';
+        if (aiKeyInput.value === 'ollama') aiKeyInput.value = '';
+      } else if (provider === 'openai') {
+        apiKeyField.style.display = 'block';
+        aiKeyInput.placeholder = 'Paste your OpenAI API key';
+        apiKeyHint.textContent = 'Get a key at platform.openai.com → API keys';
+        if (aiKeyInput.value === 'ollama') aiKeyInput.value = '';
+      } else {
+        apiKeyField.style.display = 'block';
+        aiKeyInput.placeholder = 'API key for your endpoint';
+        apiKeyHint.textContent = '';
+      }
+    }
+
+    providerSel.addEventListener('change', () => applyProvider(providerSel.value));
+
+    // Pre-fill from existing config
+    window.electronAPI.loadConfig().then((cfg) => {
+      if (cfg.vngApiKey)  vngKeyInput.value = cfg.vngApiKey;
+      if (cfg.aiApiKey)   aiKeyInput.value  = cfg.aiApiKey;
+
+      if (cfg.aiBaseUrl) {
+        const known = Object.entries(PROVIDER_URLS).find(([, url]) => url === cfg.aiBaseUrl);
+        if (known) {
+          providerSel.value = known[0];
+        } else if (cfg.aiBaseUrl) {
+          providerSel.value = 'custom';
+        }
+        baseUrlInput.value = cfg.aiBaseUrl;
+      }
+
+      applyProvider(providerSel.value);
+    });
+
+    // Initial state
+    applyProvider(providerSel.value);
+
+    document.getElementById('setup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      errorMsg.textContent = '';
+
+      const vngApiKey = vngKeyInput.value.trim();
+      const aiBaseUrl = baseUrlInput.value.trim();
+      const aiApiKey  = aiKeyInput.value.trim();
+
+      if (!vngApiKey) { errorMsg.textContent = 'neumann-probe.net API key is required.'; return; }
+      if (!aiBaseUrl) { errorMsg.textContent = 'AI Base URL is required.'; return; }
+      if (!aiApiKey)  { errorMsg.textContent = 'AI API key is required.'; return; }
+
+      saveBtn.disabled = true;
+      saveBtn.textContent = 'SAVING…';
+
+      try {
+        await window.electronAPI.saveConfig({ vngApiKey, aiBaseUrl, aiApiKey });
+        savedBanner.style.display = 'block';
+        saveBtn.textContent = 'SAVED';
+      } catch (err) {
+        errorMsg.textContent = 'Failed to save: ' + (err.message ?? err);
+        saveBtn.disabled = false;
+        saveBtn.textContent = 'SAVE & LAUNCH';
+      }
+    });
+  </script>
+</body>
+</html>

@@ -10,7 +10,7 @@
   },
   "private": true,
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": ["esbuild", "electron"]
   },
   "devDependencies": {
     "prettier": "^3.8.3",

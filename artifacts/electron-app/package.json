@@ -1,0 +1,21 @@
+{
+  "name": "@workspace/electron-app",
+  "version": "1.0.0",
+  "description": "Probe Commander — Desktop App",
+  "private": true,
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "node build.mjs",
+    "start": "pnpm run build && electron .",
+    "dist:linux": "pnpm run build && electron-builder --linux",
+    "dist:win": "pnpm run build && electron-builder --win",
+    "dist:mac": "pnpm run build && electron-builder --mac"
+  },
+  "devDependencies": {
+    "electron": "^31.7.7",
+    "electron-builder": "^24.13.3",
+    "esbuild": "0.27.3",
+    "typescript": "~5.9.3",
+    "@types/node": "^25.3.3"
+  }
+}

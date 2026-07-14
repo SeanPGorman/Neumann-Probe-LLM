@@ -227,6 +227,46 @@ If everything is working, the PROBE tab will show your probe's name, sector, fue
 
 ---
 
+## Alternative — Desktop app (no browser, no terminal after setup)
+
+The repo includes an Electron wrapper (`artifacts/electron-app/`) that packages everything into a double-clickable desktop app. On first launch it shows a setup screen where you enter your credentials — no `.env` files or terminal required after that.
+
+### Build it
+
+> You need the web app built first (Steps 1–7 above), then run these three commands once:
+
+**1. Build the backend:**
+```
+pnpm --filter @workspace/api-server run build
+```
+
+**2. Build the frontend** (sets the URL base to `/`):
+```
+BASE_PATH=/ pnpm --filter @workspace/probe-commander run build
+```
+
+**3. Package the desktop app for your platform:**
+
+| Platform | Command |
+|----------|---------|
+| Windows | `pnpm --filter @workspace/electron-app run dist:win` |
+| Mac | `pnpm --filter @workspace/electron-app run dist:mac` |
+| Linux | `pnpm --filter @workspace/electron-app run dist:linux` |
+
+The installer is created in `artifacts/electron-app/release/`. Install it normally (`.exe` on Windows, `.dmg` on Mac, `.AppImage` on Linux).
+
+### What happens on first launch
+
+A setup screen appears asking for:
+- Your **neumann-probe.net API key**
+- Your **AI provider** (OpenAI, Groq, or Ollama) and its key
+
+These are saved privately on your computer. The app remembers them from then on. You can re-open the setup screen anytime via the **Probe Commander → Credentials & Settings…** menu.
+
+> **Note:** The desktop app and the browser method are equivalent — use whichever suits you. The `.env` file approach (Steps 1–9 above) is simpler for development; the desktop app is better for distributing to others.
+
+---
+
 ## Troubleshooting
 
 | What you see | Most likely cause | What to do |
