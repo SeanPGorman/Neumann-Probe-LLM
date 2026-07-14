@@ -3197,5 +3197,807 @@
     "createdAt": "2026-07-12T06:55:41.890Z",
     "status": "triggered",
     "triggeredAt": "2026-07-12T07:25:57.169Z"
+  },
+  {
+    "description": "After Arendt finishes battery pack, craft electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 187,
+    "createdAt": "2026-07-13T15:41:49.682Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:01:40.298Z"
+  },
+  {
+    "description": "After Aristotle finishes battery pack, craft electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "electric_motor"
+    },
+    "id": 188,
+    "createdAt": "2026-07-13T15:41:49.685Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:01:40.612Z"
+  },
+  {
+    "description": "After Beauvoir finishes battery pack, craft electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 189,
+    "createdAt": "2026-07-13T15:41:49.692Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:01:40.878Z"
+  },
+  {
+    "description": "After Descartes finishes battery pack, craft electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "electric_motor"
+    },
+    "id": 190,
+    "createdAt": "2026-07-13T15:41:49.694Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:01:41.163Z"
+  },
+  {
+    "description": "After Hypatia finishes first electric motor, craft second electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "electric_motor"
+    },
+    "id": 191,
+    "createdAt": "2026-07-13T15:41:49.696Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:12:10.401Z"
+  },
+  {
+    "description": "After Locke finishes first electric motor, craft second electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "electric_motor"
+    },
+    "id": 192,
+    "createdAt": "2026-07-13T15:41:49.699Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:12:10.675Z"
+  },
+  {
+    "description": "After Nietzsche finishes first electric motor, craft second electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "electric_motor"
+    },
+    "id": 193,
+    "createdAt": "2026-07-13T15:41:49.704Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:12:10.938Z"
+  },
+  {
+    "description": "After scheduled electric motor on Arendt, craft third electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "electric_motor"
+    },
+    "id": 194,
+    "createdAt": "2026-07-13T15:41:57.754Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:31:40.455Z"
+  },
+  {
+    "description": "After scheduled electric motor on Aristotle, craft third electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "electric_motor"
+    },
+    "id": 195,
+    "createdAt": "2026-07-13T15:41:57.757Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:31:40.712Z"
+  },
+  {
+    "description": "After scheduled electric motor on Beauvoir, craft third electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 196,
+    "createdAt": "2026-07-13T15:41:57.761Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:32:10.578Z"
+  },
+  {
+    "description": "After scheduled electric motor on Descartes, craft third electric motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "electric_motor"
+    },
+    "id": 197,
+    "createdAt": "2026-07-13T15:41:57.764Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:32:10.778Z"
+  },
+  {
+    "description": "After Hypatia second motor, craft linear actuator when motors exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "linear_actuator"
+    },
+    "id": 198,
+    "createdAt": "2026-07-13T15:41:57.768Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:42:10.773Z"
+  },
+  {
+    "description": "After Locke second motor, craft linear actuator when motors exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "linear_actuator"
+    },
+    "id": 199,
+    "createdAt": "2026-07-13T15:41:57.771Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:42:40.711Z"
+  },
+  {
+    "description": "After Nietzsche second motor, craft linear actuator when motors exist",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "linear_actuator"
+    },
+    "id": 200,
+    "createdAt": "2026-07-13T15:41:57.774Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T16:42:40.913Z"
+  },
+  {
+    "description": "After Arendt third motor, craft steel plate last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "mannyName": "Arendt",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_b8995c045b8304bf5ef88559",
+      "recipe": "steel_plate"
+    },
+    "id": 201,
+    "createdAt": "2026-07-13T15:42:05.715Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:01:41.259Z"
+  },
+  {
+    "description": "After Aristotle third motor, craft steel plate last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "steel_plate"
+    },
+    "id": 202,
+    "createdAt": "2026-07-13T15:42:05.718Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:01:41.461Z"
+  },
+  {
+    "description": "After Beauvoir third motor, craft steel plate last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 203,
+    "createdAt": "2026-07-13T15:42:05.721Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:02:11.350Z"
+  },
+  {
+    "description": "After Descartes third motor, craft steel plate last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes",
+      "requireItems": [
+        "electric_motor"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_plate"
+    },
+    "id": 204,
+    "createdAt": "2026-07-13T15:42:05.724Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:02:11.543Z"
+  },
+  {
+    "description": "After Hypatia linear actuator, craft steel bar last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia",
+      "requireItems": [
+        "linear_actuator"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 205,
+    "createdAt": "2026-07-13T15:42:05.726Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:17:11.386Z"
+  },
+  {
+    "description": "After Locke linear actuator, craft steel bar last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "linear_actuator"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_bar"
+    },
+    "id": 206,
+    "createdAt": "2026-07-13T15:42:05.849Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:17:41.588Z"
+  },
+  {
+    "description": "After Nietzsche linear actuator, craft steel bar last-stage stock",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "linear_actuator"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_bar"
+    },
+    "id": 207,
+    "createdAt": "2026-07-13T15:42:05.852Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:17:41.887Z"
+  },
+  {
+    "description": "Aristotle chain for linear actuator 1: steel_bar, steel_bar, steel_plate, steel_plate, electric_motor, steel_plate, linear_actuator",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "steel_bar"
+    },
+    "id": 208,
+    "createdAt": "2026-07-13T17:26:48.232Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:41.828Z"
+  },
+  {
+    "description": "Beauvoir chain for linear actuator 2: steel_bar, steel_bar, steel_plate, steel_plate, electric_motor, steel_plate, linear_actuator",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_bar"
+    },
+    "id": 209,
+    "createdAt": "2026-07-13T17:26:48.235Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:42.280Z"
+  },
+  {
+    "description": "Descartes chain for linear actuator 3: steel_bar, steel_bar, steel_plate, steel_plate, electric_motor, steel_plate, linear_actuator",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_bar"
+    },
+    "id": 210,
+    "createdAt": "2026-07-13T17:26:48.239Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:42.572Z"
+  },
+  {
+    "description": "Hume extra motor chain: steel_bar, steel_plate, electric_motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_bar"
+    },
+    "id": 211,
+    "createdAt": "2026-07-13T17:26:48.241Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:42.854Z"
+  },
+  {
+    "description": "Hypatia bulk bars chain part 1",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 212,
+    "createdAt": "2026-07-13T17:26:48.244Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:43.145Z"
+  },
+  {
+    "description": "Locke bulk plates chain part 1",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_plate"
+    },
+    "id": 213,
+    "createdAt": "2026-07-13T17:26:48.246Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:43.357Z"
+  },
+  {
+    "description": "Nietzsche bulk plates chain part 1",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche"
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_plate"
+    },
+    "id": 214,
+    "createdAt": "2026-07-13T17:26:48.249Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:31:43.656Z"
+  },
+  {
+    "description": "Aristotle chain step 3 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle",
+      "requireItems": [
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "steel_plate"
+    },
+    "id": 215,
+    "createdAt": "2026-07-13T17:26:58.786Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:11.739Z"
+  },
+  {
+    "description": "Aristotle chain step 4 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle",
+      "requireItems": [
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "steel_plate"
+    },
+    "id": 216,
+    "createdAt": "2026-07-13T17:26:58.789Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:42:41.675Z"
+  },
+  {
+    "description": "Aristotle chain step 5 electric_motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "mannyName": "Aristotle",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_2c297095f23996a12ef9f1aa",
+      "recipe": "electric_motor"
+    },
+    "id": 217,
+    "createdAt": "2026-07-13T17:26:58.792Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:47:41.621Z"
+  },
+  {
+    "description": "Beauvoir chain step 3 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 220,
+    "createdAt": "2026-07-13T17:26:58.801Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:11.927Z"
+  },
+  {
+    "description": "Beauvoir chain step 4 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "steel_plate"
+    },
+    "id": 221,
+    "createdAt": "2026-07-13T17:26:58.803Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:42:41.902Z"
+  },
+  {
+    "description": "Beauvoir chain step 5 electric_motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "mannyName": "Beauvoir",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_3e554a0e7e5a3ecf63915428",
+      "recipe": "electric_motor"
+    },
+    "id": 222,
+    "createdAt": "2026-07-13T17:26:58.806Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:48:11.706Z"
+  },
+  {
+    "description": "Descartes chain step 3 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes",
+      "requireItems": [
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_plate"
+    },
+    "id": 225,
+    "createdAt": "2026-07-13T17:27:11.091Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:12.204Z"
+  },
+  {
+    "description": "Descartes chain step 4 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes",
+      "requireItems": [
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "steel_plate"
+    },
+    "id": 226,
+    "createdAt": "2026-07-13T17:27:11.094Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:42:42.108Z"
+  },
+  {
+    "description": "Descartes chain step 5 electric_motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "mannyName": "Descartes",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_662ff31f278d8358cb551f24",
+      "recipe": "electric_motor"
+    },
+    "id": 227,
+    "createdAt": "2026-07-13T17:27:11.096Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:48:11.983Z"
+  },
+  {
+    "description": "Hume chain step 3 steel_plate",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume",
+      "requireItems": [
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "steel_plate"
+    },
+    "id": 230,
+    "createdAt": "2026-07-13T17:27:11.104Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:12.475Z"
+  },
+  {
+    "description": "Hume chain step 4 electric_motor",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "mannyName": "Hume",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_465d32ed9bee8a6f47d4f48a",
+      "recipe": "electric_motor"
+    },
+    "id": 231,
+    "createdAt": "2026-07-13T17:27:11.106Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:42:42.308Z"
+  },
+  {
+    "description": "Hypatia bulk bars chain part 2",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "mannyName": "Hypatia",
+      "requireItems": [
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_eca2b8efa977a8bf1380e199",
+      "recipe": "steel_bar"
+    },
+    "id": 232,
+    "createdAt": "2026-07-13T17:27:11.108Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:12.846Z"
+  },
+  {
+    "description": "Locke bulk plates chain part 2",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "mannyName": "Locke",
+      "requireItems": [
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_2e99b35cff3544167900a3d7",
+      "recipe": "steel_plate"
+    },
+    "id": 233,
+    "createdAt": "2026-07-13T17:27:11.111Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:13.114Z"
+  },
+  {
+    "description": "Nietzsche bulk plates chain part 2",
+    "condition": {
+      "type": "manny_idle",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "mannyName": "Nietzsche",
+      "requireItems": [
+        "steel_plate"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "mannyId": "mny_craft_6a1997812bd5d4673b792041",
+      "recipe": "steel_plate"
+    },
+    "id": 234,
+    "createdAt": "2026-07-13T17:27:11.113Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-13T17:37:13.373Z"
   }
 ]
