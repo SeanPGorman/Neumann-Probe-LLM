@@ -2043,8 +2043,8 @@
     "sectorY": 6,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-14T17:07:48.291Z",
-    "lastVisitedAt": "2026-07-14T21:36:23.427Z",
-    "visitCount": 131,
+    "lastVisitedAt": "2026-07-15T00:51:55.173Z",
+    "visitCount": 136,
     "objects": [
       {
         "id": "2e9286c1a0ab567ab7be",
@@ -2245,19 +2245,6 @@
         "id": "detached-container-container-itm_craft_2ba19fecf04e3a64e4df2ce1",
         "type": "detached_container",
         "name": "Get Moar Metal",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "77b3f74303045a6c4f85",
-        "salvageable": false
-      },
-      {
-        "id": "detached-container-container-itm_craft_c43c5112c178af2e3c947a09",
-        "type": "detached_container",
-        "name": "MetalsMT2",
         "estimated": false,
         "summary": "Detached storage container detected.",
         "dangerLevel": "low",
