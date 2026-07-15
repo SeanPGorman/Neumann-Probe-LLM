@@ -10,10 +10,6 @@ function run(cmd, cwd = root) {
   execSync(cmd, { stdio: 'inherit', cwd });
 }
 
-// Disable code-signing so electron-builder never touches winCodeSign
-// (which fails on Windows without Developer Mode due to macOS symlinks inside the archive)
-process.env.CSC_IDENTITY_AUTO_DISCOVERY = 'false';
-
 console.log('=== Step 1/4 — Build API server ===');
 run('pnpm --filter @workspace/api-server run build');
 

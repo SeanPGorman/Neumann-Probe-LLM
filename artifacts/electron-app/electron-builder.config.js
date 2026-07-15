@@ -24,6 +24,10 @@ module.exports = {
   },
   win: {
     target: [{ target: 'nsis', arch: ['x64'] }],
+    // No-op sign function: bypasses electron-builder's built-in signing
+    // infrastructure (winCodeSign), which fails on Windows without Developer
+    // Mode due to macOS symlinks inside the downloaded archive.
+    sign: () => {},
   },
   linux: {
     target: [{ target: 'AppImage', arch: ['x64'] }],
