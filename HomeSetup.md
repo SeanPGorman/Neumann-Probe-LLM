@@ -123,7 +123,6 @@ Navigate to the `artifacts/probe-commander/` folder and create a file named `.en
 
 ```
 PORT=5173
-BASE_PATH=/
 ```
 
 You don't need to change anything here — copy it exactly as shown.
@@ -242,7 +241,7 @@ pnpm --filter @workspace/api-server run build
 
 **2. Build the frontend** (sets the URL base to `/`):
 ```
-BASE_PATH=/ pnpm --filter @workspace/probe-commander run build
+pnpm --filter @workspace/probe-commander run build
 ```
 
 **3. Package the desktop app for your platform:**
@@ -289,4 +288,4 @@ These are saved privately on your computer. The app remembers them from then on.
 | `AI_INTEGRATIONS_OPENAI_BASE_URL` | `api-server/.env` | Where to send AI commands (**required**) |
 | `AI_INTEGRATIONS_OPENAI_API_KEY` | `api-server/.env` | Authenticates with your AI service (**required**) |
 | `PORT` | both `.env` files | Which port each server runs on |
-| `BASE_PATH` | `probe-commander/.env` | URL prefix for the frontend (keep as `/`) |
+| `BASE_PATH` | auto-detected | Defaults to `/`; set by Replit automatically when hosted there |
