@@ -9,14 +9,15 @@
     "build": "node build.mjs",
     "start": "pnpm run build && electron .",
     "dist:linux": "pnpm run build && electron-builder --linux --config electron-builder.config.js",
-    "dist:win": "pnpm run build && node dist-win.mjs",
+    "dist:win": "node dist-win.mjs",
     "dist:mac": "pnpm run build && electron-builder --mac --config electron-builder.config.js"
   },
   "devDependencies": {
+    "@electron/packager": "^18.3.5",
+    "@types/node": "^25.3.3",
     "electron": "^31.7.7",
     "electron-builder": "^24.13.3",
     "esbuild": "0.27.3",
-    "typescript": "~5.9.3",
-    "@types/node": "^25.3.3"
+    "typescript": "~5.9.3"
   }
 }

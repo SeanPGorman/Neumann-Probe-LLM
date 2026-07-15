@@ -71,6 +71,9 @@ async function startApiServer(cfg: AppConfig): Promise<void> {
   process.env['VNG_API_KEY'] = cfg.vngApiKey;
   process.env['AI_INTEGRATIONS_OPENAI_BASE_URL'] = cfg.aiBaseUrl;
   process.env['AI_INTEGRATIONS_OPENAI_API_KEY'] = cfg.aiApiKey;
+  // Route data writes (visited-sectors.json etc.) to the writable user-data
+  // folder rather than process.cwd() which is unpredictable in a packaged app.
+  process.env['DATA_DIR'] = path.join(app.getPath('userData'), 'data');
 
   if (fs.existsSync(frontendPath)) {
     process.env['FRONTEND_STATIC_DIR'] = frontendPath;
