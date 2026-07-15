@@ -75,7 +75,14 @@ router.get("/probes", async (_req, res) => {
 });
 
 router.get("/state", async (req, res) => {
-  const probeId = req.query.probeId ? Number(req.query.probeId) : null;
+  let probeId: number | null;
+  try {
+    probeId = client.parseProbeId(req.query.probeId);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
+    return;
+  }
+
   try {
     const [probeResp, manniesResp, sectorResp] = await Promise.all([
       probeId ? client.getProbeById(probeId) : client.getProbe(),
@@ -151,10 +158,17 @@ router.get("/state", async (req, res) => {
 
 router.post("/command", async (req, res) => {
   const { command, probeId: rawProbeId } = req.body as { command: string; probeId?: number | null };
-  const probeId: number | null = rawProbeId != null ? Number(rawProbeId) : null;
 
   if (!command?.trim()) {
     res.status(400).json({ error: "command is required" });
+    return;
+  }
+
+  let probeId: number | null;
+  try {
+    probeId = client.parseProbeId(rawProbeId);
+  } catch (err: any) {
+    res.status(400).json({ error: err.message });
     return;
   }
 
