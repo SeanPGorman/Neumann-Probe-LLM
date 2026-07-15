@@ -146,6 +146,11 @@ echo {"sectors":[]}> artifacts\api-server\data\visited-sectors.json
 
 > If you get an error saying the file or folder doesn't exist, skip this step — the app will create the file on its own when it first starts.
 
+> **Using the desktop app instead?** The Electron version stores its data in `%APPDATA%\Probe Commander\data\`. To reset sector history there, run in PowerShell:
+> ```
+> Set-Content "$env:APPDATA\Probe Commander\data\visited-sectors.json" '{"sectors":[]}'
+> ```
+
 ---
 
 ## Step 6 — Add a local network connection between the two parts of the app
@@ -243,7 +248,7 @@ The repo includes an Electron wrapper (`artifacts\electron-app\`) that packages 
 
 ### Build it
 
-After completing Steps 1–3 (clone the repo, install dependencies, get your credentials), run this **single command** from the repo folder:
+After completing Steps 1–2 (clone the repo, install dependencies), run this **single command** from the repo folder:
 
 ```
 pnpm --filter @workspace/electron-app run dist:win
@@ -253,9 +258,11 @@ It will automatically:
 1. Build the backend
 2. Build the frontend
 3. Compile the Electron wrapper
-4. Package everything into a Windows installer
+4. Package everything and create a zip file
 
-The installer (`.exe`) is created inside `artifacts\electron-app\release\`. Double-click it to install, then launch Probe Commander from the Start menu or desktop shortcut.
+The zip (`Probe-Commander-win.zip`) is created inside `artifacts\electron-app\release\`. Extract it anywhere, open the `Probe Commander-win32-x64` folder, and double-click **Probe Commander.exe** to launch.
+
+> **First run only:** The first build downloads the Electron binary (~90 MB) and caches it. Subsequent builds skip the download and finish much faster.
 
 ### What happens on first launch
 
