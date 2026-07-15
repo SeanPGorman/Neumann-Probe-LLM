@@ -1,6 +1,6 @@
-# Home PC Setup Guide
+# Home PC Setup Guide (Windows)
 
-Step-by-step instructions for running Probe Commander on your own machine. No coding experience required — just follow each step in order.
+Step-by-step instructions for running Probe Commander on your Windows PC. No coding experience required — just follow each step in order.
 
 ---
 
@@ -14,11 +14,10 @@ You need three free programs installed before anything else. If you already have
 | **pnpm** | v10 | Installed via terminal after Node.js (see below) |
 | **Git** | any | https://git-scm.com |
 
-**How to open a terminal:**
-- **Windows:** Press `Win + R`, type `cmd`, press Enter — or search for "Command Prompt"
-- **Mac:** Open Spotlight (`Cmd + Space`), type "Terminal", press Enter
+**How to open a terminal (Command Prompt):**
+Press `Win + R`, type `cmd`, press Enter — or search for "Command Prompt" in the Start menu. All commands in this guide are typed here.
 
-**After installing Node.js,** open a terminal and run:
+**After installing Node.js,** open Command Prompt and run:
 
 ```
 npm install -g pnpm
@@ -37,14 +36,14 @@ You should see `v20.x` or higher for Node, and `10.x` for pnpm. If you do, you'r
 
 ## Step 1 — Download the code
 
-In your terminal, run:
+In Command Prompt, run:
 
 ```
 git clone <your-repo-url>
 cd <repo-folder>
 ```
 
-Replace `<your-repo-url>` with the actual URL of the repository, and `<repo-folder>` with the name of the folder it creates (Git will tell you the name after cloning).
+Replace `<your-repo-url>` with the actual URL of the repository, and `<repo-folder>` with the name of the folder it creates (Git will print the name after cloning).
 
 ---
 
@@ -94,7 +93,7 @@ Once signed up, you'll need two things from your chosen service: a **Base URL** 
 | Groq | `https://api.groq.com/openai/v1` | From console.groq.com → API keys |
 | Ollama | `http://localhost:11434/v1` | Type any word (e.g. `ollama`) |
 
-> **Ollama extra step:** After installing from https://ollama.com, open a terminal and run `ollama pull llama3.1` to download the AI model, then `ollama serve` to start it. Keep that terminal open.
+> **Ollama extra step:** After installing from https://ollama.com, open a new Command Prompt and run `ollama pull llama3.1` to download the AI model, then `ollama serve` to start it. Keep that window open.
 
 ---
 
@@ -102,11 +101,11 @@ Once signed up, you'll need two things from your chosen service: a **Base URL** 
 
 The app reads settings from two plain text files called `.env`. You'll create each one in a specific folder.
 
-> **What is a `.env` file?** It's just a plain text file named exactly `.env` (with a dot at the start, no other extension). You can create one in any text editor — Notepad on Windows, TextEdit on Mac. When saving, make sure the filename is `.env` and not `.env.txt`.
+> **What is a `.env` file?** It's a plain text file named exactly `.env` (dot at the start, no other extension). Open Notepad, type the contents, then choose **File → Save As**, navigate to the correct folder, set **Save as type** to **All Files**, and type `.env` as the filename.
 
-### File 1: `artifacts/api-server/.env`
+### File 1: `artifacts\api-server\.env`
 
-Navigate to the `artifacts/api-server/` folder inside the repo and create a file named `.env` containing:
+Navigate to the `artifacts\api-server\` folder inside the repo and create a file named `.env` containing:
 
 ```
 PORT=8080
@@ -117,9 +116,9 @@ AI_INTEGRATIONS_OPENAI_API_KEY=paste-the-api-key-from-step-3b-here
 
 Replace each placeholder with your actual values from Step 3.
 
-### File 2: `artifacts/probe-commander/.env`
+### File 2: `artifacts\probe-commander\.env`
 
-Navigate to the `artifacts/probe-commander/` folder and create a file named `.env` containing:
+Navigate to the `artifacts\probe-commander\` folder and create a file named `.env` containing:
 
 ```
 PORT=5173
@@ -131,13 +130,21 @@ You don't need to change anything here — copy it exactly as shown.
 
 ## Step 5 — Clear the sector history (first-time setup only)
 
-The repo includes the original author's explored-sector data. Run this command once to reset it so the map starts fresh for your probe:
+The repo includes the original author's explored-sector data. Run this command once to reset it so the map starts fresh for your probe.
+
+**In PowerShell** (search "PowerShell" in the Start menu, open it, navigate to the repo folder with `cd <path-to-repo>`):
 
 ```
-echo '{"sectors":[]}' > artifacts/api-server/data/visited-sectors.json
+Set-Content artifacts\api-server\data\visited-sectors.json '{"sectors":[]}'
 ```
 
-> If you get an error saying the file doesn't exist, skip this step — the app will create the file on its own when it first starts.
+**Or in Command Prompt:**
+
+```
+echo {"sectors":[]}> artifacts\api-server\data\visited-sectors.json
+```
+
+> If you get an error saying the file or folder doesn't exist, skip this step — the app will create the file on its own when it first starts.
 
 ---
 
@@ -145,7 +152,7 @@ echo '{"sectors":[]}' > artifacts/api-server/data/visited-sectors.json
 
 The app has two parts: a **backend** (the API server) and a **frontend** (the web interface). On Replit these are wired together automatically; locally you need to do it yourself by editing one file.
 
-Open `artifacts/probe-commander/vite.config.ts` in a text editor and find this section near the bottom:
+Open `artifacts\probe-commander\vite.config.ts` in a text editor (right-click → Open with → Notepad, or use VS Code if you have it) and find this section near the bottom:
 
 ```ts
   server: {
@@ -174,7 +181,7 @@ Save the file. This tells the frontend to forward any `/api/...` requests to the
 
 ## Step 7 — (Ollama only) Switch the AI model name
 
-If you chose Ollama in Step 3b, open `artifacts/api-server/src/routes/vng/index.ts` in a text editor and find this line:
+If you chose Ollama in Step 3b, open `artifacts\api-server\src\routes\vng\index.ts` in a text editor and find this line:
 
 ```ts
 model: "gpt-5.4",
@@ -192,9 +199,13 @@ Skip this step entirely if you're using OpenAI or Groq.
 
 ## Step 8 — Start the app
 
-You need **two terminal windows** open at the same time, both pointing at the repo folder.
+You need **two Command Prompt windows** open at the same time. In each one, navigate to the repo folder first:
 
-**Terminal 1 — start the backend:**
+```
+cd C:\Users\YourName\Documents\GitHub\<repo-folder>
+```
+
+**Window 1 — start the backend:**
 
 ```
 pnpm --filter @workspace/api-server run dev
@@ -205,7 +216,7 @@ Wait until you see a line like:
 Server listening  {"port":8080}
 ```
 
-**Terminal 2 — start the frontend:**
+**Window 2 — start the frontend:**
 
 ```
 pnpm --filter @workspace/probe-commander run dev
@@ -220,7 +231,7 @@ VITE ready in ... ms  ➜  Local: http://localhost:5173/
 
 ## Step 9 — Open the app
 
-Go to **http://localhost:5173** in your browser.
+Go to **http://localhost:5173** in your browser (Chrome, Edge, Firefox — any will work).
 
 If everything is working, the PROBE tab will show your probe's name, sector, fuel, and hull integrity within a few seconds.
 
@@ -228,31 +239,28 @@ If everything is working, the PROBE tab will show your probe's name, sector, fue
 
 ## Alternative — Desktop app (no browser, no terminal after setup)
 
-The repo includes an Electron wrapper (`artifacts/electron-app/`) that packages everything into a double-clickable desktop app. On first launch it shows a setup screen where you enter your credentials — no `.env` files or terminal required after that.
+The repo includes an Electron wrapper (`artifacts\electron-app\`) that packages everything into a double-clickable `.exe`. On first launch it shows a setup screen where you enter your credentials — no `.env` files or Command Prompt required after that.
 
 ### Build it
 
-> You need the web app built first (Steps 1–7 above), then run these three commands once:
+> You need the web app built first (Steps 1–7 above), then run these three commands once from the repo folder:
 
 **1. Build the backend:**
 ```
 pnpm --filter @workspace/api-server run build
 ```
 
-**2. Build the frontend** (sets the URL base to `/`):
+**2. Build the frontend:**
 ```
 pnpm --filter @workspace/probe-commander run build
 ```
 
-**3. Package the desktop app for your platform:**
+**3. Package the desktop app:**
+```
+pnpm --filter @workspace/electron-app run dist:win
+```
 
-| Platform | Command |
-|----------|---------|
-| Windows | `pnpm --filter @workspace/electron-app run dist:win` |
-| Mac | `pnpm --filter @workspace/electron-app run dist:mac` |
-| Linux | `pnpm --filter @workspace/electron-app run dist:linux` |
-
-The installer is created in `artifacts/electron-app/release/`. Install it normally (`.exe` on Windows, `.dmg` on Mac, `.AppImage` on Linux).
+The installer (`.exe`) is created inside `artifacts\electron-app\release\`. Double-click it to install, then launch Probe Commander from the Start menu or desktop shortcut.
 
 ### What happens on first launch
 
@@ -262,7 +270,7 @@ A setup screen appears asking for:
 
 These are saved privately on your computer. The app remembers them from then on. You can re-open the setup screen anytime via the **Probe Commander → Credentials & Settings…** menu.
 
-> **Note:** The desktop app and the browser method are equivalent — use whichever suits you. The `.env` file approach (Steps 1–9 above) is simpler for development; the desktop app is better for distributing to others.
+> **Note:** The desktop app and the browser method are equivalent — use whichever suits you. The `.env` file approach (Steps 1–9 above) is simpler for development; the desktop `.exe` is better for everyday use or sharing with others.
 
 ---
 
@@ -270,13 +278,14 @@ These are saved privately on your computer. The app remembers them from then on.
 
 | What you see | Most likely cause | What to do |
 |---|---|---|
-| `API ERROR` in every panel | Wrong or missing `VNG_API_KEY` | Double-check the key in `artifacts/api-server/.env` and that you have a neumann-probe.net account |
+| `API ERROR` in every panel | Wrong or missing `VNG_API_KEY` | Double-check the key in `artifacts\api-server\.env` and that you have a neumann-probe.net account |
 | `PORT environment variable is required` | Missing `.env` file | Create the `.env` files from Step 4 |
 | AI commands return errors | Wrong Base URL or API key | Re-check Step 3b; for Ollama also check Step 7 |
-| Panels load forever | Backend not running | Make sure Terminal 1 started without errors; check the output for red text |
-| Map/globe shows no data | Frontend can't reach the backend | Confirm the proxy block from Step 6 is saved and restart Terminal 2 |
-| Ollama errors about the model | Model not downloaded | Run `ollama pull llama3.1` in a new terminal |
+| Panels load forever | Backend not running | Make sure Window 1 started without errors; look for red text |
+| Map/globe shows no data | Frontend can't reach the backend | Confirm the proxy block from Step 6 is saved and restart Window 2 |
+| Ollama errors about the model | Model not downloaded | Run `ollama pull llama3.1` in a new Command Prompt |
 | Map shows someone else's route | Old sector history in the repo | Run the command from Step 5 |
+| `'pnpm' is not recognized` | pnpm not installed | Re-run `npm install -g pnpm` and open a fresh Command Prompt |
 
 ---
 
@@ -284,8 +293,8 @@ These are saved privately on your computer. The app remembers them from then on.
 
 | Setting | File | What it's for |
 |---------|------|---------------|
-| `VNG_API_KEY` | `api-server/.env` | Connects to neumann-probe.net (**required**) |
-| `AI_INTEGRATIONS_OPENAI_BASE_URL` | `api-server/.env` | Where to send AI commands (**required**) |
-| `AI_INTEGRATIONS_OPENAI_API_KEY` | `api-server/.env` | Authenticates with your AI service (**required**) |
+| `VNG_API_KEY` | `api-server\.env` | Connects to neumann-probe.net (**required**) |
+| `AI_INTEGRATIONS_OPENAI_BASE_URL` | `api-server\.env` | Where to send AI commands (**required**) |
+| `AI_INTEGRATIONS_OPENAI_API_KEY` | `api-server\.env` | Authenticates with your AI service (**required**) |
 | `PORT` | both `.env` files | Which port each server runs on |
 | `BASE_PATH` | auto-detected | Defaults to `/`; set by Replit automatically when hosted there |
