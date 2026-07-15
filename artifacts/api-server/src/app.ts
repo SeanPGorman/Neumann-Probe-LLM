@@ -40,7 +40,7 @@ const frontendDir = process.env["FRONTEND_STATIC_DIR"];
 if (frontendDir && fs.existsSync(frontendDir)) {
   logger.info({ frontendDir }, "Serving frontend static files");
   app.use(express.static(frontendDir));
-  app.get("*", (_req, res) => {
+  app.get("/{*splat}", (_req, res) => {
     res.sendFile(path.join(frontendDir, "index.html"));
   });
 }
