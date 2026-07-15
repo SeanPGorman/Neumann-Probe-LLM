@@ -243,26 +243,19 @@ The repo includes an Electron wrapper (`artifacts\electron-app\`) that packages 
 
 ### Build it
 
-> You need the web app built first (Steps 1–7 above), then run these three commands once from the repo folder:
+After completing Steps 1–3 (clone the repo, install dependencies, get your credentials), run this **single command** from the repo folder:
 
-**1. Build the backend:**
-```
-pnpm --filter @workspace/api-server run build
-```
-
-**2. Build the frontend:**
-```
-pnpm --filter @workspace/probe-commander run build
-```
-
-**3. Package the desktop app:**
 ```
 pnpm --filter @workspace/electron-app run dist:win
 ```
 
-The installer (`.exe`) is created inside `artifacts\electron-app\release\`. Double-click it to install, then launch Probe Commander from the Start menu or desktop shortcut.
+It will automatically:
+1. Build the backend
+2. Build the frontend
+3. Compile the Electron wrapper
+4. Package everything into a Windows installer
 
-> **If you see a "Cannot create symbolic link" error:** Windows blocks symlink creation for standard user accounts. Enable **Developer Mode** to fix it permanently: go to **Start → Settings → System → For Developers** and turn on **Developer Mode**, then re-run the command. Alternatively, right-click Command Prompt and choose **Run as administrator**.
+The installer (`.exe`) is created inside `artifacts\electron-app\release\`. Double-click it to install, then launch Probe Commander from the Start menu or desktop shortcut.
 
 ### What happens on first launch
 
