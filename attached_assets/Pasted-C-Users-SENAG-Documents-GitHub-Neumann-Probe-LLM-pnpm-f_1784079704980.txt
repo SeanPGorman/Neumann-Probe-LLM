@@ -1,0 +1,140 @@
+C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM>pnpm --filter @workspace/electron-app run dist:win
+$ pnpm run build && electron-builder --win --config electron-builder.config.js
+$ node build.mjs
+Electron build done.
+  • electron-builder  version=24.13.3 os=10.0.26200
+  • loaded configuration  file=C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM\artifacts\electron-app\electron-builder.config.js
+  • writing effective config  file=release\builder-effective-config.yaml
+  • packaging       platform=win32 arch=x64 electron=31.7.7 appOutDir=release\win-unpacked
+  • default Electron icon is used  reason=application icon is not set
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=545ms
+  ⨯ cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+
+    Extracting archive: C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\444613647.7z
+    --
+    Path = C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\444613647.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+
+
+    Sub items Errors: 2
+
+    Archives with Errors: 1
+
+    Sub items Errors: 2
+
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\444613647\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\444613647\darwin\10.12\lib\libssl.dylib
+
+                    command='C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\444613647.7z' '-oC:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\444613647'
+                    workingDir=C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign
+  • Above command failed, retrying 3 more times
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=622ms
+  ⨯ cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+
+    Extracting archive: C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\644900179.7z
+    --
+    Path = C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\644900179.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+
+
+    Sub items Errors: 2
+
+    Archives with Errors: 1
+
+    Sub items Errors: 2
+
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\644900179\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\644900179\darwin\10.12\lib\libssl.dylib
+
+                    command='C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\644900179.7z' '-oC:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\644900179'
+                    workingDir=C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign
+  • Above command failed, retrying 2 more times
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=531ms
+  ⨯ cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+
+    Extracting archive: C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\189645691.7z
+    --
+    Path = C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\189645691.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+
+
+    Sub items Errors: 2
+
+    Archives with Errors: 1
+
+    Sub items Errors: 2
+
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\189645691\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\189645691\darwin\10.12\lib\libssl.dylib
+
+                    command='C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\189645691.7z' '-oC:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\189645691'
+                    workingDir=C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign
+  • Above command failed, retrying 1 more times
+  • downloading     url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z size=5.6 MB parts=1
+  • downloaded      url=https://github.com/electron-userland/electron-builder-binaries/releases/download/winCodeSign-2.6.0/winCodeSign-2.6.0.7z duration=706ms
+  ⨯ cannot execute  cause=exit status 2
+                    out=
+    7-Zip (a) 21.07 (x64) : Copyright (c) 1999-2021 Igor Pavlov : 2021-12-26
+
+    Scanning the drive for archives:
+    1 file, 5635384 bytes (5504 KiB)
+
+    Extracting archive: C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\063529339.7z
+    --
+    Path = C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\063529339.7z
+    Type = 7z
+    Physical Size = 5635384
+    Headers Size = 1492
+    Method = LZMA2:24m LZMA:20 BCJ2
+    Solid = +
+    Blocks = 2
+
+
+    Sub items Errors: 2
+
+    Archives with Errors: 1
+
+    Sub items Errors: 2
+
+                    errorOut=ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\063529339\darwin\10.12\lib\libcrypto.dylib
+    ERROR: Cannot create symbolic link : A required privilege is not held by the client. : C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\063529339\darwin\10.12\lib\libssl.dylib
+
+                    command='C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM\node_modules\.pnpm\7zip-bin@5.2.0\node_modules\7zip-bin\win\x64\7za.exe' x -bd 'C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\063529339.7z' '-oC:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign\063529339'
+                    workingDir=C:\Users\SENAG\AppData\Local\electron-builder\Cache\winCodeSign
+  • Above command failed, retrying 0 more times
+C:\Users\SENAG\Documents\GitHub\Neumann-Probe-LLM\artifacts\electron-app:
+[ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL] @workspace/electron-app@1.0.0 dist:win: `pnpm run build && electron-builder --win --config electron-builder.config.js`
+Exit status 1

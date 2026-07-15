@@ -262,6 +262,8 @@ pnpm --filter @workspace/electron-app run dist:win
 
 The installer (`.exe`) is created inside `artifacts\electron-app\release\`. Double-click it to install, then launch Probe Commander from the Start menu or desktop shortcut.
 
+> **If you see a "Cannot create symbolic link" error:** Windows blocks symlink creation for standard user accounts. Enable **Developer Mode** to fix it permanently: go to **Start → Settings → System → For Developers** and turn on **Developer Mode**, then re-run the command. Alternatively, right-click Command Prompt and choose **Run as administrator**.
+
 ### What happens on first launch
 
 A setup screen appears asking for:

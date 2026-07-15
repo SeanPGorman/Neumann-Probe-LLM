@@ -9,7 +9,7 @@
     "build": "node build.mjs",
     "start": "pnpm run build && electron .",
     "dist:linux": "pnpm run build && electron-builder --linux --config electron-builder.config.js",
-    "dist:win": "pnpm run build && electron-builder --win --config electron-builder.config.js",
+    "dist:win": "pnpm run build && node dist-win.mjs",
     "dist:mac": "pnpm run build && electron-builder --mac --config electron-builder.config.js"
   },
   "devDependencies": {
