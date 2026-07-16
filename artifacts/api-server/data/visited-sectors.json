@@ -1774,8 +1774,8 @@
     "sectorY": 6,
     "sectorZ": 2,
     "firstVisitedAt": "2026-07-10T17:36:44.692Z",
-    "lastVisitedAt": "2026-07-16T14:32:36.596Z",
-    "visitCount": 334,
+    "lastVisitedAt": "2026-07-16T14:35:16.562Z",
+    "visitCount": 340,
     "objects": [
       {
         "id": "fb44ee668617ad439860",
@@ -1910,6 +1910,32 @@
             "intelligentLife": null
           }
         ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_6084cb17d05ce6cccf904a06",
+        "type": "detached_container",
+        "name": "Send for Carbon 2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "4dae6bc8cb70da7a2411",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_8b715944e74f3030a53bb48d",
+        "type": "detached_container",
+        "name": "Send for Carbon 4",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "4dae6bc8cb70da7a2411",
+        "salvageable": false
       }
     ],
     "resourceSummary": []

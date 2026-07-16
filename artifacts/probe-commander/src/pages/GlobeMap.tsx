@@ -524,11 +524,11 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       </div>
 
       <div
-        className="relative rounded border border-border/20 overflow-hidden"
+        className="relative rounded border border-border/20 overflow-hidden flex-1 min-h-0"
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}
-        style={{ height: 260, cursor: "crosshair" }}
+        style={{ cursor: "crosshair" }}
       >
         <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
       </div>
