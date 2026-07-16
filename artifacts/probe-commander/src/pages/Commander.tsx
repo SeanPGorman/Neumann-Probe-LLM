@@ -970,16 +970,15 @@ export default function Commander() {
 
       <div className={cn("h-screen flex flex-col p-4", !fillWidth && "max-w-7xl mx-auto")}>
         {isDesktop ? (
-          // h-full fills the flex parent (h-screen minus p-4 insets) exactly.
-          <ResizablePanelGroup direction="horizontal" autoSaveId="pc-panes" className="h-full">
-            <ResizablePanel defaultSize={22} minSize={18} maxSize={45} className="flex flex-col gap-2 min-h-0">
+          // Left panel grows to fill all available space; right terminal is fixed-width.
+          <div className="flex flex-row gap-3 h-full min-h-0">
+            <div className="flex flex-col gap-2 flex-1 min-w-0 min-h-0">
               {leftContent}
-            </ResizablePanel>
-            <ResizableHandle withHandle className="mx-2" />
-            <ResizablePanel defaultSize={78} minSize={40} className="flex flex-col min-h-0">
+            </div>
+            <div className="flex flex-col min-h-0 w-[380px] shrink-0">
               {rightContent}
-            </ResizablePanel>
-          </ResizablePanelGroup>
+            </div>
+          </div>
         ) : (
           <div className="flex flex-col gap-4">
             <div className="flex flex-col gap-2">{leftContent}</div>

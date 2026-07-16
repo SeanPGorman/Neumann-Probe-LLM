@@ -1774,8 +1774,8 @@
     "sectorY": 6,
     "sectorZ": 2,
     "firstVisitedAt": "2026-07-10T17:36:44.692Z",
-    "lastVisitedAt": "2026-07-12T21:02:47.154Z",
-    "visitCount": 311,
+    "lastVisitedAt": "2026-07-16T14:32:36.596Z",
+    "visitCount": 334,
     "objects": [
       {
         "id": "fb44ee668617ad439860",
@@ -1910,32 +1910,6 @@
             "intelligentLife": null
           }
         ]
-      },
-      {
-        "id": "detached-container-container-itm_craft_7f05a3b50862a781257c5d76",
-        "type": "detached_container",
-        "name": "Organics MT2",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "4dae6bc8cb70da7a2411",
-        "salvageable": false
-      },
-      {
-        "id": "detached-container-container-itm_craft_bfb7b45ff34ee600d21614c5",
-        "type": "detached_container",
-        "name": "Drone B",
-        "estimated": false,
-        "summary": "Detached storage container detected.",
-        "dangerLevel": "low",
-        "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "4dae6bc8cb70da7a2411",
-        "salvageable": false
       }
     ],
     "resourceSummary": []
@@ -1946,8 +1920,8 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-16T13:55:04.460Z",
-    "visitCount": 1470,
+    "lastVisitedAt": "2026-07-16T13:59:40.409Z",
+    "visitCount": 1479,
     "objects": [],
     "resourceSummary": []
   },
