@@ -1774,8 +1774,8 @@
     "sectorY": 6,
     "sectorZ": 2,
     "firstVisitedAt": "2026-07-10T17:36:44.692Z",
-    "lastVisitedAt": "2026-07-16T14:35:16.562Z",
-    "visitCount": 340,
+    "lastVisitedAt": "2026-07-16T15:05:10.554Z",
+    "visitCount": 341,
     "objects": [
       {
         "id": "fb44ee668617ad439860",
@@ -1946,8 +1946,8 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-16T13:59:40.409Z",
-    "visitCount": 1479,
+    "lastVisitedAt": "2026-07-16T21:30:17.636Z",
+    "visitCount": 1495,
     "objects": [],
     "resourceSummary": []
   },
