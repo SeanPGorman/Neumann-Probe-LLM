@@ -31,6 +31,20 @@ const vngPost = (path: string, body: Record<string, unknown> = {}) =>
 const vngPatch = (path: string, body: Record<string, unknown>) =>
   vngFetch(path, { method: "PATCH", body: JSON.stringify(body) });
 
+/**
+ * Normalize a client-supplied probe ID. `null` means the operator's main probe.
+ *
+ * Throws rather than coercing, because `Number("abc")` is NaN and NaN behaves
+ * differently at each call site: falsy enough to silently fall back to the main
+ * probe in one place, but passed straight into a URL in another.
+ */
+export function parseProbeId(raw: unknown): number | null {
+  if (raw == null || raw === "") return null;
+  const n = Number(raw);
+  if (!Number.isInteger(n) || n <= 0) throw new Error(`invalid probeId: ${raw}`);
+  return n;
+}
+
 // ── Probe-scoped client factory ───────────────────────────────────────────────
 // Returns a full set of client functions scoped to a specific probe (by numeric
 // ID) or to the operator's main probe (when probeId is null / undefined).
