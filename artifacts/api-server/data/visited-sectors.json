@@ -1920,8 +1920,8 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-17T16:38:05.308Z",
-    "visitCount": 1528,
+    "lastVisitedAt": "2026-07-17T17:12:42.814Z",
+    "visitCount": 1530,
     "objects": [
       {
         "id": "7d1f75ee83e4d598fc0f",
@@ -1972,6 +1972,45 @@
             "intelligentLife": null
           }
         ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_3691a58406b6e939ec587ec7",
+        "type": "detached_container",
+        "name": "DropPod 4",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_craft_5d900fe45b126858de8dcbfc",
+        "type": "detached_container",
+        "name": "DropPod 5",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
+      },
+      {
+        "id": "detached-container-container-itm_d1a71938b3e8927ea683240a",
+        "type": "detached_container",
+        "name": "Products",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "drifting",
+        "targetObjectId": null,
+        "salvageable": true
       },
       {
         "id": "detached-container-container-itm_craft_0ad93d3ed5ce24ff7ef54576",
