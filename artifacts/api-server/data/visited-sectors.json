@@ -1946,9 +1946,91 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-16T21:30:17.636Z",
-    "visitCount": 1495,
-    "objects": [],
+    "lastVisitedAt": "2026-07-17T00:52:20.380Z",
+    "visitCount": 1498,
+    "objects": [
+      {
+        "id": "7d1f75ee83e4d598fc0f",
+        "type": "solar_system",
+        "name": "WP-015-SnoozyBob. This is 4.7.1. 1 Metal. 1 Deut. 1 Ice. 0 Organics.",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 2 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 0,
+        "orbitalBodyCount": 2,
+        "bodies": [
+          {
+            "id": "8031b2c4d6fdedc2c495",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.379844,
+            "massUnit": "solar_mass",
+            "radius": 0.216528,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "3ef0de1cc7e211086189",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.015292,
+            "massUnit": "earth_mass",
+            "radius": 0.189377,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "8b3cd67b25d0bda41395",
+            "type": "asteroid",
+            "name": null,
+            "category": null,
+            "mass": 0.006678,
+            "massUnit": "earth_mass",
+            "radius": 0.05982,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      },
+      {
+        "id": "manny-mny_craft_6a1997812bd5d4673b792041",
+        "type": "manny",
+        "name": "Nietzsche",
+        "estimated": false,
+        "summary": "Manny left behind by a probe.",
+        "dangerLevel": "low",
+        "resourceTypes": []
+      },
+      {
+        "id": "manny-mny_craft_58b856920065c82478110e3c",
+        "type": "manny",
+        "name": "Plato",
+        "estimated": false,
+        "summary": "Manny left behind by a probe.",
+        "dangerLevel": "low",
+        "resourceTypes": []
+      },
+      {
+        "id": "detached-container-container-itm_craft_ade60a492a04005acc61b12d",
+        "type": "detached_container",
+        "name": "DropPod 2",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "3ef0de1cc7e211086189",
+        "salvageable": false
+      }
+    ],
     "resourceSummary": []
   },
   {

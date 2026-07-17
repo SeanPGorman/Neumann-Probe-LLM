@@ -6,3 +6,9 @@ id = "2zhV4h2BeneHV9hgqdqu9"
 uri = "file://HomeSetup.md"
 type = "text"
 title = "HomeSetup.md — Local dev guide"
+
+[[outputs]]
+id = "xUTKU5Ef5VWw_lkkEPqf4"
+uri = "file://crafting_recipes.csv"
+type = "table"
+title = "VNG Crafting Recipes"
