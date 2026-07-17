@@ -5,7 +5,7 @@ import {
   updateContainerStatus,
   recordSector,
 } from "./file-store.js";
-import { getProbe, getSector, scanSector, getVisitedSectors } from "./client.js";
+import { getProbe, getSector, scanSector, getVisitedSectors, clientFor } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
 
 const router = Router();
@@ -30,12 +30,14 @@ router.get("/inventory-debug", async (_req, res) => {
   }
 });
 
-router.get("/containers", async (_req, res) => {
+router.get("/containers", async (req, res) => {
   try {
+    const probeId = req.query.probeId ? Number(req.query.probeId) : null;
+    const c = clientFor(probeId);
     // Live sources: probe inventory (contents + capacity) + current sector objects
     const [probeResp, sectorResp, fileContainers] = await Promise.all([
-      getProbe().catch(() => null),
-      getSector().catch(() => null),
+      c.getProbe().catch(() => null),
+      c.getSector().catch(() => null),
       getContainers(),
     ]);
 

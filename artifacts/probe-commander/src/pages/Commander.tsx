@@ -249,10 +249,10 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
-function ContainersPanel({ refetchSignal }: { refetchSignal: number }) {
+function ContainersPanel({ refetchSignal, probeId }: { refetchSignal: number; probeId?: number | null }) {
   const { data, isLoading, error } = useQuery({
-    queryKey: ["log-containers", refetchSignal],
-    queryFn: () => fetchJson(`${BASE}/api/vng/log/containers`),
+    queryKey: ["log-containers", refetchSignal, probeId],
+    queryFn: () => fetchJson(`${BASE}/api/vng/log/containers${probeId ? `?probeId=${probeId}` : ""}`),
     refetchInterval: 30000,
   });
 
@@ -854,7 +854,7 @@ export default function Commander() {
             onSelectProbe={setSelectedProbeId}
           />
         )}
-        {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} />}
+        {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} probeId={selectedProbeId} />}
         {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
         {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
         {sideTab === "scheduled" && <ScheduledPanel refetchSignal={logRefetch} />}
