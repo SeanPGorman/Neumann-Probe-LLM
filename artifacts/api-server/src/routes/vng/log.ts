@@ -5,7 +5,7 @@ import {
   updateContainerStatus,
   recordSector,
 } from "./file-store.js";
-import { getProbe, getSector, scanSector, getVisitedSectors, clientFor } from "./client.js";
+import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
 
 const router = Router();
@@ -149,6 +149,127 @@ router.patch("/containers/:id/status", async (req, res) => {
     const { status, notes } = req.body as { status?: string; notes?: string };
     await updateContainerStatus(id, { status, notes });
     res.json({ ok: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/crafting-calc", async (req, res) => {
+  try {
+    const probeId = req.query.probeId ? Number(req.query.probeId) : null;
+    const c = clientFor(probeId);
+
+    const [probeResp, recipesResp] = await Promise.all([
+      c.getProbe().catch(() => null),
+      getCraftingRecipes().catch(() => ({ recipes: [] })),
+    ]);
+
+    const inv = probeResp?.probe?.inventory ?? {};
+    const resourceStocks: any[] = inv.resourceStocks ?? [];
+    const inventoryItems: any[] = inv.items ?? [];
+
+    // Count crafted items by type (exclude machines)
+    const itemCountByType: Record<string, number> = {};
+    for (const item of inventoryItems) {
+      const type: string = item.type ?? item.id;
+      if (type === "manny" || type === "atomic_3d_printer") continue;
+      itemCountByType[type] = (itemCountByType[type] ?? 0) + 1;
+    }
+
+    // Resources currently available
+    const resourceByType: Record<string, number> = {};
+    for (const stock of resourceStocks) {
+      resourceByType[stock.type] = stock.amount ?? 0;
+    }
+
+    const recipes: any[] = recipesResp.recipes ?? [];
+    const recipeById = new Map<string, any>(recipes.map((r: any) => [r.id, r]));
+
+    // Recursively calculate total crafting time for `quantity` of `recipeId`.
+    // Mutates availableItems / availableResources so consumption cascades correctly.
+    function calcTime(
+      recipeId: string,
+      quantity: number,
+      availableItems: Record<string, number>,
+      availableResources: Record<string, number>,
+    ): { seconds: number; missingResources: { type: string; need: number; have: number }[] } {
+      const recipe = recipeById.get(recipeId);
+      if (!recipe) return { seconds: 0, missingResources: [] };
+
+      const inStock = availableItems[recipeId] ?? 0;
+      const toCraft = Math.max(0, quantity - inStock);
+      availableItems[recipeId] = Math.max(0, inStock - quantity);
+
+      if (toCraft === 0) return { seconds: 0, missingResources: [] };
+
+      let totalSeconds = toCraft * (recipe.durationSeconds ?? 0);
+      const missing: { type: string; need: number; have: number }[] = [];
+
+      for (const ing of recipe.ingredients ?? []) {
+        const needed: number = ing.quantity * toCraft;
+        if (ing.kind === "resource") {
+          const avail = availableResources[ing.type] ?? 0;
+          availableResources[ing.type] = Math.max(0, avail - needed);
+          if (avail < needed - 0.0001) {
+            missing.push({ type: ing.type, need: needed, have: Math.min(avail, needed) });
+          }
+        } else {
+          const sub = calcTime(ing.type, needed, availableItems, availableResources);
+          totalSeconds += sub.seconds;
+          missing.push(...sub.missingResources);
+        }
+      }
+
+      return { seconds: totalSeconds, missingResources: missing };
+    }
+
+    const result = recipes.map((r: any) => {
+      const availItems = { ...itemCountByType };
+      const availRes = { ...resourceByType };
+
+      const { seconds: totalTimeSeconds, missingResources: rawMissing } =
+        calcTime(r.id, 1, availItems, availRes);
+
+      // Ingredient-level display data
+      const ingredients = (r.ingredients ?? []).map((ing: any) => {
+        if (ing.kind === "resource") {
+          const have = Math.min(resourceByType[ing.type] ?? 0, ing.quantity);
+          const missing = Math.max(0, ing.quantity - (resourceByType[ing.type] ?? 0));
+          return { ...ing, have, missing, satisfied: missing < 0.0001 };
+        } else {
+          const have = Math.min(itemCountByType[ing.type] ?? 0, ing.quantity);
+          const missing = Math.max(0, ing.quantity - (itemCountByType[ing.type] ?? 0));
+          return { ...ing, have, missing, satisfied: missing < 0.0001 };
+        }
+      });
+
+      // Deduplicate missing resources across the full tree
+      const missingByType = new Map<string, { type: string; need: number; have: number }>();
+      for (const m of rawMissing) {
+        const ex = missingByType.get(m.type);
+        if (ex) { ex.need += m.need; ex.have += m.have; }
+        else missingByType.set(m.type, { ...m });
+      }
+
+      // canCraftNow = all direct ingredients are already satisfied (resources available, items in stock)
+      const canCraftNow = ingredients.every((ing: any) => ing.satisfied);
+
+      return {
+        id: r.id,
+        name: r.name,
+        craftableBy: r.craftableBy ?? [],
+        durationSeconds: r.durationSeconds ?? 0,
+        ingredients,
+        canCraftNow,
+        totalTimeSeconds,
+        missingResources: [...missingByType.values()],
+      };
+    });
+
+    res.json({
+      recipes: result,
+      inventory: { items: itemCountByType, resources: resourceByType },
+    });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

@@ -601,6 +601,222 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
   );
 }
 
+function fmtTime(secs: number): string {
+  if (secs <= 0) return "0s";
+  if (secs < 60) return `${Math.round(secs)}s`;
+  const h = Math.floor(secs / 3600);
+  const m = Math.round((secs % 3600) / 60);
+  if (h > 0) return m > 0 ? `${h}h ${m}m` : `${h}h`;
+  return `${m}m`;
+}
+
+type CraftIngredient = {
+  kind: "resource" | "item";
+  type: string;
+  quantity: number;
+  unit?: string;
+  have: number;
+  missing: number;
+  satisfied: boolean;
+};
+
+type CraftRecipe = {
+  id: string;
+  name: string;
+  craftableBy: string[];
+  durationSeconds: number;
+  ingredients: CraftIngredient[];
+  canCraftNow: boolean;
+  totalTimeSeconds: number;
+  missingResources: { type: string; need: number; have: number }[];
+};
+
+function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
+  const [machineFilter, setMachineFilter] = useState<"all" | "manny" | "printer">("all");
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["crafting-calc", probeId],
+    queryFn: () =>
+      fetchJson(
+        `${BASE}/api/vng/log/crafting-calc${probeId != null ? `?probeId=${probeId}` : ""}`
+      ),
+    refetchInterval: 30000,
+    staleTime: 20000,
+  });
+
+  const allRecipes: CraftRecipe[] = data?.recipes ?? [];
+  const inventoryItems: Record<string, number> = data?.inventory?.items ?? {};
+
+  const filtered = allRecipes.filter((r) => {
+    if (machineFilter === "manny") return r.craftableBy.includes("manny");
+    if (machineFilter === "printer") return r.craftableBy.includes("atomic_3d_printer");
+    return true;
+  });
+
+  const sorted = [...filtered].sort((a, b) => {
+    // Priority: can craft now → in stock (total=0) → by total time ascending
+    if (a.canCraftNow !== b.canCraftNow) return a.canCraftNow ? -1 : 1;
+    const aStocked = a.totalTimeSeconds === 0;
+    const bStocked = b.totalTimeSeconds === 0;
+    if (aStocked !== bStocked) return aStocked ? -1 : 1;
+    return a.totalTimeSeconds - b.totalTimeSeconds;
+  });
+
+  const readyCount = allRecipes.filter((r) => r.canCraftNow).length;
+  const stockedCount = allRecipes.filter((r) => !r.canCraftNow && r.totalTimeSeconds === 0).length;
+
+  const toggle = (id: string) =>
+    setExpanded((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id);
+      else next.add(id);
+      return next;
+    });
+
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <div className="text-xs text-muted-foreground tracking-widest">CRAFTING CALCULATOR</div>
+        {!isLoading && !error && (
+          <span className="text-[9px] text-muted-foreground/50 space-x-1.5">
+            {readyCount > 0 && <span className="text-green-400/70">{readyCount} ready</span>}
+            {stockedCount > 0 && <span className="text-blue-400/60">{stockedCount} stocked</span>}
+            <span>{allRecipes.length} total</span>
+          </span>
+        )}
+      </div>
+
+      <div className="flex gap-1">
+        {(["all", "manny", "printer"] as const).map((f) => (
+          <button
+            key={f}
+            onClick={() => setMachineFilter(f)}
+            className={`text-[9px] px-2 py-0.5 rounded border transition-colors ${
+              machineFilter === f
+                ? "border-primary/50 text-primary bg-primary/10"
+                : "border-border/40 text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {f === "all" ? "ALL" : f === "manny" ? "MANNY" : "PRINTER"}
+          </button>
+        ))}
+      </div>
+
+      {isLoading && (
+        <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>
+      )}
+      {error && <ApiError error={error as Error} />}
+
+      {!isLoading && !error && (
+        <div className="space-y-0.5">
+          {sorted.map((r) => {
+            const isExpanded = expanded.has(r.id);
+            const machine = r.craftableBy.includes("atomic_3d_printer") ? "PRINT" : "MANNY";
+            const stockCount = inventoryItems[r.id] ?? 0;
+            const isStocked = r.totalTimeSeconds === 0 && stockCount > 0;
+            const subCraftSecs = Math.max(0, r.totalTimeSeconds - r.durationSeconds);
+            const hasSubCrafts = subCraftSecs > 1;
+
+            // Time label: stocked items show "×N stocked", others show total time
+            const timeLabel = isStocked
+              ? null
+              : hasSubCrafts
+              ? `${fmtTime(r.durationSeconds)} +${fmtTime(subCraftSecs)}`
+              : fmtTime(r.durationSeconds);
+
+            return (
+              <div key={r.id} className={`border rounded overflow-hidden ${
+                r.canCraftNow ? "border-green-900/50" : isStocked ? "border-blue-900/30" : "border-border/30"
+              }`}>
+                <button
+                  onClick={() => toggle(r.id)}
+                  className="w-full flex items-center gap-1.5 px-2 py-1.5 text-left hover:bg-primary/5 transition-colors"
+                >
+                  <span className={`text-[9px] font-mono w-3 shrink-0 ${
+                    r.canCraftNow ? "text-green-400" : isStocked ? "text-blue-400/60" : "text-muted-foreground/30"
+                  }`}>
+                    {r.canCraftNow ? "✓" : isStocked ? "■" : "○"}
+                  </span>
+                  <span className="text-[10px] text-foreground flex-1 min-w-0 truncate">
+                    {r.name}
+                  </span>
+                  {stockCount > 0 && (
+                    <span className="text-[9px] text-blue-400/60 font-mono shrink-0">×{stockCount}</span>
+                  )}
+                  <span className="text-[9px] text-muted-foreground/40 shrink-0 font-mono">{machine}</span>
+                  {timeLabel ? (
+                    <span className={`text-[9px] font-mono shrink-0 tabular-nums ${
+                      r.canCraftNow ? "text-green-400/80" : hasSubCrafts ? "text-amber-300/60" : "text-muted-foreground/50"
+                    }`}>
+                      {timeLabel}
+                    </span>
+                  ) : (
+                    <span className="text-[9px] text-blue-400/40 font-mono shrink-0">stocked</span>
+                  )}
+                  <span className="text-[8px] text-muted-foreground/30 shrink-0">{isExpanded ? "▲" : "▼"}</span>
+                </button>
+
+                {isExpanded && (
+                  <div className="px-3 pb-2 pt-1 space-y-1 border-t border-border/20 bg-black/20">
+                    {r.ingredients.length === 0 && (
+                      <div className="text-[9px] text-muted-foreground/40 italic">No ingredients required.</div>
+                    )}
+                    {r.ingredients.map((ing, i) => {
+                      const label =
+                        ing.kind === "resource"
+                          ? `${ing.quantity} ECE ${ing.type.replace(/_/g, " ")}`
+                          : `${ing.quantity}× ${ing.type.replace(/_/g, " ")}`;
+                      return (
+                        <div key={i} className="flex items-center gap-2 text-[9px]">
+                          <span className={`shrink-0 ${ing.satisfied ? "text-green-400/60" : "text-red-400/60"}`}>
+                            {ing.satisfied ? "✓" : "✗"}
+                          </span>
+                          <span className="text-muted-foreground font-mono flex-1 min-w-0 truncate">{label}</span>
+                          <span className="text-muted-foreground/40 shrink-0 tabular-nums">
+                            {ing.kind === "resource"
+                              ? `${ing.have.toFixed(3)}/${ing.quantity} ECE`
+                              : `${ing.have}/${ing.quantity}`}
+                            {!ing.satisfied && (
+                              <span className="text-amber-400/60 ml-1">
+                                (need {ing.kind === "resource" ? (ing.missing as number).toFixed(3) : ing.missing} more)
+                              </span>
+                            )}
+                          </span>
+                        </div>
+                      );
+                    })}
+
+                    {r.missingResources.length > 0 && (
+                      <div className="text-[9px] text-amber-400/50 pt-1 border-t border-border/20">
+                        ⚠ need raw resources:{" "}
+                        {r.missingResources
+                          .map((m) => `${(m.need - m.have).toFixed(3)} ECE ${m.type.replace(/_/g, " ")}`)
+                          .join(", ")}
+                      </div>
+                    )}
+
+                    <div className="text-[9px] text-muted-foreground/30 pt-0.5 border-t border-border/20 flex gap-3 tabular-nums">
+                      <span>build: {fmtTime(r.durationSeconds)}</span>
+                      {hasSubCrafts && <span>sub-crafts: +{fmtTime(subCraftSecs)}</span>}
+                      {r.totalTimeSeconds > 0 && <span className="text-muted-foreground/50">total: {fmtTime(r.totalTimeSeconds)}</span>}
+                      {isStocked && <span className="text-blue-400/50">{stockCount}× in stock</span>}
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+
+          {sorted.length === 0 && (
+            <div className="text-[10px] text-muted-foreground/40 italic">No recipes found.</div>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ScheduledPanel({ refetchSignal }: { refetchSignal: number }) {
   const { data, isLoading, error, refetch } = useQuery({
     queryKey: ["scheduled-actions", refetchSignal],
@@ -857,7 +1073,13 @@ export default function Commander() {
         {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} probeId={selectedProbeId} />}
         {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
         {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
-        {sideTab === "scheduled" && <ScheduledPanel refetchSignal={logRefetch} />}
+        {sideTab === "scheduled" && (
+          <>
+            <CraftingCalcPanel probeId={selectedProbeId} />
+            <div className="my-3 border-t border-border/30" />
+            <ScheduledPanel refetchSignal={logRefetch} />
+          </>
+        )}
         {sideTab === "globe" && (
           <GlobeMap
             probeX={globeCenter.x}
