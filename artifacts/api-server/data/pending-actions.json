@@ -4061,23 +4061,6 @@
     "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
   },
   {
-    "description": "[craft queue] Electric motor (1/1) via Manny",
-    "condition": {
-      "type": "manny_idle",
-      "requireItems": [
-        "steel_bar",
-        "steel_plate"
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 239,
-    "createdAt": "2026-07-18T22:45:51.635Z",
-    "status": "pending"
-  },
-  {
     "description": "[craft queue] Steel plate (1/3) via Manny",
     "condition": {
       "type": "manny_idle"
@@ -4168,6 +4151,96 @@
     "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
   },
   {
+    "description": "[craft queue] Steel bar (1/2) via Manny",
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 248,
+    "createdAt": "2026-07-18T23:38:21.525Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-18T23:38:42.250Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
+    "description": "[craft queue] Steel bar (2/2) via Manny",
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 249,
+    "createdAt": "2026-07-18T23:38:21.529Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-18T23:38:42.533Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
+    "description": "[craft queue] Steel plate (1/1) via Manny",
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 250,
+    "createdAt": "2026-07-18T23:38:21.532Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-18T23:38:42.739Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
+    "description": "[craft queue] Steel bar (1/2) via Manny",
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 251,
+    "createdAt": "2026-07-18T23:39:18.315Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-18T23:39:44.688Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
+    "description": "[craft queue] Steel bar (2/2) via Manny",
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 252,
+    "createdAt": "2026-07-18T23:39:18.318Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-18T23:39:54.860Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
+    "description": "[craft queue] Steel plate (1/1) via Manny",
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 253,
+    "createdAt": "2026-07-18T23:39:18.334Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-18T23:40:00.994Z",
+    "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
+  },
+  {
     "description": "[craft queue] Electric motor (1/1) via Manny",
     "condition": {
       "type": "manny_idle",
@@ -4180,26 +4253,8 @@
       "type": "craft_item",
       "recipe": "electric_motor"
     },
-    "id": 246,
-    "createdAt": "2026-07-18T22:45:51.947Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Linear actuator (1/1) via Manny",
-    "condition": {
-      "type": "manny_idle",
-      "requireItems": [
-        "steel_plate",
-        "steel_bar",
-        "electric_motor"
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "linear_actuator"
-    },
-    "id": 247,
-    "createdAt": "2026-07-18T22:45:51.949Z",
+    "id": 254,
+    "createdAt": "2026-07-18T23:39:18.338Z",
     "status": "pending"
   }
 ]

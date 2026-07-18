@@ -635,11 +635,12 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
   const [machineFilter, setMachineFilter] = useState<"all" | "manny" | "printer">("all");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [queueStatus, setQueueStatus] = useState<Map<string, "loading" | "ok" | "err">>(new Map());
+  const [queueToast, setQueueToast] = useState<{ count: number; name: string } | null>(null);
 
   const queueItem = async (r: CraftRecipe) => {
     setQueueStatus((prev) => new Map(prev).set(r.id, "loading"));
     try {
-      await fetchJson(`${BASE}/api/vng/log/crafting-queue`, {
+      const result = await fetchJson(`${BASE}/api/vng/log/crafting-queue`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -649,6 +650,8 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
         }),
       });
       setQueueStatus((prev) => new Map(prev).set(r.id, "ok"));
+      setQueueToast({ count: result.queued ?? 1, name: r.name });
+      setTimeout(() => setQueueToast(null), 5000);
       setTimeout(
         () => setQueueStatus((prev) => { const n = new Map(prev); n.delete(r.id); return n; }),
         3000
@@ -703,6 +706,16 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
 
   return (
     <div className="space-y-2">
+      {/* Queue confirmation toast */}
+      {queueToast && (
+        <div className="flex items-center gap-2 px-2 py-1.5 rounded border border-green-800/50 bg-green-900/20 text-[10px]">
+          <span className="text-green-400">✓</span>
+          <span className="text-green-300/80 flex-1">
+            <span className="font-semibold">{queueToast.count} task{queueToast.count !== 1 ? "s" : ""}</span> queued for <span className="font-semibold">{queueToast.name}</span> — idle Mannies will self-assign
+          </span>
+          <button onClick={() => setQueueToast(null)} className="text-green-600/60 hover:text-green-400 ml-1">✕</button>
+        </div>
+      )}
       <div className="flex items-center justify-between">
         <div className="text-xs text-muted-foreground tracking-widest">CRAFTING CALCULATOR</div>
         {!isLoading && !error && (

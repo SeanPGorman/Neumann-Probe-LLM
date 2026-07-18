@@ -147,8 +147,17 @@ async function poll(): Promise<void> {
       if (action.action.type === "move_probe") probeMoveClaimed = true;
     } catch (err: any) {
       const msg = err?.message ?? String(err);
-      logger.error({ actionId: action.id, err: msg }, "poller: action execution failed");
-      await resolvePendingAction(action.id, { status: "failed", error: msg });
+      // 422 "Insufficient resources" means the probe doesn't have raw materials yet.
+      // Keep the action pending so it retries on the next poll cycle (don't fail it).
+      if (msg.includes("Insufficient resources") || msg.includes("insufficient resources")) {
+        logger.info(
+          { actionId: action.id, description: action.description },
+          "poller: insufficient resources — keeping pending, will retry next poll"
+        );
+      } else {
+        logger.error({ actionId: action.id, err: msg }, "poller: action execution failed");
+        await resolvePendingAction(action.id, { status: "failed", error: msg });
+      }
     }
   }
 }
