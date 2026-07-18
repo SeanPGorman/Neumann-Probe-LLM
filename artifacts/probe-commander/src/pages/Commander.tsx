@@ -634,6 +634,33 @@ type CraftRecipe = {
 function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
   const [machineFilter, setMachineFilter] = useState<"all" | "manny" | "printer">("all");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
+  const [queueStatus, setQueueStatus] = useState<Map<string, "loading" | "ok" | "err">>(new Map());
+
+  const queueItem = async (r: CraftRecipe) => {
+    setQueueStatus((prev) => new Map(prev).set(r.id, "loading"));
+    try {
+      await fetchJson(`${BASE}/api/vng/log/crafting-queue`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          recipeId: r.id,
+          quantity: 1,
+          ...(probeId != null ? { probeId } : {}),
+        }),
+      });
+      setQueueStatus((prev) => new Map(prev).set(r.id, "ok"));
+      setTimeout(
+        () => setQueueStatus((prev) => { const n = new Map(prev); n.delete(r.id); return n; }),
+        3000
+      );
+    } catch {
+      setQueueStatus((prev) => new Map(prev).set(r.id, "err"));
+      setTimeout(
+        () => setQueueStatus((prev) => { const n = new Map(prev); n.delete(r.id); return n; }),
+        3000
+      );
+    }
+  };
 
   const { data, isLoading, error } = useQuery({
     queryKey: ["crafting-calc", probeId],
@@ -729,33 +756,62 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
               <div key={r.id} className={`border rounded overflow-hidden ${
                 r.canCraftNow ? "border-green-900/50" : isStocked ? "border-blue-900/30" : "border-border/30"
               }`}>
-                <button
-                  onClick={() => toggle(r.id)}
-                  className="w-full flex items-center gap-1.5 px-2 py-1.5 text-left hover:bg-primary/5 transition-colors"
-                >
-                  <span className={`text-[9px] font-mono w-3 shrink-0 ${
-                    r.canCraftNow ? "text-green-400" : isStocked ? "text-blue-400/60" : "text-muted-foreground/30"
-                  }`}>
-                    {r.canCraftNow ? "✓" : isStocked ? "■" : "○"}
-                  </span>
-                  <span className="text-[10px] text-foreground flex-1 min-w-0 truncate">
-                    {r.name}
-                  </span>
-                  {stockCount > 0 && (
-                    <span className="text-[9px] text-blue-400/60 font-mono shrink-0">×{stockCount}</span>
-                  )}
-                  <span className="text-[9px] text-muted-foreground/40 shrink-0 font-mono">{machine}</span>
-                  {timeLabel ? (
-                    <span className={`text-[9px] font-mono shrink-0 tabular-nums ${
-                      r.canCraftNow ? "text-green-400/80" : hasSubCrafts ? "text-amber-300/60" : "text-muted-foreground/50"
+                <div className="w-full flex items-center gap-1.5 px-2 py-1.5 hover:bg-primary/5 transition-colors">
+                  {/* Expand/collapse zone — takes all space except the + button */}
+                  <div
+                    role="button"
+                    tabIndex={0}
+                    onClick={() => toggle(r.id)}
+                    onKeyDown={(e) => e.key === "Enter" && toggle(r.id)}
+                    className="flex items-center gap-1.5 flex-1 min-w-0 cursor-pointer"
+                  >
+                    <span className={`text-[9px] font-mono w-3 shrink-0 ${
+                      r.canCraftNow ? "text-green-400" : isStocked ? "text-blue-400/60" : "text-muted-foreground/30"
                     }`}>
-                      {timeLabel}
+                      {r.canCraftNow ? "✓" : isStocked ? "■" : "○"}
                     </span>
-                  ) : (
-                    <span className="text-[9px] text-blue-400/40 font-mono shrink-0">stocked</span>
-                  )}
-                  <span className="text-[8px] text-muted-foreground/30 shrink-0">{isExpanded ? "▲" : "▼"}</span>
-                </button>
+                    <span className="text-[10px] text-foreground flex-1 min-w-0 truncate">
+                      {r.name}
+                    </span>
+                    {stockCount > 0 && (
+                      <span className="text-[9px] text-blue-400/60 font-mono shrink-0">×{stockCount}</span>
+                    )}
+                    <span className="text-[9px] text-muted-foreground/40 shrink-0 font-mono">{machine}</span>
+                    {timeLabel ? (
+                      <span className={`text-[9px] font-mono shrink-0 tabular-nums ${
+                        r.canCraftNow ? "text-green-400/80" : hasSubCrafts ? "text-amber-300/60" : "text-muted-foreground/50"
+                      }`}>
+                        {timeLabel}
+                      </span>
+                    ) : (
+                      <span className="text-[9px] text-blue-400/40 font-mono shrink-0">stocked</span>
+                    )}
+                    <span className="text-[8px] text-muted-foreground/30 shrink-0">{isExpanded ? "▲" : "▼"}</span>
+                  </div>
+                  {/* Queue button */}
+                  <button
+                    onClick={() => queueItem(r)}
+                    disabled={queueStatus.get(r.id) === "loading"}
+                    title="Add to craft queue"
+                    className={`shrink-0 w-5 h-5 flex items-center justify-center rounded text-[10px] font-bold transition-colors ${
+                      queueStatus.get(r.id) === "ok"
+                        ? "text-green-400 bg-green-900/30"
+                        : queueStatus.get(r.id) === "err"
+                        ? "text-red-400 bg-red-900/30"
+                        : queueStatus.get(r.id) === "loading"
+                        ? "text-muted-foreground/40 cursor-wait"
+                        : "text-primary/50 hover:text-primary hover:bg-primary/10"
+                    }`}
+                  >
+                    {queueStatus.get(r.id) === "loading"
+                      ? "…"
+                      : queueStatus.get(r.id) === "ok"
+                      ? "✓"
+                      : queueStatus.get(r.id) === "err"
+                      ? "!"
+                      : "+"}
+                  </button>
+                </div>
 
                 {isExpanded && (
                   <div className="px-3 pb-2 pt-1 space-y-1 border-t border-border/20 bg-black/20">

@@ -46,22 +46,26 @@ export type DetachedContainer = {
 
 export type ConditionMannyIdle = {
   type: "manny_idle";
-  mannyId: string;
-  mannyName: string;
+  /** Omit to allow ANY idle Manny to pick up this task at fire time */
+  mannyId?: string;
+  mannyName?: string;
   /** Optional: also wait until ALL of these item types exist in probe inventory (for dependency chains) */
   requireItems?: string[];
 };
 export type ConditionProbeIdle = { type: "probe_idle" };
 export type PendingCondition = ConditionMannyIdle | ConditionProbeIdle;
 
-export type ActionMoveProbe    = { type: "move_probe"; x: number; y: number; z: number };
-export type ActionCraftItem    = { type: "craft_item"; mannyId: string; recipe: string };
-export type ActionMineResources = { type: "mine_resources"; mannyId: string; objectId: string; resources: string[]; targetAmount: number; targetContainerId?: string };
+export type ActionMoveProbe       = { type: "move_probe"; x: number; y: number; z: number };
+/** mannyId is optional — omit when scheduling via the crafting queue (any Manny picks it up at fire time) */
+export type ActionCraftItem       = { type: "craft_item"; mannyId?: string; recipe: string };
+export type ActionAtomicPrinterCraft = { type: "atomic_printer_craft"; recipe: string };
+export type ActionMineResources   = { type: "mine_resources"; mannyId: string; objectId: string; resources: string[]; targetAmount: number; targetContainerId?: string };
 export type ActionDetachContainer = { type: "detach_container"; mannyId: string; containerId: string };
 export type ActionRecoverContainer = { type: "recover_container"; mannyId: string; objectId: string };
 export type PendingActionPayload =
   | ActionMoveProbe
   | ActionCraftItem
+  | ActionAtomicPrinterCraft
   | ActionMineResources
   | ActionDetachContainer
   | ActionRecoverContainer;

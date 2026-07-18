@@ -4,6 +4,8 @@ import {
   getSectors,
   updateContainerStatus,
   recordSector,
+  addPendingAction,
+  type PendingAction,
 } from "./file-store.js";
 import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
@@ -269,6 +271,129 @@ router.get("/crafting-calc", async (req, res) => {
     res.json({
       recipes: result,
       inventory: { items: itemCountByType, resources: resourceByType },
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post("/crafting-queue", async (req, res) => {
+  try {
+    const probeId = req.body.probeId != null ? Number(req.body.probeId) : null;
+    const recipeId: string = req.body.recipeId;
+    const quantity: number = Math.max(1, parseInt(String(req.body.quantity ?? "1"), 10));
+
+    if (!recipeId) {
+      res.status(400).json({ error: "recipeId is required" });
+      return;
+    }
+
+    const [probeResp, recipesResp] = await Promise.all([
+      clientFor(probeId).getProbe().catch(() => null),
+      getCraftingRecipes().catch(() => ({ recipes: [] })),
+    ]);
+
+    const inv = probeResp?.probe?.inventory ?? {};
+    const inventoryItems: any[] = inv.items ?? [];
+    const itemCountByType: Record<string, number> = {};
+    for (const item of inventoryItems) {
+      const type: string = item.type ?? item.id;
+      if (type === "manny" || type === "atomic_3d_printer") continue;
+      itemCountByType[type] = (itemCountByType[type] ?? 0) + 1;
+    }
+
+    const recipes: any[] = recipesResp.recipes ?? [];
+    const recipeById = new Map<string, any>(recipes.map((r: any) => [r.id, r]));
+
+    if (!recipeById.has(recipeId)) {
+      res.status(404).json({ error: `Recipe not found: ${recipeId}` });
+      return;
+    }
+
+    // ── Step 1: Compute total raw need for the full dependency tree ───────────
+    const totalNeeds = new Map<string, number>();
+    function collectNeeds(id: string, qty: number): void {
+      const r = recipeById.get(id);
+      if (!r) return;
+      totalNeeds.set(id, (totalNeeds.get(id) ?? 0) + qty);
+      for (const ing of r.ingredients ?? []) {
+        if (ing.kind === "item") collectNeeds(ing.type, (ing.quantity as number) * qty);
+      }
+    }
+    collectNeeds(recipeId, quantity);
+
+    // ── Step 2: Work orders — top-level always crafted; sub-items use inventory ─
+    const workOrders = new Map<string, number>();
+    workOrders.set(recipeId, quantity); // always produce what was requested
+    for (const [id, needed] of totalNeeds) {
+      if (id === recipeId) continue;
+      const inStock = itemCountByType[id] ?? 0;
+      const toCraft = Math.max(0, needed - inStock);
+      if (toCraft > 0) workOrders.set(id, toCraft);
+    }
+
+    // ── Step 3: Topological depth (leaves = 0, complex items = higher) ────────
+    const depthMemo = new Map<string, number>();
+    function itemDepth(id: string): number {
+      if (depthMemo.has(id)) return depthMemo.get(id)!;
+      const r = recipeById.get(id);
+      if (!r) { depthMemo.set(id, 0); return 0; }
+      const itemDeps = (r.ingredients ?? []).filter((i: any) => i.kind === "item");
+      const d = itemDeps.length === 0
+        ? 0
+        : Math.max(...itemDeps.map((i: any) => itemDepth(i.type as string) + 1));
+      depthMemo.set(id, d);
+      return d;
+    }
+    for (const id of workOrders.keys()) itemDepth(id);
+
+    // Sort leaves-first so leaf tasks appear first in the queue file
+    const sorted = [...workOrders.entries()].sort(
+      (a, b) => itemDepth(a[0]) - itemDepth(b[0])
+    );
+
+    // ── Step 4: requireItems = direct item deps also being crafted ────────────
+    function requireItemsFor(id: string): string[] {
+      const r = recipeById.get(id);
+      if (!r) return [];
+      return [...new Set<string>(
+        (r.ingredients ?? [])
+          .filter((i: any) => i.kind === "item" && workOrders.has(i.type as string))
+          .map((i: any) => i.type as string)
+      )];
+    }
+
+    // ── Step 5: Schedule tasks ────────────────────────────────────────────────
+    const scheduled: PendingAction[] = [];
+    for (const [id, qty] of sorted) {
+      const r = recipeById.get(id)!;
+      const craftableBy: string[] = r.craftableBy ?? [];
+      const byPrinter = craftableBy.includes("atomic_3d_printer") && !craftableBy.includes("manny");
+      const reqs = requireItemsFor(id);
+      const machineName = byPrinter ? "atomic printer" : "Manny";
+
+      for (let i = 0; i < qty; i++) {
+        const entry = await addPendingAction({
+          description: `[craft queue] ${r.name as string} (${i + 1}/${qty}) via ${machineName}`,
+          condition: byPrinter
+            ? { type: "probe_idle" }
+            : { type: "manny_idle", ...(reqs.length ? { requireItems: reqs } : {}) },
+          action: byPrinter
+            ? { type: "atomic_printer_craft", recipe: id }
+            : { type: "craft_item", recipe: id },
+        });
+        scheduled.push(entry);
+      }
+    }
+
+    res.json({
+      queued: scheduled.length,
+      breakdown: sorted.map(([id, qty]) => ({
+        id,
+        name: (recipeById.get(id)?.name as string) ?? id,
+        quantity: qty,
+        depth: itemDepth(id),
+      })),
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });

@@ -9,51 +9,24 @@ import {
 const POLL_INTERVAL_MS = 30_000;
 let started = false;
 
-async function checkCondition(
+async function executeAction(
   action: PendingAction,
-  mannies: any[],
-  probe: any
-): Promise<boolean> {
-  const cond = action.condition;
-  if (cond.type === "manny_idle") {
-    const m = mannies.find((m: any) => m.id === cond.mannyId);
-    if (!m || m.currentTask) return false;
-
-    // Optional inventory dependency guard: all required item types must exist
-    if (cond.requireItems && cond.requireItems.length > 0) {
-      const inventoryItems: any[] = probe?.inventory?.items ?? [];
-      const inventoryContainers: any[] = probe?.inventory?.containers ?? [];
-      // item types come from inv.items; container items are checked by label/name too
-      const itemTypes = new Set([
-        ...inventoryItems.map((i: any) => i.type),
-        ...inventoryContainers.map((c: any) => c.kind),
-      ]);
-      const allPresent = cond.requireItems.every((req) => itemTypes.has(req));
-      if (!allPresent) {
-        logger.info(
-          { actionId: action.id, requireItems: cond.requireItems, found: [...itemTypes] },
-          "poller: manny idle but required items not yet in inventory — waiting"
-        );
-        return false;
-      }
-    }
-
-    return true;
-  }
-  if (cond.type === "probe_idle") {
-    return probe?.movement?.status !== "moving";
-  }
-  return false;
-}
-
-async function executeAction(action: PendingAction): Promise<void> {
+  selectedMannyId: string | null
+): Promise<void> {
   const a = action.action;
+  // For craft_item the mannyId may have been resolved dynamically
+  const mannyId = selectedMannyId ?? (a as any).mannyId as string | undefined;
+
   switch (a.type) {
     case "move_probe":
       await client.moveProbe(a.x, a.y, a.z);
       break;
     case "craft_item":
-      await client.craftItem(a.mannyId, a.recipe);
+      if (!mannyId) throw new Error("craft_item: no Manny selected");
+      await client.craftItem(mannyId, a.recipe);
+      break;
+    case "atomic_printer_craft":
+      await client.atomicPrinterCraft(a.recipe);
       break;
     case "mine_resources":
       await client.mineResources(
@@ -75,20 +48,6 @@ async function executeAction(action: PendingAction): Promise<void> {
   }
 }
 
-/** Return the manny ID that an action will occupy, if any. */
-function actionMannyId(action: PendingAction): string | null {
-  const a = action.action;
-  if (
-    a.type === "craft_item" ||
-    a.type === "mine_resources" ||
-    a.type === "detach_container" ||
-    a.type === "recover_container"
-  ) {
-    return a.mannyId;
-  }
-  return null;
-}
-
 async function poll(): Promise<void> {
   const pending = await getPendingActions();
   if (pending.length === 0) return;
@@ -108,51 +67,83 @@ async function poll(): Promise<void> {
   const mannies: any[] = manniesResp?.mannies ?? [];
   const probe = probeResp?.probe ?? null;
 
-  // Track mannies and singleton resources claimed this cycle so we only fire
-  // one action per manny (and one probe-move) per poll tick.
+  // Track resources claimed this poll cycle
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
 
   for (const action of pending) {
-    // Check if the resource this action needs is already claimed this cycle
-    const mannyId = actionMannyId(action);
-    if (mannyId && claimedMannies.has(mannyId)) {
-      logger.info(
-        { actionId: action.id, mannyId },
-        "poller: manny already claimed this cycle — deferring to next tick"
-      );
-      continue;
-    }
-    if (action.action.type === "move_probe" && probeMoveClaimed) {
-      logger.info(
-        { actionId: action.id },
-        "poller: probe move already claimed this cycle — deferring"
-      );
-      continue;
-    }
+    let selectedMannyId: string | null = null;
 
-    let conditionMet = false;
-    try {
-      conditionMet = await checkCondition(action, mannies, probe);
-    } catch (err) {
-      logger.warn({ err, actionId: action.id }, "poller: condition check error");
-      continue;
-    }
+    // ── manny_idle ────────────────────────────────────────────────────────────
+    if (action.condition.type === "manny_idle") {
+      const cond = action.condition;
 
-    if (!conditionMet) continue;
+      // 1. requireItems guard — all dependency item types must exist in inventory
+      if (cond.requireItems && cond.requireItems.length > 0) {
+        const itemTypes = new Set(
+          (probe?.inventory?.items ?? []).map((i: any) => i.type as string)
+        );
+        const allPresent = cond.requireItems.every((req) => itemTypes.has(req));
+        if (!allPresent) {
+          logger.info(
+            { actionId: action.id, requireItems: cond.requireItems, found: [...itemTypes] },
+            "poller: required items not yet in inventory — waiting"
+          );
+          continue;
+        }
+      }
+
+      // 2. Manny selection
+      if (cond.mannyId) {
+        // Pre-assigned Manny
+        if (claimedMannies.has(cond.mannyId)) {
+          logger.info(
+            { actionId: action.id, mannyId: cond.mannyId },
+            "poller: manny already claimed this cycle — deferring"
+          );
+          continue;
+        }
+        const m = mannies.find((m: any) => m.id === cond.mannyId);
+        if (!m || m.currentTask) continue;
+        selectedMannyId = m.id;
+      } else {
+        // Any idle Manny — pick the first unclaimed idle one
+        const m = mannies.find(
+          (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+        );
+        if (!m) {
+          logger.info(
+            { actionId: action.id },
+            "poller: no idle Manny available — deferring"
+          );
+          continue;
+        }
+        selectedMannyId = m.id;
+      }
+
+    // ── probe_idle ────────────────────────────────────────────────────────────
+    } else if (action.condition.type === "probe_idle") {
+      if (probe?.movement?.status === "moving") continue;
+      if (action.action.type === "move_probe" && probeMoveClaimed) {
+        logger.info(
+          { actionId: action.id },
+          "poller: probe move already claimed this cycle — deferring"
+        );
+        continue;
+      }
+    }
 
     logger.info(
-      { actionId: action.id, description: action.description },
+      { actionId: action.id, description: action.description, selectedMannyId },
       "poller: condition met — executing action"
     );
 
     try {
-      await executeAction(action);
+      await executeAction(action, selectedMannyId);
       await resolvePendingAction(action.id, { status: "triggered" });
       logger.info({ actionId: action.id }, "poller: action triggered successfully");
 
-      // Mark the resource as claimed so subsequent actions skip this cycle
-      if (mannyId) claimedMannies.add(mannyId);
+      if (selectedMannyId) claimedMannies.add(selectedMannyId);
       if (action.action.type === "move_probe") probeMoveClaimed = true;
     } catch (err: any) {
       const msg = err?.message ?? String(err);
