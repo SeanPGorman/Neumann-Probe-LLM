@@ -74,6 +74,8 @@ export type PendingAction = {
   id: number;
   description: string;
   createdAt: string;
+  /** Which probe's Mannies/resources to use. null/absent = main probe (SnoozyBob). */
+  probeId?: number | null;
   condition: PendingCondition;
   action: PendingActionPayload;
   status: "pending" | "triggered" | "failed";

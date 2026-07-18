@@ -414,6 +414,7 @@ function makeHandlers(probeId?: number | null): Record<string, Handler> {
     schedule_action: async (a) => {
       const entry = await addPendingAction({
         description: a.description as string,
+        probeId: probeId,
         condition: a.condition as any,
         action: a.action as any,
       });

@@ -375,6 +375,7 @@ router.post("/crafting-queue", async (req, res) => {
       for (let i = 0; i < qty; i++) {
         const entry = await addPendingAction({
           description: `[craft queue] ${r.name as string} (${i + 1}/${qty}) via ${machineName}`,
+          probeId: probeId,
           condition: byPrinter
             ? { type: "probe_idle" }
             : { type: "manny_idle", ...(reqs.length ? { requireItems: reqs } : {}) },
