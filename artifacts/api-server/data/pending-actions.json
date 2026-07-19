@@ -4241,7 +4241,53 @@
     "error": "VNG API error (422): Insufficient resources in probe inventory for this recipe."
   },
   {
+    "description": "[craft queue] Steel bar (1/2) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 254,
+    "createdAt": "2026-07-19T00:13:57.349Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-19T00:14:20.283Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/2) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 255,
+    "createdAt": "2026-07-19T00:13:57.352Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-19T00:14:20.756Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/1) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 256,
+    "createdAt": "2026-07-19T00:13:57.354Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-19T00:14:20.972Z"
+  },
+  {
     "description": "[craft queue] Electric motor (1/1) via Manny",
+    "probeId": 716,
     "condition": {
       "type": "manny_idle",
       "requireItems": [
@@ -4253,9 +4299,8 @@
       "type": "craft_item",
       "recipe": "electric_motor"
     },
-    "id": 254,
-    "createdAt": "2026-07-18T23:39:18.338Z",
-    "status": "pending",
-    "probeId": 716
+    "id": 257,
+    "createdAt": "2026-07-19T00:13:57.357Z",
+    "status": "pending"
   }
 ]
