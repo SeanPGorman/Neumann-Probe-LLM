@@ -977,6 +977,15 @@ export default function Commander() {
 
   // Fill-window-width preference. Pane sizes persist via the panel group's
   // autoSaveId; this boolean is the only value we hand-persist.
+  // Which AI brain runs the order. "openai" (default) = the built-in loop;
+  // "claude" = the local Claude CLI. Persisted so the operator's pick sticks.
+  const [brain, setBrain] = useState<"openai" | "claude">(() => {
+    try { return (localStorage.getItem("vng.brain") as "openai" | "claude") || "openai"; } catch { return "openai"; }
+  });
+  useEffect(() => {
+    try { localStorage.setItem("vng.brain", brain); } catch {}
+  }, [brain]);
+
   const [fillWidth, setFillWidth] = useState<boolean>(() => {
     try { return localStorage.getItem("pc-fill-width") === "1"; } catch { return false; }
   });
@@ -1051,7 +1060,7 @@ export default function Commander() {
       const res = await fetch(`${BASE}/api/vng/command`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ command: cmd, probeId: selectedProbeId }),
+        body: JSON.stringify({ command: cmd, probeId: selectedProbeId, provider: brain }),
       });
       if (!res.ok || !res.body) throw new Error(`Server error: ${res.status}`);
       const reader = res.body.getReader();
@@ -1083,7 +1092,7 @@ export default function Commander() {
     setLiveEvents([]);
     setIsRunning(false);
     setLogRefetch(n => n + 1);
-  }, [input, isRunning, selectedProbeId]);
+  }, [input, isRunning, selectedProbeId, brain]);
 
   const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); sendCommand(); }
@@ -1251,6 +1260,15 @@ export default function Commander() {
               className="w-full bg-transparent text-foreground text-sm placeholder:text-muted-foreground/40 resize-none outline-none font-mono"
             />
           </div>
+          <select
+            value={brain}
+            onChange={e => setBrain(e.target.value as "openai" | "claude")}
+            disabled={isRunning}
+            title="Which AI brain executes the order"
+            className="shrink-0 px-2 py-2 text-xs tracking-widest font-bold border border-border rounded bg-card/60 text-muted-foreground outline-none transition-all hover:text-primary hover:border-primary disabled:opacity-30 disabled:cursor-not-allowed">
+            <option value="openai">OPENAI</option>
+            <option value="claude">CLAUDE</option>
+          </select>
           <button onClick={sendCommand} disabled={isRunning || !input.trim()}
             className="shrink-0 px-4 py-2 text-xs tracking-widest font-bold border rounded transition-all border-primary text-primary hover:bg-primary hover:text-primary-foreground disabled:opacity-30 disabled:cursor-not-allowed">
             {isRunning ? "…" : "EXECUTE"}

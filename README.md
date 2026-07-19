@@ -72,6 +72,20 @@ pnpm monorepo
 
 Set via Replit Secrets — never commit these values.
 
+### Brain selection (optional)
+
+The game "brain" runs on OpenAI by default. All of these are optional; with none set, behavior is unchanged.
+
+| Var | Default | Purpose |
+|---|---|---|
+| `VNG_BRAIN` | `openai` | Server-wide default brain: `openai` or `claude`. A per-request `provider` field on `POST /api/vng/command` overrides it. |
+| `VNG_SAFE_ONLY` | off | When truthy, limits **both** brains to safe/reversible tools only (see `tool-policy.ts`). |
+| `CLAUDE_BRAIN_MODEL` | `sonnet` | Model for the Claude brain. |
+| `CLAUDE_BIN` | — | Full path to the `claude` executable if not on `PATH` (a real executable, not a `.cmd`/`.bat` shim). |
+| `VNG_CLAUDE_SUBSCRIPTION` | off | When set, drops `ANTHROPIC_API_KEY` from the CLI's env to force subscription (OAuth) login. |
+
+The Claude brain requires the local Claude CLI to be installed and signed in; it is spawned without a shell and drives the same game tools over a stdio MCP server.
+
 ---
 
 ## Running
