@@ -315,17 +315,24 @@ router.post("/command", async (req, res) => {
     return;
   }
 
+  // Which brain runs the order. Default "openai" (the loop below, unchanged);
+  // set VNG_BRAIN=claude (or send { provider: "claude" }) to use the local
+  // Claude CLI. A per-request provider wins over the env default. Validated
+  // here — before the SSE headers flush — so an unknown value is a clean 400
+  // rather than a silent fallback to OpenAI (which would bill per-token while
+  // the operator believes they picked another brain).
+  const provider = String(
+    bodyProvider || process.env.VNG_BRAIN || "openai",
+  ).toLowerCase();
+  if (provider !== "openai" && provider !== "claude") {
+    res.status(400).json({ error: `Unknown brain provider: ${provider}` });
+    return;
+  }
+
   res.setHeader("Content-Type", "text/event-stream");
   res.setHeader("Cache-Control", "no-cache");
   res.setHeader("Connection", "keep-alive");
   res.flushHeaders();
-
-  // Which brain runs the order. Default "openai" (the loop below, unchanged);
-  // set VNG_BRAIN=claude (or send { provider: "claude" }) to use the local
-  // Claude CLI. A per-request provider wins over the env default.
-  const provider = String(
-    bodyProvider || process.env.VNG_BRAIN || "openai",
-  ).toLowerCase();
 
   if (provider === "claude") {
     const sessionId = bodySessionId?.trim() || randomUUID();
@@ -772,9 +779,11 @@ async function runClaudeBrain(
       }
     });
 
+    // Only the first 500 chars are ever surfaced (see the close handler); cap
+    // the buffer so a chatty child can't grow it unbounded over the 180s window.
     let stderrBuf = "";
     child.stderr!.on("data", (chunk) => {
-      stderrBuf += chunk.toString();
+      if (stderrBuf.length < 8192) stderrBuf += chunk.toString();
     });
 
     child.on("error", (err) => {
