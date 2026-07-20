@@ -635,9 +635,11 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
   const [machineFilter, setMachineFilter] = useState<"all" | "manny" | "printer">("all");
   const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const [queueStatus, setQueueStatus] = useState<Map<string, "loading" | "ok" | "err">>(new Map());
+  const [queueQty, setQueueQty] = useState<Map<string, number>>(new Map());
   const [queueToast, setQueueToast] = useState<{ count: number; name: string } | null>(null);
 
   const queueItem = async (r: CraftRecipe) => {
+    const qty = Math.max(1, queueQty.get(r.id) ?? 1);
     setQueueStatus((prev) => new Map(prev).set(r.id, "loading"));
     try {
       const result = await fetchJson(`${BASE}/api/vng/log/crafting-queue`, {
@@ -645,12 +647,12 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           recipeId: r.id,
-          quantity: 1,
+          quantity: qty,
           ...(probeId != null ? { probeId } : {}),
         }),
       });
       setQueueStatus((prev) => new Map(prev).set(r.id, "ok"));
-      setQueueToast({ count: result.queued ?? 1, name: r.name });
+      setQueueToast({ count: result.queued ?? qty, name: r.name });
       setTimeout(() => setQueueToast(null), 5000);
       setTimeout(
         () => setQueueStatus((prev) => { const n = new Map(prev); n.delete(r.id); return n; }),
@@ -706,9 +708,9 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
 
   return (
     <div className="space-y-2">
-      {/* Queue confirmation toast */}
+      {/* Queue confirmation toast — fixed so it floats over content without shifting layout */}
       {queueToast && (
-        <div className="flex items-center gap-2 px-2 py-1.5 rounded border border-green-800/50 bg-green-900/20 text-[10px]">
+        <div className="fixed bottom-4 right-4 z-50 flex items-center gap-2 px-3 py-2 rounded border border-green-800/50 bg-green-950/95 shadow-lg text-[10px] max-w-xs">
           <span className="text-green-400">✓</span>
           <span className="text-green-300/80 flex-1">
             <span className="font-semibold">{queueToast.count} task{queueToast.count !== 1 ? "s" : ""}</span> queued for <span className="font-semibold">{queueToast.name}</span> — idle Mannies will self-assign
@@ -801,7 +803,18 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
                     )}
                     <span className="text-[8px] text-muted-foreground/30 shrink-0">{isExpanded ? "▲" : "▼"}</span>
                   </div>
-                  {/* Queue button */}
+                  {/* Quantity + queue button */}
+                  <input
+                    type="number"
+                    min={1}
+                    value={queueQty.get(r.id) ?? 1}
+                    onChange={(e) => {
+                      const v = Math.max(1, parseInt(e.target.value, 10) || 1);
+                      setQueueQty((prev) => new Map(prev).set(r.id, v));
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="shrink-0 w-8 h-5 text-center text-[10px] bg-black/30 border border-border/40 rounded text-foreground focus:outline-none focus:border-primary/50 tabular-nums"
+                  />
                   <button
                     onClick={() => queueItem(r)}
                     disabled={queueStatus.get(r.id) === "loading"}
