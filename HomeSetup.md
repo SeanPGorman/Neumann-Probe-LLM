@@ -242,6 +242,29 @@ If everything is working, the PROBE tab will show your probe's name, sector, fue
 
 ---
 
+## Optional — Use Claude instead of OpenAI
+
+By default the app uses OpenAI to run your natural-language commands (the `AI_INTEGRATIONS_OPENAI_*` settings from Step 4). If you'd rather use Anthropic's Claude, the app can run commands through the local **Claude CLI** instead — the same tools, just a different brain.
+
+**One-time setup:**
+
+1. Install the Claude CLI (Claude Code) and sign in — see Anthropic's install docs. Confirm it works by running `claude --version` in a terminal.
+2. Tell the app to use it. Either:
+   - set `VNG_BRAIN=claude` in `artifacts\api-server\.env` to make Claude the default, **or**
+   - leave the default as OpenAI and switch per-command using the **OPENAI / CLAUDE** selector next to the command box (your choice is remembered).
+
+**Auth:** by default the Claude CLI uses whatever it's configured with — an `ANTHROPIC_API_KEY` in your environment, or your signed-in (subscription) login. If you have both and want to force the subscription login, set `VNG_CLAUDE_SUBSCRIPTION=1`.
+
+**Model:** defaults to `sonnet`; override with `CLAUDE_BRAIN_MODEL`.
+
+**If the app can't find the CLI:** it looks for `claude` on your `PATH` (and in `~/.local/bin`). For safety it runs the CLI **without a shell**, so on Windows a `.cmd`/`.bat` shim (the usual `npm`-global layout) won't work directly — if you see a "set CLAUDE_BIN" error, point `CLAUDE_BIN` at the real `claude` executable, e.g. `CLAUDE_BIN=C:\path\to\claude.exe`.
+
+> **Note:** The Claude brain runs the same game tools as the OpenAI brain, and both keep the local map/sector history in sync after each command.
+
+### Optional — restrict the brain to safe (reversible) actions
+
+By default either brain can run **any** game tool, including irreversible ones (jumping/moving the probe, jettisoning or salvaging, sending messages to other players, etc.). If you'd rather the AI only ever perform reversible/read-only actions — scanning, mining, crafting, managing your workers, scheduling — set `VNG_SAFE_ONLY=1` in `artifacts\api-server\.env`. This applies to **both** brains. It is off by default, so nothing changes unless you turn it on.
+
 ## Alternative — Desktop app (no browser, no terminal after setup)
 
 The repo includes an Electron wrapper (`artifacts\electron-app\`) that packages everything into a double-clickable `.exe`. On first launch it shows a setup screen where you enter your credentials — no `.env` files or Command Prompt required after that.
@@ -300,3 +323,8 @@ These are saved privately on your computer. The app remembers them from then on.
 | `AI_INTEGRATIONS_OPENAI_API_KEY` | `api-server\.env` | Authenticates with your AI service (**required**) |
 | `PORT` | both `.env` files | Which port each server runs on |
 | `BASE_PATH` | auto-detected | Defaults to `/`; set by Replit automatically when hosted there |
+| `VNG_BRAIN` | `api-server\.env` | Which AI brain runs commands: `openai` (default) or `claude` (see below) |
+| `CLAUDE_BRAIN_MODEL` | `api-server\.env` | Claude model to use when the Claude brain runs (default `sonnet`) |
+| `VNG_CLAUDE_SUBSCRIPTION` | `api-server\.env` | Optional; when set, forces the Claude CLI to use its subscription (OAuth) login instead of `ANTHROPIC_API_KEY` |
+| `CLAUDE_BIN` | `api-server\.env` | Optional; full path to the `claude` executable if it isn't found on `PATH` (must be a real executable, not a `.cmd`/`.bat` shim) |
+| `VNG_SAFE_ONLY` | `api-server\.env` | Optional; when set, limits **both** brains to safe/reversible tools (default off — full tool set) |

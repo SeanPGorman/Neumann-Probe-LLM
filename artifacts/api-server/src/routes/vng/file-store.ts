@@ -1,7 +1,12 @@
 import { promises as fs } from "fs";
 import path from "path";
 
-const DATA_DIR = process.env['DATA_DIR']
+/**
+ * Resolved once and exported so callers that spawn a subprocess writing the same
+ * store (the Claude brain's MCP server) can pass this exact absolute path down,
+ * rather than each recomputing it against a different cwd.
+ */
+export const DATA_DIR = process.env['DATA_DIR']
   ? path.resolve(process.env['DATA_DIR'])
   : path.resolve(process.cwd(), "data");
 
@@ -19,10 +24,61 @@ async function readFile<T>(name: string, fallback: T): Promise<T> {
   }
 }
 
+/**
+ * In-process write serializer. Every store mutation is a read-modify-write; two
+ * running concurrently (e.g. a /state poll's recordSector racing a tool's
+ * addContainer) would otherwise both read the old rows and the second write
+ * would drop the first's change. Chaining them behind one promise removes that
+ * lost-update race WITHIN this process.
+ *
+ * NOTE: this does NOT serialize across processes. The Claude brain runs tools in
+ * a separate MCP subprocess that writes the same files; two processes can still
+ * race a read-modify-write. The atomic write below prevents the worst outcome
+ * (a torn read clobbering all rows), but full cross-process safety would need a
+ * file lock and is out of scope here.
+ */
+let writeChain: Promise<unknown> = Promise.resolve();
+function withWriteLock<T>(fn: () => Promise<T>): Promise<T> {
+  const run = writeChain.then(fn, fn);
+  // Keep the chain alive regardless of this op's outcome.
+  writeChain = run.then(
+    () => undefined,
+    () => undefined,
+  );
+  return run as Promise<T>;
+}
+
+let tmpSeq = 0;
+
+/**
+ * Atomic replace: write to a unique temp file, then rename over the target.
+ * A concurrent reader (in this or another process) sees either the old file or
+ * the new one, never a half-written one — so a torn read can't feed an empty
+ * fallback back into the next write and wipe the store. On Windows a rename over
+ * a file another process briefly has open can transiently EPERM/EBUSY, so retry.
+ */
 async function writeFile<T>(name: string, data: T): Promise<void> {
   await ensureDir();
   const file = path.join(DATA_DIR, name);
-  await fs.writeFile(file, JSON.stringify(data, null, 2), "utf8");
+  const tmp = `${file}.tmp.${process.pid}.${tmpSeq++}`;
+  await fs.writeFile(tmp, JSON.stringify(data, null, 2), "utf8");
+  for (let attempt = 0; ; attempt++) {
+    try {
+      await fs.rename(tmp, file);
+      return;
+    } catch (err: any) {
+      const transient =
+        err?.code === "EPERM" ||
+        err?.code === "EBUSY" ||
+        err?.code === "EACCES";
+      if (attempt < 9 && transient) {
+        await new Promise((r) => setTimeout(r, 10 * (attempt + 1)));
+        continue;
+      }
+      await fs.rm(tmp, { force: true }).catch(() => {});
+      throw err;
+    }
+  }
 }
 
 export type DetachedContainer = {
@@ -93,39 +149,45 @@ export async function getPendingActions(): Promise<PendingAction[]> {
 export async function addPendingAction(
   entry: Omit<PendingAction, "id" | "createdAt" | "status">
 ): Promise<PendingAction> {
-  const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
-  const newRow: PendingAction = {
-    ...entry,
-    id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
-    createdAt: new Date().toISOString(),
-    status: "pending",
-  };
-  rows.push(newRow);
-  await writeFile(PENDING_FILE, rows);
-  return newRow;
+  return withWriteLock(async () => {
+    const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
+    const newRow: PendingAction = {
+      ...entry,
+      id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
+      createdAt: new Date().toISOString(),
+      status: "pending",
+    };
+    rows.push(newRow);
+    await writeFile(PENDING_FILE, rows);
+    return newRow;
+  });
 }
 
 export async function resolvePendingAction(
   id: number,
   result: { status: "triggered" | "failed"; error?: string }
 ): Promise<void> {
-  const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
-  const idx = rows.findIndex((r) => r.id === id);
-  if (idx !== -1) {
-    rows[idx].status = result.status;
-    rows[idx].triggeredAt = new Date().toISOString();
-    if (result.error) rows[idx].error = result.error;
-    await writeFile(PENDING_FILE, rows);
-  }
+  return withWriteLock(async () => {
+    const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx !== -1) {
+      rows[idx].status = result.status;
+      rows[idx].triggeredAt = new Date().toISOString();
+      if (result.error) rows[idx].error = result.error;
+      await writeFile(PENDING_FILE, rows);
+    }
+  });
 }
 
 export async function cancelPendingAction(id: number): Promise<boolean> {
-  const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
-  const idx = rows.findIndex((r) => r.id === id && r.status === "pending");
-  if (idx === -1) return false;
-  rows.splice(idx, 1);
-  await writeFile(PENDING_FILE, rows);
-  return true;
+  return withWriteLock(async () => {
+    const rows = await readFile<PendingAction[]>(PENDING_FILE, []);
+    const idx = rows.findIndex((r) => r.id === id && r.status === "pending");
+    if (idx === -1) return false;
+    rows.splice(idx, 1);
+    await writeFile(PENDING_FILE, rows);
+    return true;
+  });
 }
 
 export type VisitedSector = {
@@ -155,28 +217,32 @@ export async function getContainers(): Promise<DetachedContainer[]> {
 export async function addContainer(
   entry: Omit<DetachedContainer, "id" | "detachedAt">
 ): Promise<DetachedContainer> {
-  const rows = await getContainers();
-  const newRow: DetachedContainer = {
-    ...entry,
-    id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
-    detachedAt: new Date().toISOString(),
-  };
-  rows.push(newRow);
-  await writeFile(CONTAINERS_FILE, rows);
-  return newRow;
+  return withWriteLock(async () => {
+    const rows = await getContainers();
+    const newRow: DetachedContainer = {
+      ...entry,
+      id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
+      detachedAt: new Date().toISOString(),
+    };
+    rows.push(newRow);
+    await writeFile(CONTAINERS_FILE, rows);
+    return newRow;
+  });
 }
 
 export async function updateContainerStatus(
   id: number,
   update: { status?: string; notes?: string }
 ): Promise<void> {
-  const rows = await getContainers();
-  const idx = rows.findIndex((r) => r.id === id);
-  if (idx !== -1) {
-    if (update.status) rows[idx].status = update.status as any;
-    if (update.notes !== undefined) rows[idx].notes = update.notes;
-    await writeFile(CONTAINERS_FILE, rows);
-  }
+  return withWriteLock(async () => {
+    const rows = await getContainers();
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx !== -1) {
+      if (update.status) rows[idx].status = update.status as any;
+      if (update.notes !== undefined) rows[idx].notes = update.notes;
+      await writeFile(CONTAINERS_FILE, rows);
+    }
+  });
 }
 
 export async function updateContainerAnchor(
@@ -184,13 +250,15 @@ export async function updateContainerAnchor(
   anchorObjectId: string,
   anchorObjectName: string | null
 ): Promise<void> {
-  const rows = await getContainers();
-  const idx = rows.findIndex((r) => r.id === id);
-  if (idx !== -1) {
-    rows[idx].anchorObjectId = anchorObjectId;
-    rows[idx].anchorObjectName = anchorObjectName;
-    await writeFile(CONTAINERS_FILE, rows);
-  }
+  return withWriteLock(async () => {
+    const rows = await getContainers();
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx !== -1) {
+      rows[idx].anchorObjectId = anchorObjectId;
+      rows[idx].anchorObjectName = anchorObjectName;
+      await writeFile(CONTAINERS_FILE, rows);
+    }
+  });
 }
 
 /**
@@ -198,18 +266,20 @@ export async function updateContainerAnchor(
  * then falls back to containerId (since the recovery tool uses the sector object ID).
  */
 export async function markContainerRecovered(objectId: string): Promise<void> {
-  const rows = await getContainers();
-  let changed = false;
-  for (const row of rows) {
-    if (
-      row.status === "floating" &&
-      (row.sectorObjectId === objectId || row.containerId === objectId)
-    ) {
-      row.status = "recovered";
-      changed = true;
+  return withWriteLock(async () => {
+    const rows = await getContainers();
+    let changed = false;
+    for (const row of rows) {
+      if (
+        row.status === "floating" &&
+        (row.sectorObjectId === objectId || row.containerId === objectId)
+      ) {
+        row.status = "recovered";
+        changed = true;
+      }
     }
-  }
-  if (changed) await writeFile(CONTAINERS_FILE, rows);
+    if (changed) await writeFile(CONTAINERS_FILE, rows);
+  });
 }
 
 export async function getFloatingContainers(
@@ -328,29 +398,31 @@ export async function recordSector(
     return base;
   });
 
-  const rows = await getSectors();
-  const idx = rows.findIndex(
-    (r) => r.sectorX === x && r.sectorY === y && r.sectorZ === z
-  );
+  return withWriteLock(async () => {
+    const rows = await getSectors();
+    const idx = rows.findIndex(
+      (r) => r.sectorX === x && r.sectorY === y && r.sectorZ === z
+    );
 
-  const now = new Date().toISOString();
-  if (idx !== -1) {
-    rows[idx].lastVisitedAt = now;
-    rows[idx].visitCount += 1;
-    rows[idx].objects = simplified;
-    rows[idx].resourceSummary = resourceSummary;
-  } else {
-    rows.push({
-      id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
-      sectorX: x,
-      sectorY: y,
-      sectorZ: z,
-      firstVisitedAt: now,
-      lastVisitedAt: now,
-      visitCount: 1,
-      objects: simplified,
-      resourceSummary,
-    });
-  }
-  await writeFile(SECTORS_FILE, rows);
+    const now = new Date().toISOString();
+    if (idx !== -1) {
+      rows[idx].lastVisitedAt = now;
+      rows[idx].visitCount += 1;
+      rows[idx].objects = simplified;
+      rows[idx].resourceSummary = resourceSummary;
+    } else {
+      rows.push({
+        id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
+        sectorX: x,
+        sectorY: y,
+        sectorZ: z,
+        firstVisitedAt: now,
+        lastVisitedAt: now,
+        visitCount: 1,
+        objects: simplified,
+        resourceSummary,
+      });
+    }
+    await writeFile(SECTORS_FILE, rows);
+  });
 }
