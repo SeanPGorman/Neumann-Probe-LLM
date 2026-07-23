@@ -9,6 +9,49 @@ import {
 const POLL_INTERVAL_MS = 30_000;
 let started = false;
 
+/**
+ * Persist a row's terminal status without letting a write failure abort the
+ * probe's remaining rows.
+ *
+ * This matters more than it looks: a row is only marked "triggered" *after* its
+ * game action has already been sent. If that write throws and takes the loop
+ * with it, the row stays pending and the next tick sends the same action a
+ * second time — a duplicate move/detach/craft against the live game.
+ */
+async function resolveQuietly(
+  actionId: number,
+  patch: { status: "triggered" | "failed"; error?: string },
+): Promise<void> {
+  try {
+    await resolvePendingAction(actionId, patch);
+  } catch (err: any) {
+    logger.error(
+      { actionId, patch, err: err?.message ?? String(err) },
+      "poller: could not persist action status — row may re-fire next tick",
+    );
+  }
+}
+
+/**
+ * Is a failed probe fetch worth retrying, or is the probe simply gone?
+ *
+ * A network error (fetch rejects: timeout, ECONNRESET, DNS) is transient — skip
+ * the probe's rows this tick and try again next tick. Only a genuinely permanent
+ * status fails the rows loudly: 404 (probe decommissioned while a row still
+ * targeted it), 410 (gone), and 400 (a malformed request that won't change on
+ * retry). Everything else is retried — critically 401/403, since an expired or
+ * rotated VNG_API_KEY hits EVERY probe and failing the whole queue over a
+ * recoverable auth blip is worse than waiting, plus 408/425/429 and all 5xx.
+ * client.ts formats HTTP errors as "VNG API error (<status>): ...".
+ */
+const PERMANENT_FETCH_STATUS = new Set([400, 404, 410]);
+function isPermanentFetchError(err: unknown): boolean {
+  const status = Number(
+    /VNG API error \((\d+)\)/.exec((err as any)?.message ?? "")?.[1],
+  );
+  return PERMANENT_FETCH_STATUS.has(status);
+}
+
 async function executeAction(
   action: PendingAction,
   selectedMannyId: string | null,
@@ -43,8 +86,15 @@ async function executeAction(
     case "recover_container":
       await c.recoverContainer(a.mannyId, a.objectId);
       break;
-    default:
-      throw new Error(`Unknown action type`);
+    default: {
+      // Compile-time exhaustiveness: a new PendingActionPayload variant becomes
+      // a type error here rather than a silent runtime throw at poll time.
+      const _exhaustive: never = a;
+      void _exhaustive;
+      throw new Error(
+        `Unknown action type: ${(a as { type?: string })?.type ?? "?"}`,
+      );
+    }
   }
 }
 
@@ -60,8 +110,28 @@ async function pollProbe(
   let manniesResp: any = null;
   try {
     [probeResp, manniesResp] = await Promise.all([c.getProbe(), c.getMannies()]);
-  } catch (err) {
-    logger.warn({ err, label }, "poller: failed to fetch probe state");
+  } catch (err: any) {
+    const msg = err?.message ?? String(err);
+    if (isPermanentFetchError(err)) {
+      // The probe can't be reached and won't recover (e.g. it was decommissioned
+      // while these rows still targeted it). Fail the rows into the recent view
+      // instead of silently retrying a dead probe every 30s forever.
+      logger.error(
+        { label, err: msg },
+        "poller: target probe fetch failed permanently — failing its scheduled rows",
+      );
+      for (const action of actions) {
+        await resolveQuietly(action.id, {
+          status: "failed",
+          error: `target ${label} unavailable: ${msg}`,
+        });
+      }
+    } else {
+      logger.warn(
+        { label, err: msg },
+        "poller: transient probe fetch failure — retrying next tick",
+      );
+    }
     return;
   }
 
@@ -122,8 +192,12 @@ async function pollProbe(
 
     // ── probe_idle ──────────────────────────────────────────────────────────
     } else if (action.condition.type === "probe_idle") {
-      if (probe?.movement?.status === "moving") continue;
-      if (action.action.type === "move_probe" && probeMoveClaimed) {
+      // A probe we couldn't read is not "idle". Without this, a response missing
+      // `probe` makes `undefined !== "moving"` true and the action fires blind —
+      // e.g. a queued move sent while the probe is already in transit.
+      if (!probe) continue;
+      if (probe.movement?.status === "moving") continue;
+      if (action.action?.type === "move_probe" && probeMoveClaimed) {
         logger.info(
           { actionId: action.id, label },
           "poller: probe move already claimed this cycle — deferring"
@@ -139,7 +213,7 @@ async function pollProbe(
 
     try {
       await executeAction(action, selectedMannyId, c);
-      await resolvePendingAction(action.id, { status: "triggered" });
+      await resolveQuietly(action.id, { status: "triggered" });
       logger.info({ actionId: action.id, label }, "poller: action triggered successfully");
 
       if (selectedMannyId) claimedMannies.add(selectedMannyId);
@@ -154,7 +228,7 @@ async function pollProbe(
         );
       } else {
         logger.error({ actionId: action.id, err: msg, label }, "poller: action execution failed");
-        await resolvePendingAction(action.id, { status: "failed", error: msg });
+        await resolveQuietly(action.id, { status: "failed", error: msg });
       }
     }
   }
@@ -188,7 +262,22 @@ export function startPoller(): void {
   if (started) return;
   started = true;
   logger.info({ intervalMs: POLL_INTERVAL_MS }, "poller: started");
+  // Reentrancy guard: a tick that runs long — executeAction makes real game
+  // calls, and one slow probe holds up its whole group — must not overlap the
+  // next one. Two overlapping ticks read the same pending rows (a row is only
+  // marked "triggered" after its action lands) and fire them twice. A skipped
+  // tick simply retries in POLL_INTERVAL_MS.
+  let ticking = false;
   setInterval(() => {
-    poll().catch((err) => logger.error({ err }, "poller: unexpected error"));
+    if (ticking) {
+      logger.info("poller: previous tick still running — skipping this one");
+      return;
+    }
+    ticking = true;
+    poll()
+      .catch((err) => logger.error({ err }, "poller: unexpected error"))
+      .finally(() => {
+        ticking = false;
+      });
   }, POLL_INTERVAL_MS);
 }
