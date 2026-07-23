@@ -1785,9 +1785,73 @@
     "sectorY": 7,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-10T21:33:00.603Z",
-    "lastVisitedAt": "2026-07-20T19:53:51.902Z",
-    "visitCount": 1817,
-    "objects": [],
+    "lastVisitedAt": "2026-07-23T13:13:59.383Z",
+    "visitCount": 1820,
+    "objects": [
+      {
+        "id": "7d1f75ee83e4d598fc0f",
+        "type": "solar_system",
+        "name": "WP-015-SnoozyBob. This is 4.7.1. 1 Metal. 1 Deut. 1 Ice. 0 Organics.",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 2 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 0,
+        "orbitalBodyCount": 2,
+        "bodies": [
+          {
+            "id": "8031b2c4d6fdedc2c495",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.379844,
+            "massUnit": "solar_mass",
+            "radius": 0.216528,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "3ef0de1cc7e211086189",
+            "type": "asteroid",
+            "name": "Metal ae11",
+            "category": null,
+            "mass": 0.015292,
+            "massUnit": "earth_mass",
+            "radius": 0.189377,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "8b3cd67b25d0bda41395",
+            "type": "asteroid",
+            "name": "Ice Deut bb97",
+            "category": null,
+            "mass": 0.006678,
+            "massUnit": "earth_mass",
+            "radius": 0.05982,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_8b715944e74f3030a53bb48d",
+        "type": "detached_container",
+        "name": "Metals 4",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "3ef0de1cc7e211086189",
+        "salvageable": false
+      }
+    ],
     "resourceSummary": []
   },
   {
