@@ -86,9 +86,15 @@ interface Props {
   allProbes?: { id: number; name: string; isDefault?: boolean }[];
   /** ID of the currently selected probe — its journey path is drawn at full brightness. */
   selectedProbeId?: number | null;
+  /** Authoritative relay list from the SCUT network API — overrides visitedMap relay drawing. */
+  scutRelays?: Array<{
+    id: number; x: number; y: number; z: number;
+    status: string; coverageRadiusSectors: number;
+    networkName?: string | null; isTransitBeacon?: boolean;
+  }>;
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors, otherProbes, allProbes, selectedProbeId }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors, otherProbes, allProbes, selectedProbeId, scutRelays }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -434,12 +440,24 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       }
     }
 
-    // 4b. SCUT relay markers — drawn after path, before probe
-    for (const vs of visitedMap.values()) {
-      const relays = (vs.objects ?? []).filter((o: any) => o.type === "scut_relay");
-      if (!relays.length) continue;
-      const rp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
-      const hasActive = relays.some((r: any) => r.status === "active" || r.status === "on");
+    // 4b. SCUT relay markers — drawn after path, before probe.
+    // Prefer authoritative data from the SCUT network API (scutRelays prop);
+    // fall back to visitedMap object scan when no network data is available yet.
+    const relayEntries: Array<{ ax: number; ay: number; az: number; isActive: boolean }> = [];
+    if (scutRelays && scutRelays.length > 0) {
+      for (const r of scutRelays) {
+        relayEntries.push({ ax: r.x, ay: r.y, az: r.z, isActive: r.status === "on" });
+      }
+    } else {
+      for (const vs of visitedMap.values()) {
+        const relays = (vs.objects ?? []).filter((o: any) => o.type === "scut_relay");
+        if (!relays.length) continue;
+        const hasActive = relays.some((r: any) => r.status === "active" || r.status === "on");
+        relayEntries.push({ ax: vs.sectorX, ay: vs.sectorY, az: vs.sectorZ, isActive: hasActive });
+      }
+    }
+    for (const entry of relayEntries) {
+      const rp = project(entry.ax, entry.ay, entry.az);
       const sz = 5;
       // Diamond shape (rotated square)
       ctx.beginPath();
@@ -448,12 +466,12 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.lineTo(rp.sx, rp.sy + sz);     // bottom
       ctx.lineTo(rp.sx - sz, rp.sy);     // left
       ctx.closePath();
-      ctx.fillStyle = hasActive
+      ctx.fillStyle = entry.isActive
         ? `rgba(0,230,230,${0.85 * relayAlpha})`
         : `rgba(0,160,160,${0.45 * relayAlpha})`;
       ctx.fill();
       // Outer glow ring for active relays
-      if (hasActive) {
+      if (entry.isActive) {
         ctx.beginPath();
         ctx.arc(rp.sx, rp.sy, sz + 3.5, 0, Math.PI * 2);
         ctx.strokeStyle = `rgba(0,220,220,${0.4 * relayAlpha})`;

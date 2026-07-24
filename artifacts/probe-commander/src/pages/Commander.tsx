@@ -1027,6 +1027,15 @@ export default function Commander() {
 
   const queryClient = useQueryClient();
 
+  // Fetch all SCUT relay positions from every known network (authoritative from game API).
+  const { data: scutNetworkData } = useQuery({
+    queryKey: ["scut-networks"],
+    queryFn: () => fetchJson(`${BASE}/api/vng/log/scut-networks`),
+    retry: 1,
+    refetchInterval: 120_000,
+    staleTime: 60_000,
+  });
+
   // Fetch globe sectors at Commander level so GlobeMap always receives live data
   // immediately when the tab opens, regardless of when the user navigates to it.
   const { data: sectorsData } = useQuery({
@@ -1190,6 +1199,7 @@ export default function Commander() {
             }
             allProbes={probeList.map(p => ({ id: p.id, name: p.name, isDefault: p.isDefault ?? false }))}
             selectedProbeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
+            scutRelays={scutNetworkData?.relays}
           />
         )}
         {sideTab === "system" && (

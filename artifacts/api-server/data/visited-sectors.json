@@ -71,7 +71,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.387Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.214Z"
+      },
+      "716": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.387Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.214Z"
+      },
+      "761": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.387Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.214Z"
+      }
+    }
   },
   {
     "id": 2,
@@ -229,7 +246,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.389Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.230Z"
+      },
+      "716": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.389Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.230Z"
+      },
+      "761": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.389Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.230Z"
+      }
+    }
   },
   {
     "id": 3,
@@ -447,7 +481,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.411Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.184Z"
+      },
+      "716": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.411Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.184Z"
+      },
+      "761": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.411Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.184Z"
+      }
+    }
   },
   {
     "id": 4,
@@ -458,7 +509,24 @@
     "lastVisitedAt": "2026-07-10T02:02:58.220Z",
     "visitCount": 2,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.533Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.220Z"
+      },
+      "716": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.533Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.220Z"
+      },
+      "761": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T02:02:47.533Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.220Z"
+      }
+    }
   },
   {
     "id": 5,
@@ -677,7 +745,24 @@
         "salvageable": false
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 42,
+        "firstVisitedAt": "2026-07-10T02:02:54.640Z",
+        "lastVisitedAt": "2026-07-10T02:32:57.260Z"
+      },
+      "716": {
+        "visitCount": 42,
+        "firstVisitedAt": "2026-07-10T02:02:54.640Z",
+        "lastVisitedAt": "2026-07-10T02:32:57.260Z"
+      },
+      "761": {
+        "visitCount": 42,
+        "firstVisitedAt": "2026-07-10T02:02:54.640Z",
+        "lastVisitedAt": "2026-07-10T02:32:57.260Z"
+      }
+    }
   },
   {
     "id": 6,
@@ -787,7 +872,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:57.679Z",
+        "lastVisitedAt": "2026-07-10T02:02:57.679Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:57.679Z",
+        "lastVisitedAt": "2026-07-10T02:02:57.679Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:57.679Z",
+        "lastVisitedAt": "2026-07-10T02:02:57.679Z"
+      }
+    }
   },
   {
     "id": 7,
@@ -933,7 +1035,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.200Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.200Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.200Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.200Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.200Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.200Z"
+      }
+    }
   },
   {
     "id": 8,
@@ -1139,7 +1258,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 5,
+        "firstVisitedAt": "2026-07-10T02:02:58.226Z",
+        "lastVisitedAt": "2026-07-10T15:29:36.497Z"
+      },
+      "716": {
+        "visitCount": 5,
+        "firstVisitedAt": "2026-07-10T02:02:58.226Z",
+        "lastVisitedAt": "2026-07-10T15:29:36.497Z"
+      },
+      "761": {
+        "visitCount": 5,
+        "firstVisitedAt": "2026-07-10T02:02:58.226Z",
+        "lastVisitedAt": "2026-07-10T15:29:36.497Z"
+      }
+    }
   },
   {
     "id": 9,
@@ -1291,7 +1427,24 @@
         "activatedAt": "2026-07-08T10:01:45+00:00"
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.240Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.240Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.240Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.240Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.240Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.240Z"
+      }
+    }
   },
   {
     "id": 10,
@@ -1353,7 +1506,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.247Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.247Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.247Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.247Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.247Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.247Z"
+      }
+    }
   },
   {
     "id": 11,
@@ -1415,7 +1585,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.251Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.251Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.251Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.251Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.251Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.251Z"
+      }
+    }
   },
   {
     "id": 12,
@@ -1549,7 +1736,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.254Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.254Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.254Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.254Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-10T02:02:58.254Z",
+        "lastVisitedAt": "2026-07-10T02:02:58.254Z"
+      }
+    }
   },
   {
     "id": 13,
@@ -1560,7 +1764,24 @@
     "lastVisitedAt": "2026-07-10T13:59:38.884Z",
     "visitCount": 2,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T13:59:08.157Z",
+        "lastVisitedAt": "2026-07-10T13:59:38.884Z"
+      },
+      "716": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T13:59:08.157Z",
+        "lastVisitedAt": "2026-07-10T13:59:38.884Z"
+      },
+      "761": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-10T13:59:08.157Z",
+        "lastVisitedAt": "2026-07-10T13:59:38.884Z"
+      }
+    }
   },
   {
     "id": 14,
@@ -1766,7 +1987,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 58,
+        "firstVisitedAt": "2026-07-10T14:59:59.367Z",
+        "lastVisitedAt": "2026-07-10T15:28:34.862Z"
+      },
+      "716": {
+        "visitCount": 58,
+        "firstVisitedAt": "2026-07-10T14:59:59.367Z",
+        "lastVisitedAt": "2026-07-10T15:28:34.862Z"
+      },
+      "761": {
+        "visitCount": 58,
+        "firstVisitedAt": "2026-07-10T14:59:59.367Z",
+        "lastVisitedAt": "2026-07-10T15:28:34.862Z"
+      }
+    }
   },
   {
     "id": 15,
@@ -1777,7 +2015,24 @@
     "lastVisitedAt": "2026-07-20T18:42:19.192Z",
     "visitCount": 353,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 353,
+        "firstVisitedAt": "2026-07-10T17:36:44.692Z",
+        "lastVisitedAt": "2026-07-20T18:42:19.192Z"
+      },
+      "716": {
+        "visitCount": 353,
+        "firstVisitedAt": "2026-07-10T17:36:44.692Z",
+        "lastVisitedAt": "2026-07-20T18:42:19.192Z"
+      },
+      "761": {
+        "visitCount": 353,
+        "firstVisitedAt": "2026-07-10T17:36:44.692Z",
+        "lastVisitedAt": "2026-07-20T18:42:19.192Z"
+      }
+    }
   },
   {
     "id": 16,
@@ -1852,7 +2107,24 @@
         "salvageable": false
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2071,
+        "firstVisitedAt": "2026-07-10T21:33:00.603Z",
+        "lastVisitedAt": "2026-07-23T16:55:31.638Z"
+      },
+      "716": {
+        "visitCount": 2071,
+        "firstVisitedAt": "2026-07-10T21:33:00.603Z",
+        "lastVisitedAt": "2026-07-23T16:55:31.638Z"
+      },
+      "761": {
+        "visitCount": 2071,
+        "firstVisitedAt": "2026-07-10T21:33:00.603Z",
+        "lastVisitedAt": "2026-07-23T16:55:31.638Z"
+      }
+    }
   },
   {
     "id": 17,
@@ -1938,7 +2210,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 8,
+        "firstVisitedAt": "2026-07-13T15:43:17.873Z",
+        "lastVisitedAt": "2026-07-13T15:47:07.337Z"
+      },
+      "716": {
+        "visitCount": 8,
+        "firstVisitedAt": "2026-07-13T15:43:17.873Z",
+        "lastVisitedAt": "2026-07-13T15:47:07.337Z"
+      },
+      "761": {
+        "visitCount": 8,
+        "firstVisitedAt": "2026-07-13T15:43:17.873Z",
+        "lastVisitedAt": "2026-07-13T15:47:07.337Z"
+      }
+    }
   },
   {
     "id": 18,
@@ -2158,7 +2447,24 @@
     ],
     "resourceSummary": [
       "deuterium"
-    ]
+    ],
+    "visitedBy": {
+      "652": {
+        "visitCount": 550,
+        "firstVisitedAt": "2026-07-14T17:07:48.291Z",
+        "lastVisitedAt": "2026-07-23T22:27:57.636Z"
+      },
+      "716": {
+        "visitCount": 550,
+        "firstVisitedAt": "2026-07-14T17:07:48.291Z",
+        "lastVisitedAt": "2026-07-23T22:27:57.636Z"
+      },
+      "761": {
+        "visitCount": 550,
+        "firstVisitedAt": "2026-07-14T17:07:48.291Z",
+        "lastVisitedAt": "2026-07-23T22:27:57.636Z"
+      }
+    }
   },
   {
     "id": 19,
@@ -2316,7 +2622,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 33,
+        "firstVisitedAt": "2026-07-14T19:30:37.998Z",
+        "lastVisitedAt": "2026-07-14T19:48:04.753Z"
+      },
+      "716": {
+        "visitCount": 33,
+        "firstVisitedAt": "2026-07-14T19:30:37.998Z",
+        "lastVisitedAt": "2026-07-14T19:48:04.753Z"
+      },
+      "761": {
+        "visitCount": 33,
+        "firstVisitedAt": "2026-07-14T19:30:37.998Z",
+        "lastVisitedAt": "2026-07-14T19:48:04.753Z"
+      }
+    }
   },
   {
     "id": 20,
@@ -2327,7 +2650,24 @@
     "lastVisitedAt": "2026-07-23T20:29:53.098Z",
     "visitCount": 146,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 146,
+        "firstVisitedAt": "2026-07-23T19:15:54.506Z",
+        "lastVisitedAt": "2026-07-23T20:29:53.098Z"
+      },
+      "716": {
+        "visitCount": 146,
+        "firstVisitedAt": "2026-07-23T19:15:54.506Z",
+        "lastVisitedAt": "2026-07-23T20:29:53.098Z"
+      },
+      "761": {
+        "visitCount": 146,
+        "firstVisitedAt": "2026-07-23T19:15:54.506Z",
+        "lastVisitedAt": "2026-07-23T20:29:53.098Z"
+      }
+    }
   },
   {
     "id": 21,
@@ -2338,7 +2678,24 @@
     "lastVisitedAt": "2026-07-23T22:37:00.181Z",
     "visitCount": 36,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 36,
+        "firstVisitedAt": "2026-07-23T20:45:24.757Z",
+        "lastVisitedAt": "2026-07-23T22:37:00.181Z"
+      },
+      "716": {
+        "visitCount": 36,
+        "firstVisitedAt": "2026-07-23T20:45:24.757Z",
+        "lastVisitedAt": "2026-07-23T22:37:00.181Z"
+      },
+      "761": {
+        "visitCount": 36,
+        "firstVisitedAt": "2026-07-23T20:45:24.757Z",
+        "lastVisitedAt": "2026-07-23T22:37:00.181Z"
+      }
+    }
   },
   {
     "id": 22,
@@ -2532,7 +2889,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-23T23:54:33.490Z",
+        "lastVisitedAt": "2026-07-23T23:54:33.490Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-23T23:54:33.490Z",
+        "lastVisitedAt": "2026-07-23T23:54:33.490Z"
+      },
+      "761": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-23T23:54:33.490Z",
+        "lastVisitedAt": "2026-07-23T23:54:33.490Z"
+      }
+    }
   },
   {
     "id": 23,
@@ -2666,7 +3040,24 @@
         ]
       }
     ],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 3,
+        "firstVisitedAt": "2026-07-24T00:37:21.926Z",
+        "lastVisitedAt": "2026-07-24T00:38:23.140Z"
+      },
+      "716": {
+        "visitCount": 3,
+        "firstVisitedAt": "2026-07-24T00:37:21.926Z",
+        "lastVisitedAt": "2026-07-24T00:38:23.140Z"
+      },
+      "761": {
+        "visitCount": 3,
+        "firstVisitedAt": "2026-07-24T00:37:21.926Z",
+        "lastVisitedAt": "2026-07-24T00:38:23.140Z"
+      }
+    }
   },
   {
     "id": 24,
@@ -2674,10 +3065,27 @@
     "sectorY": 10,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-24T14:12:24.038Z",
-    "lastVisitedAt": "2026-07-24T15:14:37.720Z",
-    "visitCount": 63,
+    "lastVisitedAt": "2026-07-24T15:19:47.867Z",
+    "visitCount": 75,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 75,
+        "firstVisitedAt": "2026-07-24T14:12:24.038Z",
+        "lastVisitedAt": "2026-07-24T15:19:47.867Z"
+      },
+      "716": {
+        "visitCount": 75,
+        "firstVisitedAt": "2026-07-24T14:12:24.038Z",
+        "lastVisitedAt": "2026-07-24T15:19:47.867Z"
+      },
+      "761": {
+        "visitCount": 75,
+        "firstVisitedAt": "2026-07-24T14:12:24.038Z",
+        "lastVisitedAt": "2026-07-24T15:19:47.867Z"
+      }
+    }
   },
   {
     "id": 25,
@@ -2688,6 +3096,23 @@
     "lastVisitedAt": "2026-07-24T14:32:23.446Z",
     "visitCount": 39,
     "objects": [],
-    "resourceSummary": []
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 39,
+        "firstVisitedAt": "2026-07-24T14:12:35.832Z",
+        "lastVisitedAt": "2026-07-24T14:32:23.446Z"
+      },
+      "716": {
+        "visitCount": 39,
+        "firstVisitedAt": "2026-07-24T14:12:35.832Z",
+        "lastVisitedAt": "2026-07-24T14:32:23.446Z"
+      },
+      "761": {
+        "visitCount": 39,
+        "firstVisitedAt": "2026-07-24T14:12:35.832Z",
+        "lastVisitedAt": "2026-07-24T14:32:23.446Z"
+      }
+    }
   }
 ]

@@ -7,7 +7,7 @@ import {
   addPendingAction,
   type PendingAction,
 } from "./file-store.js";
-import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes } from "./client.js";
+import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes, getScutNetwork } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
 
 const router = Router();
@@ -453,6 +453,57 @@ router.get("/sectors", async (_req, res) => {
     );
 
     res.json({ sectors });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Return all SCUT relay positions from every known network.
+// Discovers network IDs from locally-stored relay objects, then queries the
+// game's SCUT-network endpoint for authoritative relay/sector data.
+router.get("/scut-networks", async (_req, res) => {
+  try {
+    const networkIds = new Set<number>();
+    for (const s of await getSectors()) {
+      for (const obj of (s.objects ?? []) as any[]) {
+        if (obj.type === "scut_relay" && obj.network?.id) {
+          networkIds.add(obj.network.id as number);
+        }
+      }
+    }
+
+    if (networkIds.size === 0) {
+      res.json({ networks: [], relays: [] });
+      return;
+    }
+
+    const results = await Promise.allSettled(
+      [...networkIds].map((id) => getScutNetwork(id))
+    );
+
+    const networks: any[] = [];
+    const relays: any[] = [];
+    for (const r of results) {
+      if (r.status !== "fulfilled") continue;
+      const net = r.value.network;
+      networks.push({ id: net.id, name: net.name });
+      for (const relay of net.relays ?? []) {
+        relays.push({
+          id: relay.id,
+          x: relay.sector?.relative?.x ?? 0,
+          y: relay.sector?.relative?.y ?? 0,
+          z: relay.sector?.relative?.z ?? 0,
+          status: relay.status,
+          coverageRadiusSectors: relay.coverageRadiusSectors,
+          networkId: net.id,
+          networkName: net.name,
+          createdByProbeName: relay.createdByProbeName ?? null,
+          isTransitBeacon: relay.isTransitBeacon ?? false,
+        });
+      }
+    }
+
+    res.json({ networks, relays });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
