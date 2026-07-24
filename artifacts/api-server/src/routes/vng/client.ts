@@ -1,5 +1,17 @@
 const BASE = "https://neumann-probe.net";
 
+/** Structured error thrown by every VNG API call. Callers can inspect `.status`
+ *  directly instead of parsing the message string. */
+export class VngApiError extends Error {
+  constructor(
+    public readonly status: number,
+    message: string,
+  ) {
+    super(`VNG API error (${status}): ${message}`);
+    this.name = "VngApiError";
+  }
+}
+
 function headers() {
   const key = process.env.VNG_API_KEY;
   if (!key) throw new Error("VNG_API_KEY not set");
@@ -20,7 +32,7 @@ async function vngFetch(path: string, init: RequestInit = {}): Promise<any> {
       (body as any)?.error?.message ??
       (body as any)?.message ??
       res.statusText;
-    throw new Error(`VNG API error (${res.status}): ${msg}`);
+    throw new VngApiError(res.status, msg);
   }
   return body;
 }

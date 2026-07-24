@@ -7,7 +7,7 @@ import {
   addPendingAction,
   type PendingAction,
 } from "./file-store.js";
-import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes, getScutNetwork } from "./client.js";
+import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes, getScutNetwork, parseProbeId } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
 
 const router = Router();
@@ -34,7 +34,7 @@ router.get("/inventory-debug", async (_req, res) => {
 
 router.get("/containers", async (req, res) => {
   try {
-    const probeId = req.query.probeId ? Number(req.query.probeId) : null;
+    const probeId = parseProbeId(req.query.probeId);
     const c = clientFor(probeId);
     // Live sources: probe inventory (contents + capacity) + current sector objects
     const [probeResp, sectorResp, fileContainers] = await Promise.all([
@@ -158,7 +158,7 @@ router.patch("/containers/:id/status", async (req, res) => {
 
 router.get("/crafting-calc", async (req, res) => {
   try {
-    const probeId = req.query.probeId ? Number(req.query.probeId) : null;
+    const probeId = parseProbeId(req.query.probeId);
     const c = clientFor(probeId);
 
     const [probeResp, recipesResp] = await Promise.all([

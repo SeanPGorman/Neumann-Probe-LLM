@@ -42,14 +42,12 @@ async function resolveQuietly(
  * retry). Everything else is retried — critically 401/403, since an expired or
  * rotated VNG_API_KEY hits EVERY probe and failing the whole queue over a
  * recoverable auth blip is worse than waiting, plus 408/425/429 and all 5xx.
- * client.ts formats HTTP errors as "VNG API error (<status>): ...".
+ * client.ts throws VngApiError with a numeric `.status` field.
  */
 const PERMANENT_FETCH_STATUS = new Set([400, 404, 410]);
 function isPermanentFetchError(err: unknown): boolean {
-  const status = Number(
-    /VNG API error \((\d+)\)/.exec((err as any)?.message ?? "")?.[1],
-  );
-  return PERMANENT_FETCH_STATUS.has(status);
+  const status = (err as any)?.status;
+  return typeof status === "number" && PERMANENT_FETCH_STATUS.has(status);
 }
 
 async function executeAction(
