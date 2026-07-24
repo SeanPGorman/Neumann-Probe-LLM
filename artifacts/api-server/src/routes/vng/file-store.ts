@@ -200,6 +200,8 @@ export type VisitedSector = {
   visitCount: number;
   objects: object[];
   resourceSummary: string[];
+  /** Per-probe visit history. Key = probe ID as string (e.g. "652"). Legacy records lack this field. */
+  visitedBy?: Record<string, { visitCount: number; lastVisitedAt: string; firstVisitedAt: string }>;
 };
 
 const CONTAINERS_FILE = "detached-containers.json";
@@ -305,7 +307,8 @@ export async function recordSector(
   x: number,
   y: number,
   z: number,
-  objects: object[]
+  objects: object[],
+  probeId?: number | null,
 ): Promise<void> {
   const resourceSummary: string[] = Array.from(
     new Set((objects as any[]).flatMap((o) => o.resourceTypes ?? []))
@@ -405,12 +408,27 @@ export async function recordSector(
     );
 
     const now = new Date().toISOString();
+    const probeKey = probeId != null ? String(probeId) : null;
+
     if (idx !== -1) {
       rows[idx].lastVisitedAt = now;
       rows[idx].visitCount += 1;
       rows[idx].objects = simplified;
       rows[idx].resourceSummary = resourceSummary;
+      if (probeKey) {
+        const by = rows[idx].visitedBy ?? {};
+        const prev = by[probeKey];
+        by[probeKey] = {
+          visitCount: (prev?.visitCount ?? 0) + 1,
+          firstVisitedAt: prev?.firstVisitedAt ?? now,
+          lastVisitedAt: now,
+        };
+        rows[idx].visitedBy = by;
+      }
     } else {
+      const visitedBy: VisitedSector["visitedBy"] = probeKey
+        ? { [probeKey]: { visitCount: 1, firstVisitedAt: now, lastVisitedAt: now } }
+        : undefined;
       rows.push({
         id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
         sectorX: x,
@@ -421,6 +439,7 @@ export async function recordSector(
         visitCount: 1,
         objects: simplified,
         resourceSummary,
+        ...(visitedBy ? { visitedBy } : {}),
       });
     }
     await writeFile(SECTORS_FILE, rows);

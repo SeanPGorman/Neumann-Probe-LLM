@@ -255,7 +255,7 @@ router.get("/state", async (req, res) => {
     // detail for this sector (visited-sectors store, read by the MAP/SECTORS
     // tabs) with an empty list.
     if (!sectorUnavailable)
-      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /state]", e));
+      recordSector(sector.x, sector.y, sector.z, sectorObjects, probeId).catch((e) => console.error("[recordSector /state]", e));
 
     const manniesNorm = mannies.map((m: any) => {
       const task = m.task && typeof m.task === "object" && !Array.isArray(m.task) ? m.task : null;
@@ -383,7 +383,7 @@ async function runOpenAiBrain(
     // getSector() yields null → sectorObjects [], and recording that would
     // clobber the sector's last-known-good detail with an empty list.
     if (sectorResp !== null)
-      recordSector(sector.x, sector.y, sector.z, sectorObjects).catch((e) => console.error("[recordSector /command]", e));
+      recordSector(sector.x, sector.y, sector.z, sectorObjects, probeId).catch((e) => console.error("[recordSector /command]", e));
 
     const recipes: any[] = recipesResp.recipes ?? [];
     const resourceStocks: any[] = inv.resourceStocks ?? [];

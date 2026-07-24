@@ -2674,8 +2674,8 @@
     "sectorY": 10,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-24T14:12:24.038Z",
-    "lastVisitedAt": "2026-07-24T14:15:30.513Z",
-    "visitCount": 2,
+    "lastVisitedAt": "2026-07-24T14:32:13.306Z",
+    "visitCount": 4,
     "objects": [],
     "resourceSummary": []
   },
@@ -2685,8 +2685,8 @@
     "sectorY": 4,
     "sectorZ": 0,
     "firstVisitedAt": "2026-07-24T14:12:35.832Z",
-    "lastVisitedAt": "2026-07-24T14:17:42.336Z",
-    "visitCount": 13,
+    "lastVisitedAt": "2026-07-24T14:32:23.446Z",
+    "visitCount": 39,
     "objects": [],
     "resourceSummary": []
   }

@@ -483,7 +483,7 @@ router.post("/sectors/refresh", async (_req, res) => {
         const rawObjects: any[] = body?.sector?.objects ?? [];
         const objects = mapSectorObjects(rawObjects);
         const resourceSummary = sectorResourceSummary(rawObjects);
-        await recordSector(x, y, z, rawObjects);
+        await recordSector(x, y, z, rawObjects, null);
         return { x, y, z, objectCount: objects.length, resourceSummary };
       })
     );

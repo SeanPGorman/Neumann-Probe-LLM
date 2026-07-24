@@ -110,6 +110,7 @@ export async function afterTool(
           args.y as number,
           args.z as number,
           scannedObjects,
+          probeId,
         );
         break;
       }
@@ -119,7 +120,7 @@ export async function afterTool(
         const gsObjects = gs?.sector?.objects ?? [];
         const gsSector = gs?.probe?.sector;
         if (gsSector && typeof gsSector.x === "number") {
-          await recordSector(gsSector.x, gsSector.y, gsSector.z, gsObjects);
+          await recordSector(gsSector.x, gsSector.y, gsSector.z, gsObjects, probeId);
         }
         break;
       }

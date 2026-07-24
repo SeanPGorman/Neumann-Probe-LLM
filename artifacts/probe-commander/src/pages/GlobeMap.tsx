@@ -15,6 +15,15 @@ const DEFAULT_RADIUS = 4;
 const MIN_RADIUS = 2;
 const MAX_RADIUS = 6;
 
+/** Indexed colours for probe journeys; index 0 = main/first probe. */
+const PROBE_COLORS: [number, number, number][] = [
+  [0,   220,  80],   // green  — main probe
+  [255, 150,  50],   // orange — first drone
+  [0,   200, 220],   // cyan   — second drone
+  [180,  80, 255],   // purple
+  [220, 200,  40],   // yellow
+];
+
 function computeOffsets(radius: number): [number, number, number][] {
   const pts: [number, number, number][] = [];
   const r2 = radius * radius;
@@ -38,6 +47,7 @@ interface VisitedSector {
   visitCount: number;
   objects: any[];
   resourceSummary: string[];
+  visitedBy?: Record<string, { visitCount: number; lastVisitedAt: string; firstVisitedAt: string }>;
 }
 
 interface ProjectedDot {
@@ -72,9 +82,13 @@ interface Props {
   sectorsData?: { sectors: any[] };
   onRefreshSectors?: () => Promise<void>;
   otherProbes?: OtherProbe[];
+  /** All probes in display order (main probe first). Used for per-probe journey colouring. */
+  allProbes?: { id: number; name: string }[];
+  /** ID of the currently selected probe — its journey path is drawn at full brightness. */
+  selectedProbeId?: number | null;
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors, otherProbes }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors, otherProbes, allProbes, selectedProbeId }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -306,17 +320,52 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       }
     }
 
-    // 4. Path line drawn AFTER dots so it's visible on top of them
-    if (visitedProj.length > 1) {
-      ctx.beginPath();
-      ctx.moveTo(visitedProj[0].sx, visitedProj[0].sy);
-      for (let i = 1; i < visitedProj.length; i++) {
-        ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
+    // 4. Journey paths — one coloured line per probe; selected probe drawn at full brightness
+    {
+      const courseAlpha = Math.min(1, brightCourse * 2);
+      const probes = allProbes && allProbes.length > 0 ? allProbes : null;
+      if (probes) {
+        for (let pi = 0; pi < probes.length; pi++) {
+          const { id } = probes[pi];
+          const key = String(id);
+          const isThis = id === (selectedProbeId ?? null);
+          const [cr, cg, cb] = PROBE_COLORS[pi % PROBE_COLORS.length];
+          const alpha = isThis ? courseAlpha : courseAlpha * 0.45;
+          const lw = isThis ? 2.5 : 1.5;
+
+          const pSectors = visitedSorted
+            .filter(vs => {
+              const by = vs.visitedBy;
+              return by ? key in by : pi === 0;
+            })
+            .sort((a, b_) => {
+              const tA = a.visitedBy?.[key]?.firstVisitedAt ?? a.firstVisitedAt;
+              const tB = b_.visitedBy?.[key]?.firstVisitedAt ?? b_.firstVisitedAt;
+              return new Date(tA).getTime() - new Date(tB).getTime();
+            });
+
+          if (pSectors.length < 2) continue;
+          const pp = pSectors.map(vs => project(vs.sectorX, vs.sectorY, vs.sectorZ));
+          ctx.beginPath();
+          ctx.moveTo(pp[0].sx, pp[0].sy);
+          for (let i = 1; i < pp.length; i++) ctx.lineTo(pp[i].sx, pp[i].sy);
+          ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha})`;
+          ctx.lineWidth = lw;
+          ctx.lineJoin = "round";
+          ctx.stroke();
+        }
+      } else {
+        // Fallback: single green path when no probe list is provided
+        if (visitedProj.length > 1) {
+          ctx.beginPath();
+          ctx.moveTo(visitedProj[0].sx, visitedProj[0].sy);
+          for (let i = 1; i < visitedProj.length; i++) ctx.lineTo(visitedProj[i].sx, visitedProj[i].sy);
+          ctx.strokeStyle = `rgba(0,220,80,${courseAlpha})`;
+          ctx.lineWidth = 2.5;
+          ctx.lineJoin = "round";
+          ctx.stroke();
+        }
       }
-      ctx.strokeStyle = `rgba(0,220,80,${Math.min(1, brightCourse * 2)})`;
-      ctx.lineWidth = 3;
-      ctx.lineJoin = "round";
-      ctx.stroke();
     }
 
     // 4b. SCUT relay markers — drawn after path, before probe
@@ -362,33 +411,44 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.fill();
     }
 
-    // 6. Drone / other probe dots — labeled, orange
+    // 6. Drone / other probe dots — colour matches that probe's journey path
     if (otherProbes) {
       for (const op of otherProbes) {
         const pp = project(op.x, op.y, op.z);
         const { sx, sy, persp } = pp;
         const r = Math.max(2, persp * 0.32);
+        const pi = allProbes ? allProbes.findIndex(p => p.id === op.id) : -1;
+        const [cr, cg, cb] = pi >= 0 ? PROBE_COLORS[pi % PROBE_COLORS.length] : PROBE_COLORS[1];
+        const dotFill = op.isMoving ? `rgba(255,220,80,0.85)` : `rgba(${cr},${cg},${cb},0.85)`;
+        const dotLabel = op.isMoving ? `rgba(255,220,80,0.7)` : `rgba(${cr},${cg},${cb},0.7)`;
         // Glow halo
         ctx.beginPath();
         ctx.arc(sx, sy, r * 2.5, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(255,160,60,0.04)`;
+        ctx.fillStyle = op.isMoving ? `rgba(255,220,80,0.04)` : `rgba(${cr},${cg},${cb},0.04)`;
         ctx.fill();
         // Dot
         ctx.beginPath();
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
-        ctx.fillStyle = op.isMoving ? `rgba(255,220,80,0.85)` : `rgba(255,150,50,0.85)`;
+        ctx.fillStyle = dotFill;
         ctx.fill();
         // Name label
         ctx.font = "8px monospace";
-        ctx.fillStyle = op.isMoving ? `rgba(255,220,80,0.7)` : `rgba(255,150,50,0.7)`;
+        ctx.fillStyle = dotLabel;
         ctx.fillText(op.name, sx + r + 3, sy + 3);
       }
     }
 
     // Legend
     ctx.font = "9px monospace";
+    const journeyLegends: [string, string][] = (allProbes && allProbes.length > 0)
+      ? allProbes.map((p, pi) => {
+          const [cr, cg, cb] = PROBE_COLORS[pi % PROBE_COLORS.length];
+          const isThis = p.id === (selectedProbeId ?? null);
+          return [`── ${p.name}${isThis ? " ✦" : ""}`, `rgba(${cr},${cg},${cb},0.85)`] as [string, string];
+        })
+      : [["── journey", "rgba(0,220,80,0.85)"] as [string, string]];
     const droneLegend: [string, string][] = otherProbes && otherProbes.length > 0
-      ? [["◉ drone", "rgba(255,150,50,0.85)"]]
+      ? [["◉ drone", `rgba(${PROBE_COLORS[1][0]},${PROBE_COLORS[1][1]},${PROBE_COLORS[1][2]},0.85)`]]
       : [];
     const legends: [string, string][] = [
       ["◉ probe", "rgba(200,255,220,0.9)"],
@@ -397,13 +457,14 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
       ["◈ SCUT relay", "rgba(0,220,220,0.8)"],
+      ...journeyLegends,
     ];
     legends.forEach(([label, color], i) => {
       ctx.fillStyle = color;
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
   }, [rot, zoom, radius, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
-      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, OFFSETS, otherProbes]);
+      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, OFFSETS, otherProbes, allProbes, selectedProbeId]);
 
   useEffect(() => { draw(); }, [draw]);
 
