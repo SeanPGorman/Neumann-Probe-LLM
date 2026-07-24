@@ -83,7 +83,7 @@ interface Props {
   onRefreshSectors?: () => Promise<void>;
   otherProbes?: OtherProbe[];
   /** All probes in display order (main probe first). Used for per-probe journey colouring. */
-  allProbes?: { id: number; name: string; assembledAt?: string | null }[];
+  allProbes?: { id: number; name: string; isDefault?: boolean }[];
   /** ID of the currently selected probe — its journey path is drawn at full brightness. */
   selectedProbeId?: number | null;
 }
@@ -325,12 +325,27 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const courseAlpha = Math.min(1, brightCourse * 2);
       const probes = allProbes && allProbes.length > 0 ? allProbes : null;
       if (probes) {
-        // Sort probes by assembly date ascending — original probe (no assembledAt) sorts first.
-        const probeTimeline = [...probes].sort((a, b) => {
-          const ta = a.assembledAt ? new Date(a.assembledAt).getTime() : 0;
-          const tb = b.assembledAt ? new Date(b.assembledAt).getTime() : 0;
-          return ta - tb;
-        });
+        // Identify the original probe (isDefault) — it existed before any drone was assembled.
+        const originalProbeId = probes.find(p => p.isDefault)?.id ?? probes[0].id;
+
+        // Find the drone-era boundary by detecting the largest time gap between consecutive
+        // legacy sector visits. A gap > 3 days means drones started exploring after it.
+        const legacyTimes = visitedSorted
+          .filter(vs => !vs.visitedBy)
+          .map(vs => new Date(vs.firstVisitedAt).getTime())
+          .sort((a, b) => a - b);
+
+        let legacyBoundaryTime = Infinity; // default: all legacy sectors are pre-boundary
+        if (legacyTimes.length >= 2) {
+          let maxGap = 0;
+          for (let i = 1; i < legacyTimes.length; i++) {
+            const gap = legacyTimes[i] - legacyTimes[i - 1];
+            if (gap > maxGap) { maxGap = gap; legacyBoundaryTime = legacyTimes[i]; }
+          }
+          // Only use the boundary if the gap is at least 3 days — smaller gaps are
+          // just normal travel pauses, not a probe-era transition.
+          if (maxGap < 3 * 24 * 60 * 60 * 1000) legacyBoundaryTime = Infinity;
+        }
 
         for (let pi = 0; pi < probes.length; pi++) {
           const { id } = probes[pi];
@@ -345,33 +360,27 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
               const by = vs.visitedBy;
               if (by != null) return key in by;
 
-              // Legacy sector: temporal attribution first.
-              // Determine which probes existed when this sector was first discovered.
+              // Legacy sector: temporal attribution via gap-detected boundary.
               const sectorTime = new Date(vs.firstVisitedAt).getTime();
-              const existingAtTime = probeTimeline.filter(p =>
-                !p.assembledAt || new Date(p.assembledAt).getTime() <= sectorTime
-              );
-
-              if (existingAtTime.length === 1) {
-                // Only one probe existed at discovery time — it's the unambiguous owner.
-                return existingAtTime[0].id === id;
+              if (sectorTime < legacyBoundaryTime) {
+                // Only the original probe existed before the boundary — unambiguous.
+                return id === originalProbeId;
               }
 
-              // Multiple probes existed: spatial proximity among those that existed.
+              // Post-boundary: drones were active, use spatial proximity.
               let minDistSq = Infinity;
               let nearestId: number | null = null;
-              if (selectedProbeId != null && existingAtTime.some(p => p.id === selectedProbeId)) {
+              if (selectedProbeId != null) {
                 const dx = vs.sectorX - probeX, dy = vs.sectorY - probeY, dz = vs.sectorZ - probeZ;
                 const d = dx*dx + dy*dy + dz*dz;
                 if (d < minDistSq) { minDistSq = d; nearestId = selectedProbeId; }
               }
               for (const op of otherProbes ?? []) {
-                if (!existingAtTime.some(p => p.id === op.id)) continue;
                 const dx = vs.sectorX - op.x, dy = vs.sectorY - op.y, dz = vs.sectorZ - op.z;
                 const d = dx*dx + dy*dy + dz*dz;
                 if (d < minDistSq) { minDistSq = d; nearestId = op.id; }
               }
-              if (nearestId === null) return pi === 0; // no positions: fall back to first probe
+              if (nearestId === null) return pi === 0;
               return nearestId === id;
             })
             .sort((a, b_) => {

@@ -1188,7 +1188,7 @@ export default function Commander() {
               .filter(p => p.sector && p.id !== (selectedProbeId ?? probeListData?.defaultProbeId))
               .map(p => ({ id: p.id, name: p.name, x: p.sector!.x, y: p.sector!.y, z: p.sector!.z, isMoving: p.isMoving ?? false }))
             }
-            allProbes={probeList.map(p => ({ id: p.id, name: p.name, assembledAt: p.assembledAt ?? null }))}
+            allProbes={probeList.map(p => ({ id: p.id, name: p.name, isDefault: p.isDefault ?? false }))}
             selectedProbeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
           />
         )}
