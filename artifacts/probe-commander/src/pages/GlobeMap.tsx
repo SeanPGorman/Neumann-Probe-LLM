@@ -52,6 +52,15 @@ interface ProjectedDot {
   z2: number;
 }
 
+interface OtherProbe {
+  id: number;
+  name: string;
+  x: number;
+  y: number;
+  z: number;
+  isMoving: boolean;
+}
+
 interface Props {
   probeX: number;
   probeY: number;
@@ -62,9 +71,10 @@ interface Props {
   isMoving: boolean;
   sectorsData?: { sectors: any[] };
   onRefreshSectors?: () => Promise<void>;
+  otherProbes?: OtherProbe[];
 }
 
-export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors }: Props) {
+export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, sectorsData, onRefreshSectors, otherProbes }: Props) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const rotRef = useRef({ x: 0.4, y: 0.6 });
   const [rot, setRot] = useState({ x: 0.4, y: 0.6 });
@@ -352,10 +362,37 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.fill();
     }
 
+    // 6. Drone / other probe dots — labeled, orange
+    if (otherProbes) {
+      for (const op of otherProbes) {
+        const pp = project(op.x, op.y, op.z);
+        const { sx, sy, persp } = pp;
+        const r = Math.max(2, persp * 0.32);
+        // Glow halo
+        ctx.beginPath();
+        ctx.arc(sx, sy, r * 2.5, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(255,160,60,0.04)`;
+        ctx.fill();
+        // Dot
+        ctx.beginPath();
+        ctx.arc(sx, sy, r, 0, Math.PI * 2);
+        ctx.fillStyle = op.isMoving ? `rgba(255,220,80,0.85)` : `rgba(255,150,50,0.85)`;
+        ctx.fill();
+        // Name label
+        ctx.font = "8px monospace";
+        ctx.fillStyle = op.isMoving ? `rgba(255,220,80,0.7)` : `rgba(255,150,50,0.7)`;
+        ctx.fillText(op.name, sx + r + 3, sy + 3);
+      }
+    }
+
     // Legend
     ctx.font = "9px monospace";
+    const droneLegend: [string, string][] = otherProbes && otherProbes.length > 0
+      ? [["◉ drone", "rgba(255,150,50,0.85)"]]
+      : [];
     const legends: [string, string][] = [
       ["◉ probe", "rgba(200,255,220,0.9)"],
+      ...droneLegend,
       ...(hasPrior ? [["○ prior", "rgba(255,200,80,0.7)"] as [string, string]] : []),
       ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
@@ -366,7 +403,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
   }, [rot, zoom, radius, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
-      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, OFFSETS]);
+      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, OFFSETS, otherProbes]);
 
   useEffect(() => { draw(); }, [draw]);
 

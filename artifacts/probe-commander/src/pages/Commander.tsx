@@ -125,7 +125,7 @@ function ScanReadinessBar({ scan }: { scan: { currentSectorResidenceSeconds: num
   );
 }
 
-type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean };
+type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean; sector?: { x: number; y: number; z: number }; isMoving?: boolean };
 
 function TelemetryPanel({
   state, error, probeList = [], selectedProbeId = null, onSelectProbe = () => {},
@@ -1012,6 +1012,8 @@ export default function Commander() {
     name: p.name,
     status: p.status,
     isDefault: p.isDefault ?? (p.id === probeListData?.defaultProbeId),
+    sector: p.sector,
+    isMoving: p.isMoving ?? false,
   }));
 
   const { data: state, error: stateError } = useQuery({
@@ -1182,6 +1184,10 @@ export default function Commander() {
             priorZ={globeCenter.pz}
             sectorsData={sectorsData}
             onRefreshSectors={handleRefreshSectors}
+            otherProbes={probeList
+              .filter(p => p.sector && p.id !== (selectedProbeId ?? probeListData?.defaultProbeId))
+              .map(p => ({ id: p.id, name: p.name, x: p.sector!.x, y: p.sector!.y, z: p.sector!.z, isMoving: p.isMoving ?? false }))
+            }
           />
         )}
         {sideTab === "system" && (

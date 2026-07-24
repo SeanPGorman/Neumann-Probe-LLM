@@ -201,7 +201,25 @@ router.delete("/scheduled/:id", async (req, res) => {
 router.get("/probes", async (_req, res) => {
   try {
     const data = await client.getProbeList();
-    res.json(data);
+    const probes: any[] = data.probes ?? [];
+    const ACTIVE = ["preparing", "accelerating", "cruising", "decelerating", "moving"];
+    const withPositions = await Promise.all(
+      probes.map(async (p: any) => {
+        try {
+          const resp = await client.getProbeById(p.id);
+          const probe = resp.probe ?? resp;
+          const mv = probe.movement;
+          const isMoving = ACTIVE.includes(mv?.status) || ACTIVE.includes(probe.status);
+          const sector = isMoving && mv?.target
+            ? mv.target
+            : (probe.sector?.relative ?? probe.sector ?? { x: 0, y: 0, z: 0 });
+          return { ...p, sector, isMoving };
+        } catch {
+          return p;
+        }
+      })
+    );
+    res.json({ ...data, probes: withPositions });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
