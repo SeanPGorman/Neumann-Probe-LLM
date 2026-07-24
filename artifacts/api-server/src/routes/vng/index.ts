@@ -12,6 +12,7 @@ import { TOOLS, executeTool } from "./tools.js";
 import {
   cancelPendingAction,
   recordSector,
+  setVisitedByProbe,
   getFloatingContainers,
   getPendingActions,
   DATA_DIR,
@@ -220,6 +221,25 @@ router.get("/probes", async (_req, res) => {
       })
     );
     res.json({ ...data, probes: withPositions });
+
+    // Background: backfill visitedBy attribution for any sectors that lack it.
+    // Fires once per /probes request, silently — never delays the response.
+    (async () => {
+      for (const p of probes) {
+        try {
+          const resp = await client.getVisitedSectorsByProbe(p.id);
+          const coords = (resp?.visitedSectors ?? []).map((gs: any) => ({
+            x: gs.relativeCoordinates.x,
+            y: gs.relativeCoordinates.y,
+            z: gs.relativeCoordinates.z,
+          }));
+          const n = await setVisitedByProbe(coords, p.id);
+          if (n > 0) console.log(`[backfill] attributed ${n} sectors to probe ${p.id}`);
+        } catch {
+          // Not all probe types support this endpoint — ignore silently.
+        }
+      }
+    })();
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

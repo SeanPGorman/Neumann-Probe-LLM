@@ -127,6 +127,8 @@ export const getSectorById  = (id: number) => clientFor(id).getSector();
 // Global (not probe-scoped) endpoints
 export const getCraftingRecipes  = () => vngFetch("/api/crafting-recipes");
 export const getVisitedSectors   = () => vngFetch("/api/probe/visited-sectors");
+export const getVisitedSectorsByProbe = (probeId: number) =>
+  vngFetch(`/api/probe/${probeId}/visited-sectors`);
 export const getProbeList        = () => vngFetch("/api/probes");
 export const getProbeImprovements = () => main().getProbeImprovements();
 export const getMissions         = () => vngFetch("/api/probe/missions");

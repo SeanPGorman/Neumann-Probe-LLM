@@ -303,6 +303,41 @@ export async function getSectors(): Promise<VisitedSector[]> {
   return readFile<VisitedSector[]>(SECTORS_FILE, []);
 }
 
+/**
+ * Backfill `visitedBy` for a batch of sectors attributed to one probe.
+ * Only writes entries that are not already present — safe to call repeatedly.
+ * Returns the number of sector records updated.
+ */
+export async function setVisitedByProbe(
+  sectors: { x: number; y: number; z: number }[],
+  probeId: number,
+): Promise<number> {
+  if (!sectors.length) return 0;
+  return withWriteLock(async () => {
+    const rows = await getSectors();
+    const key = String(probeId);
+    let updated = 0;
+    for (const { x, y, z } of sectors) {
+      const idx = rows.findIndex(
+        (r) => r.sectorX === x && r.sectorY === y && r.sectorZ === z,
+      );
+      if (idx === -1) continue;
+      const by = rows[idx].visitedBy ?? {};
+      if (!(key in by)) {
+        by[key] = {
+          visitCount: rows[idx].visitCount,
+          firstVisitedAt: rows[idx].firstVisitedAt,
+          lastVisitedAt: rows[idx].lastVisitedAt,
+        };
+        rows[idx].visitedBy = by;
+        updated++;
+      }
+    }
+    if (updated > 0) await writeFile(SECTORS_FILE, rows);
+    return updated;
+  });
+}
+
 export async function recordSector(
   x: number,
   y: number,

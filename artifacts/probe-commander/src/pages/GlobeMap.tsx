@@ -336,7 +336,24 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
           const pSectors = visitedSorted
             .filter(vs => {
               const by = vs.visitedBy;
-              return by ? key in by : pi === 0;
+              if (by != null) return key in by;
+              // Legacy sector (no visitedBy): spatially attribute to nearest probe.
+              // Build probe position map once per draw using the props we already have.
+              let minDistSq = Infinity;
+              let nearestId: number | null = null;
+              if (selectedProbeId != null) {
+                const dx = vs.sectorX - probeX, dy = vs.sectorY - probeY, dz = vs.sectorZ - probeZ;
+                const d = dx*dx + dy*dy + dz*dz;
+                if (d < minDistSq) { minDistSq = d; nearestId = selectedProbeId; }
+              }
+              for (const op of otherProbes ?? []) {
+                const dx = vs.sectorX - op.x, dy = vs.sectorY - op.y, dz = vs.sectorZ - op.z;
+                const d = dx*dx + dy*dy + dz*dz;
+                if (d < minDistSq) { minDistSq = d; nearestId = op.id; }
+              }
+              // If no probe position info, fall back to first probe
+              if (nearestId === null) return pi === 0;
+              return nearestId === id;
             })
             .sort((a, b_) => {
               const tA = a.visitedBy?.[key]?.firstVisitedAt ?? a.firstVisitedAt;
@@ -345,13 +362,34 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             });
 
           if (pSectors.length < 2) continue;
-          const pp = pSectors.map(vs => project(vs.sectorX, vs.sectorY, vs.sectorZ));
-          ctx.beginPath();
-          ctx.moveTo(pp[0].sx, pp[0].sy);
-          for (let i = 1; i < pp.length; i++) ctx.lineTo(pp[i].sx, pp[i].sy);
+
+          // Draw path with segment-break for large jumps (avoids phantom cross-globe lines).
+          const MAX_JUMP_SQ = 64; // 8 sector-units squared
           ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha})`;
           ctx.lineWidth = lw;
           ctx.lineJoin = "round";
+          ctx.beginPath();
+          let penDown = false;
+          for (let i = 0; i < pSectors.length; i++) {
+            const cur = pSectors[i];
+            const { sx, sy } = project(cur.sectorX, cur.sectorY, cur.sectorZ);
+            if (!penDown) {
+              ctx.moveTo(sx, sy);
+              penDown = true;
+            } else {
+              const prev = pSectors[i - 1];
+              const ddx = cur.sectorX - prev.sectorX;
+              const ddy = cur.sectorY - prev.sectorY;
+              const ddz = cur.sectorZ - prev.sectorZ;
+              if (ddx * ddx + ddy * ddy + ddz * ddz > MAX_JUMP_SQ) {
+                ctx.stroke();
+                ctx.beginPath();
+                ctx.moveTo(sx, sy);
+              } else {
+                ctx.lineTo(sx, sy);
+              }
+            }
+          }
           ctx.stroke();
         }
       } else {
