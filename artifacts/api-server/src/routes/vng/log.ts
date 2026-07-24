@@ -462,14 +462,32 @@ router.get("/sectors", async (_req, res) => {
 // Fires concurrent scanSector calls (up to 12 sectors typically) and persists results.
 router.post("/sectors/refresh", async (_req, res) => {
   try {
+    // Collect sector coords from both the game server (main probe) and our local store
+    // (which includes sectors visited by drones). Union them so relay data from all
+    // probes gets refreshed, not just SnoozyBob's visited list.
     const gameResp = await getVisitedSectors().catch(() => null);
-    const visitedList: { x: number; y: number; z: number }[] = (
+    const gameCoords: { x: number; y: number; z: number }[] = (
       gameResp?.visitedSectors ?? []
     ).map((gs: any) => ({
       x: gs.relativeCoordinates.x,
       y: gs.relativeCoordinates.y,
       z: gs.relativeCoordinates.z,
     }));
+
+    const localCoords = getSectors().map((s) => ({
+      x: s.sectorX,
+      y: s.sectorY,
+      z: s.sectorZ,
+    }));
+
+    // Deduplicate by "x,y,z" key
+    const seen = new Set<string>();
+    const visitedList = [...gameCoords, ...localCoords].filter(({ x, y, z }) => {
+      const key = `${x},${y},${z}`;
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
 
     if (!visitedList.length) {
       res.json({ refreshed: 0, sectors: [] });
