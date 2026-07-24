@@ -331,27 +331,12 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const courseAlpha = Math.min(1, brightCourse * 2);
       const probes = allProbes && allProbes.length > 0 ? allProbes : null;
       if (probes) {
-        // Identify the original probe (isDefault) — it existed before any drone was assembled.
+        // Identify the original probe (isDefault) — owns every sector not
+        // explicitly attributed to a drone via the visitedBy map.
         const originalProbeId = probes.find(p => p.isDefault)?.id ?? probes[0].id;
-
-        // Find the drone-era boundary by detecting the largest time gap between consecutive
-        // legacy sector visits. A gap > 3 days means drones started exploring after it.
-        const legacyTimes = visitedSorted
-          .filter(vs => !vs.visitedBy)
-          .map(vs => new Date(vs.firstVisitedAt).getTime())
-          .sort((a, b) => a - b);
-
-        let legacyBoundaryTime = Infinity; // default: all legacy sectors are pre-boundary
-        if (legacyTimes.length >= 2) {
-          let maxGap = 0;
-          for (let i = 1; i < legacyTimes.length; i++) {
-            const gap = legacyTimes[i] - legacyTimes[i - 1];
-            if (gap > maxGap) { maxGap = gap; legacyBoundaryTime = legacyTimes[i]; }
-          }
-          // Only use the boundary if the gap is at least 3 days — smaller gaps are
-          // just normal travel pauses, not a probe-era transition.
-          if (maxGap < 3 * 24 * 60 * 60 * 1000) legacyBoundaryTime = Infinity;
-        }
+        const droneKeys = new Set(
+          probes.filter(p => p.id !== originalProbeId).map(p => String(p.id))
+        );
 
         for (let pi = 0; pi < probes.length; pi++) {
           const { id } = probes[pi];
@@ -364,30 +349,13 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
           const pSectors = visitedSorted
             .filter(vs => {
               const by = vs.visitedBy;
-              if (by != null) return key in by;
-
-              // Legacy sector: temporal attribution via gap-detected boundary.
-              const sectorTime = new Date(vs.firstVisitedAt).getTime();
-              if (sectorTime < legacyBoundaryTime) {
-                // Only the original probe existed before the boundary — unambiguous.
-                return id === originalProbeId;
+              if (id === originalProbeId) {
+                // SnoozyBob owns every sector not explicitly tagged to a drone.
+                if (!by) return true;
+                return !droneKeys.size || !([...droneKeys].some(dk => dk in by));
               }
-
-              // Post-boundary: drones were active, use spatial proximity.
-              let minDistSq = Infinity;
-              let nearestId: number | null = null;
-              if (selectedProbeId != null) {
-                const dx = vs.sectorX - probeX, dy = vs.sectorY - probeY, dz = vs.sectorZ - probeZ;
-                const d = dx*dx + dy*dy + dz*dz;
-                if (d < minDistSq) { minDistSq = d; nearestId = selectedProbeId; }
-              }
-              for (const op of otherProbes ?? []) {
-                const dx = vs.sectorX - op.x, dy = vs.sectorY - op.y, dz = vs.sectorZ - op.z;
-                const d = dx*dx + dy*dy + dz*dz;
-                if (d < minDistSq) { minDistSq = d; nearestId = op.id; }
-              }
-              if (nearestId === null) return pi === 0;
-              return nearestId === id;
+              // Drone: only sectors explicitly tagged with this probe's ID.
+              return by != null && key in by;
             })
             .sort((a, b_) => {
               const tA = a.visitedBy?.[key]?.firstVisitedAt ?? a.firstVisitedAt;
