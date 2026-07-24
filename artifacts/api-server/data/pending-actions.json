@@ -7649,5 +7649,19 @@
     "createdAt": "2026-07-23T13:42:39.316Z",
     "status": "triggered",
     "triggeredAt": "2026-07-23T16:14:01.143Z"
+  },
+  {
+    "description": "[craft queue] Waypoint bookmark (1/1) via Manny",
+    "probeId": 761,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "waypoint_bookmark"
+    },
+    "id": 473,
+    "createdAt": "2026-07-24T17:07:52.046Z",
+    "status": "pending"
   }
 ]

@@ -3065,8 +3065,8 @@
     "sectorY": 10,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-24T14:12:24.038Z",
-    "lastVisitedAt": "2026-07-24T17:07:07.240Z",
-    "visitCount": 285,
+    "lastVisitedAt": "2026-07-24T17:07:37.852Z",
+    "visitCount": 286,
     "objects": [],
     "resourceSummary": [],
     "visitedBy": {
@@ -3112,6 +3112,205 @@
         "visitCount": 39,
         "firstVisitedAt": "2026-07-24T14:12:35.832Z",
         "lastVisitedAt": "2026-07-24T14:32:23.446Z"
+      }
+    }
+  },
+  {
+    "id": 26,
+    "sectorX": 1,
+    "sectorY": 6,
+    "sectorZ": -1,
+    "firstVisitedAt": "2026-07-24T17:07:46.961Z",
+    "lastVisitedAt": "2026-07-24T17:09:49.937Z",
+    "visitCount": 5,
+    "objects": [
+      {
+        "id": "7a027b981ed2c4c17cc1",
+        "type": "solar_system",
+        "name": "System 5d3202",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 12 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 10,
+        "orbitalBodyCount": 12,
+        "bodies": [
+          {
+            "id": "e265eef854f4d48ba849",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.292968,
+            "massUnit": "solar_mass",
+            "radius": 0.406378,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "1cc7bc485daa181aefef",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.023665,
+            "massUnit": "earth_mass",
+            "radius": 0.468272,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.130311,
+            "intelligentLife": false
+          },
+          {
+            "id": "b48539b3159ebda565fc",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 2.905905,
+            "massUnit": "earth_mass",
+            "radius": 1.796164,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.16463,
+            "intelligentLife": false
+          },
+          {
+            "id": "c316fd04c509a1dbd3a9",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.827537,
+            "massUnit": "earth_mass",
+            "radius": 1.418107,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.145878,
+            "intelligentLife": false
+          },
+          {
+            "id": "0104f9a31c50a99a23de",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.832015,
+            "massUnit": "earth_mass",
+            "radius": 0.878443,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.064159,
+            "intelligentLife": false
+          },
+          {
+            "id": "77129d4e40075fe1f227",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 4.140327,
+            "massUnit": "earth_mass",
+            "radius": 1.607881,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.028178,
+            "intelligentLife": false
+          },
+          {
+            "id": "c9764a56ca03c4f27d3b",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.302437,
+            "massUnit": "earth_mass",
+            "radius": 0.61324,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.158054,
+            "intelligentLife": false
+          },
+          {
+            "id": "8126f1d94899f44930ee",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 4.394642,
+            "massUnit": "earth_mass",
+            "radius": 1.127258,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.173689,
+            "intelligentLife": false
+          },
+          {
+            "id": "9c80f68a3ccc19e877d4",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 4.312742,
+            "massUnit": "earth_mass",
+            "radius": 0.9236,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.006848,
+            "intelligentLife": false
+          },
+          {
+            "id": "cd5f29d7059aa4eb33c2",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.23502,
+            "massUnit": "earth_mass",
+            "radius": 1.663465,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.100075,
+            "intelligentLife": false
+          },
+          {
+            "id": "63ceb725649d41c9ea21",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.306836,
+            "massUnit": "earth_mass",
+            "radius": 0.505472,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.129626,
+            "intelligentLife": false
+          },
+          {
+            "id": "7987304a79e1c37b7a41",
+            "type": "asteroid",
+            "name": "Metal 12f1",
+            "category": null,
+            "mass": 0.013048,
+            "massUnit": "earth_mass",
+            "radius": 0.06433,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "85334d606f6f23c175d0",
+            "type": "asteroid",
+            "name": "Metal 36d7",
+            "category": null,
+            "mass": 0.007882,
+            "massUnit": "earth_mass",
+            "radius": 0.106886,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      }
+    ],
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-24T17:07:46.961Z",
+        "lastVisitedAt": "2026-07-24T17:07:46.961Z"
+      },
+      "716": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-24T17:07:46.961Z",
+        "lastVisitedAt": "2026-07-24T17:07:46.961Z"
+      },
+      "761": {
+        "visitCount": 5,
+        "firstVisitedAt": "2026-07-24T17:07:46.961Z",
+        "lastVisitedAt": "2026-07-24T17:09:49.937Z"
       }
     }
   }
