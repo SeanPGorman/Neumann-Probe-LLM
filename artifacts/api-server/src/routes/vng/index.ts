@@ -214,7 +214,9 @@ router.get("/probes", async (_req, res) => {
           const sector = isMoving && mv?.target
             ? mv.target
             : (probe.sector?.relative ?? probe.sector ?? { x: 0, y: 0, z: 0 });
-          return { ...p, sector, isMoving };
+          const assembledAt: string | null =
+            probe.assembledAt ?? probe.createdAt ?? p.assembledAt ?? p.createdAt ?? null;
+          return { ...p, sector, isMoving, assembledAt };
         } catch {
           return p;
         }

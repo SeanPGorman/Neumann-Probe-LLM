@@ -83,7 +83,7 @@ interface Props {
   onRefreshSectors?: () => Promise<void>;
   otherProbes?: OtherProbe[];
   /** All probes in display order (main probe first). Used for per-probe journey colouring. */
-  allProbes?: { id: number; name: string }[];
+  allProbes?: { id: number; name: string; assembledAt?: string | null }[];
   /** ID of the currently selected probe — its journey path is drawn at full brightness. */
   selectedProbeId?: number | null;
 }
@@ -325,6 +325,13 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       const courseAlpha = Math.min(1, brightCourse * 2);
       const probes = allProbes && allProbes.length > 0 ? allProbes : null;
       if (probes) {
+        // Sort probes by assembly date ascending — original probe (no assembledAt) sorts first.
+        const probeTimeline = [...probes].sort((a, b) => {
+          const ta = a.assembledAt ? new Date(a.assembledAt).getTime() : 0;
+          const tb = b.assembledAt ? new Date(b.assembledAt).getTime() : 0;
+          return ta - tb;
+        });
+
         for (let pi = 0; pi < probes.length; pi++) {
           const { id } = probes[pi];
           const key = String(id);
@@ -337,22 +344,34 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             .filter(vs => {
               const by = vs.visitedBy;
               if (by != null) return key in by;
-              // Legacy sector (no visitedBy): spatially attribute to nearest probe.
-              // Build probe position map once per draw using the props we already have.
+
+              // Legacy sector: temporal attribution first.
+              // Determine which probes existed when this sector was first discovered.
+              const sectorTime = new Date(vs.firstVisitedAt).getTime();
+              const existingAtTime = probeTimeline.filter(p =>
+                !p.assembledAt || new Date(p.assembledAt).getTime() <= sectorTime
+              );
+
+              if (existingAtTime.length === 1) {
+                // Only one probe existed at discovery time — it's the unambiguous owner.
+                return existingAtTime[0].id === id;
+              }
+
+              // Multiple probes existed: spatial proximity among those that existed.
               let minDistSq = Infinity;
               let nearestId: number | null = null;
-              if (selectedProbeId != null) {
+              if (selectedProbeId != null && existingAtTime.some(p => p.id === selectedProbeId)) {
                 const dx = vs.sectorX - probeX, dy = vs.sectorY - probeY, dz = vs.sectorZ - probeZ;
                 const d = dx*dx + dy*dy + dz*dz;
                 if (d < minDistSq) { minDistSq = d; nearestId = selectedProbeId; }
               }
               for (const op of otherProbes ?? []) {
+                if (!existingAtTime.some(p => p.id === op.id)) continue;
                 const dx = vs.sectorX - op.x, dy = vs.sectorY - op.y, dz = vs.sectorZ - op.z;
                 const d = dx*dx + dy*dy + dz*dz;
                 if (d < minDistSq) { minDistSq = d; nearestId = op.id; }
               }
-              // If no probe position info, fall back to first probe
-              if (nearestId === null) return pi === 0;
+              if (nearestId === null) return pi === 0; // no positions: fall back to first probe
               return nearestId === id;
             })
             .sort((a, b_) => {
