@@ -224,22 +224,26 @@ router.get("/probes", async (_req, res) => {
     );
     res.json({ ...data, probes: withPositions });
 
-    // Background: backfill visitedBy attribution for any sectors that lack it.
-    // Fires once per /probes request, silently — never delays the response.
+    // Background: backfill visitedBy attribution for the default probe only.
+    // The game's /api/probe/{id}/visited-sectors endpoint returns the DEFAULT
+    // probe's history regardless of which probe ID is supplied, so calling it
+    // for drones just stamps every sector with the drone's ID at SnoozyBob's
+    // timestamps — a misleading attribution. Only the default probe's data is
+    // authoritative here; drone attribution comes from live recordSector calls.
     (async () => {
-      for (const p of probes) {
-        try {
-          const resp = await client.getVisitedSectorsByProbe(p.id);
-          const coords = (resp?.visitedSectors ?? []).map((gs: any) => ({
-            x: gs.relativeCoordinates.x,
-            y: gs.relativeCoordinates.y,
-            z: gs.relativeCoordinates.z,
-          }));
-          const n = await setVisitedByProbe(coords, p.id);
-          if (n > 0) console.log(`[backfill] attributed ${n} sectors to probe ${p.id}`);
-        } catch {
-          // Not all probe types support this endpoint — ignore silently.
-        }
+      const defaultProbe = probes.find((p: any) => p.isDefault) ?? probes[0];
+      if (!defaultProbe) return;
+      try {
+        const resp = await client.getVisitedSectorsByProbe(defaultProbe.id);
+        const coords = (resp?.visitedSectors ?? []).map((gs: any) => ({
+          x: gs.relativeCoordinates.x,
+          y: gs.relativeCoordinates.y,
+          z: gs.relativeCoordinates.z,
+        }));
+        const n = await setVisitedByProbe(coords, defaultProbe.id);
+        if (n > 0) console.log(`[backfill] attributed ${n} sectors to probe ${defaultProbe.id}`);
+      } catch {
+        // Endpoint unavailable — ignore silently.
       }
     })();
   } catch (err: any) {

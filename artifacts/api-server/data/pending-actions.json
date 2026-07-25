@@ -7662,6 +7662,7 @@
     },
     "id": 473,
     "createdAt": "2026-07-24T17:07:52.046Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-24T18:10:54.088Z"
   }
 ]
