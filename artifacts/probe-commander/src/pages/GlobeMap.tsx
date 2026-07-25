@@ -446,8 +446,22 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       }
     }
     for (const entry of relayEntries) {
-      const rp = project(entry.ax, entry.ay, entry.az);
-      const sz = 5;
+      // If the relay is beyond the globe radius, clamp it to the sphere surface
+      // in the correct direction so it always appears as an edge indicator.
+      const rdx = entry.ax - probeX, rdy = entry.ay - probeY, rdz = entry.az - probeZ;
+      const relayDist = Math.sqrt(rdx * rdx + rdy * rdy + rdz * rdz);
+      const isBeyondRadius = relayDist > radius;
+      let rp;
+      if (isBeyondRadius && relayDist > 0) {
+        const scale = (radius * 0.94) / relayDist;
+        rp = project(probeX + rdx * scale, probeY + rdy * scale, probeZ + rdz * scale);
+      } else {
+        rp = project(entry.ax, entry.ay, entry.az);
+      }
+
+      const sz = isBeyondRadius ? 4 : 5;
+      const baseAlpha = isBeyondRadius ? relayAlpha * 0.7 : relayAlpha;
+
       // Diamond shape (rotated square)
       ctx.beginPath();
       ctx.moveTo(rp.sx, rp.sy - sz);     // top
@@ -456,15 +470,15 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.lineTo(rp.sx - sz, rp.sy);     // left
       ctx.closePath();
       ctx.fillStyle = entry.isActive
-        ? `rgba(0,230,230,${0.85 * relayAlpha})`
-        : `rgba(0,160,160,${0.45 * relayAlpha})`;
+        ? `rgba(0,230,230,${0.85 * baseAlpha})`
+        : `rgba(0,160,160,${0.45 * baseAlpha})`;
       ctx.fill();
       // Outer glow ring for active relays
       if (entry.isActive) {
         ctx.beginPath();
         ctx.arc(rp.sx, rp.sy, sz + 3.5, 0, Math.PI * 2);
-        ctx.strokeStyle = `rgba(0,220,220,${0.4 * relayAlpha})`;
-        ctx.lineWidth = 1;
+        ctx.strokeStyle = `rgba(0,220,220,${0.4 * baseAlpha})`;
+        ctx.lineWidth = isBeyondRadius ? 0.7 : 1;
         ctx.stroke();
       }
     }

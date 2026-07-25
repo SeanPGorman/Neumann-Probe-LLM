@@ -1203,8 +1203,8 @@
     "sectorY": 2,
     "sectorZ": 0,
     "firstVisitedAt": "2026-07-10T02:02:58.240Z",
-    "lastVisitedAt": "2026-07-25T17:53:52.005Z",
-    "visitCount": 5,
+    "lastVisitedAt": "2026-07-25T17:57:45.809Z",
+    "visitCount": 9,
     "objects": [],
     "resourceSummary": [],
     "visitedBy": {
@@ -1214,9 +1214,9 @@
         "lastVisitedAt": "2026-07-10T02:02:58.240Z"
       },
       "716": {
-        "visitCount": 1,
+        "visitCount": 5,
         "firstVisitedAt": "2026-07-25T17:53:52.005Z",
-        "lastVisitedAt": "2026-07-25T17:53:52.005Z"
+        "lastVisitedAt": "2026-07-25T17:57:45.809Z"
       }
     }
   },
@@ -3377,8 +3377,8 @@
     "sectorY": 8,
     "sectorZ": 1,
     "firstVisitedAt": "2026-07-25T01:51:53.389Z",
-    "lastVisitedAt": "2026-07-25T17:52:24.841Z",
-    "visitCount": 79,
+    "lastVisitedAt": "2026-07-25T17:57:34.384Z",
+    "visitCount": 81,
     "objects": [],
     "resourceSummary": [],
     "visitedBy": {
