@@ -350,9 +350,8 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             .filter(vs => {
               const by = vs.visitedBy;
               if (id === originalProbeId) {
-                // SnoozyBob owns every sector not explicitly tagged to a drone.
-                if (!by) return true;
-                return !droneKeys.size || !([...droneKeys].some(dk => dk in by));
+                // SnoozyBob owns ALL visited sectors — the full exploration history.
+                return true;
               }
               // Drone: only sectors explicitly tagged with this probe's ID.
               return by != null && key in by;
@@ -363,36 +362,58 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
               return new Date(tA).getTime() - new Date(tB).getTime();
             });
 
-          if (pSectors.length < 2) continue;
+          if (pSectors.length === 0) continue;
 
-          // Draw path with segment-break for large jumps (avoids phantom cross-globe lines).
-          const MAX_JUMP_SQ = 64; // 8 sector-units squared
-          ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha})`;
-          ctx.lineWidth = lw;
-          ctx.lineJoin = "round";
-          ctx.beginPath();
-          let penDown = false;
-          for (let i = 0; i < pSectors.length; i++) {
-            const cur = pSectors[i];
-            const { sx, sy } = project(cur.sectorX, cur.sectorY, cur.sectorZ);
-            if (!penDown) {
-              ctx.moveTo(sx, sy);
-              penDown = true;
-            } else {
-              const prev = pSectors[i - 1];
-              const ddx = cur.sectorX - prev.sectorX;
-              const ddy = cur.sectorY - prev.sectorY;
-              const ddz = cur.sectorZ - prev.sectorZ;
-              if (ddx * ddx + ddy * ddy + ddz * ddz > MAX_JUMP_SQ) {
-                ctx.stroke();
-                ctx.beginPath();
+          const isDrone = id !== originalProbeId;
+
+          // Draw path line when there are ≥2 sectors (segment-break on large jumps).
+          if (pSectors.length >= 2) {
+            const MAX_JUMP_SQ = 64; // 8 sector-units squared
+            ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha})`;
+            ctx.lineWidth = lw;
+            ctx.lineJoin = "round";
+            ctx.beginPath();
+            let penDown = false;
+            for (let i = 0; i < pSectors.length; i++) {
+              const cur = pSectors[i];
+              const { sx, sy } = project(cur.sectorX, cur.sectorY, cur.sectorZ);
+              if (!penDown) {
                 ctx.moveTo(sx, sy);
+                penDown = true;
               } else {
-                ctx.lineTo(sx, sy);
+                const prev = pSectors[i - 1];
+                const ddx = cur.sectorX - prev.sectorX;
+                const ddy = cur.sectorY - prev.sectorY;
+                const ddz = cur.sectorZ - prev.sectorZ;
+                if (ddx * ddx + ddy * ddy + ddz * ddz > MAX_JUMP_SQ) {
+                  ctx.stroke();
+                  ctx.beginPath();
+                  ctx.moveTo(sx, sy);
+                } else {
+                  ctx.lineTo(sx, sy);
+                }
               }
             }
+            ctx.stroke();
           }
-          ctx.stroke();
+
+          // For drones: draw a coloured dot at every visited sector so a single
+          // sector is still visible and the path endpoints are always marked.
+          if (isDrone) {
+            const dotAlpha = isThis ? courseAlpha : courseAlpha * 0.75;
+            for (const vs of pSectors) {
+              const { sx, sy } = project(vs.sectorX, vs.sectorY, vs.sectorZ);
+              ctx.beginPath();
+              ctx.arc(sx, sy, 4, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(${cr},${cg},${cb},${dotAlpha})`;
+              ctx.fill();
+              ctx.beginPath();
+              ctx.arc(sx, sy, 6.5, 0, Math.PI * 2);
+              ctx.strokeStyle = `rgba(${cr},${cg},${cb},${dotAlpha * 0.5})`;
+              ctx.lineWidth = 1;
+              ctx.stroke();
+            }
+          }
         }
       } else {
         // Fallback: single green path when no probe list is provided
