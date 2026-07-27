@@ -218,6 +218,20 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       return { sx: cx + x2 * persp, sy: cy + y2 * persp, z2, persp };
     };
 
+    // Like project() but clamps out-of-range sectors to the sphere surface so
+    // drone paths and markers always appear on screen even when the drone is
+    // far from the main probe.  Returns the same shape as project() plus a
+    // boolean indicating whether the position was clamped.
+    const projectClamped = (ax: number, ay: number, az: number): ReturnType<typeof project> & { clamped: boolean } => {
+      const dx = ax - probeX, dy = ay - probeY, dz = az - probeZ;
+      const dist = Math.sqrt(dx * dx + dy * dy + dz * dz);
+      if (dist > radius && dist > 0) {
+        const scale = (radius * 0.92) / dist;
+        return { ...project(probeX + dx * scale, probeY + dy * scale, probeZ + dz * scale), clamped: true };
+      }
+      return { ...project(ax, ay, az), clamped: false };
+    };
+
     // Faint sphere outline
     const sphereScreenR = fov / camDist * radius * 0.97;
     ctx.beginPath();
@@ -367,8 +381,11 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
           const isDrone = id !== originalProbeId;
 
           // Draw path line when there are ≥2 sectors (segment-break on large jumps).
+          // Drones use projectClamped so their paths always appear on the sphere
+          // surface even when the sectors are beyond the current globe radius.
+          const projFn = isDrone ? projectClamped : project;
           if (pSectors.length >= 2) {
-            const MAX_JUMP_SQ = 64; // 8 sector-units squared
+            const MAX_JUMP_SQ = isDrone ? Infinity : 64; // never break drone paths
             ctx.strokeStyle = `rgba(${cr},${cg},${cb},${alpha})`;
             ctx.lineWidth = lw;
             ctx.lineJoin = "round";
@@ -376,7 +393,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             let penDown = false;
             for (let i = 0; i < pSectors.length; i++) {
               const cur = pSectors[i];
-              const { sx, sy } = project(cur.sectorX, cur.sectorY, cur.sectorZ);
+              const { sx, sy } = projFn(cur.sectorX, cur.sectorY, cur.sectorZ);
               if (!penDown) {
                 ctx.moveTo(sx, sy);
                 penDown = true;
@@ -399,19 +416,28 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
 
           // For drones: draw a coloured dot at every visited sector so a single
           // sector is still visible and the path endpoints are always marked.
+          // Clamped sectors get a slightly smaller dot + dashed ring to signal
+          // they're edge indicators rather than exact positions.
           if (isDrone) {
             const dotAlpha = isThis ? courseAlpha : courseAlpha * 0.75;
             for (const vs of pSectors) {
-              const { sx, sy } = project(vs.sectorX, vs.sectorY, vs.sectorZ);
+              const cp = projectClamped(vs.sectorX, vs.sectorY, vs.sectorZ);
+              const { sx, sy, clamped } = cp;
+              const r = clamped ? 3 : 4;
               ctx.beginPath();
-              ctx.arc(sx, sy, 4, 0, Math.PI * 2);
-              ctx.fillStyle = `rgba(${cr},${cg},${cb},${dotAlpha})`;
+              ctx.arc(sx, sy, r, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(${cr},${cg},${cb},${clamped ? dotAlpha * 0.7 : dotAlpha})`;
               ctx.fill();
               ctx.beginPath();
-              ctx.arc(sx, sy, 6.5, 0, Math.PI * 2);
-              ctx.strokeStyle = `rgba(${cr},${cg},${cb},${dotAlpha * 0.5})`;
+              if (clamped) {
+                // Dashed ring signals "edge indicator — sector is beyond view"
+                ctx.setLineDash([2, 2]);
+              }
+              ctx.arc(sx, sy, r + 2.5, 0, Math.PI * 2);
+              ctx.strokeStyle = `rgba(${cr},${cg},${cb},${dotAlpha * (clamped ? 0.35 : 0.5)})`;
               ctx.lineWidth = 1;
               ctx.stroke();
+              ctx.setLineDash([]);
             }
           }
         }
