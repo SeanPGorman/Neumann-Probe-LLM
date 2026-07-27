@@ -4331,15 +4331,15 @@
     "sectorY": 5,
     "sectorZ": 2,
     "firstVisitedAt": "2026-07-26T18:11:52.646Z",
-    "lastVisitedAt": "2026-07-27T16:59:32.924Z",
-    "visitCount": 6,
+    "lastVisitedAt": "2026-07-27T17:08:10.744Z",
+    "visitCount": 23,
     "objects": [],
     "resourceSummary": [],
     "visitedBy": {
       "716": {
-        "visitCount": 6,
+        "visitCount": 23,
         "firstVisitedAt": "2026-07-26T18:11:52.646Z",
-        "lastVisitedAt": "2026-07-27T16:59:32.924Z"
+        "lastVisitedAt": "2026-07-27T17:08:10.744Z"
       }
     }
   },

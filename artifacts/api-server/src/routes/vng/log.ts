@@ -418,11 +418,16 @@ router.get("/sectors", async (_req, res) => {
 
     let sectors: any[];
     if (gameResp?.visitedSectors?.length) {
+      // Game API is authoritative for timestamps/visitCount of the main probe.
+      // Local JSON supplements objects + visitedBy (per-drone attribution).
+      const gameKeys = new Set<string>();
       sectors = (gameResp.visitedSectors as any[]).map((gs) => {
         const x = gs.relativeCoordinates.x;
         const y = gs.relativeCoordinates.y;
         const z = gs.relativeCoordinates.z;
-        const local = localByKey.get(`${x},${y},${z}`);
+        const key = `${x},${y},${z}`;
+        gameKeys.add(key);
+        const local = localByKey.get(key);
         return {
           sectorX: x,
           sectorY: y,
@@ -431,8 +436,27 @@ router.get("/sectors", async (_req, res) => {
           lastVisitedAt: gs.lastVisitedAt,
           visitCount: gs.visitCount,
           objects: local?.objects ?? [],
+          // Include per-probe attribution so the globe can draw drone tracks
+          visitedBy: local?.visitedBy ?? undefined,
         };
       });
+
+      // Append drone-only sectors that the main probe never visited
+      // (these sectors exist only in the local JSON, not in the game API list)
+      for (const s of localSectors as any[]) {
+        const key = `${s.sectorX},${s.sectorY},${s.sectorZ}`;
+        if (gameKeys.has(key)) continue; // already included above
+        sectors.push({
+          sectorX: s.sectorX,
+          sectorY: s.sectorY,
+          sectorZ: s.sectorZ,
+          firstVisitedAt: s.firstVisitedAt ?? s.lastVisitedAt,
+          lastVisitedAt: s.lastVisitedAt,
+          visitCount: s.visitCount,
+          objects: s.objects ?? [],
+          visitedBy: s.visitedBy ?? undefined,
+        });
+      }
     } else {
       // Fallback to local JSON if game API is unavailable
       sectors = (localSectors as any[]).map((s) => ({
@@ -443,6 +467,7 @@ router.get("/sectors", async (_req, res) => {
         lastVisitedAt: s.lastVisitedAt,
         visitCount: s.visitCount,
         objects: s.objects ?? [],
+        visitedBy: s.visitedBy ?? undefined,
       }));
     }
 
