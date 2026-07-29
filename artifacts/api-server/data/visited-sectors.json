@@ -4555,5 +4555,23 @@
         "lastVisitedAt": "2026-07-27T16:53:15.303Z"
       }
     }
+  },
+  {
+    "id": 43,
+    "sectorX": 11,
+    "sectorY": 17,
+    "sectorZ": 4,
+    "firstVisitedAt": "2026-07-29T18:10:51.924Z",
+    "lastVisitedAt": "2026-07-29T18:12:53.812Z",
+    "visitCount": 5,
+    "objects": [],
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 2,
+        "firstVisitedAt": "2026-07-29T18:10:51.924Z",
+        "lastVisitedAt": "2026-07-29T18:11:22.351Z"
+      }
+    }
   }
 ]
