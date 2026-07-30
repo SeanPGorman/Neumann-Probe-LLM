@@ -122,6 +122,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
   const [brightVisited, setBrightVisited] = useState(0.5);
   const [brightCourse,  setBrightCourse]  = useState(0.5);
   const [brightRelay,   setBrightRelay]   = useState(0.5);
+  const [brightWaypoint, setBrightWaypoint] = useState(0.5);
   const [radius, setRadius] = useState(DEFAULT_RADIUS);
   const OFFSETS = useMemo(() => computeOffsets(radius), [radius]);
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -509,6 +510,57 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       }
     }
 
+    // 4c. Waypoint bookmark markers — gold stars at sectors containing player beacons.
+    // Uses same clamping logic as SCUT relays so out-of-range beacons stay on screen.
+    {
+      const waypointAlpha = Math.min(1, brightWaypoint * 2);
+      const drawStar = (sx: number, sy: number, outer: number, inner: number) => {
+        ctx.beginPath();
+        for (let i = 0; i < 10; i++) {
+          const angle = (i * Math.PI) / 5 - Math.PI / 2;
+          const r = i % 2 === 0 ? outer : inner;
+          const px = sx + r * Math.cos(angle);
+          const py = sy + r * Math.sin(angle);
+          if (i === 0) ctx.moveTo(px, py); else ctx.lineTo(px, py);
+        }
+        ctx.closePath();
+      };
+
+      for (const vs of visitedMap.values()) {
+        const hasWaypoint = (vs.objects ?? []).some((o: any) =>
+          o.type === "waypoint_bookmark" ||
+          (o.type === "solar_system" && o.waypointBookmarks?.length > 0)
+        );
+        if (!hasWaypoint) continue;
+
+        const wdx = vs.sectorX - probeX, wdy = vs.sectorY - probeY, wdz = vs.sectorZ - probeZ;
+        const wDist = Math.sqrt(wdx * wdx + wdy * wdy + wdz * wdz);
+        const isBeyond = wDist > radius;
+        let wp;
+        if (isBeyond && wDist > 0) {
+          const scale = (radius * 0.90) / wDist;
+          wp = project(probeX + wdx * scale, probeY + wdy * scale, probeZ + wdz * scale);
+        } else {
+          wp = project(vs.sectorX, vs.sectorY, vs.sectorZ);
+        }
+
+        const outer = isBeyond ? 4 : 5;
+        const inner = outer * 0.42;
+        const baseAlpha = isBeyond ? waypointAlpha * 0.65 : waypointAlpha;
+
+        // Fill star
+        drawStar(wp.sx, wp.sy, outer, inner);
+        ctx.fillStyle = `rgba(255,215,60,${0.9 * baseAlpha})`;
+        ctx.fill();
+        // Outer glow
+        ctx.beginPath();
+        ctx.arc(wp.sx, wp.sy, outer + 3, 0, Math.PI * 2);
+        ctx.strokeStyle = `rgba(255,200,40,${0.35 * baseAlpha})`;
+        ctx.lineWidth = isBeyond ? 0.7 : 1;
+        ctx.stroke();
+      }
+    }
+
     // 5. Probe dot — always on top
     const probePrj = project(probeX, probeY, probeZ);
     {
@@ -570,6 +622,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
       ["◈ SCUT relay", "rgba(0,220,220,0.8)"],
+      ["★ waypoint", "rgba(255,215,60,0.9)"],
       ...journeyLegends,
     ];
     legends.forEach(([label, color], i) => {
@@ -577,7 +630,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
       ctx.fillText(label, 6, H - 6 - i * 12);
     });
   }, [rot, zoom, radius, probeX, probeY, probeZ, priorX, priorY, priorZ, isMoving, visitedMap, selected,
-      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, OFFSETS, otherProbes, allProbes, selectedProbeId]);
+      brightProbe, brightDots, brightVisited, brightCourse, brightRelay, brightWaypoint, OFFSETS, otherProbes, allProbes, selectedProbeId, scutRelays]);
 
   useEffect(() => { draw(); }, [draw]);
 
@@ -710,6 +763,7 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             ["VISITED", brightVisited, setBrightVisited],
             ["COURSE",  brightCourse,  setBrightCourse],
             ["SCUT",    brightRelay,   setBrightRelay],
+            ["WYPT",    brightWaypoint, setBrightWaypoint],
           ] as [string, number, (v: number) => void][]
         ).map(([label, val, set]) => (
           <div key={label} className="flex items-center gap-1.5 min-w-0">

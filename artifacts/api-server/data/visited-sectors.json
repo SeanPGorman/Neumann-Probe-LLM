@@ -1929,8 +1929,8 @@
     "sectorY": 6,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-14T17:07:48.291Z",
-    "lastVisitedAt": "2026-07-23T22:27:57.636Z",
-    "visitCount": 550,
+    "lastVisitedAt": "2026-07-30T01:32:43.586Z",
+    "visitCount": 562,
     "objects": [
       {
         "id": "2e9286c1a0ab567ab7be",
@@ -2126,17 +2126,31 @@
         ]
       },
       {
-        "id": "detached-container-container-itm_craft_32178d2c94011b4abe9432d7",
-        "type": "detached_container",
-        "name": "Metals 8",
+        "id": "drifting-item-biological_archive",
+        "type": "drifting_item",
+        "name": "Biological archive",
         "estimated": false,
-        "summary": "Detached storage container detected.",
+        "summary": "2 inventory item(s) drifting in open space.",
+        "dangerLevel": "low",
+        "resourceTypes": []
+      },
+      {
+        "id": "97",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "estimated": false,
+        "summary": "Active long-range SCUT communication relay.",
         "dangerLevel": "low",
         "resourceTypes": [],
-        "capacity": 1,
-        "mode": "hidden_on_asteroid",
-        "targetObjectId": "6e45d1364f679bdd6a88",
-        "salvageable": false
+        "status": "on",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        },
+        "createdByProbeId": 716,
+        "createdByProbeName": "AlphaDrone",
+        "activatedAt": "2026-07-24T02:03:15+00:00"
       }
     ],
     "resourceSummary": [
@@ -2147,6 +2161,16 @@
         "visitCount": 550,
         "firstVisitedAt": "2026-07-14T17:07:48.291Z",
         "lastVisitedAt": "2026-07-23T22:27:57.636Z"
+      },
+      "716": {
+        "visitCount": 8,
+        "firstVisitedAt": "2026-07-30T01:29:10.276Z",
+        "lastVisitedAt": "2026-07-30T01:32:43.586Z"
+      },
+      "761": {
+        "visitCount": 4,
+        "firstVisitedAt": "2026-07-30T01:27:26.686Z",
+        "lastVisitedAt": "2026-07-30T01:28:58.540Z"
       }
     }
   },
@@ -4580,8 +4604,8 @@
     "sectorY": 17,
     "sectorZ": 6,
     "firstVisitedAt": "2026-07-29T18:50:52.142Z",
-    "lastVisitedAt": "2026-07-29T19:53:00.590Z",
-    "visitCount": 21,
+    "lastVisitedAt": "2026-07-29T20:59:49.294Z",
+    "visitCount": 65,
     "objects": [
       {
         "id": "985088d6230de598a503",
@@ -4772,6 +4796,240 @@
         "visitCount": 18,
         "firstVisitedAt": "2026-07-29T18:50:52.142Z",
         "lastVisitedAt": "2026-07-29T19:51:29.059Z"
+      }
+    }
+  },
+  {
+    "id": 45,
+    "sectorX": 0,
+    "sectorY": 7,
+    "sectorZ": 1,
+    "firstVisitedAt": "2026-07-29T20:26:44.892Z",
+    "lastVisitedAt": "2026-07-29T20:55:51.251Z",
+    "visitCount": 58,
+    "objects": [
+      {
+        "id": "933f5324cf92905b80cc",
+        "type": "solar_system",
+        "name": "WP-056- SnoozyBob. This is 0.7.1. 0 Metal. 0 Deut. 0 Ice. 0 Organics.",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 5 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 5,
+        "orbitalBodyCount": 5,
+        "bodies": [
+          {
+            "id": "0384b0a2bd81f2bd2ac5",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.21884,
+            "massUnit": "solar_mass",
+            "radius": 0.13744,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "4f6ae659a3f4c695dc9b",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.987105,
+            "massUnit": "earth_mass",
+            "radius": 1.66219,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.014453,
+            "intelligentLife": false
+          },
+          {
+            "id": "6e677d8edb96db51c402",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.081569,
+            "massUnit": "earth_mass",
+            "radius": 0.418124,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.023947,
+            "intelligentLife": false
+          },
+          {
+            "id": "df8b84c5e9bf74a8f721",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.158393,
+            "massUnit": "earth_mass",
+            "radius": 0.189206,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.13055,
+            "intelligentLife": false
+          },
+          {
+            "id": "23019cb5875efecad3ed",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.243111,
+            "massUnit": "earth_mass",
+            "radius": 0.801694,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.105552,
+            "intelligentLife": false
+          },
+          {
+            "id": "2ab9f175f1e08e4c56b6",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.56444,
+            "massUnit": "earth_mass",
+            "radius": 0.476579,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.081024,
+            "intelligentLife": false
+          }
+        ]
+      }
+    ],
+    "resourceSummary": [],
+    "visitedBy": {
+      "716": {
+        "visitCount": 58,
+        "firstVisitedAt": "2026-07-29T20:26:44.892Z",
+        "lastVisitedAt": "2026-07-29T20:55:51.251Z"
+      }
+    }
+  },
+  {
+    "id": 46,
+    "sectorX": 13,
+    "sectorY": 18,
+    "sectorZ": 7,
+    "firstVisitedAt": "2026-07-30T01:27:09.574Z",
+    "lastVisitedAt": "2026-07-30T01:32:33.828Z",
+    "visitCount": 2,
+    "objects": [
+      {
+        "id": "bbed1de348f1b9eae1b9",
+        "type": "solar_system",
+        "name": "System 964ad2",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 6,
+        "orbitalBodyCount": 7,
+        "bodies": [
+          {
+            "id": "e519cdd3d0c9f4183bc8",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.447155,
+            "massUnit": "solar_mass",
+            "radius": 0.278149,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          },
+          {
+            "id": "d9725f506e4dc28df990",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.104916,
+            "massUnit": "earth_mass",
+            "radius": 0.270968,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.137969,
+            "intelligentLife": false
+          },
+          {
+            "id": "9769986eb245dcf39aa1",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 2.290306,
+            "massUnit": "earth_mass",
+            "radius": 0.780467,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.146182,
+            "intelligentLife": false
+          },
+          {
+            "id": "1a8be644ad660912aeb8",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.961401,
+            "massUnit": "earth_mass",
+            "radius": 0.813619,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.104802,
+            "intelligentLife": false
+          },
+          {
+            "id": "4de7a35333a1d964a1ad",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 4.677965,
+            "massUnit": "earth_mass",
+            "radius": 0.759305,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.103466,
+            "intelligentLife": false
+          },
+          {
+            "id": "ddf3a7bfbd3b87b1182c",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.745616,
+            "massUnit": "earth_mass",
+            "radius": 0.895059,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.084088,
+            "intelligentLife": false
+          },
+          {
+            "id": "1cfd6e22377410dad39f",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 216.834442,
+            "massUnit": "earth_mass",
+            "radius": 4.368123,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.028429,
+            "intelligentLife": false
+          },
+          {
+            "id": "218c726b022ebd3adf04",
+            "type": "asteroid",
+            "name": "Metal bef0",
+            "category": null,
+            "mass": 0.015057,
+            "massUnit": "earth_mass",
+            "radius": 0.054894,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null
+          }
+        ]
+      }
+    ],
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-30T01:27:09.574Z",
+        "lastVisitedAt": "2026-07-30T01:27:09.574Z"
       }
     }
   }
