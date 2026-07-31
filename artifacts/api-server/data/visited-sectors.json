@@ -1929,8 +1929,8 @@
     "sectorY": 6,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-14T17:07:48.291Z",
-    "lastVisitedAt": "2026-07-30T01:32:43.586Z",
-    "visitCount": 562,
+    "lastVisitedAt": "2026-07-30T04:08:49.629Z",
+    "visitCount": 797,
     "objects": [
       {
         "id": "2e9286c1a0ab567ab7be",
@@ -2135,6 +2135,19 @@
         "resourceTypes": []
       },
       {
+        "id": "detached-container-container-itm_craft_69e0198b185dd8a34e90d68b",
+        "type": "detached_container",
+        "name": "Metals 6",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "77b3f74303045a6c4f85",
+        "salvageable": false
+      },
+      {
         "id": "97",
         "type": "scut_relay",
         "name": "Relais SCUT",
@@ -2163,9 +2176,9 @@
         "lastVisitedAt": "2026-07-23T22:27:57.636Z"
       },
       "716": {
-        "visitCount": 8,
+        "visitCount": 243,
         "firstVisitedAt": "2026-07-30T01:29:10.276Z",
-        "lastVisitedAt": "2026-07-30T01:32:43.586Z"
+        "lastVisitedAt": "2026-07-30T04:08:49.629Z"
       },
       "761": {
         "visitCount": 4,
@@ -2180,8 +2193,8 @@
     "sectorY": 5,
     "sectorZ": -1,
     "firstVisitedAt": "2026-07-14T19:30:37.998Z",
-    "lastVisitedAt": "2026-07-14T19:48:04.753Z",
-    "visitCount": 33,
+    "lastVisitedAt": "2026-07-31T12:22:28.797Z",
+    "visitCount": 40,
     "objects": [
       {
         "id": "157bb5d8395775415d24",
@@ -2318,7 +2331,7 @@
           {
             "id": "25ef0c96522860249189",
             "type": "asteroid",
-            "name": null,
+            "name": "Metal 87aa",
             "category": null,
             "mass": 0.004454,
             "massUnit": "earth_mass",
@@ -4910,13 +4923,13 @@
     "sectorY": 18,
     "sectorZ": 7,
     "firstVisitedAt": "2026-07-30T01:27:09.574Z",
-    "lastVisitedAt": "2026-07-30T01:32:33.828Z",
-    "visitCount": 2,
+    "lastVisitedAt": "2026-07-30T02:14:32.348Z",
+    "visitCount": 7,
     "objects": [
       {
         "id": "bbed1de348f1b9eae1b9",
         "type": "solar_system",
-        "name": "System 964ad2",
+        "name": "Solar system WP-050- SnoozyBob. This is 13.18.7. 1 Metal. 0 Deut. 0 Ice. 0 Organ",
         "estimated": false,
         "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
         "dangerLevel": "low",
@@ -5030,6 +5043,24 @@
         "visitCount": 1,
         "firstVisitedAt": "2026-07-30T01:27:09.574Z",
         "lastVisitedAt": "2026-07-30T01:27:09.574Z"
+      }
+    }
+  },
+  {
+    "id": 47,
+    "sectorX": 12,
+    "sectorY": 16,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-07-30T04:15:19.370Z",
+    "lastVisitedAt": "2026-07-30T04:16:50.865Z",
+    "visitCount": 4,
+    "objects": [],
+    "resourceSummary": [],
+    "visitedBy": {
+      "652": {
+        "visitCount": 1,
+        "firstVisitedAt": "2026-07-30T04:15:19.370Z",
+        "lastVisitedAt": "2026-07-30T04:15:19.370Z"
       }
     }
   }

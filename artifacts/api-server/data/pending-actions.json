@@ -7767,7 +7767,8 @@
     },
     "id": 480,
     "createdAt": "2026-07-30T01:27:40.491Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:33:08.227Z"
   },
   {
     "description": "[craft queue] Steel bar (6/7) via Manny",
@@ -7781,7 +7782,8 @@
     },
     "id": 481,
     "createdAt": "2026-07-30T01:27:40.494Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:33:08.387Z"
   },
   {
     "description": "[craft queue] Steel bar (7/7) via Manny",
@@ -7795,7 +7797,8 @@
     },
     "id": 482,
     "createdAt": "2026-07-30T01:27:40.497Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:37:38.366Z"
   },
   {
     "description": "[craft queue] Steel plate (1/7) via Manny",
@@ -7809,7 +7812,8 @@
     },
     "id": 483,
     "createdAt": "2026-07-30T01:27:44.432Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:37:38.567Z"
   },
   {
     "description": "[craft queue] Steel plate (2/7) via Manny",
@@ -7823,7 +7827,8 @@
     },
     "id": 484,
     "createdAt": "2026-07-30T01:27:44.435Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:38:08.400Z"
   },
   {
     "description": "[craft queue] Steel plate (3/7) via Manny",
@@ -7837,7 +7842,8 @@
     },
     "id": 485,
     "createdAt": "2026-07-30T01:27:44.438Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:38:08.603Z"
   },
   {
     "description": "[craft queue] Steel plate (4/7) via Manny",
@@ -7851,7 +7857,8 @@
     },
     "id": 486,
     "createdAt": "2026-07-30T01:27:44.441Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:42:38.578Z"
   },
   {
     "description": "[craft queue] Steel plate (5/7) via Manny",
@@ -7865,7 +7872,8 @@
     },
     "id": 487,
     "createdAt": "2026-07-30T01:27:44.444Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:42:38.752Z"
   },
   {
     "description": "[craft queue] Steel plate (6/7) via Manny",
@@ -7879,7 +7887,8 @@
     },
     "id": 488,
     "createdAt": "2026-07-30T01:27:44.448Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:43:08.674Z"
   },
   {
     "description": "[craft queue] Steel plate (7/7) via Manny",
@@ -7893,7 +7902,8 @@
     },
     "id": 489,
     "createdAt": "2026-07-30T01:27:44.451Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:43:08.877Z"
   },
   {
     "description": "[craft queue] Steel plate (1/36) via Manny",
@@ -7907,7 +7917,8 @@
     },
     "id": 490,
     "createdAt": "2026-07-30T01:27:51.279Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:40.479Z"
   },
   {
     "description": "[craft queue] Steel plate (2/36) via Manny",
@@ -7921,7 +7932,8 @@
     },
     "id": 491,
     "createdAt": "2026-07-30T01:27:51.283Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:40.664Z"
   },
   {
     "description": "[craft queue] Steel plate (3/36) via Manny",
@@ -7935,7 +7947,8 @@
     },
     "id": 492,
     "createdAt": "2026-07-30T01:27:51.286Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:40.835Z"
   },
   {
     "description": "[craft queue] Steel plate (4/36) via Manny",
@@ -7949,7 +7962,8 @@
     },
     "id": 493,
     "createdAt": "2026-07-30T01:27:51.290Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.022Z"
   },
   {
     "description": "[craft queue] Steel plate (5/36) via Manny",
@@ -7963,147 +7977,8 @@
     },
     "id": 494,
     "createdAt": "2026-07-30T01:27:51.293Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (6/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 495,
-    "createdAt": "2026-07-30T01:27:51.296Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (7/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 496,
-    "createdAt": "2026-07-30T01:27:51.299Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (8/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 497,
-    "createdAt": "2026-07-30T01:27:51.302Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (9/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 498,
-    "createdAt": "2026-07-30T01:27:51.305Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (10/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 499,
-    "createdAt": "2026-07-30T01:27:51.308Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (11/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 500,
-    "createdAt": "2026-07-30T01:27:51.311Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (12/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 501,
-    "createdAt": "2026-07-30T01:27:51.317Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (13/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 502,
-    "createdAt": "2026-07-30T01:27:51.320Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (14/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 503,
-    "createdAt": "2026-07-30T01:27:51.322Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (15/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 504,
-    "createdAt": "2026-07-30T01:27:51.326Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:15:41.087Z"
   },
   {
     "description": "[craft queue] Steel plate (16/36) via Manny",
@@ -8117,7 +7992,8 @@
     },
     "id": 505,
     "createdAt": "2026-07-30T01:27:51.330Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:10.930Z"
   },
   {
     "description": "[craft queue] Steel plate (17/36) via Manny",
@@ -8131,7 +8007,8 @@
     },
     "id": 506,
     "createdAt": "2026-07-30T01:27:51.333Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:11.117Z"
   },
   {
     "description": "[craft queue] Steel plate (18/36) via Manny",
@@ -8145,105 +8022,8 @@
     },
     "id": 507,
     "createdAt": "2026-07-30T01:27:51.335Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (19/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 508,
-    "createdAt": "2026-07-30T01:27:51.339Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (20/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 509,
-    "createdAt": "2026-07-30T01:27:51.341Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (21/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 510,
-    "createdAt": "2026-07-30T01:27:51.344Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (22/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 511,
-    "createdAt": "2026-07-30T01:27:51.346Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (23/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 512,
-    "createdAt": "2026-07-30T01:27:51.349Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (24/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 513,
-    "createdAt": "2026-07-30T01:27:51.352Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel plate (25/36) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 514,
-    "createdAt": "2026-07-30T01:27:51.355Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:11.280Z"
   },
   {
     "description": "[craft queue] Steel plate (26/36) via Manny",
@@ -8257,7 +8037,8 @@
     },
     "id": 515,
     "createdAt": "2026-07-30T01:27:51.357Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:20:41.008Z"
   },
   {
     "description": "[craft queue] Steel plate (27/36) via Manny",
@@ -8271,7 +8052,8 @@
     },
     "id": 516,
     "createdAt": "2026-07-30T01:27:51.360Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:40.999Z"
   },
   {
     "description": "[craft queue] Steel plate (28/36) via Manny",
@@ -8285,7 +8067,8 @@
     },
     "id": 517,
     "createdAt": "2026-07-30T01:27:51.363Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:41.176Z"
   },
   {
     "description": "[craft queue] Steel plate (29/36) via Manny",
@@ -8299,7 +8082,8 @@
     },
     "id": 518,
     "createdAt": "2026-07-30T01:27:51.366Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:41.355Z"
   },
   {
     "description": "[craft queue] Steel plate (30/36) via Manny",
@@ -8313,7 +8097,8 @@
     },
     "id": 519,
     "createdAt": "2026-07-30T01:27:51.369Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:25:41.182Z"
   },
   {
     "description": "[craft queue] Steel plate (31/36) via Manny",
@@ -8327,7 +8112,8 @@
     },
     "id": 520,
     "createdAt": "2026-07-30T01:27:51.372Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:26:41.143Z"
   },
   {
     "description": "[craft queue] Steel plate (32/36) via Manny",
@@ -8341,7 +8127,9 @@
     },
     "id": 521,
     "createdAt": "2026-07-30T01:27:51.375Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.258Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel plate (33/36) via Manny",
@@ -8355,7 +8143,9 @@
     },
     "id": 522,
     "createdAt": "2026-07-30T01:27:51.378Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.375Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel plate (34/36) via Manny",
@@ -8369,7 +8159,8 @@
     },
     "id": 523,
     "createdAt": "2026-07-30T01:27:51.381Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:26:41.559Z"
   },
   {
     "description": "[craft queue] Steel plate (35/36) via Manny",
@@ -8383,7 +8174,9 @@
     },
     "id": 524,
     "createdAt": "2026-07-30T01:27:51.384Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.679Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel plate (36/36) via Manny",
@@ -8397,483 +8190,8 @@
     },
     "id": 525,
     "createdAt": "2026-07-30T01:27:51.387Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (1/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 526,
-    "createdAt": "2026-07-30T01:27:51.391Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (2/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 527,
-    "createdAt": "2026-07-30T01:27:51.395Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (3/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 528,
-    "createdAt": "2026-07-30T01:27:51.398Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (4/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 529,
-    "createdAt": "2026-07-30T01:27:51.401Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (5/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 530,
-    "createdAt": "2026-07-30T01:27:51.404Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (6/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 531,
-    "createdAt": "2026-07-30T01:27:51.407Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (7/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 532,
-    "createdAt": "2026-07-30T01:27:51.410Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (8/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 533,
-    "createdAt": "2026-07-30T01:27:51.413Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (9/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 534,
-    "createdAt": "2026-07-30T01:27:51.417Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (10/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 535,
-    "createdAt": "2026-07-30T01:27:51.421Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (11/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 536,
-    "createdAt": "2026-07-30T01:27:51.424Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (12/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 537,
-    "createdAt": "2026-07-30T01:27:51.426Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (13/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 538,
-    "createdAt": "2026-07-30T01:27:51.430Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (14/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 539,
-    "createdAt": "2026-07-30T01:27:51.433Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (15/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 540,
-    "createdAt": "2026-07-30T01:27:51.436Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (16/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 541,
-    "createdAt": "2026-07-30T01:27:51.440Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (17/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 542,
-    "createdAt": "2026-07-30T01:27:51.443Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (18/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 543,
-    "createdAt": "2026-07-30T01:27:51.446Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (19/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 544,
-    "createdAt": "2026-07-30T01:27:51.449Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (20/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 545,
-    "createdAt": "2026-07-30T01:27:51.452Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (21/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 546,
-    "createdAt": "2026-07-30T01:27:51.455Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (22/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 547,
-    "createdAt": "2026-07-30T01:27:51.458Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (23/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 548,
-    "createdAt": "2026-07-30T01:27:51.461Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (24/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 549,
-    "createdAt": "2026-07-30T01:27:51.465Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (25/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 550,
-    "createdAt": "2026-07-30T01:27:51.469Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (26/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 551,
-    "createdAt": "2026-07-30T01:27:51.472Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (27/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 552,
-    "createdAt": "2026-07-30T01:27:51.475Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (28/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 553,
-    "createdAt": "2026-07-30T01:27:51.478Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (29/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 554,
-    "createdAt": "2026-07-30T01:27:51.482Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (30/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 555,
-    "createdAt": "2026-07-30T01:27:51.485Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (31/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 556,
-    "createdAt": "2026-07-30T01:27:51.488Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (32/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 557,
-    "createdAt": "2026-07-30T01:27:51.492Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (33/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 558,
-    "createdAt": "2026-07-30T01:27:51.495Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (34/45) via Manny",
-    "probeId": 761,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 559,
-    "createdAt": "2026-07-30T01:27:51.498Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:26:41.861Z"
   },
   {
     "description": "[craft queue] Steel bar (35/45) via Manny",
@@ -8887,7 +8205,8 @@
     },
     "id": 560,
     "createdAt": "2026-07-30T01:27:51.501Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:30:41.151Z"
   },
   {
     "description": "[craft queue] Steel bar (36/45) via Manny",
@@ -8901,7 +8220,8 @@
     },
     "id": 561,
     "createdAt": "2026-07-30T01:27:51.504Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:13:42.427Z"
   },
   {
     "description": "[craft queue] Steel bar (37/45) via Manny",
@@ -8915,7 +8235,8 @@
     },
     "id": 562,
     "createdAt": "2026-07-30T01:27:51.507Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:13:42.597Z"
   },
   {
     "description": "[craft queue] Steel bar (38/45) via Manny",
@@ -8929,7 +8250,8 @@
     },
     "id": 563,
     "createdAt": "2026-07-30T01:27:51.510Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:13:42.774Z"
   },
   {
     "description": "[craft queue] Steel bar (39/45) via Manny",
@@ -8943,7 +8265,8 @@
     },
     "id": 564,
     "createdAt": "2026-07-30T01:27:51.513Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:13:42.934Z"
   },
   {
     "description": "[craft queue] Steel bar (40/45) via Manny",
@@ -8957,7 +8280,8 @@
     },
     "id": 565,
     "createdAt": "2026-07-30T01:27:51.517Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:18:42.585Z"
   },
   {
     "description": "[craft queue] Steel bar (41/45) via Manny",
@@ -8971,7 +8295,8 @@
     },
     "id": 566,
     "createdAt": "2026-07-30T01:27:51.520Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:18:42.794Z"
   },
   {
     "description": "[craft queue] Steel bar (42/45) via Manny",
@@ -8985,7 +8310,8 @@
     },
     "id": 567,
     "createdAt": "2026-07-30T01:27:51.522Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:19:12.597Z"
   },
   {
     "description": "[craft queue] Steel bar (43/45) via Manny",
@@ -8999,7 +8325,8 @@
     },
     "id": 568,
     "createdAt": "2026-07-30T01:27:51.525Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:19:12.769Z"
   },
   {
     "description": "[craft queue] Steel bar (44/45) via Manny",
@@ -9013,7 +8340,8 @@
     },
     "id": 569,
     "createdAt": "2026-07-30T01:27:51.530Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:23:42.778Z"
   },
   {
     "description": "[craft queue] Steel bar (45/45) via Manny",
@@ -9027,7 +8355,8 @@
     },
     "id": 570,
     "createdAt": "2026-07-30T01:27:51.533Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:24:12.813Z"
   },
   {
     "description": "[craft queue] Additional container (1/3) via Manny",
@@ -9045,7 +8374,8 @@
     },
     "id": 571,
     "createdAt": "2026-07-30T01:27:51.536Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:24:12.983Z"
   },
   {
     "description": "[craft queue] Additional container (2/3) via Manny",
@@ -9063,7 +8393,8 @@
     },
     "id": 572,
     "createdAt": "2026-07-30T01:27:51.539Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T04:24:42.858Z"
   },
   {
     "description": "[craft queue] Additional container (3/3) via Manny",
@@ -9275,7 +8606,8 @@
     },
     "id": 586,
     "createdAt": "2026-07-30T01:29:30.773Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:34:38.440Z"
   },
   {
     "description": "[craft queue] Steel plate (2/12) via Manny",
@@ -9289,7 +8621,8 @@
     },
     "id": 587,
     "createdAt": "2026-07-30T01:29:30.778Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:34:38.666Z"
   },
   {
     "description": "[craft queue] Steel plate (3/12) via Manny",
@@ -9303,7 +8636,8 @@
     },
     "id": 588,
     "createdAt": "2026-07-30T01:29:30.781Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:34:38.936Z"
   },
   {
     "description": "[craft queue] Steel plate (4/12) via Manny",
@@ -9317,7 +8651,8 @@
     },
     "id": 589,
     "createdAt": "2026-07-30T01:29:30.785Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:08.384Z"
   },
   {
     "description": "[craft queue] Steel plate (5/12) via Manny",
@@ -9331,7 +8666,8 @@
     },
     "id": 590,
     "createdAt": "2026-07-30T01:29:30.788Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:08.587Z"
   },
   {
     "description": "[craft queue] Steel plate (6/12) via Manny",
@@ -9345,7 +8681,8 @@
     },
     "id": 591,
     "createdAt": "2026-07-30T01:29:30.793Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:08.783Z"
   },
   {
     "description": "[craft queue] Steel plate (7/12) via Manny",
@@ -9359,7 +8696,8 @@
     },
     "id": 592,
     "createdAt": "2026-07-30T01:29:30.865Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:08.946Z"
   },
   {
     "description": "[craft queue] Steel plate (8/12) via Manny",
@@ -9373,7 +8711,8 @@
     },
     "id": 593,
     "createdAt": "2026-07-30T01:29:30.872Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:09.165Z"
   },
   {
     "description": "[craft queue] Steel plate (9/12) via Manny",
@@ -9387,7 +8726,8 @@
     },
     "id": 594,
     "createdAt": "2026-07-30T01:29:30.875Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:09.323Z"
   },
   {
     "description": "[craft queue] Steel plate (10/12) via Manny",
@@ -9401,7 +8741,8 @@
     },
     "id": 595,
     "createdAt": "2026-07-30T01:29:30.879Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:09.506Z"
   },
   {
     "description": "[craft queue] Steel plate (11/12) via Manny",
@@ -9415,7 +8756,8 @@
     },
     "id": 596,
     "createdAt": "2026-07-30T01:29:30.882Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:09.692Z"
   },
   {
     "description": "[craft queue] Steel plate (12/12) via Manny",
@@ -9429,6 +8771,1646 @@
     },
     "id": 597,
     "createdAt": "2026-07-30T01:29:30.885Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T01:35:09.911Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 598,
+    "createdAt": "2026-07-30T02:10:39.628Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:40.805Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 599,
+    "createdAt": "2026-07-30T02:10:39.631Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.026Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 600,
+    "createdAt": "2026-07-30T02:10:39.634Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.188Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 601,
+    "createdAt": "2026-07-30T02:10:39.638Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.372Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 602,
+    "createdAt": "2026-07-30T02:10:39.641Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.536Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 603,
+    "createdAt": "2026-07-30T02:10:39.645Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.718Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 604,
+    "createdAt": "2026-07-30T02:10:39.648Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:41.895Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 605,
+    "createdAt": "2026-07-30T02:10:39.652Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:42.139Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 606,
+    "createdAt": "2026-07-30T02:10:39.655Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:42.326Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 607,
+    "createdAt": "2026-07-30T02:10:39.659Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:10:42.507Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 608,
+    "createdAt": "2026-07-30T02:10:40.680Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:11:10.925Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 609,
+    "createdAt": "2026-07-30T02:10:40.683Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:15:41.073Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 610,
+    "createdAt": "2026-07-30T02:10:40.688Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:15:41.267Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 611,
+    "createdAt": "2026-07-30T02:10:40.692Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:15:41.447Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 612,
+    "createdAt": "2026-07-30T02:10:40.704Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:15:41.650Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 613,
+    "createdAt": "2026-07-30T02:10:40.707Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:15:41.990Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 614,
+    "createdAt": "2026-07-30T02:10:40.710Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:10.934Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 615,
+    "createdAt": "2026-07-30T02:10:40.713Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:11.121Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 616,
+    "createdAt": "2026-07-30T02:10:40.716Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:11.285Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/10) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 617,
+    "createdAt": "2026-07-30T02:10:40.720Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:16:11.450Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 618,
+    "createdAt": "2026-07-30T02:16:42.537Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:17:10.614Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 619,
+    "createdAt": "2026-07-30T02:16:42.540Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:17:10.821Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 620,
+    "createdAt": "2026-07-30T02:16:42.544Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:20:41.026Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 621,
+    "createdAt": "2026-07-30T02:16:42.547Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:20:41.248Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 622,
+    "createdAt": "2026-07-30T02:16:42.550Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:20:41.443Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 623,
+    "createdAt": "2026-07-30T02:16:42.554Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:20:41.614Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 624,
+    "createdAt": "2026-07-30T02:16:42.557Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:11.028Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 625,
+    "createdAt": "2026-07-30T02:16:42.560Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:41.036Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 626,
+    "createdAt": "2026-07-30T02:16:42.563Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:41.220Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 627,
+    "createdAt": "2026-07-30T02:16:42.566Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:41.411Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 628,
+    "createdAt": "2026-07-30T02:16:42.569Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:21:41.586Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 629,
+    "createdAt": "2026-07-30T02:16:42.572Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:22:11.069Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 630,
+    "createdAt": "2026-07-30T02:16:42.575Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:22:11.238Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 631,
+    "createdAt": "2026-07-30T02:16:42.579Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:25:41.296Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (15/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 632,
+    "createdAt": "2026-07-30T02:16:42.583Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.097Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (16/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 633,
+    "createdAt": "2026-07-30T02:16:42.586Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T19:32:54.996Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (17/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 634,
+    "createdAt": "2026-07-30T02:16:42.589Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.382Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (18/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 635,
+    "createdAt": "2026-07-30T02:16:42.592Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.496Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (19/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 636,
+    "createdAt": "2026-07-30T02:16:42.596Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T19:32:55.221Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (20/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 637,
+    "createdAt": "2026-07-30T02:16:42.599Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.797Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (21/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 638,
+    "createdAt": "2026-07-30T02:16:42.602Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:41.913Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (22/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 639,
+    "createdAt": "2026-07-30T02:16:42.605Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T19:32:55.417Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (23/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 640,
+    "createdAt": "2026-07-30T02:16:42.608Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T19:32:55.608Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (24/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 641,
+    "createdAt": "2026-07-30T02:16:42.611Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T19:32:55.811Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (25/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 642,
+    "createdAt": "2026-07-30T02:16:42.614Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T19:32:56.016Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (26/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 643,
+    "createdAt": "2026-07-30T02:16:42.616Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:43.552Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (27/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 644,
+    "createdAt": "2026-07-30T02:16:42.619Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:43.696Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (28/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 645,
+    "createdAt": "2026-07-30T02:16:42.622Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:43.871Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (29/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 646,
+    "createdAt": "2026-07-30T02:16:42.625Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:44.044Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (30/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 647,
+    "createdAt": "2026-07-30T02:16:42.628Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:44.207Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (31/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 648,
+    "createdAt": "2026-07-30T02:16:42.631Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:43.514Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (32/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 649,
+    "createdAt": "2026-07-30T02:16:42.634Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:44.376Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (33/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 650,
+    "createdAt": "2026-07-30T02:16:42.637Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:44.552Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (34/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 651,
+    "createdAt": "2026-07-30T02:16:42.640Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:44.735Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (35/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 652,
+    "createdAt": "2026-07-30T02:16:42.643Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:44.917Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (36/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 653,
+    "createdAt": "2026-07-30T02:16:42.646Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:45.097Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (37/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 654,
+    "createdAt": "2026-07-30T02:16:42.650Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:45.278Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (38/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 655,
+    "createdAt": "2026-07-30T02:16:42.653Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:45.501Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (39/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 656,
+    "createdAt": "2026-07-30T02:16:42.656Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:45.695Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (40/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 657,
+    "createdAt": "2026-07-30T02:16:42.659Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:45.863Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (41/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 658,
+    "createdAt": "2026-07-30T02:16:42.663Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:46.039Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (42/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 659,
+    "createdAt": "2026-07-30T02:16:42.666Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:46.219Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (43/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 660,
+    "createdAt": "2026-07-30T02:16:42.669Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:46.399Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel plate (44/44) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 661,
+    "createdAt": "2026-07-30T02:16:42.672Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:46.563Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel bar (1/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 662,
+    "createdAt": "2026-07-30T02:16:42.675Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T04:10:46.745Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "description": "[craft queue] Steel bar (2/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 663,
+    "createdAt": "2026-07-30T02:16:42.678Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:16.806Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (3/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 664,
+    "createdAt": "2026-07-30T02:16:42.682Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:16.923Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (4/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 665,
+    "createdAt": "2026-07-30T02:16:42.685Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.041Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (5/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 666,
+    "createdAt": "2026-07-30T02:16:42.689Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.157Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (6/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 667,
+    "createdAt": "2026-07-30T02:16:42.692Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.274Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (7/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 668,
+    "createdAt": "2026-07-30T02:16:42.695Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.388Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (8/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 669,
+    "createdAt": "2026-07-30T02:16:42.699Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.503Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (9/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 670,
+    "createdAt": "2026-07-30T02:16:42.702Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.618Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (10/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 671,
+    "createdAt": "2026-07-30T02:16:42.705Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.734Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (11/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 672,
+    "createdAt": "2026-07-30T02:16:42.709Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.849Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (12/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 673,
+    "createdAt": "2026-07-30T02:16:42.712Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:17.964Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (13/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 674,
+    "createdAt": "2026-07-30T02:16:42.716Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.079Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (14/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 675,
+    "createdAt": "2026-07-30T02:16:42.718Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.204Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (15/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 676,
+    "createdAt": "2026-07-30T02:16:42.721Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.319Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (16/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 677,
+    "createdAt": "2026-07-30T02:16:42.724Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.434Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (17/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 678,
+    "createdAt": "2026-07-30T02:16:42.728Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.548Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (18/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 679,
+    "createdAt": "2026-07-30T02:16:42.732Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.665Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (19/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 680,
+    "createdAt": "2026-07-30T02:16:42.737Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.779Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (20/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 681,
+    "createdAt": "2026-07-30T02:16:42.741Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:18.894Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (21/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 682,
+    "createdAt": "2026-07-30T02:16:42.744Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.009Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (22/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 683,
+    "createdAt": "2026-07-30T02:16:42.747Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.124Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (23/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 684,
+    "createdAt": "2026-07-30T02:16:42.751Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.244Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (24/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 685,
+    "createdAt": "2026-07-30T02:16:42.755Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.362Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (25/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 686,
+    "createdAt": "2026-07-30T02:16:42.759Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.477Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (26/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 687,
+    "createdAt": "2026-07-30T02:16:42.762Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.592Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (27/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 688,
+    "createdAt": "2026-07-30T02:16:42.766Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.707Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (28/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 689,
+    "createdAt": "2026-07-30T02:16:42.770Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.821Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (29/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 690,
+    "createdAt": "2026-07-30T02:16:42.773Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:19.934Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (30/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 691,
+    "createdAt": "2026-07-30T02:16:42.778Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.049Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (31/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 692,
+    "createdAt": "2026-07-30T02:16:42.782Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.168Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (32/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 693,
+    "createdAt": "2026-07-30T02:16:42.785Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.282Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (33/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 694,
+    "createdAt": "2026-07-30T02:16:42.789Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.397Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (34/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 695,
+    "createdAt": "2026-07-30T02:16:42.792Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.512Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (35/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 696,
+    "createdAt": "2026-07-30T02:16:42.795Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.626Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel bar (36/36) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 697,
+    "createdAt": "2026-07-30T02:16:42.799Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.741Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Additional container (1/4) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 698,
+    "createdAt": "2026-07-30T02:16:42.802Z",
+    "status": "triggered",
+    "triggeredAt": "2026-07-30T02:25:52.982Z"
+  },
+  {
+    "description": "[craft queue] Additional container (2/4) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 699,
+    "createdAt": "2026-07-30T02:16:42.805Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.856Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Additional container (3/4) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 700,
+    "createdAt": "2026-07-30T02:16:42.809Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:20.972Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Additional container (4/4) via Manny",
+    "probeId": 716,
+    "condition": {
+      "type": "manny_idle",
+      "requireItems": [
+        "steel_plate",
+        "steel_bar"
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 701,
+    "createdAt": "2026-07-30T02:16:42.812Z",
+    "status": "failed",
+    "triggeredAt": "2026-07-30T02:26:21.093Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   }
 ]
