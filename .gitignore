@@ -47,3 +47,6 @@ Thumbs.db
 # Replit
 .cache/
 .local/
+
+# Runtime data (live state, not versioned)
+artifacts/api-server/data/visited-sectors.json
