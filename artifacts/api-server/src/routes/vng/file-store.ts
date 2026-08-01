@@ -340,6 +340,26 @@ export async function setVisitedByProbe(
   });
 }
 
+/**
+ * One-time startup backfill: any sector that has no `visitedBy` field was
+ * recorded before per-probe attribution existed and implicitly belongs to
+ * SnoozyBob (the original probe, ID 652).  Calling this at server start makes
+ * that implicit ownership explicit so the GlobeMap filter — which accepts
+ * `by == null || key in by` for SnoozyBob — never relies on absence-as-signal
+ * going forward.
+ *
+ * The call is idempotent: `setVisitedByProbe` skips sectors that already have
+ * an entry for the given probe key.  Returns the count of records written.
+ */
+export async function backfillLegacySectors(originalProbeId: number): Promise<number> {
+  const rows = await getSectors();
+  const legacy = rows
+    .filter((r) => r.visitedBy == null)
+    .map((r) => ({ x: r.sectorX, y: r.sectorY, z: r.sectorZ }));
+  if (legacy.length === 0) return 0;
+  return setVisitedByProbe(legacy, originalProbeId);
+}
+
 export async function recordSector(
   x: number,
   y: number,

@@ -365,12 +365,21 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             .filter(vs => {
               const by = vs.visitedBy;
               if (id === originalProbeId) {
-                // SnoozyBob owns sectors with no visitedBy (legacy records before
-                // attribution was added) OR sectors explicitly tagged with its ID.
-                // Drone-only sectors (visitedBy exists but lacks key "652") are excluded.
+                // SnoozyBob owns:
+                //   (a) sectors with no visitedBy — legacy records created before
+                //       per-probe attribution existed (server backfills these with
+                //       SnoozyBob's ID on startup, but the filter handles both states).
+                //   (b) sectors explicitly tagged with SnoozyBob's ID.
+                //
+                // DO NOT change this to `return true`.  A drone sector recorded
+                // before SnoozyBob has ever visited it will have visitedBy set to
+                // only the drone's key.  Including it in SnoozyBob's path would
+                // silently misattribute drone exploration to SnoozyBob and corrupt
+                // every probe's journey visualisation.
                 return by == null || key in by;
               }
               // Drone: only sectors explicitly tagged with this probe's ID.
+              // Never falls through to the SnoozyBob branch above.
               return by != null && key in by;
             })
             .sort((a, b_) => {
