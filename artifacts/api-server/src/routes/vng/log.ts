@@ -352,15 +352,19 @@ router.post("/crafting-queue", async (req, res) => {
       (a, b) => itemDepth(a[0]) - itemDepth(b[0])
     );
 
-    // ── Step 4: requireItems = direct item deps also being crafted ────────────
-    function requireItemsFor(id: string): string[] {
+    // ── Step 4: requireItemsWithQty = direct item deps also being crafted ──────
+    // Returns per-unit quantities from the recipe so the poller can block until
+    // exactly enough of each ingredient is present before firing the task.
+    function requireItemsFor(id: string): Array<{ type: string; quantity: number }> {
       const r = recipeById.get(id);
       if (!r) return [];
-      return [...new Set<string>(
-        (r.ingredients ?? [])
-          .filter((i: any) => i.kind === "item" && workOrders.has(i.type as string))
-          .map((i: any) => i.type as string)
-      )];
+      const seen = new Map<string, number>();
+      for (const i of r.ingredients ?? []) {
+        if (i.kind === "item" && workOrders.has(i.type as string)) {
+          seen.set(i.type as string, (seen.get(i.type as string) ?? 0) + (i.quantity as number));
+        }
+      }
+      return [...seen.entries()].map(([type, quantity]) => ({ type, quantity }));
     }
 
     // ── Step 5: Schedule tasks ────────────────────────────────────────────────
@@ -378,7 +382,7 @@ router.post("/crafting-queue", async (req, res) => {
           probeId: probeId,
           condition: byPrinter
             ? { type: "probe_idle" }
-            : { type: "manny_idle", ...(reqs.length ? { requireItems: reqs } : {}) },
+            : { type: "manny_idle", ...(reqs.length ? { requireItemsWithQty: reqs } : {}) },
           action: byPrinter
             ? { type: "atomic_printer_craft", recipe: id }
             : { type: "craft_item", recipe: id },

@@ -105,8 +105,10 @@ export type ConditionMannyIdle = {
   /** Omit to allow ANY idle Manny to pick up this task at fire time */
   mannyId?: string;
   mannyName?: string;
-  /** Optional: also wait until ALL of these item types exist in probe inventory (for dependency chains) */
+  /** @deprecated Use requireItemsWithQty for quantity-aware checks */
   requireItems?: string[];
+  /** Wait until each item type is present in inventory in at least the given quantity */
+  requireItemsWithQty?: Array<{ type: string; quantity: number }>;
 };
 export type ConditionProbeIdle = { type: "probe_idle" };
 export type PendingCondition = ConditionMannyIdle | ConditionProbeIdle;

@@ -146,7 +146,29 @@ async function pollProbe(
     if (action.condition.type === "manny_idle") {
       const cond = action.condition;
 
-      // requireItems guard
+      // requireItemsWithQty guard — quantity-aware (preferred)
+      if (cond.requireItemsWithQty && cond.requireItemsWithQty.length > 0) {
+        const itemCountByType = new Map<string, number>();
+        for (const i of probe?.inventory?.items ?? []) {
+          const t = i.type as string;
+          itemCountByType.set(t, (itemCountByType.get(t) ?? 0) + 1);
+        }
+        const allSatisfied = cond.requireItemsWithQty.every(
+          ({ type, quantity }) => (itemCountByType.get(type) ?? 0) >= quantity
+        );
+        if (!allSatisfied) {
+          const missing = cond.requireItemsWithQty
+            .filter(({ type, quantity }) => (itemCountByType.get(type) ?? 0) < quantity)
+            .map(({ type, quantity }) => `${type}×${quantity}(have ${itemCountByType.get(type) ?? 0})`);
+          logger.info(
+            { actionId: action.id, missing, label },
+            "poller: required items not yet in inventory — waiting"
+          );
+          continue;
+        }
+      }
+
+      // requireItems guard — legacy type-only check (backward compat)
       if (cond.requireItems && cond.requireItems.length > 0) {
         const itemTypes = new Set(
           (probe?.inventory?.items ?? []).map((i: any) => i.type as string)

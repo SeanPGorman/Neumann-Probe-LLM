@@ -667,6 +667,15 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
     }
   };
 
+  const queryClient = useQueryClient();
+  const [isRefreshingCalc, setIsRefreshingCalc] = useState(false);
+
+  const refreshCalc = useCallback(async () => {
+    setIsRefreshingCalc(true);
+    await queryClient.invalidateQueries({ queryKey: ["crafting-calc", probeId] });
+    setIsRefreshingCalc(false);
+  }, [queryClient, probeId]);
+
   const { data, isLoading, error } = useQuery({
     queryKey: ["crafting-calc", probeId],
     queryFn: () =>
@@ -720,13 +729,23 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
       )}
       <div className="flex items-center justify-between">
         <div className="text-xs text-muted-foreground tracking-widest">CRAFTING CALCULATOR</div>
-        {!isLoading && !error && (
-          <span className="text-[9px] text-muted-foreground/50 space-x-1.5">
-            {readyCount > 0 && <span className="text-green-400/70">{readyCount} ready</span>}
-            {stockedCount > 0 && <span className="text-blue-400/60">{stockedCount} stocked</span>}
-            <span>{allRecipes.length} total</span>
-          </span>
-        )}
+        <div className="flex items-center gap-2">
+          {!isLoading && !error && (
+            <span className="text-[9px] text-muted-foreground/50 space-x-1.5">
+              {readyCount > 0 && <span className="text-green-400/70">{readyCount} ready</span>}
+              {stockedCount > 0 && <span className="text-blue-400/60">{stockedCount} stocked</span>}
+              <span>{allRecipes.length} total</span>
+            </span>
+          )}
+          <button
+            onClick={refreshCalc}
+            disabled={isRefreshingCalc || isLoading}
+            title="Refresh recipe list from game API"
+            className="text-[10px] font-mono px-1.5 h-5 flex items-center gap-1 rounded border border-border/40 text-cyan-500/70 hover:text-cyan-400 hover:border-cyan-500/40 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+          >
+            {isRefreshingCalc ? "…" : "↺"} REFRESH
+          </button>
+        </div>
       </div>
 
       <div className="flex gap-1">
