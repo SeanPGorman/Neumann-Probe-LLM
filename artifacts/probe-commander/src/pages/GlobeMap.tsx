@@ -365,8 +365,10 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
             .filter(vs => {
               const by = vs.visitedBy;
               if (id === originalProbeId) {
-                // SnoozyBob owns ALL visited sectors — the full exploration history.
-                return true;
+                // SnoozyBob owns sectors with no visitedBy (legacy records before
+                // attribution was added) OR sectors explicitly tagged with its ID.
+                // Drone-only sectors (visitedBy exists but lacks key "652") are excluded.
+                return by == null || key in by;
               }
               // Drone: only sectors explicitly tagged with this probe's ID.
               return by != null && key in by;
