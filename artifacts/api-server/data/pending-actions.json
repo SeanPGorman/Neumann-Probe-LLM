@@ -25424,7 +25424,8 @@
     },
     "id": 1752,
     "createdAt": "2026-08-02T21:11:34.629Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:17.496Z"
   },
   {
     "description": "[craft queue] Steel plate (12/30) via Manny",
@@ -25438,7 +25439,8 @@
     },
     "id": 1753,
     "createdAt": "2026-08-02T21:11:34.637Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:17.690Z"
   },
   {
     "description": "[craft queue] Steel plate (13/30) via Manny",
@@ -25452,7 +25454,8 @@
     },
     "id": 1754,
     "createdAt": "2026-08-02T21:11:34.644Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:17.820Z"
   },
   {
     "description": "[craft queue] Steel plate (14/30) via Manny",
@@ -25466,7 +25469,8 @@
     },
     "id": 1755,
     "createdAt": "2026-08-02T21:11:34.651Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:17.952Z"
   },
   {
     "description": "[craft queue] Steel plate (15/30) via Manny",
@@ -25480,7 +25484,8 @@
     },
     "id": 1756,
     "createdAt": "2026-08-02T21:11:34.659Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:18.152Z"
   },
   {
     "description": "[craft queue] Steel plate (16/30) via Manny",
@@ -25494,7 +25499,8 @@
     },
     "id": 1757,
     "createdAt": "2026-08-02T21:11:34.669Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:18.358Z"
   },
   {
     "description": "[craft queue] Steel plate (17/30) via Manny",
@@ -25508,7 +25514,8 @@
     },
     "id": 1758,
     "createdAt": "2026-08-02T21:11:34.677Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:18.570Z"
   },
   {
     "description": "[craft queue] Steel plate (18/30) via Manny",
@@ -25522,7 +25529,8 @@
     },
     "id": 1759,
     "createdAt": "2026-08-02T21:11:34.684Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:18.782Z"
   },
   {
     "description": "[craft queue] Steel plate (19/30) via Manny",
@@ -25536,7 +25544,8 @@
     },
     "id": 1760,
     "createdAt": "2026-08-02T21:11:34.691Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:18.935Z"
   },
   {
     "description": "[craft queue] Steel plate (20/30) via Manny",
@@ -25550,7 +25559,8 @@
     },
     "id": 1761,
     "createdAt": "2026-08-02T21:11:34.698Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:17:19.121Z"
   },
   {
     "description": "[craft queue] Steel plate (21/30) via Manny",
@@ -25564,7 +25574,8 @@
     },
     "id": 1762,
     "createdAt": "2026-08-02T21:11:34.705Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:17.491Z"
   },
   {
     "description": "[craft queue] Steel plate (22/30) via Manny",
@@ -25578,7 +25589,8 @@
     },
     "id": 1763,
     "createdAt": "2026-08-02T21:11:34.711Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:17.626Z"
   },
   {
     "description": "[craft queue] Steel plate (23/30) via Manny",
@@ -25592,7 +25604,8 @@
     },
     "id": 1764,
     "createdAt": "2026-08-02T21:11:34.718Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:47.595Z"
   },
   {
     "description": "[craft queue] Steel plate (24/30) via Manny",
@@ -25606,7 +25619,8 @@
     },
     "id": 1765,
     "createdAt": "2026-08-02T21:11:34.725Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:47.732Z"
   },
   {
     "description": "[craft queue] Steel plate (25/30) via Manny",
@@ -25620,7 +25634,8 @@
     },
     "id": 1766,
     "createdAt": "2026-08-02T21:11:34.732Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:47.939Z"
   },
   {
     "description": "[craft queue] Steel plate (26/30) via Manny",
@@ -25634,7 +25649,8 @@
     },
     "id": 1767,
     "createdAt": "2026-08-02T21:11:34.739Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:48.096Z"
   },
   {
     "description": "[craft queue] Steel plate (27/30) via Manny",
@@ -25648,7 +25664,8 @@
     },
     "id": 1768,
     "createdAt": "2026-08-02T21:11:34.746Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:48.243Z"
   },
   {
     "description": "[craft queue] Steel plate (28/30) via Manny",
@@ -25662,7 +25679,8 @@
     },
     "id": 1769,
     "createdAt": "2026-08-02T21:11:34.755Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:48.376Z"
   },
   {
     "description": "[craft queue] Steel plate (29/30) via Manny",
@@ -25676,7 +25694,8 @@
     },
     "id": 1770,
     "createdAt": "2026-08-02T21:11:34.762Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:48.565Z"
   },
   {
     "description": "[craft queue] Steel plate (30/30) via Manny",
@@ -25690,7 +25709,8 @@
     },
     "id": 1771,
     "createdAt": "2026-08-02T21:11:34.771Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:22:48.777Z"
   },
   {
     "description": "[craft queue] Steel bar (1/52) via Manny",
@@ -25704,7 +25724,8 @@
     },
     "id": 1772,
     "createdAt": "2026-08-02T21:11:34.779Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:27:17.591Z"
   },
   {
     "description": "[craft queue] Steel bar (2/52) via Manny",
@@ -25718,7 +25739,8 @@
     },
     "id": 1773,
     "createdAt": "2026-08-02T21:11:34.787Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:27:17.797Z"
   },
   {
     "description": "[craft queue] Steel bar (3/52) via Manny",
@@ -25732,7 +25754,8 @@
     },
     "id": 1774,
     "createdAt": "2026-08-02T21:11:34.793Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:27:47.603Z"
   },
   {
     "description": "[craft queue] Steel bar (4/52) via Manny",
@@ -25746,7 +25769,8 @@
     },
     "id": 1775,
     "createdAt": "2026-08-02T21:11:34.801Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:28:17.321Z"
   },
   {
     "description": "[craft queue] Steel bar (5/52) via Manny",
@@ -25760,7 +25784,9 @@
     },
     "id": 1776,
     "createdAt": "2026-08-02T21:11:34.810Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:17.752Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (6/52) via Manny",
@@ -25774,7 +25800,9 @@
     },
     "id": 1777,
     "createdAt": "2026-08-02T21:11:34.821Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:17.874Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (7/52) via Manny",
@@ -25788,7 +25816,9 @@
     },
     "id": 1778,
     "createdAt": "2026-08-02T21:11:34.827Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.006Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (8/52) via Manny",
@@ -25802,7 +25832,9 @@
     },
     "id": 1779,
     "createdAt": "2026-08-02T21:11:34.834Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.132Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (9/52) via Manny",
@@ -25816,7 +25848,9 @@
     },
     "id": 1780,
     "createdAt": "2026-08-02T21:11:34.846Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.257Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (10/52) via Manny",
@@ -25830,7 +25864,9 @@
     },
     "id": 1781,
     "createdAt": "2026-08-02T21:11:34.853Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.379Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (11/52) via Manny",
@@ -25844,7 +25880,9 @@
     },
     "id": 1782,
     "createdAt": "2026-08-02T21:11:34.860Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.501Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (12/52) via Manny",
@@ -25858,7 +25896,9 @@
     },
     "id": 1783,
     "createdAt": "2026-08-02T21:11:34.867Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.623Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (13/52) via Manny",
@@ -25872,7 +25912,9 @@
     },
     "id": 1784,
     "createdAt": "2026-08-02T21:11:34.873Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.747Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (14/52) via Manny",
@@ -25886,7 +25928,9 @@
     },
     "id": 1785,
     "createdAt": "2026-08-02T21:11:34.880Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.868Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (15/52) via Manny",
@@ -25900,7 +25944,9 @@
     },
     "id": 1786,
     "createdAt": "2026-08-02T21:11:34.887Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:18.990Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (16/52) via Manny",
@@ -25914,7 +25960,9 @@
     },
     "id": 1787,
     "createdAt": "2026-08-02T21:11:34.893Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.111Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (17/52) via Manny",
@@ -25928,7 +25976,9 @@
     },
     "id": 1788,
     "createdAt": "2026-08-02T21:11:34.899Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.234Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (18/52) via Manny",
@@ -25942,7 +25992,9 @@
     },
     "id": 1789,
     "createdAt": "2026-08-02T21:11:34.907Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.361Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (19/52) via Manny",
@@ -25956,7 +26008,9 @@
     },
     "id": 1790,
     "createdAt": "2026-08-02T21:11:34.914Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.482Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (20/52) via Manny",
@@ -25970,7 +26024,9 @@
     },
     "id": 1791,
     "createdAt": "2026-08-02T21:11:34.922Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:53:19.740Z",
+    "error": "Unexpected token '<', \"<html>\r\n<h\"... is not valid JSON"
   },
   {
     "description": "[craft queue] Steel bar (21/52) via Manny",
@@ -25984,7 +26040,9 @@
     },
     "id": 1792,
     "createdAt": "2026-08-02T21:11:34.931Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.604Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (22/52) via Manny",
@@ -25998,7 +26056,9 @@
     },
     "id": 1793,
     "createdAt": "2026-08-02T21:11:34.943Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.727Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (23/52) via Manny",
@@ -26012,7 +26072,9 @@
     },
     "id": 1794,
     "createdAt": "2026-08-02T21:11:34.964Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.865Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (24/52) via Manny",
@@ -26026,7 +26088,9 @@
     },
     "id": 1795,
     "createdAt": "2026-08-02T21:11:34.977Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:19.989Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (25/52) via Manny",
@@ -26040,7 +26104,9 @@
     },
     "id": 1796,
     "createdAt": "2026-08-02T21:11:34.995Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.116Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (26/52) via Manny",
@@ -26054,7 +26120,9 @@
     },
     "id": 1797,
     "createdAt": "2026-08-02T21:11:35.002Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.238Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (27/52) via Manny",
@@ -26068,7 +26136,9 @@
     },
     "id": 1798,
     "createdAt": "2026-08-02T21:11:35.011Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.359Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (28/52) via Manny",
@@ -26082,7 +26152,9 @@
     },
     "id": 1799,
     "createdAt": "2026-08-02T21:11:35.026Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.485Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (29/52) via Manny",
@@ -26096,7 +26168,9 @@
     },
     "id": 1800,
     "createdAt": "2026-08-02T21:11:35.042Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.606Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (30/52) via Manny",
@@ -26110,7 +26184,9 @@
     },
     "id": 1801,
     "createdAt": "2026-08-02T21:11:35.052Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.729Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (31/52) via Manny",
@@ -26124,7 +26200,9 @@
     },
     "id": 1802,
     "createdAt": "2026-08-02T21:11:35.059Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.855Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (32/52) via Manny",
@@ -26138,7 +26216,9 @@
     },
     "id": 1803,
     "createdAt": "2026-08-02T21:11:35.066Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:20.980Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (33/52) via Manny",
@@ -26152,7 +26232,9 @@
     },
     "id": 1804,
     "createdAt": "2026-08-02T21:11:35.073Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:21.100Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (34/52) via Manny",
@@ -26166,7 +26248,9 @@
     },
     "id": 1805,
     "createdAt": "2026-08-02T21:11:35.081Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:21.223Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (35/52) via Manny",
@@ -26180,7 +26264,9 @@
     },
     "id": 1806,
     "createdAt": "2026-08-02T21:11:35.091Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T22:10:21.360Z",
+    "error": "VNG API error (409): The Manny is already executing an order."
   },
   {
     "description": "[craft queue] Steel bar (36/52) via Manny",
@@ -26194,7 +26280,9 @@
     },
     "id": 1807,
     "createdAt": "2026-08-02T21:11:35.107Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:51.817Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (37/52) via Manny",
@@ -26208,7 +26296,9 @@
     },
     "id": 1808,
     "createdAt": "2026-08-02T21:11:35.124Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:51.938Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (38/52) via Manny",
@@ -26222,7 +26312,9 @@
     },
     "id": 1809,
     "createdAt": "2026-08-02T21:11:35.133Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.058Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (39/52) via Manny",
@@ -26236,7 +26328,9 @@
     },
     "id": 1810,
     "createdAt": "2026-08-02T21:11:35.140Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.186Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (40/52) via Manny",
@@ -26250,7 +26344,9 @@
     },
     "id": 1811,
     "createdAt": "2026-08-02T21:11:35.150Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.326Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (41/52) via Manny",
@@ -26264,7 +26360,9 @@
     },
     "id": 1812,
     "createdAt": "2026-08-02T21:11:35.157Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.443Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (42/52) via Manny",
@@ -26278,7 +26376,9 @@
     },
     "id": 1813,
     "createdAt": "2026-08-02T21:11:35.165Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.564Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (43/52) via Manny",
@@ -26292,7 +26392,9 @@
     },
     "id": 1814,
     "createdAt": "2026-08-02T21:11:35.172Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.682Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (44/52) via Manny",
@@ -26306,7 +26408,9 @@
     },
     "id": 1815,
     "createdAt": "2026-08-02T21:11:35.178Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.812Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (45/52) via Manny",
@@ -26320,7 +26424,9 @@
     },
     "id": 1816,
     "createdAt": "2026-08-02T21:11:35.188Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:52.939Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (46/52) via Manny",
@@ -26334,7 +26440,9 @@
     },
     "id": 1817,
     "createdAt": "2026-08-02T21:11:35.198Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.068Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (47/52) via Manny",
@@ -26348,7 +26456,9 @@
     },
     "id": 1818,
     "createdAt": "2026-08-02T21:11:35.205Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.203Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (48/52) via Manny",
@@ -26362,7 +26472,9 @@
     },
     "id": 1819,
     "createdAt": "2026-08-02T21:11:35.213Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.336Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (49/52) via Manny",
@@ -26376,7 +26488,9 @@
     },
     "id": 1820,
     "createdAt": "2026-08-02T21:11:35.220Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.469Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (50/52) via Manny",
@@ -26390,7 +26504,9 @@
     },
     "id": 1821,
     "createdAt": "2026-08-02T21:11:35.227Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.602Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (51/52) via Manny",
@@ -26404,7 +26520,9 @@
     },
     "id": 1822,
     "createdAt": "2026-08-02T21:11:35.234Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.720Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Steel bar (52/52) via Manny",
@@ -26418,7 +26536,9 @@
     },
     "id": 1823,
     "createdAt": "2026-08-02T21:11:35.243Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.841Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Battery pack (1/4) via Manny",
@@ -26432,7 +26552,9 @@
     },
     "id": 1824,
     "createdAt": "2026-08-02T21:11:35.257Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:53.970Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Battery pack (2/4) via Manny",
@@ -26446,7 +26568,9 @@
     },
     "id": 1825,
     "createdAt": "2026-08-02T21:11:35.265Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.109Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Battery pack (3/4) via Manny",
@@ -26460,7 +26584,9 @@
     },
     "id": 1826,
     "createdAt": "2026-08-02T21:11:35.273Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.228Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Battery pack (4/4) via Manny",
@@ -26474,7 +26600,9 @@
     },
     "id": 1827,
     "createdAt": "2026-08-02T21:11:35.280Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.367Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Micro-etched conductor (1/12) via atomic printer",
@@ -27074,7 +27202,9 @@
     },
     "id": 1864,
     "createdAt": "2026-08-02T21:11:35.552Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.506Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Electric motor (2/6) via Manny",
@@ -27098,7 +27228,9 @@
     },
     "id": 1865,
     "createdAt": "2026-08-02T21:11:35.560Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.638Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Electric motor (3/6) via Manny",
@@ -27122,7 +27254,9 @@
     },
     "id": 1866,
     "createdAt": "2026-08-02T21:11:35.568Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.761Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Electric motor (4/6) via Manny",
@@ -27146,7 +27280,9 @@
     },
     "id": 1867,
     "createdAt": "2026-08-02T21:11:35.574Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:54.902Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Electric motor (5/6) via Manny",
@@ -27170,7 +27306,9 @@
     },
     "id": 1868,
     "createdAt": "2026-08-02T21:11:35.581Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:55.031Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Electric motor (6/6) via Manny",
@@ -27194,7 +27332,9 @@
     },
     "id": 1869,
     "createdAt": "2026-08-02T21:11:35.588Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:28:55.160Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "description": "[craft queue] Integrated circuit (1/5) via atomic printer",

@@ -79,8 +79,11 @@ export function MiningPanel({ probeId }: Props) {
   const mannies: any[] = data?.mannies ?? [];
 
   // Containers not yet assigned (available for new assignments) — inventory + deployed
+  // Only offer containers that are empty (usedCapacity === 0 or deployed/unknown)
   const assignedContainerIds = new Set(assignments.map((a) => a.containerId));
-  const availableContainers = containers.filter((c: any) => !assignedContainerIds.has(c.id));
+  const availableContainers = containers.filter(
+    (c: any) => !assignedContainerIds.has(c.id) && (c.deployed || (c.usedCapacity ?? 0) === 0)
+  );
 
   // Resource types present in sector asteroids
   const sectorMaterials = new Set<string>(

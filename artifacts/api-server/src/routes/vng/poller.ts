@@ -190,6 +190,10 @@ async function runMiningCycle(
       (c: any) => c.kind === "container"
     );
     const container = invContainers.find((c: any) => c.id === assignment.containerId);
+    if (container && (container.usedCapacity ?? 0) > 0) {
+      logger.info({ label, usedCapacity: container.usedCapacity }, "mining: container not empty yet — waiting for unload");
+      return;
+    }
     if (!container) {
       // Container not in inventory — check if it's already deployed in sector
       const deployedId = toSectorObjectId(assignment.containerId);
