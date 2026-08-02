@@ -368,6 +368,19 @@ async function pollProbe(
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
 
+  // Pre-claim every manny already tracked by an active mining assignment so
+  // the crafting queue cannot touch them until the cycle completes.
+  const activeMiningAssignments = await getMiningAssignments().catch(() => []);
+  for (const a of activeMiningAssignments) {
+    if (
+      a.enabled &&
+      (a.probeId ?? null) === (probeId ?? null) &&
+      a.cycleState !== "idle"
+    ) {
+      for (const id of a.miningMannyIds ?? []) claimedMannies.add(id);
+    }
+  }
+
   // Mining automation runs first — claims mannies before crafting queue can
   await runMiningAutomation(probeId, probe, mannies, claimedMannies, c).catch((err) =>
     logger.error({ err: err?.message, probeId }, "poller: mining automation error")
