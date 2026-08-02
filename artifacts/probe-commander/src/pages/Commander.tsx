@@ -3,6 +3,7 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { GlobeMap } from "./GlobeMap";
 import { SystemMap } from "./SystemMap";
+import { MiningPanel } from "./MiningPanel";
 import { objectIcon, SectorObjectList } from "../components/SectorObject";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
 import { useIsDesktop } from "@/hooks/use-media-query";
@@ -30,7 +31,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "containers" | "sectors" | "scout" | "globe" | "system" | "scheduled";
+type SideTab = "telemetry" | "containers" | "sectors" | "scout" | "globe" | "system" | "scheduled" | "mining";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -1155,6 +1156,7 @@ export default function Commander() {
     { id: "containers", label: "CNTRS" },
     { id: "sectors", label: "MAP" },
     { id: "scout", label: "SCOUT" },
+    { id: "mining", label: "MINE" },
     { id: "globe", label: "GLOBE" },
     { id: "system", label: "SYS" },
     { id: "scheduled", label: "SCHED" },
@@ -1200,6 +1202,9 @@ export default function Commander() {
             <div className="my-3 border-t border-border/30" />
             <ScheduledPanel refetchSignal={logRefetch} />
           </>
+        )}
+        {sideTab === "mining" && (
+          <MiningPanel probeId={selectedProbeId} />
         )}
         {sideTab === "globe" && (
           <GlobeMap

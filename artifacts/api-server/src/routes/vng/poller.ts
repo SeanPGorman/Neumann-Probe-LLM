@@ -3,7 +3,11 @@ import { clientFor } from "./client.js";
 import {
   getPendingActions,
   resolvePendingAction,
+  getMiningAssignments,
+  updateMiningCycleState,
+  toSectorObjectId,
   type PendingAction,
+  type MiningAssignment,
 } from "./file-store.js";
 
 const POLL_INTERVAL_MS = 30_000;
@@ -96,6 +100,176 @@ async function executeAction(
   }
 }
 
+// ── Mining automation ────────────────────────────────────────────────────────
+
+async function runMiningAutomation(
+  probeId: number | null,
+  probe: any,
+  mannies: any[],
+  claimedMannies: Set<string>,
+  c: ReturnType<typeof clientFor>,
+): Promise<void> {
+  const allAssignments = await getMiningAssignments().catch(() => []);
+  const assignments = allAssignments.filter(
+    (a) => a.enabled && (a.probeId ?? null) === (probeId ?? null)
+  );
+  if (assignments.length === 0) return;
+
+  // Fetch sector once for all assignments this tick
+  let sectorObjects: any[] = [];
+  try {
+    const sectorResp = await c.getSector();
+    sectorObjects = sectorResp?.sector?.objects ?? [];
+  } catch (err: any) {
+    logger.warn({ probeId, err: err.message }, "mining: sector fetch failed, skipping this tick");
+    return;
+  }
+
+  const asteroids = sectorObjects.filter(
+    (o: any) => o.type === "asteroid" && o.mannyMineable !== false
+  );
+
+  for (const assignment of assignments) {
+    try {
+      await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids);
+    } catch (err: any) {
+      logger.error(
+        { assignmentId: assignment.id, err: err.message },
+        "mining: cycle error"
+      );
+      await updateMiningCycleState(assignment.id, { lastError: err.message }).catch(() => {});
+    }
+  }
+}
+
+async function runMiningCycle(
+  assignment: MiningAssignment,
+  probe: any,
+  mannies: any[],
+  claimedMannies: Set<string>,
+  c: ReturnType<typeof clientFor>,
+  asteroids: any[],
+): Promise<void> {
+  const label = `mining assignment ${assignment.id} (${assignment.material})`;
+
+  if (assignment.cycleState === "idle") {
+    // Container must be in probe inventory
+    const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
+      (c: any) => c.kind === "container"
+    );
+    const container = invContainers.find((c: any) => c.id === assignment.containerId);
+    if (!container) {
+      logger.info({ label }, "mining: container not in inventory, skipping");
+      return;
+    }
+
+    // Find an asteroid with the matching material
+    const asteroid = asteroids.find((a: any) =>
+      (a.resourceTypes ?? []).includes(assignment.material)
+    );
+    if (!asteroid) {
+      logger.info({ label, material: assignment.material }, "mining: no matching asteroid in sector, skipping");
+      return;
+    }
+
+    // Claim N idle mannies (unclaimed, no currentTask)
+    const available = mannies.filter(
+      (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+    );
+    if (available.length < assignment.mannyCount) {
+      logger.info(
+        { label, need: assignment.mannyCount, have: available.length },
+        "mining: not enough idle mannies, deferring"
+      );
+      return;
+    }
+    const selected = available.slice(0, assignment.mannyCount);
+    for (const m of selected) claimedMannies.add(m.id as string);
+
+    const capacity: number = container.capacity ?? 1;
+    const perManny = capacity / assignment.mannyCount;
+    const containerObjectId = toSectorObjectId(assignment.containerId);
+
+    // 1. First manny detaches the container on the asteroid
+    await c.detachContainer(
+      selected[0].id as string,
+      assignment.containerId,
+      "hidden_on_asteroid",
+      asteroid.id as string
+    );
+    logger.info(
+      { label, mannyId: selected[0].id, asteroidId: asteroid.id },
+      "mining: container detached on asteroid"
+    );
+
+    // 2. All N mannies mine 1/N of capacity into the container
+    for (const m of selected) {
+      await c.mineResources(
+        m.id as string,
+        asteroid.id as string,
+        [assignment.material],
+        perManny,
+        containerObjectId
+      );
+    }
+    logger.info(
+      { label, mannyCount: selected.length, perManny },
+      "mining: mine tasks dispatched"
+    );
+
+    await updateMiningCycleState(assignment.id, {
+      cycleState: "mining",
+      asteroidObjectId: asteroid.id as string,
+      miningMannyIds: selected.map((m: any) => m.id as string),
+      lastCycleAt: new Date().toISOString(),
+      lastError: undefined,
+    });
+
+  } else if (assignment.cycleState === "mining") {
+    const miningIds = assignment.miningMannyIds ?? [];
+    const allIdle = miningIds.every((id) => {
+      const m = mannies.find((m: any) => m.id === id);
+      return !m || !m.currentTask;
+    });
+    if (!allIdle) return; // still mining
+
+    // Find an idle manny to do the recovery
+    const recoverer = mannies.find(
+      (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+    );
+    if (!recoverer) {
+      logger.info({ label }, "mining: no idle manny for recovery, deferring");
+      return;
+    }
+    claimedMannies.add(recoverer.id as string);
+
+    const containerObjectId = toSectorObjectId(assignment.containerId);
+    await c.recoverContainer(recoverer.id as string, containerObjectId);
+    logger.info({ label, mannyId: recoverer.id }, "mining: recovery dispatched");
+
+    await updateMiningCycleState(assignment.id, {
+      cycleState: "recovering",
+      miningMannyIds: [],
+    });
+
+  } else if (assignment.cycleState === "recovering") {
+    // Check if the container has returned to probe inventory
+    const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
+      (c: any) => c.kind === "container"
+    );
+    const back = invContainers.find((c: any) => c.id === assignment.containerId);
+    if (back) {
+      logger.info({ label }, "mining: container recovered — cycle complete, resetting to idle");
+      await updateMiningCycleState(assignment.id, {
+        cycleState: "idle",
+        asteroidObjectId: undefined,
+        miningMannyIds: [],
+        lastCycleAt: new Date().toISOString(),
+      });
+    }
+  }
+}
+
 /** Poll all pending actions for one probe. */
 async function pollProbe(
   probeId: number | null,
@@ -138,6 +312,11 @@ async function pollProbe(
 
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
+
+  // Mining automation runs first — claims mannies before crafting queue can
+  await runMiningAutomation(probeId, probe, mannies, claimedMannies, c).catch((err) =>
+    logger.error({ err: err?.message, probeId }, "poller: mining automation error")
+  );
 
   for (const action of actions) {
     let selectedMannyId: string | null = null;
@@ -255,18 +434,28 @@ async function pollProbe(
 }
 
 async function poll(): Promise<void> {
-  const pending = await getPendingActions();
-  if (pending.length === 0) return;
+  const [pending, miningAssignments] = await Promise.all([
+    getPendingActions(),
+    getMiningAssignments().catch(() => [] as Awaited<ReturnType<typeof getMiningAssignments>>),
+  ]);
 
   // Group by probeId — null/undefined both mean "main probe" (key = "main")
   const byProbe = new Map<string, { probeId: number | null; actions: PendingAction[] }>();
+
   for (const action of pending) {
     const key = action.probeId != null ? String(action.probeId) : "main";
-    if (!byProbe.has(key)) {
-      byProbe.set(key, { probeId: action.probeId ?? null, actions: [] });
-    }
+    if (!byProbe.has(key)) byProbe.set(key, { probeId: action.probeId ?? null, actions: [] });
     byProbe.get(key)!.actions.push(action);
   }
+
+  // Also include probes that have active mining assignments (even with no crafting queue)
+  for (const ma of miningAssignments) {
+    if (!ma.enabled) continue;
+    const key = ma.probeId != null ? String(ma.probeId) : "main";
+    if (!byProbe.has(key)) byProbe.set(key, { probeId: ma.probeId ?? null, actions: [] });
+  }
+
+  if (byProbe.size === 0) return;
 
   // Poll all probes in parallel
   await Promise.all(

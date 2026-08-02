@@ -502,3 +502,74 @@ export async function recordSector(
     await writeFile(SECTORS_FILE, rows);
   });
 }
+
+// ── Mining Automation ─────────────────────────────────────────────────────────
+
+const MINING_FILE = "mining-assignments.json";
+
+export type MiningCycleState = "idle" | "mining" | "recovering";
+
+export type MiningAssignment = {
+  id: number;
+  containerId: string;      // probe inventory container ID
+  containerName: string;
+  material: string;         // "metals" | "ice" | "carbon_compounds"
+  mannyCount: number;
+  probeId: number | null;
+  enabled: boolean;
+  // Runtime cycle state — managed by the poller
+  cycleState: MiningCycleState;
+  asteroidObjectId?: string;   // objectId of asteroid currently being mined
+  miningMannyIds?: string[];   // mannyIds assigned to mine this cycle
+  lastCycleAt?: string;
+  lastError?: string;
+};
+
+export async function getMiningAssignments(): Promise<MiningAssignment[]> {
+  return readFile<MiningAssignment[]>(MINING_FILE, []);
+}
+
+export async function upsertMiningAssignment(
+  entry: Omit<MiningAssignment, "id"> & { id?: number }
+): Promise<MiningAssignment> {
+  return withWriteLock(async () => {
+    const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);
+    if (entry.id != null) {
+      const idx = rows.findIndex((r) => r.id === entry.id);
+      if (idx !== -1) {
+        rows[idx] = { ...rows[idx], ...entry, id: entry.id };
+        await writeFile(MINING_FILE, rows);
+        return rows[idx];
+      }
+    }
+    const newRow: MiningAssignment = {
+      ...entry,
+      id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,
+    };
+    rows.push(newRow);
+    await writeFile(MINING_FILE, rows);
+    return newRow;
+  });
+}
+
+export async function removeMiningAssignment(id: number): Promise<void> {
+  return withWriteLock(async () => {
+    const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);
+    await writeFile(MINING_FILE, rows.filter((r) => r.id !== id));
+  });
+}
+
+export async function updateMiningCycleState(
+  id: number,
+  patch: Partial<Pick<MiningAssignment,
+    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "lastCycleAt" | "lastError">>
+): Promise<void> {
+  return withWriteLock(async () => {
+    const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx !== -1) {
+      rows[idx] = { ...rows[idx], ...patch };
+      await writeFile(MINING_FILE, rows);
+    }
+  });
+}
