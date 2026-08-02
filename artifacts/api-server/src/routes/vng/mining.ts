@@ -37,7 +37,26 @@ router.get("/mining", async (req, res) => {
         capacity: c.capacity ?? 1,
         usedCapacity: c.usedCapacity ?? 0,
         freeCapacity: c.freeCapacity ?? 0,
+        deployed: false,
       }));
+
+    // Also include detached containers already on asteroids in the sector
+    const rawSectorObjectsEarly: any[] = sectorResp?.sector?.objects ?? [];
+    for (const obj of rawSectorObjectsEarly) {
+      if (obj.type !== "detached_container") continue;
+      // Derive the original containerId: strip the "detached-container-" prefix
+      const containerId = obj.id?.replace(/^detached-container-/, "") ?? obj.id;
+      if (!inventoryContainers.some((c) => c.id === containerId)) {
+        inventoryContainers.push({
+          id: containerId,
+          label: obj.name ?? containerId,
+          capacity: obj.capacity ?? 1,
+          usedCapacity: null,
+          freeCapacity: null,
+          deployed: true,
+        });
+      }
+    }
 
     // Mannies with task detail
     const mannies: any[] = (manniesResp?.mannies ?? []).map((m: any) => ({

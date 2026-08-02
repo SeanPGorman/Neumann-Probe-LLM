@@ -78,9 +78,9 @@ export function MiningPanel({ probeId }: Props) {
   const containers: any[] = data?.containers ?? [];
   const mannies: any[] = data?.mannies ?? [];
 
-  // Containers not yet assigned (available for new assignments)
+  // Containers not yet assigned (available for new assignments) — inventory + deployed
   const assignedContainerIds = new Set(assignments.map((a) => a.containerId));
-  const availableContainers = containers.filter((c) => !assignedContainerIds.has(c.id));
+  const availableContainers = containers.filter((c: any) => !assignedContainerIds.has(c.id));
 
   // Resource types present in sector asteroids
   const sectorMaterials = new Set<string>(
@@ -356,9 +356,9 @@ export function MiningPanel({ probeId }: Props) {
               onChange={(e) => setFormContainerId(e.target.value)}
               className="w-full text-[10px] bg-background border border-border/40 rounded px-1.5 py-1 text-foreground"
             >
-              {availableContainers.map((c) => (
+              {availableContainers.map((c: any) => (
                 <option key={c.id} value={c.id}>
-                  {c.label} ({(c.capacity ?? 0).toFixed(2)} ECE)
+                  {c.label}{c.deployed ? " ⬡ deployed" : ""}{!c.deployed ? ` (${(c.capacity ?? 0).toFixed(2)} ECE)` : ""}
                 </option>
               ))}
             </select>

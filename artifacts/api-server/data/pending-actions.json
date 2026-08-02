@@ -25274,7 +25274,8 @@
     },
     "id": 1742,
     "createdAt": "2026-08-02T21:11:34.541Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:55.090Z"
   },
   {
     "description": "[craft queue] Steel plate (2/30) via Manny",
@@ -25288,7 +25289,8 @@
     },
     "id": 1743,
     "createdAt": "2026-08-02T21:11:34.549Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:55.299Z"
   },
   {
     "description": "[craft queue] Steel plate (3/30) via Manny",
@@ -25302,7 +25304,8 @@
     },
     "id": 1744,
     "createdAt": "2026-08-02T21:11:34.564Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:55.439Z"
   },
   {
     "description": "[craft queue] Steel plate (4/30) via Manny",
@@ -25316,7 +25319,8 @@
     },
     "id": 1745,
     "createdAt": "2026-08-02T21:11:34.575Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:55.584Z"
   },
   {
     "description": "[craft queue] Steel plate (5/30) via Manny",
@@ -25330,7 +25334,8 @@
     },
     "id": 1746,
     "createdAt": "2026-08-02T21:11:34.582Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:55.725Z"
   },
   {
     "description": "[craft queue] Steel plate (6/30) via Manny",
@@ -25344,7 +25349,8 @@
     },
     "id": 1747,
     "createdAt": "2026-08-02T21:11:34.590Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:55.870Z"
   },
   {
     "description": "[craft queue] Steel plate (7/30) via Manny",
@@ -25358,7 +25364,8 @@
     },
     "id": 1748,
     "createdAt": "2026-08-02T21:11:34.597Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:56.003Z"
   },
   {
     "description": "[craft queue] Steel plate (8/30) via Manny",
@@ -25372,7 +25379,8 @@
     },
     "id": 1749,
     "createdAt": "2026-08-02T21:11:34.604Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:56.140Z"
   },
   {
     "description": "[craft queue] Steel plate (9/30) via Manny",
@@ -25386,7 +25394,8 @@
     },
     "id": 1750,
     "createdAt": "2026-08-02T21:11:34.612Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:56.274Z"
   },
   {
     "description": "[craft queue] Steel plate (10/30) via Manny",
@@ -25400,7 +25409,8 @@
     },
     "id": 1751,
     "createdAt": "2026-08-02T21:11:34.622Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T21:11:56.407Z"
   },
   {
     "description": "[craft queue] Steel plate (11/30) via Manny",
@@ -26478,7 +26488,9 @@
     },
     "id": 1828,
     "createdAt": "2026-08-02T21:11:35.286Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:56.532Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (2/12) via atomic printer",
@@ -26492,7 +26504,9 @@
     },
     "id": 1829,
     "createdAt": "2026-08-02T21:11:35.293Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:56.668Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (3/12) via atomic printer",
@@ -26506,7 +26520,9 @@
     },
     "id": 1830,
     "createdAt": "2026-08-02T21:11:35.299Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:56.795Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (4/12) via atomic printer",
@@ -26520,7 +26536,9 @@
     },
     "id": 1831,
     "createdAt": "2026-08-02T21:11:35.305Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:56.919Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (5/12) via atomic printer",
@@ -26534,7 +26552,9 @@
     },
     "id": 1832,
     "createdAt": "2026-08-02T21:11:35.312Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.052Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (6/12) via atomic printer",
@@ -26548,7 +26568,9 @@
     },
     "id": 1833,
     "createdAt": "2026-08-02T21:11:35.321Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.231Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (7/12) via atomic printer",
@@ -26562,7 +26584,9 @@
     },
     "id": 1834,
     "createdAt": "2026-08-02T21:11:35.329Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.366Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (8/12) via atomic printer",
@@ -26576,7 +26600,9 @@
     },
     "id": 1835,
     "createdAt": "2026-08-02T21:11:35.341Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.522Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (9/12) via atomic printer",
@@ -26590,7 +26616,9 @@
     },
     "id": 1836,
     "createdAt": "2026-08-02T21:11:35.351Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.662Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (10/12) via atomic printer",
@@ -26604,7 +26632,9 @@
     },
     "id": 1837,
     "createdAt": "2026-08-02T21:11:35.358Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.798Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (11/12) via atomic printer",
@@ -26618,7 +26648,9 @@
     },
     "id": 1838,
     "createdAt": "2026-08-02T21:11:35.364Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:57.960Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Micro-etched conductor (12/12) via atomic printer",
@@ -26632,7 +26664,9 @@
     },
     "id": 1839,
     "createdAt": "2026-08-02T21:11:35.371Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:58.138Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (1/12) via atomic printer",
@@ -26646,7 +26680,9 @@
     },
     "id": 1840,
     "createdAt": "2026-08-02T21:11:35.381Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:58.312Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (2/12) via atomic printer",
@@ -26660,7 +26696,9 @@
     },
     "id": 1841,
     "createdAt": "2026-08-02T21:11:35.390Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:58.470Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (3/12) via atomic printer",
@@ -26674,7 +26712,9 @@
     },
     "id": 1842,
     "createdAt": "2026-08-02T21:11:35.396Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:58.632Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (4/12) via atomic printer",
@@ -26688,7 +26728,9 @@
     },
     "id": 1843,
     "createdAt": "2026-08-02T21:11:35.402Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:58.791Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (5/12) via atomic printer",
@@ -26702,7 +26744,9 @@
     },
     "id": 1844,
     "createdAt": "2026-08-02T21:11:35.409Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:58.950Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (6/12) via atomic printer",
@@ -26716,7 +26760,9 @@
     },
     "id": 1845,
     "createdAt": "2026-08-02T21:11:35.416Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:59.072Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (7/12) via atomic printer",
@@ -26730,7 +26776,9 @@
     },
     "id": 1846,
     "createdAt": "2026-08-02T21:11:35.424Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:59.235Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (8/12) via atomic printer",
@@ -26744,7 +26792,9 @@
     },
     "id": 1847,
     "createdAt": "2026-08-02T21:11:35.431Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:59.396Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (9/12) via atomic printer",
@@ -26758,7 +26808,9 @@
     },
     "id": 1848,
     "createdAt": "2026-08-02T21:11:35.437Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:59.543Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (10/12) via atomic printer",
@@ -26772,7 +26824,9 @@
     },
     "id": 1849,
     "createdAt": "2026-08-02T21:11:35.445Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:59.714Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (11/12) via atomic printer",
@@ -26786,7 +26840,9 @@
     },
     "id": 1850,
     "createdAt": "2026-08-02T21:11:35.452Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:11:59.895Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Ceramo-organic insulator (12/12) via atomic printer",
@@ -26800,7 +26856,9 @@
     },
     "id": 1851,
     "createdAt": "2026-08-02T21:11:35.459Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.053Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Crystal substrate (1/6) via atomic printer",
@@ -26814,7 +26872,9 @@
     },
     "id": 1852,
     "createdAt": "2026-08-02T21:11:35.467Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.219Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Crystal substrate (2/6) via atomic printer",
@@ -26828,7 +26888,9 @@
     },
     "id": 1853,
     "createdAt": "2026-08-02T21:11:35.473Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.367Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Crystal substrate (3/6) via atomic printer",
@@ -26842,7 +26904,9 @@
     },
     "id": 1854,
     "createdAt": "2026-08-02T21:11:35.480Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.528Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Crystal substrate (4/6) via atomic printer",
@@ -26856,7 +26920,9 @@
     },
     "id": 1855,
     "createdAt": "2026-08-02T21:11:35.487Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.693Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Crystal substrate (5/6) via atomic printer",
@@ -26870,7 +26936,9 @@
     },
     "id": 1856,
     "createdAt": "2026-08-02T21:11:35.494Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.815Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Crystal substrate (6/6) via atomic printer",
@@ -26884,7 +26952,9 @@
     },
     "id": 1857,
     "createdAt": "2026-08-02T21:11:35.501Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:00.974Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Dopant matrix (1/6) via atomic printer",
@@ -26898,7 +26968,9 @@
     },
     "id": 1858,
     "createdAt": "2026-08-02T21:11:35.509Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.097Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Dopant matrix (2/6) via atomic printer",
@@ -26912,7 +26984,9 @@
     },
     "id": 1859,
     "createdAt": "2026-08-02T21:11:35.517Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.269Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Dopant matrix (3/6) via atomic printer",
@@ -26926,7 +27000,9 @@
     },
     "id": 1860,
     "createdAt": "2026-08-02T21:11:35.524Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.411Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Dopant matrix (4/6) via atomic printer",
@@ -26940,7 +27016,9 @@
     },
     "id": 1861,
     "createdAt": "2026-08-02T21:11:35.531Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.575Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Dopant matrix (5/6) via atomic printer",
@@ -26954,7 +27032,9 @@
     },
     "id": 1862,
     "createdAt": "2026-08-02T21:11:35.538Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.726Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Dopant matrix (6/6) via atomic printer",
@@ -26968,7 +27048,9 @@
     },
     "id": 1863,
     "createdAt": "2026-08-02T21:11:35.545Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.873Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Electric motor (1/6) via Manny",
@@ -27126,7 +27208,9 @@
     },
     "id": 1870,
     "createdAt": "2026-08-02T21:11:35.594Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:01.997Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Integrated circuit (2/5) via atomic printer",
@@ -27140,7 +27224,9 @@
     },
     "id": 1871,
     "createdAt": "2026-08-02T21:11:35.601Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:02.124Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Integrated circuit (3/5) via atomic printer",
@@ -27154,7 +27240,9 @@
     },
     "id": 1872,
     "createdAt": "2026-08-02T21:11:35.607Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:02.249Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Integrated circuit (4/5) via atomic printer",
@@ -27168,7 +27256,9 @@
     },
     "id": 1873,
     "createdAt": "2026-08-02T21:11:35.617Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:02.428Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Integrated circuit (5/5) via atomic printer",
@@ -27182,7 +27272,9 @@
     },
     "id": 1874,
     "createdAt": "2026-08-02T21:11:35.624Z",
-    "status": "pending"
+    "status": "failed",
+    "triggeredAt": "2026-08-02T21:12:02.597Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
   },
   {
     "description": "[craft queue] Manny (1/1) via Manny",
