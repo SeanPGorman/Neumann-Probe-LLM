@@ -20405,5 +20405,4882 @@
     "createdAt": "2026-08-01T19:39:02.890Z",
     "status": "triggered",
     "triggeredAt": "2026-08-01T20:19:01.759Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1442,
+    "createdAt": "2026-08-02T01:56:15.528Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.104Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1443,
+    "createdAt": "2026-08-02T01:56:15.535Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.236Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1444,
+    "createdAt": "2026-08-02T01:56:15.542Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.366Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1445,
+    "createdAt": "2026-08-02T01:56:15.548Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.496Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1446,
+    "createdAt": "2026-08-02T01:56:15.553Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.628Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1447,
+    "createdAt": "2026-08-02T01:56:15.570Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.757Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1448,
+    "createdAt": "2026-08-02T01:56:15.577Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:32.886Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1449,
+    "createdAt": "2026-08-02T01:56:15.583Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:33.015Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1450,
+    "createdAt": "2026-08-02T01:56:15.589Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T01:56:33.149Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1451,
+    "createdAt": "2026-08-02T01:56:15.595Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:01:32.453Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1452,
+    "createdAt": "2026-08-02T01:56:17.940Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:01:32.671Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1453,
+    "createdAt": "2026-08-02T01:56:17.946Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:01:32.878Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1454,
+    "createdAt": "2026-08-02T01:56:17.956Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:01:33.030Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1455,
+    "createdAt": "2026-08-02T01:56:17.963Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:01:33.166Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/3) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1456,
+    "createdAt": "2026-08-02T01:56:27.421Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:02:02.531Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/3) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1457,
+    "createdAt": "2026-08-02T01:56:27.427Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:02:02.740Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/3) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1458,
+    "createdAt": "2026-08-02T01:56:27.436Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:02:02.952Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (1/3) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1459,
+    "createdAt": "2026-08-02T01:56:27.442Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:16:32.578Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (2/3) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1460,
+    "createdAt": "2026-08-02T01:56:27.450Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:16:32.724Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (3/3) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1461,
+    "createdAt": "2026-08-02T01:56:27.457Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:02.553Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1462,
+    "createdAt": "2026-08-02T01:57:01.831Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:02:03.137Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1463,
+    "createdAt": "2026-08-02T01:57:01.838Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:04:02.505Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1464,
+    "createdAt": "2026-08-02T01:57:01.844Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:06:32.254Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1465,
+    "createdAt": "2026-08-02T01:57:01.849Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:07:32.488Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1466,
+    "createdAt": "2026-08-02T01:57:01.855Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:09:02.541Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1467,
+    "createdAt": "2026-08-02T01:57:01.862Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:11:32.600Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1468,
+    "createdAt": "2026-08-02T01:57:01.868Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:12:32.516Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1469,
+    "createdAt": "2026-08-02T01:57:01.875Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:14:02.478Z"
+  },
+  {
+    "description": "[craft queue] Additional container (1/2) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 15
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 1470,
+    "createdAt": "2026-08-02T01:57:01.897Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:02.735Z"
+  },
+  {
+    "description": "[craft queue] Additional container (2/2) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 15
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 1471,
+    "createdAt": "2026-08-02T01:57:01.903Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:02.954Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1472,
+    "createdAt": "2026-08-02T01:57:14.080Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:03.159Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1473,
+    "createdAt": "2026-08-02T01:57:14.087Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:32.515Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1474,
+    "createdAt": "2026-08-02T01:57:14.095Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:32.708Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1475,
+    "createdAt": "2026-08-02T01:57:14.102Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:17:32.871Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1476,
+    "createdAt": "2026-08-02T01:57:14.108Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:19:02.150Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1477,
+    "createdAt": "2026-08-02T01:57:14.114Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:20:32.087Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1478,
+    "createdAt": "2026-08-02T01:57:14.122Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:22:32.109Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1479,
+    "createdAt": "2026-08-02T01:57:14.128Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:22:32.251Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1480,
+    "createdAt": "2026-08-02T01:57:14.133Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:23:02.214Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1481,
+    "createdAt": "2026-08-02T01:57:14.138Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:23:02.348Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1482,
+    "createdAt": "2026-08-02T01:57:14.144Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:24:02.556Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1483,
+    "createdAt": "2026-08-02T01:57:14.152Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:25:32.358Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1484,
+    "createdAt": "2026-08-02T01:57:14.159Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:27:32.416Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1485,
+    "createdAt": "2026-08-02T01:57:14.165Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:27:32.620Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1486,
+    "createdAt": "2026-08-02T01:57:14.170Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:28:02.526Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1487,
+    "createdAt": "2026-08-02T01:57:14.176Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:28:02.708Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1488,
+    "createdAt": "2026-08-02T01:57:14.188Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:29:02.463Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1489,
+    "createdAt": "2026-08-02T01:57:14.195Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:30:32.496Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1490,
+    "createdAt": "2026-08-02T01:57:14.201Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:32:32.447Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1491,
+    "createdAt": "2026-08-02T01:57:14.207Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:32:32.582Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1492,
+    "createdAt": "2026-08-02T01:57:14.213Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:33:02.188Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1493,
+    "createdAt": "2026-08-02T01:57:14.219Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:33:32.452Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (19/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1494,
+    "createdAt": "2026-08-02T01:57:14.228Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:34:02.187Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (20/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1495,
+    "createdAt": "2026-08-02T01:57:14.234Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:34:32.510Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (21/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1496,
+    "createdAt": "2026-08-02T01:57:14.240Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:35:32.330Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (22/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1497,
+    "createdAt": "2026-08-02T01:57:14.246Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:36:32.537Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (23/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1498,
+    "createdAt": "2026-08-02T01:57:14.252Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:37:02.231Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (24/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1499,
+    "createdAt": "2026-08-02T01:57:14.258Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:37:32.467Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (25/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1500,
+    "createdAt": "2026-08-02T01:57:14.264Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:37:32.612Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (26/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1501,
+    "createdAt": "2026-08-02T01:57:14.270Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:38:02.124Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (27/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1502,
+    "createdAt": "2026-08-02T01:57:14.277Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:38:32.577Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (28/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1503,
+    "createdAt": "2026-08-02T01:57:14.283Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:39:02.550Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (29/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1504,
+    "createdAt": "2026-08-02T01:57:14.289Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:39:32.672Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (30/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1505,
+    "createdAt": "2026-08-02T01:57:14.294Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:40:32.620Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (31/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1506,
+    "createdAt": "2026-08-02T01:57:14.301Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:41:32.689Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (32/32) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1507,
+    "createdAt": "2026-08-02T01:57:14.307Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:42:02.688Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1508,
+    "createdAt": "2026-08-02T01:57:14.313Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:42:32.558Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1509,
+    "createdAt": "2026-08-02T01:57:14.319Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:42:32.755Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1510,
+    "createdAt": "2026-08-02T01:57:14.324Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:43:02.351Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1511,
+    "createdAt": "2026-08-02T01:57:14.329Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:43:32.243Z"
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (1/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1512,
+    "createdAt": "2026-08-02T01:57:14.335Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.088Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (2/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1513,
+    "createdAt": "2026-08-02T01:57:14.340Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.210Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (3/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1514,
+    "createdAt": "2026-08-02T01:57:14.346Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.329Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (4/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1515,
+    "createdAt": "2026-08-02T01:57:14.351Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.450Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (5/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1516,
+    "createdAt": "2026-08-02T01:57:14.357Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.569Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (6/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1517,
+    "createdAt": "2026-08-02T01:57:14.363Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.690Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (7/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1518,
+    "createdAt": "2026-08-02T01:57:14.371Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.813Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (8/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1519,
+    "createdAt": "2026-08-02T01:57:14.379Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:32.935Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (9/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1520,
+    "createdAt": "2026-08-02T01:57:14.386Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.055Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (10/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1521,
+    "createdAt": "2026-08-02T01:57:14.394Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.173Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (11/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1522,
+    "createdAt": "2026-08-02T01:57:14.399Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.298Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (12/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1523,
+    "createdAt": "2026-08-02T01:57:14.405Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.419Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (1/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1524,
+    "createdAt": "2026-08-02T01:57:14.411Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.541Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (2/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1525,
+    "createdAt": "2026-08-02T01:57:14.417Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.661Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (3/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1526,
+    "createdAt": "2026-08-02T01:57:14.423Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.780Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (4/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1527,
+    "createdAt": "2026-08-02T01:57:14.429Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:33.900Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (5/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1528,
+    "createdAt": "2026-08-02T01:57:14.435Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.019Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (6/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1529,
+    "createdAt": "2026-08-02T01:57:14.441Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.139Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (7/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1530,
+    "createdAt": "2026-08-02T01:57:14.447Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.261Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (8/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1531,
+    "createdAt": "2026-08-02T01:57:14.453Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.380Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (9/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1532,
+    "createdAt": "2026-08-02T01:57:14.459Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.499Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (10/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1533,
+    "createdAt": "2026-08-02T01:57:14.465Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.618Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (11/11) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1534,
+    "createdAt": "2026-08-02T01:57:14.470Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.738Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1535,
+    "createdAt": "2026-08-02T01:57:14.476Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.859Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1536,
+    "createdAt": "2026-08-02T01:57:14.482Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:34.984Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1537,
+    "createdAt": "2026-08-02T01:57:14.488Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.104Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1538,
+    "createdAt": "2026-08-02T01:57:14.494Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.223Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1539,
+    "createdAt": "2026-08-02T01:57:14.501Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.347Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1540,
+    "createdAt": "2026-08-02T01:57:14.508Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.466Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1541,
+    "createdAt": "2026-08-02T01:57:14.514Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.588Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1542,
+    "createdAt": "2026-08-02T01:57:14.519Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.709Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1543,
+    "createdAt": "2026-08-02T01:57:14.525Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.829Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1544,
+    "createdAt": "2026-08-02T01:57:14.531Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:35.950Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1545,
+    "createdAt": "2026-08-02T01:57:14.537Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.071Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1546,
+    "createdAt": "2026-08-02T01:57:14.545Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.191Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Electric motor (1/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1547,
+    "createdAt": "2026-08-02T01:57:14.553Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:44:02.320Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1548,
+    "createdAt": "2026-08-02T01:57:14.559Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:44:32.301Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1549,
+    "createdAt": "2026-08-02T01:57:14.566Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:45:32.410Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1550,
+    "createdAt": "2026-08-02T01:57:14.573Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:46:32.331Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (5/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1551,
+    "createdAt": "2026-08-02T01:57:14.579Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:47:02.249Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (6/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1552,
+    "createdAt": "2026-08-02T01:57:14.585Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:52:02.606Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (7/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1553,
+    "createdAt": "2026-08-02T01:57:14.592Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:59:02.579Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (8/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1554,
+    "createdAt": "2026-08-02T01:57:14.598Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T02:59:32.677Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (9/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1555,
+    "createdAt": "2026-08-02T01:57:14.604Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T03:00:32.658Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (10/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1556,
+    "createdAt": "2026-08-02T01:57:14.612Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T03:01:32.707Z"
+  },
+  {
+    "description": "[craft queue] Integrated circuit (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1565,
+    "createdAt": "2026-08-02T01:57:14.670Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.311Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1566,
+    "createdAt": "2026-08-02T01:57:14.676Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.431Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1567,
+    "createdAt": "2026-08-02T01:57:14.684Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.551Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1568,
+    "createdAt": "2026-08-02T01:57:14.689Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.671Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1569,
+    "createdAt": "2026-08-02T01:57:14.695Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.792Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1570,
+    "createdAt": "2026-08-02T01:57:14.703Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T01:57:36.917Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Steel plate (1/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1571,
+    "createdAt": "2026-08-02T16:41:53.132Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:42:14.723Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1572,
+    "createdAt": "2026-08-02T16:41:53.138Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:42:14.909Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1573,
+    "createdAt": "2026-08-02T16:41:53.145Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:42:15.102Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1574,
+    "createdAt": "2026-08-02T16:41:53.152Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:42:15.300Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1575,
+    "createdAt": "2026-08-02T16:41:53.159Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:42:15.436Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1576,
+    "createdAt": "2026-08-02T16:41:53.166Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:42:15.636Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1577,
+    "createdAt": "2026-08-02T16:41:53.176Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:46:14.483Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1578,
+    "createdAt": "2026-08-02T16:41:53.183Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:46:14.667Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1579,
+    "createdAt": "2026-08-02T16:41:53.190Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:46:44.443Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1580,
+    "createdAt": "2026-08-02T16:41:53.196Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:14.521Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1581,
+    "createdAt": "2026-08-02T16:41:53.203Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:44.449Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1582,
+    "createdAt": "2026-08-02T16:41:53.210Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:44.578Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1583,
+    "createdAt": "2026-08-02T16:41:53.218Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:44.774Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1584,
+    "createdAt": "2026-08-02T16:41:53.225Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:44.925Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (15/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1585,
+    "createdAt": "2026-08-02T16:41:53.232Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:45.130Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (16/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1586,
+    "createdAt": "2026-08-02T16:41:53.238Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:47:45.293Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (17/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1587,
+    "createdAt": "2026-08-02T16:41:53.244Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:51:14.800Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (18/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1588,
+    "createdAt": "2026-08-02T16:41:53.250Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:51:14.933Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (19/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1589,
+    "createdAt": "2026-08-02T16:41:53.257Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:51:44.728Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (20/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1590,
+    "createdAt": "2026-08-02T16:41:53.264Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:52:14.830Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (21/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1591,
+    "createdAt": "2026-08-02T16:41:53.270Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:52:44.796Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (22/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1592,
+    "createdAt": "2026-08-02T16:41:53.276Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:52:44.990Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (23/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1593,
+    "createdAt": "2026-08-02T16:41:53.282Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:53:14.822Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (24/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1594,
+    "createdAt": "2026-08-02T16:41:53.289Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:53:14.959Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (25/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1595,
+    "createdAt": "2026-08-02T16:41:53.296Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:53:15.153Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (26/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1596,
+    "createdAt": "2026-08-02T16:41:53.303Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:53:15.348Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (27/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1597,
+    "createdAt": "2026-08-02T16:41:53.309Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:56:44.830Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (28/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1598,
+    "createdAt": "2026-08-02T16:41:53.328Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:56:45.041Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (29/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1599,
+    "createdAt": "2026-08-02T16:41:53.333Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:56:45.238Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (30/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1600,
+    "createdAt": "2026-08-02T16:41:53.342Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:57:44.863Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (31/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1601,
+    "createdAt": "2026-08-02T16:41:53.348Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:58:14.819Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (32/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1602,
+    "createdAt": "2026-08-02T16:41:53.354Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:58:14.952Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (33/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1603,
+    "createdAt": "2026-08-02T16:41:53.362Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:58:44.826Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (34/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1604,
+    "createdAt": "2026-08-02T16:41:53.369Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:58:45.027Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (35/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1605,
+    "createdAt": "2026-08-02T16:41:53.374Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:58:45.227Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (36/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1606,
+    "createdAt": "2026-08-02T16:41:53.382Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T16:58:45.408Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (37/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1607,
+    "createdAt": "2026-08-02T16:41:53.388Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:02:14.569Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (38/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1608,
+    "createdAt": "2026-08-02T16:41:53.395Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:02:14.783Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (39/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1609,
+    "createdAt": "2026-08-02T16:41:53.402Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:02:14.927Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (40/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1610,
+    "createdAt": "2026-08-02T16:41:53.410Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:03:14.453Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (41/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1611,
+    "createdAt": "2026-08-02T16:41:53.417Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:03:44.936Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (42/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1612,
+    "createdAt": "2026-08-02T16:41:53.425Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:03:45.104Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (43/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1613,
+    "createdAt": "2026-08-02T16:41:53.431Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:04:14.779Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (44/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1614,
+    "createdAt": "2026-08-02T16:41:53.438Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:04:14.915Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (45/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1615,
+    "createdAt": "2026-08-02T16:41:53.444Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:04:15.106Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (46/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1616,
+    "createdAt": "2026-08-02T16:41:53.450Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:04:15.285Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (47/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1617,
+    "createdAt": "2026-08-02T16:41:53.456Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:07:14.937Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (48/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 1618,
+    "createdAt": "2026-08-02T16:41:53.463Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:07:44.854Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1619,
+    "createdAt": "2026-08-02T16:41:53.469Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:07:44.987Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1620,
+    "createdAt": "2026-08-02T16:41:53.476Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:08:14.865Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1621,
+    "createdAt": "2026-08-02T16:41:53.482Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:08:44.946Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1622,
+    "createdAt": "2026-08-02T16:41:53.491Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:08:45.092Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1623,
+    "createdAt": "2026-08-02T16:41:53.498Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:09:15.004Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1624,
+    "createdAt": "2026-08-02T16:41:53.505Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:09:15.136Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1625,
+    "createdAt": "2026-08-02T16:41:53.513Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:09:15.333Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1626,
+    "createdAt": "2026-08-02T16:41:53.521Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:09:15.529Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1627,
+    "createdAt": "2026-08-02T16:41:53.528Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:12:15.047Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1628,
+    "createdAt": "2026-08-02T16:41:53.534Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:12:45.132Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1629,
+    "createdAt": "2026-08-02T16:41:53.541Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:12:45.331Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1630,
+    "createdAt": "2026-08-02T16:41:53.547Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:13:15.136Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1631,
+    "createdAt": "2026-08-02T16:41:53.555Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:13:45.149Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1632,
+    "createdAt": "2026-08-02T16:41:53.561Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:13:45.354Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1633,
+    "createdAt": "2026-08-02T16:41:53.568Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:14:15.102Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1634,
+    "createdAt": "2026-08-02T16:41:53.574Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:14:15.237Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1635,
+    "createdAt": "2026-08-02T16:41:53.581Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:14:15.425Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1636,
+    "createdAt": "2026-08-02T16:41:53.587Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:14:15.573Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (19/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1637,
+    "createdAt": "2026-08-02T16:41:53.592Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:17:15.160Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (20/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1638,
+    "createdAt": "2026-08-02T16:41:53.598Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:17:45.166Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (21/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1639,
+    "createdAt": "2026-08-02T16:41:53.607Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:17:45.307Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (22/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1640,
+    "createdAt": "2026-08-02T16:41:53.616Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:18:15.268Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (23/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1641,
+    "createdAt": "2026-08-02T16:41:53.622Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:18:45.209Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (24/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1642,
+    "createdAt": "2026-08-02T16:41:53.627Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:18:45.351Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (25/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1643,
+    "createdAt": "2026-08-02T16:41:53.633Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:19:15.147Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (26/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1644,
+    "createdAt": "2026-08-02T16:41:53.639Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:19:15.288Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (27/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1645,
+    "createdAt": "2026-08-02T16:41:53.645Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:19:15.430Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (28/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1646,
+    "createdAt": "2026-08-02T16:41:53.651Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:19:15.563Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (29/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1647,
+    "createdAt": "2026-08-02T16:41:53.657Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:22:15.195Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (30/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1648,
+    "createdAt": "2026-08-02T16:41:53.663Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:22:45.252Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (31/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1649,
+    "createdAt": "2026-08-02T16:41:53.670Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:22:45.463Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (32/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1650,
+    "createdAt": "2026-08-02T16:41:53.677Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:23:15.232Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (33/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1651,
+    "createdAt": "2026-08-02T16:41:53.683Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:23:45.212Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (34/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1652,
+    "createdAt": "2026-08-02T16:41:53.690Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:23:45.390Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (35/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1653,
+    "createdAt": "2026-08-02T16:41:53.697Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:24:15.328Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (36/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1654,
+    "createdAt": "2026-08-02T16:41:53.703Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:24:15.529Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (37/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1655,
+    "createdAt": "2026-08-02T16:41:53.710Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:24:15.685Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (38/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1656,
+    "createdAt": "2026-08-02T16:41:53.717Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:24:15.872Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (39/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1657,
+    "createdAt": "2026-08-02T16:41:53.723Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:27:15.386Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (40/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1658,
+    "createdAt": "2026-08-02T16:41:53.729Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:27:45.491Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (41/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1659,
+    "createdAt": "2026-08-02T16:41:53.736Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:27:45.707Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (42/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1660,
+    "createdAt": "2026-08-02T16:41:53.743Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:28:15.466Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (43/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1661,
+    "createdAt": "2026-08-02T16:41:53.753Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:28:45.527Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (44/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1662,
+    "createdAt": "2026-08-02T16:41:53.759Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:28:45.735Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (45/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1663,
+    "createdAt": "2026-08-02T16:41:53.767Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:29:15.705Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (46/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1664,
+    "createdAt": "2026-08-02T16:41:53.774Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:29:15.841Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (47/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1665,
+    "createdAt": "2026-08-02T16:41:53.780Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:29:45.523Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (48/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1666,
+    "createdAt": "2026-08-02T16:41:53.786Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:29:45.736Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (49/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1667,
+    "createdAt": "2026-08-02T16:41:53.792Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:32:15.645Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (50/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1668,
+    "createdAt": "2026-08-02T16:41:53.799Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:32:45.620Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (51/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1669,
+    "createdAt": "2026-08-02T16:41:53.805Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:32:45.815Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (52/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1670,
+    "createdAt": "2026-08-02T16:41:53.812Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:33:15.667Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (53/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1671,
+    "createdAt": "2026-08-02T16:41:53.817Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:33:45.681Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (54/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 1672,
+    "createdAt": "2026-08-02T16:41:53.823Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:34:15.720Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1673,
+    "createdAt": "2026-08-02T16:41:53.830Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:34:15.961Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1674,
+    "createdAt": "2026-08-02T16:41:53.836Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:34:45.781Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1675,
+    "createdAt": "2026-08-02T16:41:53.842Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:34:46.003Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 1676,
+    "createdAt": "2026-08-02T16:41:53.848Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:35:15.802Z"
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (1/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1677,
+    "createdAt": "2026-08-02T16:41:53.855Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:15.805Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (2/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1678,
+    "createdAt": "2026-08-02T16:41:53.861Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:15.927Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (3/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1679,
+    "createdAt": "2026-08-02T16:41:53.867Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.064Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (4/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1680,
+    "createdAt": "2026-08-02T16:41:53.873Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.228Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (5/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1681,
+    "createdAt": "2026-08-02T16:41:53.879Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.359Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (6/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1682,
+    "createdAt": "2026-08-02T16:41:53.887Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.482Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (7/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1683,
+    "createdAt": "2026-08-02T16:41:53.893Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.637Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (8/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1684,
+    "createdAt": "2026-08-02T16:41:53.899Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.762Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (9/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1685,
+    "createdAt": "2026-08-02T16:41:53.905Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:16.926Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (10/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1686,
+    "createdAt": "2026-08-02T16:41:53.913Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.050Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (11/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1687,
+    "createdAt": "2026-08-02T16:41:53.934Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.174Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (12/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 1688,
+    "createdAt": "2026-08-02T16:41:53.941Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.334Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (1/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1689,
+    "createdAt": "2026-08-02T16:41:53.948Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.483Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (2/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1690,
+    "createdAt": "2026-08-02T16:41:53.955Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.656Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (3/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1691,
+    "createdAt": "2026-08-02T16:41:53.961Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.777Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (4/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1692,
+    "createdAt": "2026-08-02T16:41:53.969Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:17.973Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (5/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1693,
+    "createdAt": "2026-08-02T16:41:53.982Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.144Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (6/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1694,
+    "createdAt": "2026-08-02T16:41:53.989Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.297Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (7/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1695,
+    "createdAt": "2026-08-02T16:41:53.998Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.443Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (8/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1696,
+    "createdAt": "2026-08-02T16:41:54.006Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.567Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (9/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1697,
+    "createdAt": "2026-08-02T16:41:54.013Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.694Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (10/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1698,
+    "createdAt": "2026-08-02T16:41:54.022Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.858Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (11/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1699,
+    "createdAt": "2026-08-02T16:41:54.029Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:18.980Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (12/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 1700,
+    "createdAt": "2026-08-02T16:41:54.038Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.112Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1701,
+    "createdAt": "2026-08-02T16:41:54.052Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.240Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1702,
+    "createdAt": "2026-08-02T16:41:54.059Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.362Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1703,
+    "createdAt": "2026-08-02T16:41:54.067Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.485Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1704,
+    "createdAt": "2026-08-02T16:41:54.074Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.642Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1705,
+    "createdAt": "2026-08-02T16:41:54.080Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.804Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 1706,
+    "createdAt": "2026-08-02T16:41:54.089Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:19.926Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1707,
+    "createdAt": "2026-08-02T16:41:54.096Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.054Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1708,
+    "createdAt": "2026-08-02T16:41:54.106Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.214Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1709,
+    "createdAt": "2026-08-02T16:41:54.114Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.377Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1710,
+    "createdAt": "2026-08-02T16:41:54.121Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.540Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1711,
+    "createdAt": "2026-08-02T16:41:54.127Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.663Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 1712,
+    "createdAt": "2026-08-02T16:41:54.136Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.786Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Electric motor (1/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1713,
+    "createdAt": "2026-08-02T16:41:54.153Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:37:15.871Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1714,
+    "createdAt": "2026-08-02T16:41:54.161Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:37:45.800Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1715,
+    "createdAt": "2026-08-02T16:41:54.169Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:38:15.855Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1716,
+    "createdAt": "2026-08-02T16:41:54.178Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:38:16.060Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (5/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1717,
+    "createdAt": "2026-08-02T16:41:54.192Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T17:38:45.900Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (6/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1718,
+    "createdAt": "2026-08-02T16:41:54.201Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (7/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1719,
+    "createdAt": "2026-08-02T16:41:54.209Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (8/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1720,
+    "createdAt": "2026-08-02T16:41:54.218Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (9/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1721,
+    "createdAt": "2026-08-02T16:41:54.224Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (10/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1722,
+    "createdAt": "2026-08-02T16:41:54.231Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (11/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1723,
+    "createdAt": "2026-08-02T16:41:54.243Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (12/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1724,
+    "createdAt": "2026-08-02T16:41:54.252Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (13/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1725,
+    "createdAt": "2026-08-02T16:41:54.259Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (14/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1726,
+    "createdAt": "2026-08-02T16:41:54.265Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (15/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1727,
+    "createdAt": "2026-08-02T16:41:54.272Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (16/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1728,
+    "createdAt": "2026-08-02T16:41:54.278Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (17/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1729,
+    "createdAt": "2026-08-02T16:41:54.286Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (18/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 1730,
+    "createdAt": "2026-08-02T16:41:54.294Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Integrated circuit (1/5) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1731,
+    "createdAt": "2026-08-02T16:41:54.305Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:20.916Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (2/5) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1732,
+    "createdAt": "2026-08-02T16:41:54.311Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:21.078Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (3/5) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1733,
+    "createdAt": "2026-08-02T16:41:54.318Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:21.241Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (4/5) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1734,
+    "createdAt": "2026-08-02T16:41:54.325Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:21.401Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (5/5) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 1735,
+    "createdAt": "2026-08-02T16:41:54.333Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-02T16:42:21.525Z",
+    "error": "VNG API error (409): No available Manny can assist the atomic printer."
+  },
+  {
+    "description": "[craft queue] Linear actuator (1/6) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1736,
+    "createdAt": "2026-08-02T16:41:54.339Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Linear actuator (2/6) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1737,
+    "createdAt": "2026-08-02T16:41:54.346Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Linear actuator (3/6) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1738,
+    "createdAt": "2026-08-02T16:41:54.352Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Linear actuator (4/6) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1739,
+    "createdAt": "2026-08-02T16:41:54.359Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Linear actuator (5/6) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1740,
+    "createdAt": "2026-08-02T16:41:54.366Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Linear actuator (6/6) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 1741,
+    "createdAt": "2026-08-02T16:41:54.375Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Manny (1/1) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "linear_actuator",
+          "quantity": 6
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 12
+        },
+        {
+          "type": "battery_pack",
+          "quantity": 4
+        },
+        {
+          "type": "integrated_circuit",
+          "quantity": 6
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 18
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 12
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "manny"
+    },
+    "id": 1742,
+    "createdAt": "2026-08-02T16:41:54.383Z",
+    "status": "pending"
   }
 ]
