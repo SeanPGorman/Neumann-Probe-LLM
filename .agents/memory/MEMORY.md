@@ -1,1 +1,2 @@
 - [API routing — /api vs /api-server](api-routing.md) — client fetches must use `/api/vng/...` not `/api-server/api/vng/...`
+- [Mining targets live inside solar_system bodies](mining-targets.md) — sector has no standalone asteroids; mineable bodies are in solar_system.bodies after mapSectorObjects()

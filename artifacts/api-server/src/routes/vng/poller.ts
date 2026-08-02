@@ -9,6 +9,7 @@ import {
   type PendingAction,
   type MiningAssignment,
 } from "./file-store.js";
+import { mapSectorObjects } from "./sector-map.js";
 
 const POLL_INTERVAL_MS = 30_000;
 let started = false;
@@ -125,9 +126,34 @@ async function runMiningAutomation(
     return;
   }
 
-  const asteroids = sectorObjects.filter(
-    (o: any) => o.type === "asteroid" && o.mannyMineable !== false
-  );
+  // Collect mineable targets from solar_system bodies and standalone asteroids
+  const mappedSector = mapSectorObjects(sectorObjects);
+  const asteroids: any[] = [];
+  for (const obj of mappedSector) {
+    if (obj.type === "solar_system") {
+      for (const body of (obj.bodies ?? [])) {
+        const rt: string[] = body.resourceTypes ?? [];
+        if (rt.length > 0) {
+          asteroids.push({
+            id: body.id,
+            name: body.name ?? `${body.type} (${body.category ?? body.type})`,
+            resourceTypes: rt,
+            type: body.type,
+          });
+        }
+      }
+    } else if (obj.type === "asteroid" && obj.mannyMineable !== false) {
+      const rt: string[] = obj.resourceTypes ?? [];
+      if (rt.length > 0) {
+        asteroids.push({
+          id: obj.id,
+          name: obj.name ?? "Unnamed asteroid",
+          resourceTypes: rt,
+          type: "asteroid",
+        });
+      }
+    }
+  }
 
   for (const assignment of assignments) {
     try {

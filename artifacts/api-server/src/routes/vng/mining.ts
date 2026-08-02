@@ -6,6 +6,7 @@ import {
   updateMiningCycleState,
 } from "./file-store.js";
 import { clientFor, parseProbeId } from "./client.js";
+import { mapSectorObjects } from "./sector-map.js";
 
 const router = Router();
 
@@ -48,22 +49,46 @@ router.get("/mining", async (req, res) => {
       taskTargetAmount: m.task?.targetAmount ?? null,
     }));
 
-    // Asteroids from sector objects
-    const sectorObjects: any[] = sectorResp?.sector?.objects ?? [];
-    const asteroids = sectorObjects
-      .filter((o: any) => o.type === "asteroid")
-      .map((o: any) => ({
-        id: o.id,
-        name: o.name ?? "Unnamed asteroid",
-        resourceTypes: o.resourceTypes ?? [],
-        composition: o.composition ?? null,
-        sizeCategory: o.sizeCategory ?? null,
-        mannyMineable: o.mannyMineable !== false,
-      }));
+    // Collect mineable targets: bodies inside solar_system objects + standalone asteroids
+    const rawSectorObjects: any[] = sectorResp?.sector?.objects ?? [];
+    const mappedObjects = mapSectorObjects(rawSectorObjects);
+    const mineableTargets: any[] = [];
+
+    for (const obj of mappedObjects) {
+      if (obj.type === "solar_system") {
+        // Prefer bodies that have resourceTypes already resolved
+        for (const body of (obj.bodies ?? [])) {
+          const rt: string[] = body.resourceTypes ?? [];
+          if (rt.length > 0) {
+            mineableTargets.push({
+              id: body.id,
+              name: body.name ?? `${body.type} (${body.category ?? body.type})`,
+              resourceTypes: rt,
+              category: body.category ?? null,
+              type: body.type,
+              parentName: obj.name ?? null,
+              mannyMineable: true,
+            });
+          }
+        }
+      } else if (obj.type === "asteroid" && obj.mannyMineable !== false) {
+        const rt: string[] = obj.resourceTypes ?? [];
+        if (rt.length > 0) {
+          mineableTargets.push({
+            id: obj.id,
+            name: obj.name ?? "Unnamed asteroid",
+            resourceTypes: rt,
+            composition: obj.composition ?? null,
+            type: "asteroid",
+            mannyMineable: true,
+          });
+        }
+      }
+    }
 
     res.json({
       assignments: probeAssignments,
-      asteroids,
+      asteroids: mineableTargets,
       containers: inventoryContainers,
       mannies,
     });
