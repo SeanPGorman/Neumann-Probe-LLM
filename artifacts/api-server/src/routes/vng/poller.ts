@@ -1,5 +1,5 @@
 import { logger } from "../../lib/logger.js";
-import { clientFor } from "./client.js";
+import { clientFor, VngApiError } from "./client.js";
 import {
   getPendingActions,
   resolvePendingAction,
@@ -159,6 +159,11 @@ async function runMiningAutomation(
     try {
       await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids);
     } catch (err: any) {
+      // 409 = manny busy; defer silently without marking lastError
+      if (err instanceof VngApiError && err.status === 409) {
+        logger.info({ assignmentId: assignment.id }, "mining: manny busy (409), deferring");
+        return;
+      }
       logger.error(
         { assignmentId: assignment.id, err: err.message },
         "mining: cycle error"

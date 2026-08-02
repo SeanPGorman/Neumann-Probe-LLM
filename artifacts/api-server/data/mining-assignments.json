@@ -1,0 +1,67 @@
+[
+  {
+    "containerId": "container-itm_craft_ecaa7c38073bc0915a0eb276",
+    "containerName": "Container 21",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 1,
+    "lastError": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "containerId": "container-itm_craft_22326f5399edb795ed71e81a",
+    "containerName": "Container 14",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 2,
+    "lastError": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
+    "containerName": "Container 15",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 3,
+    "lastError": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
+    "containerName": "Container 16",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 4,
+    "lastError": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
+    "containerName": "Container 17",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 5,
+    "lastError": "VNG API error (409): The Manny is already executing an order."
+  },
+  {
+    "containerId": "container-itm_craft_5ea4028d65b47e6f77055aa4",
+    "containerName": "Container 18",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 6
+  }
+]

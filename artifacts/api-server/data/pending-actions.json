@@ -24705,7 +24705,8 @@
     },
     "id": 1718,
     "createdAt": "2026-08-02T16:41:54.201Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T20:07:51.446Z"
   },
   {
     "description": "[craft queue] Electric motor (7/18) via Manny",
@@ -24729,7 +24730,8 @@
     },
     "id": 1719,
     "createdAt": "2026-08-02T16:41:54.209Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T20:08:21.418Z"
   },
   {
     "description": "[craft queue] Electric motor (8/18) via Manny",
@@ -24753,7 +24755,8 @@
     },
     "id": 1720,
     "createdAt": "2026-08-02T16:41:54.218Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T20:08:51.104Z"
   },
   {
     "description": "[craft queue] Electric motor (9/18) via Manny",
@@ -24777,7 +24780,8 @@
     },
     "id": 1721,
     "createdAt": "2026-08-02T16:41:54.224Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T20:08:51.258Z"
   },
   {
     "description": "[craft queue] Electric motor (10/18) via Manny",
@@ -24801,7 +24805,8 @@
     },
     "id": 1722,
     "createdAt": "2026-08-02T16:41:54.231Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T20:08:51.394Z"
   },
   {
     "description": "[craft queue] Electric motor (11/18) via Manny",
