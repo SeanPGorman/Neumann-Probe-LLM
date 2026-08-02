@@ -17,9 +17,12 @@
     "mannyCount": 4,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 2,
-    "lastError": "VNG API error (409): The Manny is already executing an order."
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
   },
   {
     "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
@@ -28,9 +31,12 @@
     "mannyCount": 4,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 3,
-    "lastError": "VNG API error (409): The Manny is already executing an order."
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
   },
   {
     "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
@@ -39,9 +45,12 @@
     "mannyCount": 4,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 4,
-    "lastError": "VNG API error (409): The Manny is already executing an order."
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
   },
   {
     "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
@@ -50,9 +59,12 @@
     "mannyCount": 4,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 5,
-    "lastError": "VNG API error (409): The Manny is already executing an order."
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
   },
   {
     "containerId": "container-itm_craft_5ea4028d65b47e6f77055aa4",
@@ -61,7 +73,53 @@
     "mannyCount": 4,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
-    "id": 6
+    "cycleState": "mining",
+    "id": 6,
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
+  },
+  {
+    "containerId": "container-itm_841974742a8d91aebd0a9482",
+    "containerName": "Container 26",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "mining",
+    "id": 7,
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
+  },
+  {
+    "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
+    "containerName": "Container 12",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "mining",
+    "id": 8,
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
+  },
+  {
+    "containerId": "container-itm_craft_452fac39fa335d779dddd00b",
+    "containerName": "Container 20",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "mining",
+    "id": 9,
+    "miningMannyIds": [
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_f02b912e8cad9a8a323ea6a2"
+    ]
   }
 ]

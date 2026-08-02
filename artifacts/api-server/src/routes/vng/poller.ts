@@ -157,7 +157,7 @@ async function runMiningAutomation(
 
   for (const assignment of assignments) {
     try {
-      await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids);
+      await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects);
     } catch (err: any) {
       // 409 = manny busy; defer silently without marking lastError
       if (err instanceof VngApiError && err.status === 409) {
@@ -180,6 +180,7 @@ async function runMiningCycle(
   claimedMannies: Set<string>,
   c: ReturnType<typeof clientFor>,
   asteroids: any[],
+  rawSectorObjects: any[],
 ): Promise<void> {
   const label = `mining assignment ${assignment.id} (${assignment.material})`;
 
@@ -190,7 +191,26 @@ async function runMiningCycle(
     );
     const container = invContainers.find((c: any) => c.id === assignment.containerId);
     if (!container) {
-      logger.info({ label }, "mining: container not in inventory, skipping");
+      // Container not in inventory — check if it's already deployed in sector
+      const deployedId = toSectorObjectId(assignment.containerId);
+      const isDeployed = rawSectorObjects.some(
+        (o: any) => o.id === deployedId || o.id === assignment.containerId
+      );
+      if (isDeployed) {
+        // Sync state: container is out on an asteroid. Track all currently-busy
+        // mannies so we wait for them to finish before recovering.
+        const busyIds = mannies
+          .filter((m: any) => !!m.currentTask)
+          .map((m: any) => m.id as string);
+        logger.info({ label, busyIds }, "mining: container already deployed — syncing to mining state");
+        await updateMiningCycleState(assignment.id, {
+          cycleState: "mining",
+          miningMannyIds: busyIds,
+          lastError: undefined,
+        });
+      } else {
+        logger.info({ label }, "mining: container not in inventory or sector, skipping");
+      }
       return;
     }
 
