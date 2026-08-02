@@ -31,6 +31,8 @@ function cycleStateBadge(state: string) {
       return <span className="text-[9px] px-1.5 py-0.5 rounded border border-amber-600/50 text-amber-400 bg-amber-950/40">⛏ MINING</span>;
     case "recovering":
       return <span className="text-[9px] px-1.5 py-0.5 rounded border border-blue-600/50 text-blue-400 bg-blue-950/40">↑ RECOVERING</span>;
+    case "container_full":
+      return <span className="text-[9px] px-1.5 py-0.5 rounded border border-amber-500/60 text-amber-300 bg-amber-900/30">⚠ FULL</span>;
     default:
       return <span className="text-[9px] px-1.5 py-0.5 rounded border border-border/40 text-muted-foreground">● IDLE</span>;
   }
@@ -235,13 +237,24 @@ export function MiningPanel({ probeId }: Props) {
             );
             const idleMiners = miningMannies.filter((m) => !m.currentTask).length;
 
+            // Detect full-container condition: idle but container still has cargo
+            const containerInfo = containers.find((c: any) => c.id === a.containerId);
+            const containerFull =
+              a.cycleState === "idle" &&
+              containerInfo != null &&
+              !containerInfo.deployed &&
+              (containerInfo.usedCapacity ?? 0) > 0;
+            const effectiveState = containerFull ? "container_full" : a.cycleState;
+
             return (
               <div
                 key={a.id}
                 className={`rounded border p-2 space-y-2 ${
-                  a.enabled
-                    ? "border-border/40 bg-card/20"
-                    : "border-border/20 opacity-50"
+                  !a.enabled
+                    ? "border-border/20 opacity-50"
+                    : containerFull
+                    ? "border-amber-500/40 bg-amber-950/10"
+                    : "border-border/40 bg-card/20"
                 }`}
               >
                 {/* Top row: name + state + toggle */}
@@ -249,7 +262,7 @@ export function MiningPanel({ probeId }: Props) {
                   <span className="text-[10px] text-foreground/80 font-mono truncate flex-1">
                     {a.containerName}
                   </span>
-                  {cycleStateBadge(a.cycleState)}
+                  {cycleStateBadge(effectiveState)}
                   <button
                     onClick={() => toggleEnabled(a.id, !a.enabled)}
                     className={`text-[9px] px-1.5 py-0.5 rounded border transition-colors ${
@@ -303,6 +316,13 @@ export function MiningPanel({ probeId }: Props) {
                     <div className="text-muted-foreground/40 pt-0.5">
                       {idleMiners}/{miningMannies.length} miners done
                     </div>
+                  </div>
+                )}
+
+                {/* Container full notice */}
+                {containerFull && (
+                  <div className="text-[9px] text-amber-400/80 leading-snug">
+                    Container holds {containerInfo!.usedCapacity?.toFixed(2)} / {containerInfo!.capacity?.toFixed(2)} ECE — unload to restart cycle.
                   </div>
                 )}
 
