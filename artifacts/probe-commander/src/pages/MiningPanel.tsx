@@ -51,6 +51,7 @@ export function MiningPanel({ probeId }: Props) {
   const [formMannyCount, setFormMannyCount] = useState(4);
   const [saving, setSaving] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
+  const [containerError, setContainerError] = useState<string | null>(null);
 
   const qk = ["mining", probeId];
 
@@ -95,9 +96,10 @@ export function MiningPanel({ probeId }: Props) {
   const createAssignment = async () => {
     if (!formContainerId) return;
     setSaving(true);
+    setContainerError(null);
     try {
       const selectedContainer = containers.find((c) => c.id === formContainerId);
-      await fetchJson(`${BASE}/api/vng/log/mining`, {
+      const r = await fetch(`${BASE}/api/vng/log/mining`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -108,6 +110,16 @@ export function MiningPanel({ probeId }: Props) {
           probeId,
         }),
       });
+      if (r.status === 409) {
+        setContainerError("This container is already used by another assignment");
+        return;
+      }
+      if (!r.ok) {
+        const json = await r.json().catch(() => ({}));
+        throw new Error(json.error ?? `Request failed (${r.status})`);
+      }
+      const json = await r.json();
+      if (json.error) throw new Error(json.error);
       await queryClient.invalidateQueries({ queryKey: qk });
       setShowForm(false);
       setFormContainerId("");
@@ -404,8 +416,8 @@ export function MiningPanel({ probeId }: Props) {
             <label className="text-[9px] text-muted-foreground/50">CONTAINER</label>
             <select
               value={formContainerId}
-              onChange={(e) => setFormContainerId(e.target.value)}
-              className="w-full text-[10px] bg-background border border-border/40 rounded px-1.5 py-1 text-foreground"
+              onChange={(e) => { setFormContainerId(e.target.value); setContainerError(null); }}
+              className={`w-full text-[10px] bg-background border rounded px-1.5 py-1 text-foreground ${containerError ? "border-red-500/60" : "border-border/40"}`}
             >
               {availableContainers.map((c: any) => (
                 <option key={c.id} value={c.id}>
@@ -413,6 +425,9 @@ export function MiningPanel({ probeId }: Props) {
                 </option>
               ))}
             </select>
+            {containerError && (
+              <div className="text-[9px] text-red-400/90 pt-0.5">⚠ {containerError}</div>
+            )}
           </div>
 
           {/* Material */}
@@ -467,7 +482,7 @@ export function MiningPanel({ probeId }: Props) {
               {saving ? "SAVING…" : "CREATE"}
             </button>
             <button
-              onClick={() => setShowForm(false)}
+              onClick={() => { setShowForm(false); setContainerError(null); }}
               className="px-3 text-[10px] py-1 rounded border border-border/30 text-muted-foreground hover:text-foreground transition-colors"
             >
               CANCEL
