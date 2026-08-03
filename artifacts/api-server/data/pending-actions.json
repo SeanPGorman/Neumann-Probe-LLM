@@ -27488,7 +27488,8 @@
     },
     "id": 1879,
     "createdAt": "2026-08-02T23:16:53.703Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:27:45.029Z"
   },
   {
     "description": "[craft queue] Steel plate (6/18) via Manny",
@@ -27502,7 +27503,8 @@
     },
     "id": 1880,
     "createdAt": "2026-08-02T23:16:53.709Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:28:14.950Z"
   },
   {
     "description": "[craft queue] Steel plate (7/18) via Manny",
@@ -27516,7 +27518,8 @@
     },
     "id": 1881,
     "createdAt": "2026-08-02T23:16:53.716Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:33:15.079Z"
   },
   {
     "description": "[craft queue] Steel plate (8/18) via Manny",
@@ -27530,7 +27533,8 @@
     },
     "id": 1882,
     "createdAt": "2026-08-02T23:16:53.723Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:33:44.955Z"
   },
   {
     "description": "[craft queue] Steel plate (9/18) via Manny",
@@ -27544,7 +27548,8 @@
     },
     "id": 1883,
     "createdAt": "2026-08-02T23:16:53.729Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:35:14.532Z"
   },
   {
     "description": "[craft queue] Steel plate (10/18) via Manny",
@@ -27558,7 +27563,8 @@
     },
     "id": 1884,
     "createdAt": "2026-08-02T23:16:53.735Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:35:14.732Z"
   },
   {
     "description": "[craft queue] Steel plate (11/18) via Manny",
@@ -27572,7 +27578,8 @@
     },
     "id": 1885,
     "createdAt": "2026-08-02T23:16:53.746Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:38:44.985Z"
   },
   {
     "description": "[craft queue] Steel plate (12/18) via Manny",
@@ -27586,7 +27593,8 @@
     },
     "id": 1886,
     "createdAt": "2026-08-02T23:16:53.756Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:38:45.145Z"
   },
   {
     "description": "[craft queue] Steel plate (13/18) via Manny",
@@ -27600,7 +27608,8 @@
     },
     "id": 1887,
     "createdAt": "2026-08-02T23:16:53.765Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:40:14.977Z"
   },
   {
     "description": "[craft queue] Steel plate (14/18) via Manny",
@@ -27614,7 +27623,8 @@
     },
     "id": 1888,
     "createdAt": "2026-08-02T23:16:53.772Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:40:44.651Z"
   },
   {
     "description": "[craft queue] Steel plate (15/18) via Manny",
@@ -27628,7 +27638,8 @@
     },
     "id": 1889,
     "createdAt": "2026-08-02T23:16:53.779Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:43:45.134Z"
   },
   {
     "description": "[craft queue] Steel plate (16/18) via Manny",
@@ -27642,7 +27653,8 @@
     },
     "id": 1890,
     "createdAt": "2026-08-02T23:16:53.786Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:43:45.326Z"
   },
   {
     "description": "[craft queue] Steel plate (17/18) via Manny",
@@ -27656,7 +27668,8 @@
     },
     "id": 1891,
     "createdAt": "2026-08-02T23:16:53.797Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:45:15.153Z"
   },
   {
     "description": "[craft queue] Steel plate (18/18) via Manny",
@@ -27670,7 +27683,8 @@
     },
     "id": 1892,
     "createdAt": "2026-08-02T23:16:53.804Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:45:45.198Z"
   },
   {
     "description": "[craft queue] Steel bar (1/50) via Manny",
@@ -27684,7 +27698,8 @@
     },
     "id": 1893,
     "createdAt": "2026-08-02T23:16:53.811Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:48:45.440Z"
   },
   {
     "description": "[craft queue] Steel bar (2/50) via Manny",
@@ -27698,7 +27713,8 @@
     },
     "id": 1894,
     "createdAt": "2026-08-02T23:16:53.820Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:48:45.627Z"
   },
   {
     "description": "[craft queue] Steel bar (3/50) via Manny",
@@ -27712,7 +27728,8 @@
     },
     "id": 1895,
     "createdAt": "2026-08-02T23:16:53.829Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:50:15.370Z"
   },
   {
     "description": "[craft queue] Steel bar (4/50) via Manny",
@@ -27726,7 +27743,8 @@
     },
     "id": 1896,
     "createdAt": "2026-08-02T23:16:53.840Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:50:45.386Z"
   },
   {
     "description": "[craft queue] Steel bar (5/50) via Manny",
@@ -27740,7 +27758,8 @@
     },
     "id": 1897,
     "createdAt": "2026-08-02T23:16:53.849Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:53:45.486Z"
   },
   {
     "description": "[craft queue] Steel bar (6/50) via Manny",
@@ -27754,7 +27773,8 @@
     },
     "id": 1898,
     "createdAt": "2026-08-02T23:16:53.857Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:53:45.646Z"
   },
   {
     "description": "[craft queue] Steel bar (7/50) via Manny",
@@ -27768,7 +27788,8 @@
     },
     "id": 1899,
     "createdAt": "2026-08-02T23:16:53.867Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:55:15.540Z"
   },
   {
     "description": "[craft queue] Steel bar (8/50) via Manny",
@@ -27782,7 +27803,8 @@
     },
     "id": 1900,
     "createdAt": "2026-08-02T23:16:53.873Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:55:45.581Z"
   },
   {
     "description": "[craft queue] Steel bar (9/50) via Manny",
@@ -27796,7 +27818,8 @@
     },
     "id": 1901,
     "createdAt": "2026-08-02T23:16:53.889Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:58:45.655Z"
   },
   {
     "description": "[craft queue] Steel bar (10/50) via Manny",
@@ -27810,7 +27833,8 @@
     },
     "id": 1902,
     "createdAt": "2026-08-02T23:16:53.895Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-02T23:58:45.891Z"
   },
   {
     "description": "[craft queue] Steel bar (11/50) via Manny",
@@ -27824,7 +27848,8 @@
     },
     "id": 1903,
     "createdAt": "2026-08-02T23:16:53.902Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:00:15.747Z"
   },
   {
     "description": "[craft queue] Steel bar (12/50) via Manny",
@@ -27838,7 +27863,8 @@
     },
     "id": 1904,
     "createdAt": "2026-08-02T23:16:53.908Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:00:45.712Z"
   },
   {
     "description": "[craft queue] Steel bar (13/50) via Manny",
@@ -27852,7 +27878,8 @@
     },
     "id": 1905,
     "createdAt": "2026-08-02T23:16:53.916Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:03:45.736Z"
   },
   {
     "description": "[craft queue] Steel bar (14/50) via Manny",
@@ -27866,7 +27893,8 @@
     },
     "id": 1906,
     "createdAt": "2026-08-02T23:16:53.927Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:04:15.695Z"
   },
   {
     "description": "[craft queue] Steel bar (15/50) via Manny",
@@ -27880,7 +27908,8 @@
     },
     "id": 1907,
     "createdAt": "2026-08-02T23:16:53.934Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:05:45.744Z"
   },
   {
     "description": "[craft queue] Steel bar (16/50) via Manny",
@@ -27894,7 +27923,8 @@
     },
     "id": 1908,
     "createdAt": "2026-08-02T23:16:53.944Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:06:15.702Z"
   },
   {
     "description": "[craft queue] Steel bar (17/50) via Manny",
@@ -27908,7 +27938,8 @@
     },
     "id": 1909,
     "createdAt": "2026-08-02T23:16:53.952Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:09:15.797Z"
   },
   {
     "description": "[craft queue] Steel bar (18/50) via Manny",
@@ -27922,7 +27953,8 @@
     },
     "id": 1910,
     "createdAt": "2026-08-02T23:16:53.959Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:09:45.728Z"
   },
   {
     "description": "[craft queue] Steel bar (19/50) via Manny",
@@ -27936,7 +27968,8 @@
     },
     "id": 1911,
     "createdAt": "2026-08-02T23:16:53.968Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:11:15.731Z"
   },
   {
     "description": "[craft queue] Steel bar (20/50) via Manny",
@@ -27950,7 +27983,8 @@
     },
     "id": 1912,
     "createdAt": "2026-08-02T23:16:53.977Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:11:45.645Z"
   },
   {
     "description": "[craft queue] Steel bar (21/50) via Manny",
@@ -27964,7 +27998,8 @@
     },
     "id": 1913,
     "createdAt": "2026-08-02T23:16:53.983Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:14:45.476Z"
   },
   {
     "description": "[craft queue] Steel bar (22/50) via Manny",
@@ -27978,7 +28013,8 @@
     },
     "id": 1914,
     "createdAt": "2026-08-02T23:16:53.989Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:15:15.285Z"
   },
   {
     "description": "[craft queue] Steel bar (23/50) via Manny",
@@ -27992,7 +28028,8 @@
     },
     "id": 1915,
     "createdAt": "2026-08-02T23:16:53.997Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:16:45.815Z"
   },
   {
     "description": "[craft queue] Steel bar (24/50) via Manny",
@@ -28006,7 +28043,8 @@
     },
     "id": 1916,
     "createdAt": "2026-08-02T23:16:54.006Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:16:46.051Z"
   },
   {
     "description": "[craft queue] Steel bar (25/50) via Manny",
@@ -28020,7 +28058,8 @@
     },
     "id": 1917,
     "createdAt": "2026-08-02T23:16:54.017Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:18:15.513Z"
   },
   {
     "description": "[craft queue] Steel bar (26/50) via Manny",
@@ -28034,7 +28073,8 @@
     },
     "id": 1918,
     "createdAt": "2026-08-02T23:16:54.026Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:18:45.779Z"
   },
   {
     "description": "[craft queue] Steel bar (27/50) via Manny",
@@ -28048,7 +28088,8 @@
     },
     "id": 1919,
     "createdAt": "2026-08-02T23:16:54.034Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:19:15.545Z"
   },
   {
     "description": "[craft queue] Steel bar (28/50) via Manny",
@@ -28062,7 +28103,8 @@
     },
     "id": 1920,
     "createdAt": "2026-08-02T23:16:54.040Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:19:15.680Z"
   },
   {
     "description": "[craft queue] Steel bar (29/50) via Manny",
@@ -28076,7 +28118,8 @@
     },
     "id": 1921,
     "createdAt": "2026-08-02T23:16:54.046Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:19:45.812Z"
   },
   {
     "description": "[craft queue] Steel bar (30/50) via Manny",
@@ -28090,7 +28133,8 @@
     },
     "id": 1922,
     "createdAt": "2026-08-02T23:16:54.052Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:19:46.030Z"
   },
   {
     "description": "[craft queue] Steel bar (31/50) via Manny",
@@ -28104,7 +28148,8 @@
     },
     "id": 1923,
     "createdAt": "2026-08-02T23:16:54.060Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:20:15.902Z"
   },
   {
     "description": "[craft queue] Steel bar (32/50) via Manny",
@@ -28118,7 +28163,8 @@
     },
     "id": 1924,
     "createdAt": "2026-08-02T23:16:54.068Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:22:15.829Z"
   },
   {
     "description": "[craft queue] Steel bar (33/50) via Manny",
@@ -28132,7 +28178,8 @@
     },
     "id": 1925,
     "createdAt": "2026-08-02T23:16:54.075Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.006Z"
   },
   {
     "description": "[craft queue] Steel bar (34/50) via Manny",
@@ -28146,7 +28193,8 @@
     },
     "id": 1926,
     "createdAt": "2026-08-02T23:16:54.082Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.186Z"
   },
   {
     "description": "[craft queue] Steel bar (35/50) via Manny",
@@ -28160,7 +28208,8 @@
     },
     "id": 1927,
     "createdAt": "2026-08-02T23:16:54.090Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.348Z"
   },
   {
     "description": "[craft queue] Steel bar (36/50) via Manny",
@@ -28174,7 +28223,8 @@
     },
     "id": 1928,
     "createdAt": "2026-08-02T23:16:54.096Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.486Z"
   },
   {
     "description": "[craft queue] Steel bar (37/50) via Manny",
@@ -28188,7 +28238,8 @@
     },
     "id": 1929,
     "createdAt": "2026-08-02T23:16:54.103Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.693Z"
   },
   {
     "description": "[craft queue] Steel bar (38/50) via Manny",
@@ -28202,7 +28253,8 @@
     },
     "id": 1930,
     "createdAt": "2026-08-02T23:16:54.109Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.827Z"
   },
   {
     "description": "[craft queue] Steel bar (39/50) via Manny",
@@ -28216,7 +28268,8 @@
     },
     "id": 1931,
     "createdAt": "2026-08-02T23:16:54.115Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:16.982Z"
   },
   {
     "description": "[craft queue] Steel bar (40/50) via Manny",
@@ -28230,7 +28283,8 @@
     },
     "id": 1932,
     "createdAt": "2026-08-02T23:16:54.121Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:17.117Z"
   },
   {
     "description": "[craft queue] Steel bar (41/50) via Manny",
@@ -28244,7 +28298,8 @@
     },
     "id": 1933,
     "createdAt": "2026-08-02T23:16:54.127Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:33:17.286Z"
   },
   {
     "description": "[craft queue] Steel bar (42/50) via Manny",
@@ -28258,7 +28313,8 @@
     },
     "id": 1934,
     "createdAt": "2026-08-02T23:16:54.133Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:45.827Z"
   },
   {
     "description": "[craft queue] Steel bar (43/50) via Manny",
@@ -28272,7 +28328,8 @@
     },
     "id": 1935,
     "createdAt": "2026-08-02T23:16:54.140Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.007Z"
   },
   {
     "description": "[craft queue] Steel bar (44/50) via Manny",
@@ -28286,7 +28343,8 @@
     },
     "id": 1936,
     "createdAt": "2026-08-02T23:16:54.148Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.213Z"
   },
   {
     "description": "[craft queue] Steel bar (45/50) via Manny",
@@ -28300,7 +28358,8 @@
     },
     "id": 1937,
     "createdAt": "2026-08-02T23:16:54.155Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.350Z"
   },
   {
     "description": "[craft queue] Steel bar (46/50) via Manny",
@@ -28314,7 +28373,8 @@
     },
     "id": 1938,
     "createdAt": "2026-08-02T23:16:54.161Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.525Z"
   },
   {
     "description": "[craft queue] Steel bar (47/50) via Manny",
@@ -28328,7 +28388,8 @@
     },
     "id": 1939,
     "createdAt": "2026-08-02T23:16:54.167Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.668Z"
   },
   {
     "description": "[craft queue] Steel bar (48/50) via Manny",
@@ -28342,7 +28403,8 @@
     },
     "id": 1940,
     "createdAt": "2026-08-02T23:16:54.173Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.805Z"
   },
   {
     "description": "[craft queue] Steel bar (49/50) via Manny",
@@ -28356,7 +28418,8 @@
     },
     "id": 1941,
     "createdAt": "2026-08-02T23:16:54.182Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:46.981Z"
   },
   {
     "description": "[craft queue] Steel bar (50/50) via Manny",
@@ -28370,7 +28433,8 @@
     },
     "id": 1942,
     "createdAt": "2026-08-02T23:16:54.195Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:38:47.162Z"
   },
   {
     "description": "[craft queue] Battery pack (1/4) via Manny",
@@ -28384,7 +28448,8 @@
     },
     "id": 1943,
     "createdAt": "2026-08-02T23:16:54.201Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:41:45.648Z"
   },
   {
     "description": "[craft queue] Battery pack (2/4) via Manny",
@@ -28398,7 +28463,8 @@
     },
     "id": 1944,
     "createdAt": "2026-08-02T23:16:54.208Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:42:15.799Z"
   },
   {
     "description": "[craft queue] Battery pack (3/4) via Manny",
@@ -28412,7 +28478,8 @@
     },
     "id": 1945,
     "createdAt": "2026-08-02T23:16:54.217Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:42:15.938Z"
   },
   {
     "description": "[craft queue] Battery pack (4/4) via Manny",
@@ -28426,7 +28493,8 @@
     },
     "id": 1946,
     "createdAt": "2026-08-02T23:16:54.232Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:42:45.651Z"
   },
   {
     "description": "[craft queue] Micro-etched conductor (1/12) via atomic printer",
@@ -29026,7 +29094,8 @@
     },
     "id": 1983,
     "createdAt": "2026-08-02T23:16:54.517Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:15.984Z"
   },
   {
     "description": "[craft queue] Electric motor (2/18) via Manny",
@@ -29050,7 +29119,8 @@
     },
     "id": 1984,
     "createdAt": "2026-08-02T23:16:54.522Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:16.131Z"
   },
   {
     "description": "[craft queue] Electric motor (3/18) via Manny",
@@ -29074,7 +29144,8 @@
     },
     "id": 1985,
     "createdAt": "2026-08-02T23:16:54.529Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:16.282Z"
   },
   {
     "description": "[craft queue] Electric motor (4/18) via Manny",
@@ -29098,7 +29169,8 @@
     },
     "id": 1986,
     "createdAt": "2026-08-02T23:16:54.536Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:16.431Z"
   },
   {
     "description": "[craft queue] Electric motor (5/18) via Manny",
@@ -29122,7 +29194,8 @@
     },
     "id": 1987,
     "createdAt": "2026-08-02T23:16:54.541Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:16.574Z"
   },
   {
     "description": "[craft queue] Electric motor (6/18) via Manny",
@@ -29146,7 +29219,8 @@
     },
     "id": 1988,
     "createdAt": "2026-08-02T23:16:54.548Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:16.797Z"
   },
   {
     "description": "[craft queue] Electric motor (7/18) via Manny",
@@ -29170,7 +29244,8 @@
     },
     "id": 1989,
     "createdAt": "2026-08-02T23:16:54.554Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:17.011Z"
   },
   {
     "description": "[craft queue] Electric motor (8/18) via Manny",
@@ -29194,7 +29269,8 @@
     },
     "id": 1990,
     "createdAt": "2026-08-02T23:16:54.560Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:17.148Z"
   },
   {
     "description": "[craft queue] Electric motor (9/18) via Manny",
@@ -29218,7 +29294,8 @@
     },
     "id": 1991,
     "createdAt": "2026-08-02T23:16:54.569Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:44:17.336Z"
   },
   {
     "description": "[craft queue] Electric motor (10/18) via Manny",
@@ -29242,7 +29319,8 @@
     },
     "id": 1992,
     "createdAt": "2026-08-02T23:16:54.590Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:45.727Z"
   },
   {
     "description": "[craft queue] Electric motor (11/18) via Manny",
@@ -29266,7 +29344,8 @@
     },
     "id": 1993,
     "createdAt": "2026-08-02T23:16:54.598Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:45.912Z"
   },
   {
     "description": "[craft queue] Electric motor (12/18) via Manny",
@@ -29290,7 +29369,8 @@
     },
     "id": 1994,
     "createdAt": "2026-08-02T23:16:54.604Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:46.066Z"
   },
   {
     "description": "[craft queue] Electric motor (13/18) via Manny",
@@ -29314,7 +29394,8 @@
     },
     "id": 1995,
     "createdAt": "2026-08-02T23:16:54.614Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:46.241Z"
   },
   {
     "description": "[craft queue] Electric motor (14/18) via Manny",
@@ -29338,7 +29419,8 @@
     },
     "id": 1996,
     "createdAt": "2026-08-02T23:16:54.620Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:46.386Z"
   },
   {
     "description": "[craft queue] Electric motor (15/18) via Manny",
@@ -29362,7 +29444,8 @@
     },
     "id": 1997,
     "createdAt": "2026-08-02T23:16:54.628Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:46.562Z"
   },
   {
     "description": "[craft queue] Electric motor (16/18) via Manny",
@@ -29386,7 +29469,8 @@
     },
     "id": 1998,
     "createdAt": "2026-08-02T23:16:54.635Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:46.695Z"
   },
   {
     "description": "[craft queue] Electric motor (17/18) via Manny",
@@ -29410,7 +29494,8 @@
     },
     "id": 1999,
     "createdAt": "2026-08-02T23:16:54.642Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:46.863Z"
   },
   {
     "description": "[craft queue] Electric motor (18/18) via Manny",
@@ -29434,7 +29519,8 @@
     },
     "id": 2000,
     "createdAt": "2026-08-02T23:16:54.649Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T00:59:47.031Z"
   },
   {
     "description": "[craft queue] Integrated circuit (1/6) via atomic printer",
@@ -29558,7 +29644,8 @@
     },
     "id": 2007,
     "createdAt": "2026-08-02T23:16:54.712Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T01:01:46.031Z"
   },
   {
     "description": "[craft queue] Linear actuator (2/6) via Manny",
@@ -29586,7 +29673,8 @@
     },
     "id": 2008,
     "createdAt": "2026-08-02T23:16:54.723Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T01:02:16.134Z"
   },
   {
     "description": "[craft queue] Linear actuator (3/6) via Manny",
@@ -29614,7 +29702,8 @@
     },
     "id": 2009,
     "createdAt": "2026-08-02T23:16:54.730Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T01:02:16.272Z"
   },
   {
     "description": "[craft queue] Linear actuator (4/6) via Manny",
@@ -29642,7 +29731,8 @@
     },
     "id": 2010,
     "createdAt": "2026-08-02T23:16:54.736Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T01:02:46.130Z"
   },
   {
     "description": "[craft queue] Linear actuator (5/6) via Manny",
@@ -29670,7 +29760,8 @@
     },
     "id": 2011,
     "createdAt": "2026-08-02T23:16:54.742Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T01:15:03.965Z"
   },
   {
     "description": "[craft queue] Linear actuator (6/6) via Manny",
@@ -29698,46 +29789,7 @@
     },
     "id": 2012,
     "createdAt": "2026-08-02T23:16:54.748Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Manny (1/1) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "linear_actuator",
-          "quantity": 6
-        },
-        {
-          "type": "electric_motor",
-          "quantity": 12
-        },
-        {
-          "type": "battery_pack",
-          "quantity": 4
-        },
-        {
-          "type": "integrated_circuit",
-          "quantity": 6
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 18
-        },
-        {
-          "type": "steel_bar",
-          "quantity": 12
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "manny"
-    },
-    "id": 2013,
-    "createdAt": "2026-08-02T23:16:54.755Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-03T01:15:04.112Z"
   }
 ]

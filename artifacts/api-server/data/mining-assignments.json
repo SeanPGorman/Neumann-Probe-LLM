@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
+    "containerName": "Container 16",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 1
+  }
+]
