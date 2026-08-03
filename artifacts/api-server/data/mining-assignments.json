@@ -1,14 +1,22 @@
 [
   {
-    "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
-    "containerName": "Container 16",
+    "containerId": "container-itm_craft_2ba19fecf04e3a64e4df2ce1",
+    "containerName": "Container 31",
     "material": "metals",
-    "mannyCount": 3,
+    "mannyCount": 10,
     "probeId": 795,
     "enabled": true,
     "cycleState": "idle",
-    "id": 1,
-    "miningMannyIds": [],
-    "lastCycleAt": "2026-08-03T15:34:52.890Z"
+    "id": 1
+  },
+  {
+    "containerId": "container-itm_craft_69e0198b185dd8a34e90d68b",
+    "containerName": "Container 30",
+    "material": "metals",
+    "mannyCount": 2,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 2
   }
 ]
