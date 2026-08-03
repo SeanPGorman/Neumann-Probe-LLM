@@ -3,10 +3,12 @@
     "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
     "containerName": "Container 16",
     "material": "metals",
-    "mannyCount": 4,
+    "mannyCount": 3,
     "probeId": 795,
     "enabled": true,
     "cycleState": "idle",
-    "id": 1
+    "id": 1,
+    "miningMannyIds": [],
+    "lastCycleAt": "2026-08-03T15:34:52.890Z"
   }
 ]
