@@ -529,11 +529,27 @@ export async function getMiningAssignments(): Promise<MiningAssignment[]> {
   return readFile<MiningAssignment[]>(MINING_FILE, []);
 }
 
+export class ContainerConflictError extends Error {
+  constructor(containerId: string) {
+    super(`Container "${containerId}" is already used by another mining assignment`);
+    this.name = "ContainerConflictError";
+  }
+}
+
 export async function upsertMiningAssignment(
   entry: Omit<MiningAssignment, "id"> & { id?: number }
 ): Promise<MiningAssignment> {
   return withWriteLock(async () => {
     const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);
+
+    // Uniqueness check: no other assignment (different id) may share this containerId.
+    const conflict = rows.find(
+      (r) => r.containerId === entry.containerId && r.id !== entry.id
+    );
+    if (conflict) {
+      throw new ContainerConflictError(entry.containerId);
+    }
+
     if (entry.id != null) {
       const idx = rows.findIndex((r) => r.id === entry.id);
       if (idx !== -1) {

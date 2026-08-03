@@ -4,6 +4,7 @@ import {
   upsertMiningAssignment,
   removeMiningAssignment,
   updateMiningCycleState,
+  ContainerConflictError,
 } from "./file-store.js";
 import { clientFor, parseProbeId } from "./client.js";
 import { mapSectorObjects } from "./sector-map.js";
@@ -135,6 +136,10 @@ router.post("/mining", async (req, res) => {
     });
     res.json({ assignment });
   } catch (err: any) {
+    if (err instanceof ContainerConflictError) {
+      res.status(409).json({ error: err.message });
+      return;
+    }
     res.status(500).json({ error: err.message });
   }
 });
@@ -159,6 +164,10 @@ router.patch("/mining/:id", async (req, res) => {
     });
     res.json({ assignment: updated });
   } catch (err: any) {
+    if (err instanceof ContainerConflictError) {
+      res.status(409).json({ error: err.message });
+      return;
+    }
     res.status(500).json({ error: err.message });
   }
 });
