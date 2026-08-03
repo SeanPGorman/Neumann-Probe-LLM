@@ -6,8 +6,13 @@
     "mannyCount": 10,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
-    "id": 1
+    "cycleState": "mining",
+    "id": 1,
+    "miningMannyIds": [
+      "mny_craft_e983a0bde7393a21455e02b1",
+      "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mny_craft_85511bdc26bf0ede26c34622"
+    ]
   },
   {
     "containerId": "container-itm_craft_69e0198b185dd8a34e90d68b",
@@ -16,7 +21,11 @@
     "mannyCount": 2,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
-    "id": 2
+    "cycleState": "mining",
+    "id": 2,
+    "miningMannyIds": [
+      "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mny_craft_85511bdc26bf0ede26c34622"
+    ]
   }
 ]
