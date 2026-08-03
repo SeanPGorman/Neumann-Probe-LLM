@@ -276,17 +276,78 @@ async function runMiningCycle(
       cycleState: "mining",
       asteroidObjectId: asteroid.id as string,
       miningMannyIds: selected.map((m: any) => m.id as string),
+      containerCapacity: capacity,
       lastCycleAt: new Date().toISOString(),
       lastError: undefined,
     });
 
   } else if (assignment.cycleState === "mining") {
-    const miningIds = assignment.miningMannyIds ?? [];
+    let miningIds = assignment.miningMannyIds ?? [];
+
+    // If we dispatched fewer mannies than requested (e.g. not enough were idle
+    // at cycle start), recruit additional idle mannies now rather than waiting
+    // for the original set to finish with an under-filled container.
+    //
+    // Derive asteroidObjectId from the deployed container's anchor when the
+    // field was not stored (assignments created before this field was added).
+    const deployedContainerObj = rawSectorObjects.find(
+      (o: any) => o.id === toSectorObjectId(assignment.containerId)
+    );
+    const effectiveAsteroidId: string | undefined =
+      assignment.asteroidObjectId ??
+      (deployedContainerObj?.targetObjectId as string | undefined) ??
+      (deployedContainerObj?.anchorObjectId as string | undefined);
+
+    const stillNeeded = assignment.mannyCount - miningIds.length;
+    if (stillNeeded > 0 && effectiveAsteroidId) {
+      const extraAvailable = mannies.filter(
+        (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+      );
+      if (extraAvailable.length > 0) {
+        const toAdd = extraAvailable.slice(0, stillNeeded);
+        // Use stored capacity; fall back to sector object when assignment was
+        // created before this field was introduced.
+        const cap: number =
+          assignment.containerCapacity ??
+          (deployedContainerObj?.capacity as number | undefined) ??
+          1;
+        const perManny = cap / assignment.mannyCount;
+        const containerObjectId = toSectorObjectId(assignment.containerId);
+        for (const m of toAdd) {
+          await c.mineResources(
+            m.id as string,
+            effectiveAsteroidId,
+            [assignment.material],
+            perManny,
+            containerObjectId
+          );
+          claimedMannies.add(m.id as string);
+        }
+        miningIds = [...miningIds, ...toAdd.map((m: any) => m.id as string)];
+        await updateMiningCycleState(assignment.id, {
+          miningMannyIds: miningIds,
+          containerCapacity: cap,
+          asteroidObjectId: effectiveAsteroidId, // persist for future ticks
+        });
+        logger.info(
+          { label, added: toAdd.length, total: miningIds.length },
+          "mining: filled remaining manny slots"
+        );
+      }
+    }
+
     const allIdle = miningIds.every((id) => {
       const m = mannies.find((m: any) => m.id === id);
       return !m || !m.currentTask;
     });
-    if (!allIdle) return; // still mining
+    if (!allIdle) {
+      const busyCount = miningIds.filter((id) => {
+        const m = mannies.find((m: any) => m.id === id);
+        return m?.currentTask;
+      }).length;
+      logger.info({ label, busyCount, total: miningIds.length }, "mining: waiting for miners to finish");
+      return;
+    }
 
     // Find an idle manny to do the recovery
     const recoverer = mannies.find(

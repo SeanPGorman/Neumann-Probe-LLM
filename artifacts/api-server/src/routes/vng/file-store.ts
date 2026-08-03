@@ -521,6 +521,7 @@ export type MiningAssignment = {
   cycleState: MiningCycleState;
   asteroidObjectId?: string;   // objectId of asteroid currently being mined
   miningMannyIds?: string[];   // mannyIds assigned to mine this cycle
+  containerCapacity?: number;  // total capacity stored at dispatch time, used to calculate perManny
   lastCycleAt?: string;
   lastError?: string;
 };
@@ -578,7 +579,7 @@ export async function removeMiningAssignment(id: number): Promise<void> {
 export async function updateMiningCycleState(
   id: number,
   patch: Partial<Pick<MiningAssignment,
-    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "lastCycleAt" | "lastError">>
+    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "containerCapacity" | "lastCycleAt" | "lastError">>
 ): Promise<void> {
   return withWriteLock(async () => {
     const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);
