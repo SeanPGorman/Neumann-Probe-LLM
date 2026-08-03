@@ -201,15 +201,60 @@ async function runMiningCycle(
         (o: any) => o.id === deployedId || o.id === assignment.containerId
       );
       if (isDeployed) {
-        // Sync state: container is out on an asteroid. Track all currently-busy
-        // mannies so we wait for them to finish before recovering.
-        const busyIds = mannies
-          .filter((m: any) => !!m.currentTask)
+        // Sync state: container is out on an asteroid.
+        // Only track mannies that are actually doing a mining task — grabbing ALL
+        // busy mannies (including crafters) causes immediate stale-ejection and
+        // a premature recovery on the very next tick.
+        const deployedObj = rawSectorObjects.find(
+          (o: any) => o.id === deployedId || o.id === assignment.containerId
+        );
+        const syncedAsteroid: string | undefined =
+          assignment.asteroidObjectId ??
+          (deployedObj?.targetObjectId as string | undefined) ??
+          (deployedObj?.anchorObjectId as string | undefined);
+
+        const busyMiningIds = mannies
+          .filter((m: any) => {
+            if (!m.currentTask) return false;
+            const taskStr = String(m.currentTask).toLowerCase();
+            return /^min(e|ing)/.test(taskStr);
+          })
           .map((m: any) => m.id as string);
-        logger.info({ label, busyIds }, "mining: container already deployed — syncing to mining state");
+
+        if (busyMiningIds.length === 0) {
+          // No miners working — go straight to recovery rather than waiting in mining state.
+          logger.info({ label }, "mining: container deployed but no active miners — dispatching recovery");
+          const recoverer = mannies.find(
+            (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+          );
+          if (!recoverer) {
+            logger.info({ label }, "mining: no idle manny for recovery, deferring");
+            return;
+          }
+          claimedMannies.add(recoverer.id as string);
+          const containerObjId = toSectorObjectId(assignment.containerId);
+          await c.recoverContainer(recoverer.id as string, containerObjId);
+          logger.info({ label, mannyId: recoverer.id }, "mining: recovery dispatched");
+          await updateMiningCycleState(assignment.id, {
+            cycleState: "recovering",
+            miningMannyIds: [],
+            lastError: undefined,
+          });
+          return;
+        }
+
+        // Read capacity from the sector object if not already stored.
+        const syncedCapacity: number | undefined =
+          assignment.containerCapacity && assignment.containerCapacity > 1
+            ? assignment.containerCapacity
+            : (deployedObj?.capacity as number | undefined) ?? undefined;
+
+        logger.info({ label, busyMiningIds, syncedAsteroid }, "mining: container already deployed — syncing to mining state");
         await updateMiningCycleState(assignment.id, {
           cycleState: "mining",
-          miningMannyIds: busyIds,
+          miningMannyIds: busyMiningIds,
+          ...(syncedAsteroid ? { asteroidObjectId: syncedAsteroid } : {}),
+          ...(syncedCapacity ? { containerCapacity: syncedCapacity } : {}),
           lastError: undefined,
         });
       } else {
