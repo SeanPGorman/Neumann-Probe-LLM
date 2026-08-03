@@ -368,8 +368,10 @@ async function pollProbe(
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
 
-  // Pre-claim every manny already tracked by an active mining assignment so
-  // the crafting queue cannot touch them until the cycle completes.
+  // Pre-claim mannies that are ACTIVELY busy on a mining task so the crafting
+  // queue cannot steal them mid-cycle.  Only claim mannies that still have a
+  // currentTask — once they go idle they become candidates for the recovery
+  // dispatch and must not remain claimed.
   const activeMiningAssignments = await getMiningAssignments().catch(() => []);
   for (const a of activeMiningAssignments) {
     if (
@@ -377,7 +379,10 @@ async function pollProbe(
       (a.probeId ?? null) === (probeId ?? null) &&
       a.cycleState !== "idle"
     ) {
-      for (const id of a.miningMannyIds ?? []) claimedMannies.add(id);
+      for (const id of a.miningMannyIds ?? []) {
+        const m = mannies.find((m: any) => m.id === id);
+        if (m?.currentTask) claimedMannies.add(id);
+      }
     }
   }
 
