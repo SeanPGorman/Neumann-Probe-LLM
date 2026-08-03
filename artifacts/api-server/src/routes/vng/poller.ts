@@ -336,16 +336,61 @@ async function runMiningCycle(
       }
     }
 
-    const allIdle = miningIds.every((id) => {
+    // Classify each tracked manny: still mining for us | done/idle | stale (different task)
+    //
+    // "Mining for us" means the manny's raw task targets our asteroid or our
+    // deployed container.  We check task.objectId (asteroid) and
+    // task.targetContainerId (deposit target) from the raw game API response.
+    // String-matching on currentTask is unreliable because "mine".includes("mine")
+    // is true but "mining".includes("mine") is FALSE — "mine"≠substring of "mining".
+    const containerSectorId = toSectorObjectId(assignment.containerId);
+    const effectiveAsteroidForCheck =
+      assignment.asteroidObjectId ??
+      rawSectorObjects.find((o: any) => o.id === containerSectorId)?.targetObjectId as string | undefined;
+
+    const stillMining: string[] = [];
+    const staleIds: string[] = [];
+    for (const id of miningIds) {
       const m = mannies.find((m: any) => m.id === id);
-      return !m || !m.currentTask;
-    });
-    if (!allIdle) {
-      const busyCount = miningIds.filter((id) => {
-        const m = mannies.find((m: any) => m.id === id);
-        return m?.currentTask;
-      }).length;
-      logger.info({ label, busyCount, total: miningIds.length }, "mining: waiting for miners to finish");
+      if (!m || !m.currentTask) continue; // idle or not found — treat as done
+
+      // Check by raw task objectId/targetContainerId when available (most reliable).
+      const taskObj: any = m.task && typeof m.task === "object" ? m.task : null;
+      const taskTargetContainer: string | undefined = taskObj?.targetContainerId;
+      const taskAsteroid: string | undefined = taskObj?.objectId;
+
+      // String-based fallback — note: "mine" is NOT a substring of "mining"
+      // ("min-e" vs "min-i-ng"), so use a regex that matches both forms.
+      const taskStr = String(m.currentTask ?? "").toLowerCase();
+      const isMiningTaskName = /^min(e|ing)/.test(taskStr);
+
+      const isMiningForUs =
+        isMiningTaskName ||
+        taskTargetContainer === containerSectorId ||
+        (!!effectiveAsteroidForCheck && taskAsteroid === effectiveAsteroidForCheck);
+
+      if (isMiningForUs) {
+        stillMining.push(id);
+      } else {
+        // Manny's task points elsewhere — stale entry, do not block recovery.
+        staleIds.push(id);
+        logger.info(
+          { label, mannyId: id, task: m.currentTask, taskAsteroid, taskTargetContainer },
+          "mining: manny task targets different object — removing from cycle"
+        );
+      }
+    }
+    // Persist the cleaned-up list so we don't re-evaluate stale mannies
+    if (staleIds.length > 0) {
+      miningIds = miningIds.filter((id) => !staleIds.includes(id));
+      await updateMiningCycleState(assignment.id, { miningMannyIds: miningIds });
+    }
+
+    if (stillMining.length > 0) {
+      logger.info(
+        { label, busyCount: stillMining.length, total: miningIds.length },
+        "mining: waiting for miners to finish"
+      );
       return;
     }
 
