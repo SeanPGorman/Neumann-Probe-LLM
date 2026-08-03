@@ -296,6 +296,34 @@ export function MiningPanel({ probeId }: Props) {
                   </div>
                 </div>
 
+                {/* Container fill progress (mining state) */}
+                {a.cycleState === "mining" && (() => {
+                  const totalDeposited = miningMannies.reduce(
+                    (sum, m) => sum + (m.taskDepositedAmount ?? 0), 0
+                  );
+                  const totalTarget = miningMannies.reduce(
+                    (sum, m) => sum + (m.taskTargetAmount ?? 0), 0
+                  );
+                  if (totalTarget <= 0) return null;
+                  const pct = Math.min(100, (totalDeposited / totalTarget) * 100);
+                  return (
+                    <div className="space-y-0.5">
+                      <div className="flex items-center justify-between text-[9px]">
+                        <span className="text-muted-foreground/50">FILL</span>
+                        <span className="tabular-nums text-amber-400/80">
+                          {totalDeposited.toFixed(2)} / {totalTarget.toFixed(2)} ECE
+                        </span>
+                      </div>
+                      <div className="h-1 w-full rounded-full bg-border/30 overflow-hidden">
+                        <div
+                          className="h-full rounded-full bg-amber-500/70 transition-all duration-500"
+                          style={{ width: `${pct}%` }}
+                        />
+                      </div>
+                    </div>
+                  );
+                })()}
+
                 {/* Active mining mannies */}
                 {a.cycleState === "mining" && miningMannies.length > 0 && (
                   <div className="text-[9px] text-muted-foreground/60 space-y-0.5">
