@@ -905,6 +905,9 @@ async function pollProbe(
   // Update the blocked-by-materials flag for the next tick.
   // Blocked = every crafting attempt this tick hit "insufficient resources".
   // Unblocked = at least one succeeded (materials must have arrived).
+  const hasPendingCrafting = actions.some(
+    (a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft"
+  );
   if (hasPendingCrafting && craftingAttempts > 0) {
     if (craftingInsufficientCount === craftingAttempts) {
       craftingMaterialsBlocked.add(probeKey);

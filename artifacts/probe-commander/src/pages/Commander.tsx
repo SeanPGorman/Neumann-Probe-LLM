@@ -307,15 +307,23 @@ function ContainersPanel({ refetchSignal, probeId }: { refetchSignal: number; pr
           <div className="font-bold text-primary tracking-wider">PROBE STORAGE</div>
           <CapacityBar used={probeStorage.usedCapacity} total={probeStorage.capacity} />
           <ContentsList contents={probeStorage.contents} />
-          {probeStorage.items?.length > 0 && (
-            <div className="space-y-0.5">
-              {probeStorage.items.map((item: any, i: number) => (
-                <div key={i} className="text-[10px] text-foreground/80">
-                  {item.name.replace(/_/g, " ")}
-                </div>
-              ))}
-            </div>
-          )}
+          {probeStorage.items?.length > 0 && (() => {
+            const counts = new Map<string, number>();
+            for (const item of probeStorage.items) {
+              const label = (item.name ?? item.type ?? "unknown").replace(/_/g, " ");
+              counts.set(label, (counts.get(label) ?? 0) + 1);
+            }
+            return (
+              <div className="space-y-0.5">
+                {[...counts.entries()].sort((a, b) => a[0].localeCompare(b[0])).map(([name, count]) => (
+                  <div key={name} className="flex items-center justify-between text-[10px]">
+                    <span className="text-foreground/80">{name}</span>
+                    <span className="text-primary font-mono">×{count}</span>
+                  </div>
+                ))}
+              </div>
+            );
+          })()}
         </div>
       )}
 
