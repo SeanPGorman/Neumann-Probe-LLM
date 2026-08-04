@@ -213,7 +213,9 @@ async function runDriftCycle(
 ): Promise<void> {
   const label = `drift assignment ${assignment.id} (${assignment.material})`;
   const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
-    (c: any) => c.kind === "container"
+    (c: any) =>
+      (typeof c.kind === "string" && c.kind.toLowerCase().includes("container")) ||
+      (c.capacity != null && c.capacity > 0)
   );
   const container = invContainers.find((c: any) => c.id === assignment.containerId);
 
@@ -221,6 +223,14 @@ async function runDriftCycle(
     if (!container) {
       // Not in inventory — may already be drifting from a prior cycle
       logger.info({ label }, "drift: container not in inventory — skipping");
+      return;
+    }
+    // Only detach when the container is empty — don't jettison cargo.
+    if ((container.usedCapacity ?? 0) > 0) {
+      logger.info(
+        { label, usedCapacity: container.usedCapacity },
+        "drift: container not empty yet — waiting for unload"
+      );
       return;
     }
     const manny = mannies.find(
@@ -285,7 +295,9 @@ async function runMiningCycle(
   if (assignment.cycleState === "idle") {
     // Container must be in probe inventory
     const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
-      (c: any) => c.kind === "container"
+      (c: any) =>
+        (typeof c.kind === "string" && c.kind.toLowerCase().includes("container")) ||
+        (c.capacity != null && c.capacity > 0)
     );
     const container = invContainers.find((c: any) => c.id === assignment.containerId);
     if (container && (container.usedCapacity ?? 0) > 0) {
@@ -618,7 +630,9 @@ async function runMiningCycle(
   } else if (assignment.cycleState === "recovering") {
     // Check if the container has returned to probe inventory
     const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
-      (c: any) => c.kind === "container"
+      (c: any) =>
+        (typeof c.kind === "string" && c.kind.toLowerCase().includes("container")) ||
+        (c.capacity != null && c.capacity > 0)
     );
     const back = invContainers.find((c: any) => c.id === assignment.containerId);
     if (back) {

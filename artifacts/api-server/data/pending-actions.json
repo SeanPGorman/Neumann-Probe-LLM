@@ -37950,5 +37950,3775 @@
     "createdAt": "2026-08-04T01:13:24.003Z",
     "status": "triggered",
     "triggeredAt": "2026-08-04T11:37:02.909Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2681,
+    "createdAt": "2026-08-04T11:54:44.413Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:10.482Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2682,
+    "createdAt": "2026-08-04T11:54:44.424Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:10.628Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2683,
+    "createdAt": "2026-08-04T11:54:44.442Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:10.775Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2684,
+    "createdAt": "2026-08-04T11:54:44.451Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:10.920Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2685,
+    "createdAt": "2026-08-04T11:54:44.459Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.066Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2686,
+    "createdAt": "2026-08-04T11:54:44.468Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.217Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2687,
+    "createdAt": "2026-08-04T11:54:44.484Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.369Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2688,
+    "createdAt": "2026-08-04T11:54:44.492Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.510Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2689,
+    "createdAt": "2026-08-04T11:54:44.500Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.650Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2690,
+    "createdAt": "2026-08-04T11:54:44.509Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.787Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2691,
+    "createdAt": "2026-08-04T11:54:44.517Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:11.987Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2692,
+    "createdAt": "2026-08-04T11:54:44.526Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:12.180Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2693,
+    "createdAt": "2026-08-04T11:54:44.534Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:12.382Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/69) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2694,
+    "createdAt": "2026-08-04T11:54:44.542Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:55:12.532Z"
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (1/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2836,
+    "createdAt": "2026-08-04T11:54:45.854Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:12.689Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (2/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2837,
+    "createdAt": "2026-08-04T11:54:45.862Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:12.835Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (3/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2838,
+    "createdAt": "2026-08-04T11:54:45.870Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:12.978Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (4/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2839,
+    "createdAt": "2026-08-04T11:54:45.879Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.123Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (5/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2840,
+    "createdAt": "2026-08-04T11:54:45.886Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.266Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (6/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2841,
+    "createdAt": "2026-08-04T11:54:45.895Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.414Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (7/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2842,
+    "createdAt": "2026-08-04T11:54:45.902Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.561Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (8/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2843,
+    "createdAt": "2026-08-04T11:54:45.910Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.706Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (9/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2844,
+    "createdAt": "2026-08-04T11:54:45.918Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.843Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (10/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2845,
+    "createdAt": "2026-08-04T11:54:45.926Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:13.974Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (11/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2846,
+    "createdAt": "2026-08-04T11:54:45.933Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.120Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (12/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2847,
+    "createdAt": "2026-08-04T11:54:45.946Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.251Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (13/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2848,
+    "createdAt": "2026-08-04T11:54:45.956Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.381Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (14/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2849,
+    "createdAt": "2026-08-04T11:54:45.964Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.538Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (15/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2850,
+    "createdAt": "2026-08-04T11:54:45.971Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.687Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (16/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2851,
+    "createdAt": "2026-08-04T11:54:45.980Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.832Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (17/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2852,
+    "createdAt": "2026-08-04T11:54:45.995Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:14.980Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (18/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2853,
+    "createdAt": "2026-08-04T11:54:46.009Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.125Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (19/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2854,
+    "createdAt": "2026-08-04T11:54:46.021Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.271Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (20/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2855,
+    "createdAt": "2026-08-04T11:54:46.032Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.395Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (21/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2856,
+    "createdAt": "2026-08-04T11:54:46.045Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.543Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (22/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2857,
+    "createdAt": "2026-08-04T11:54:46.061Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.675Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (23/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2858,
+    "createdAt": "2026-08-04T11:54:46.072Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.825Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (24/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2859,
+    "createdAt": "2026-08-04T11:54:46.087Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:15.968Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (25/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2860,
+    "createdAt": "2026-08-04T11:54:46.095Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.115Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (26/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2861,
+    "createdAt": "2026-08-04T11:54:46.105Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.257Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (27/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2862,
+    "createdAt": "2026-08-04T11:54:46.121Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.407Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (28/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2863,
+    "createdAt": "2026-08-04T11:54:46.144Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.554Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (29/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2864,
+    "createdAt": "2026-08-04T11:54:46.161Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.698Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (30/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2865,
+    "createdAt": "2026-08-04T11:54:46.171Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.848Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (31/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2866,
+    "createdAt": "2026-08-04T11:54:46.204Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:16.985Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (32/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2867,
+    "createdAt": "2026-08-04T11:54:46.229Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.122Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (33/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2868,
+    "createdAt": "2026-08-04T11:54:46.256Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.252Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (34/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2869,
+    "createdAt": "2026-08-04T11:54:46.269Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.376Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (35/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2870,
+    "createdAt": "2026-08-04T11:54:46.280Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.501Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (36/36) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 2871,
+    "createdAt": "2026-08-04T11:54:46.288Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.631Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (1/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2872,
+    "createdAt": "2026-08-04T11:54:46.297Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.790Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (2/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2873,
+    "createdAt": "2026-08-04T11:54:46.305Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:17.936Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (3/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2874,
+    "createdAt": "2026-08-04T11:54:46.314Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.091Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (4/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2875,
+    "createdAt": "2026-08-04T11:54:46.329Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.223Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (5/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2876,
+    "createdAt": "2026-08-04T11:54:46.349Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.372Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (6/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2877,
+    "createdAt": "2026-08-04T11:54:46.376Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.520Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (7/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2878,
+    "createdAt": "2026-08-04T11:54:46.392Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.668Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (8/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2879,
+    "createdAt": "2026-08-04T11:54:46.400Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.808Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (9/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2880,
+    "createdAt": "2026-08-04T11:54:46.408Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:18.950Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (10/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2881,
+    "createdAt": "2026-08-04T11:54:46.417Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.093Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (11/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2882,
+    "createdAt": "2026-08-04T11:54:46.425Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.242Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (12/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2883,
+    "createdAt": "2026-08-04T11:54:46.433Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.390Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (13/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2884,
+    "createdAt": "2026-08-04T11:54:46.441Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.534Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (14/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2885,
+    "createdAt": "2026-08-04T11:54:46.450Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.684Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (15/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2886,
+    "createdAt": "2026-08-04T11:54:46.458Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.832Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (16/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2887,
+    "createdAt": "2026-08-04T11:54:46.467Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:19.959Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (17/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2888,
+    "createdAt": "2026-08-04T11:54:46.475Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.080Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (18/18) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 2889,
+    "createdAt": "2026-08-04T11:54:46.485Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.211Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (1/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2890,
+    "createdAt": "2026-08-04T11:54:46.495Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.355Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (2/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2891,
+    "createdAt": "2026-08-04T11:54:46.504Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.521Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (3/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2892,
+    "createdAt": "2026-08-04T11:54:46.512Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.652Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (4/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2893,
+    "createdAt": "2026-08-04T11:54:46.522Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.796Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (5/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2894,
+    "createdAt": "2026-08-04T11:54:46.535Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:20.939Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (6/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2895,
+    "createdAt": "2026-08-04T11:54:46.543Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.096Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (7/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2896,
+    "createdAt": "2026-08-04T11:54:46.551Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.245Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (8/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2897,
+    "createdAt": "2026-08-04T11:54:46.559Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.402Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (9/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2898,
+    "createdAt": "2026-08-04T11:54:46.567Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.535Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (10/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2899,
+    "createdAt": "2026-08-04T11:54:46.576Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.684Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (11/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2900,
+    "createdAt": "2026-08-04T11:54:46.584Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.826Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (12/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2901,
+    "createdAt": "2026-08-04T11:54:46.593Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:21.968Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (13/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2902,
+    "createdAt": "2026-08-04T11:54:46.601Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.114Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (14/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2903,
+    "createdAt": "2026-08-04T11:54:46.609Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.242Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (15/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2904,
+    "createdAt": "2026-08-04T11:54:46.617Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.395Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (16/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2905,
+    "createdAt": "2026-08-04T11:54:46.626Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.535Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (17/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2906,
+    "createdAt": "2026-08-04T11:54:46.634Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.669Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (18/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2907,
+    "createdAt": "2026-08-04T11:54:46.642Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.800Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (19/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2908,
+    "createdAt": "2026-08-04T11:54:46.650Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:22.923Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (20/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2909,
+    "createdAt": "2026-08-04T11:54:46.660Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.051Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (21/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2910,
+    "createdAt": "2026-08-04T11:54:46.670Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.179Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (22/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2911,
+    "createdAt": "2026-08-04T11:54:46.679Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.300Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (23/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2912,
+    "createdAt": "2026-08-04T11:54:46.692Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.425Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (24/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2913,
+    "createdAt": "2026-08-04T11:54:46.702Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.555Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (25/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2914,
+    "createdAt": "2026-08-04T11:54:46.710Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.679Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (26/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2915,
+    "createdAt": "2026-08-04T11:54:46.717Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.806Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (27/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2916,
+    "createdAt": "2026-08-04T11:54:46.727Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:23.947Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (28/28) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 2917,
+    "createdAt": "2026-08-04T11:54:46.735Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.078Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (1/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2918,
+    "createdAt": "2026-08-04T11:54:46.743Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.208Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (2/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2919,
+    "createdAt": "2026-08-04T11:54:46.751Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.338Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (3/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2920,
+    "createdAt": "2026-08-04T11:54:46.761Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.469Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (4/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2921,
+    "createdAt": "2026-08-04T11:54:46.769Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.594Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (5/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2922,
+    "createdAt": "2026-08-04T11:54:46.778Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.726Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (6/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2923,
+    "createdAt": "2026-08-04T11:54:46.786Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.856Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (7/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2924,
+    "createdAt": "2026-08-04T11:54:46.794Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:24.986Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (8/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2925,
+    "createdAt": "2026-08-04T11:54:46.811Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.117Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (9/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2926,
+    "createdAt": "2026-08-04T11:54:46.821Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.252Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (10/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 2927,
+    "createdAt": "2026-08-04T11:54:46.830Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.400Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (1/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2936,
+    "createdAt": "2026-08-04T11:54:46.910Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.540Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (2/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2937,
+    "createdAt": "2026-08-04T11:54:46.918Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.674Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (3/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2938,
+    "createdAt": "2026-08-04T11:54:46.926Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.797Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (4/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2939,
+    "createdAt": "2026-08-04T11:54:46.935Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:25.922Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (5/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2940,
+    "createdAt": "2026-08-04T11:54:46.945Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:26.047Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (6/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2941,
+    "createdAt": "2026-08-04T11:54:46.961Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:26.175Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (7/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2942,
+    "createdAt": "2026-08-04T11:54:46.972Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:26.326Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (8/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2943,
+    "createdAt": "2026-08-04T11:54:46.990Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:26.464Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (9/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2944,
+    "createdAt": "2026-08-04T11:54:47.000Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:26.585Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (10/10) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 2945,
+    "createdAt": "2026-08-04T11:54:47.013Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:55:26.717Z",
+    "error": "VNG API error (429): Too many API requests for this bearer token."
+  },
+  {
+    "description": "[craft queue] Steel plate (1/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2946,
+    "createdAt": "2026-08-04T11:57:19.199Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:10.961Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2947,
+    "createdAt": "2026-08-04T11:57:19.207Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:11.119Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2948,
+    "createdAt": "2026-08-04T11:57:19.215Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:40.932Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2949,
+    "createdAt": "2026-08-04T11:57:19.224Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:41.140Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2950,
+    "createdAt": "2026-08-04T11:57:19.232Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:41.285Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2951,
+    "createdAt": "2026-08-04T11:57:19.240Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:41.466Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2952,
+    "createdAt": "2026-08-04T11:57:19.248Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:41.658Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2953,
+    "createdAt": "2026-08-04T11:57:19.256Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:41.798Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2954,
+    "createdAt": "2026-08-04T11:57:19.266Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:41.935Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2955,
+    "createdAt": "2026-08-04T11:57:19.275Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:42.131Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2956,
+    "createdAt": "2026-08-04T11:57:19.287Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:42.288Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2957,
+    "createdAt": "2026-08-04T11:57:19.298Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:42.425Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2958,
+    "createdAt": "2026-08-04T11:57:19.306Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:42.565Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2959,
+    "createdAt": "2026-08-04T11:57:19.314Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:00:42.744Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (15/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2960,
+    "createdAt": "2026-08-04T11:57:19.323Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:05:40.657Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (16/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2961,
+    "createdAt": "2026-08-04T11:57:19.331Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:05:40.794Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (17/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2962,
+    "createdAt": "2026-08-04T11:57:19.339Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:10.831Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (18/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2963,
+    "createdAt": "2026-08-04T11:57:19.348Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:10.969Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (19/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2964,
+    "createdAt": "2026-08-04T11:57:19.356Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:11.108Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (20/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2965,
+    "createdAt": "2026-08-04T11:57:19.365Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:11.307Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (21/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2966,
+    "createdAt": "2026-08-04T11:57:19.373Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:11.495Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (22/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2967,
+    "createdAt": "2026-08-04T11:57:19.384Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:11.717Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (23/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2968,
+    "createdAt": "2026-08-04T11:57:19.394Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:11.906Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (24/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2969,
+    "createdAt": "2026-08-04T11:57:19.403Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:12.110Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (25/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 2970,
+    "createdAt": "2026-08-04T11:57:19.418Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:12.318Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2971,
+    "createdAt": "2026-08-04T11:57:19.433Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:12.508Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2972,
+    "createdAt": "2026-08-04T11:57:19.446Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:12.681Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2973,
+    "createdAt": "2026-08-04T11:57:19.459Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:06:12.886Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2974,
+    "createdAt": "2026-08-04T11:57:19.490Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:10:40.596Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2975,
+    "createdAt": "2026-08-04T11:57:19.518Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:10.597Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2976,
+    "createdAt": "2026-08-04T11:57:19.542Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:40.555Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2977,
+    "createdAt": "2026-08-04T11:57:19.565Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:40.763Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2978,
+    "createdAt": "2026-08-04T11:57:19.581Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:40.951Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2979,
+    "createdAt": "2026-08-04T11:57:19.590Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:41.088Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2980,
+    "createdAt": "2026-08-04T11:57:19.601Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:41.259Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2981,
+    "createdAt": "2026-08-04T11:57:19.610Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:41.448Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2982,
+    "createdAt": "2026-08-04T11:57:19.623Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:41.631Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2983,
+    "createdAt": "2026-08-04T11:57:19.632Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:41.781Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2984,
+    "createdAt": "2026-08-04T11:57:19.641Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:41.961Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2985,
+    "createdAt": "2026-08-04T11:57:19.653Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:42.176Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2986,
+    "createdAt": "2026-08-04T11:57:19.665Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:42.325Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2987,
+    "createdAt": "2026-08-04T11:57:19.675Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:11:42.463Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2988,
+    "createdAt": "2026-08-04T11:57:19.688Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:15:40.865Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (19/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2989,
+    "createdAt": "2026-08-04T11:57:19.697Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:16:10.886Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (20/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2990,
+    "createdAt": "2026-08-04T11:57:19.707Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:16:41.020Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (21/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2991,
+    "createdAt": "2026-08-04T11:57:19.715Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:11.008Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (22/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2992,
+    "createdAt": "2026-08-04T11:57:19.724Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:11.189Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (23/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2993,
+    "createdAt": "2026-08-04T11:57:19.733Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:11.384Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (24/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2994,
+    "createdAt": "2026-08-04T11:57:19.744Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:11.545Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (25/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2995,
+    "createdAt": "2026-08-04T11:57:19.756Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:11.756Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (26/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2996,
+    "createdAt": "2026-08-04T11:57:19.766Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:11.962Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (27/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2997,
+    "createdAt": "2026-08-04T11:57:19.778Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:12.171Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (28/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2998,
+    "createdAt": "2026-08-04T11:57:19.795Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:12.309Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (29/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 2999,
+    "createdAt": "2026-08-04T11:57:19.808Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:12.507Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (30/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3000,
+    "createdAt": "2026-08-04T11:57:19.818Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:12.709Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (31/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3001,
+    "createdAt": "2026-08-04T11:57:19.826Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:17:12.912Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (32/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3002,
+    "createdAt": "2026-08-04T11:57:19.836Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:21:10.991Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (33/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3003,
+    "createdAt": "2026-08-04T11:57:19.847Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:21:40.992Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (34/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3004,
+    "createdAt": "2026-08-04T11:57:19.859Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:11.003Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (35/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3005,
+    "createdAt": "2026-08-04T11:57:19.872Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:40.754Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (36/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3006,
+    "createdAt": "2026-08-04T11:57:19.897Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:40.971Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (37/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3007,
+    "createdAt": "2026-08-04T11:57:19.932Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:41.184Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (38/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3008,
+    "createdAt": "2026-08-04T11:57:19.943Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:41.336Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (39/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3009,
+    "createdAt": "2026-08-04T11:57:19.956Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:41.476Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (40/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3010,
+    "createdAt": "2026-08-04T11:57:19.965Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:41.695Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (41/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3011,
+    "createdAt": "2026-08-04T11:57:19.974Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:41.902Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (42/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3012,
+    "createdAt": "2026-08-04T11:57:19.982Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:42.116Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (43/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3013,
+    "createdAt": "2026-08-04T11:57:19.991Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:42.256Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (44/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3014,
+    "createdAt": "2026-08-04T11:57:19.999Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:42.469Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (45/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3015,
+    "createdAt": "2026-08-04T11:57:20.008Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:22:42.652Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (46/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3016,
+    "createdAt": "2026-08-04T11:57:20.017Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:23:40.739Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (47/47) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 3017,
+    "createdAt": "2026-08-04T11:57:20.025Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:26:40.948Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (1/1) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 3018,
+    "createdAt": "2026-08-04T11:57:20.037Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:27:11.031Z"
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (1/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3019,
+    "createdAt": "2026-08-04T11:57:20.047Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:40.476Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (2/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3020,
+    "createdAt": "2026-08-04T11:57:20.060Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:40.623Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (3/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3021,
+    "createdAt": "2026-08-04T11:57:20.071Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:40.744Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (4/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3022,
+    "createdAt": "2026-08-04T11:57:20.083Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:40.886Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (5/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3023,
+    "createdAt": "2026-08-04T11:57:20.095Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.027Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (6/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3024,
+    "createdAt": "2026-08-04T11:57:20.107Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.169Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (7/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3025,
+    "createdAt": "2026-08-04T11:57:20.117Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.313Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (8/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3026,
+    "createdAt": "2026-08-04T11:57:20.127Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.434Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (9/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3027,
+    "createdAt": "2026-08-04T11:57:20.137Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.561Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (10/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3028,
+    "createdAt": "2026-08-04T11:57:20.146Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.703Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (11/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3029,
+    "createdAt": "2026-08-04T11:57:20.156Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.846Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Micro-etched conductor (12/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "micro_conductor"
+    },
+    "id": 3030,
+    "createdAt": "2026-08-04T11:57:20.168Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:41.992Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (1/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3031,
+    "createdAt": "2026-08-04T11:57:20.178Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.135Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (2/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3032,
+    "createdAt": "2026-08-04T11:57:20.191Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.280Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (3/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3033,
+    "createdAt": "2026-08-04T11:57:20.200Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.425Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (4/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3034,
+    "createdAt": "2026-08-04T11:57:20.209Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.569Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (5/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3035,
+    "createdAt": "2026-08-04T11:57:20.218Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.691Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (6/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3036,
+    "createdAt": "2026-08-04T11:57:20.227Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.835Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (7/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3037,
+    "createdAt": "2026-08-04T11:57:20.238Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:42.978Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (8/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3038,
+    "createdAt": "2026-08-04T11:57:20.247Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.120Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (9/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3039,
+    "createdAt": "2026-08-04T11:57:20.256Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.254Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (10/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3040,
+    "createdAt": "2026-08-04T11:57:20.265Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.378Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (11/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3041,
+    "createdAt": "2026-08-04T11:57:20.280Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.521Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Ceramo-organic insulator (12/12) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "ceramic_insulator"
+    },
+    "id": 3042,
+    "createdAt": "2026-08-04T11:57:20.291Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.664Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 3043,
+    "createdAt": "2026-08-04T11:57:20.307Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.789Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 3044,
+    "createdAt": "2026-08-04T11:57:20.318Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:43.909Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 3045,
+    "createdAt": "2026-08-04T11:57:20.330Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.032Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 3046,
+    "createdAt": "2026-08-04T11:57:20.339Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.178Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 3047,
+    "createdAt": "2026-08-04T11:57:20.348Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.308Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Crystal substrate (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "crystal_substrate"
+    },
+    "id": 3048,
+    "createdAt": "2026-08-04T11:57:20.358Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.429Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 3049,
+    "createdAt": "2026-08-04T11:57:20.369Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.568Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 3050,
+    "createdAt": "2026-08-04T11:57:20.381Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.693Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 3051,
+    "createdAt": "2026-08-04T11:57:20.392Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.815Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 3052,
+    "createdAt": "2026-08-04T11:57:20.402Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:44.937Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 3053,
+    "createdAt": "2026-08-04T11:57:20.411Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.067Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Dopant matrix (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "dopant_matrix"
+    },
+    "id": 3054,
+    "createdAt": "2026-08-04T11:57:20.421Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.189Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (1/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 3055,
+    "createdAt": "2026-08-04T11:57:20.429Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.310Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (2/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 3056,
+    "createdAt": "2026-08-04T11:57:20.439Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.432Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (3/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 3057,
+    "createdAt": "2026-08-04T11:57:20.449Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.558Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (4/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 3058,
+    "createdAt": "2026-08-04T11:57:20.458Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.682Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (5/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 3059,
+    "createdAt": "2026-08-04T11:57:20.472Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.822Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Integrated circuit (6/6) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "integrated_circuit"
+    },
+    "id": 3060,
+    "createdAt": "2026-08-04T11:57:20.482Z",
+    "status": "failed",
+    "triggeredAt": "2026-08-04T11:57:45.965Z",
+    "error": "VNG API error (409): The atomic printer is already executing an order."
+  },
+  {
+    "description": "[craft queue] Linear actuator (1/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 3061,
+    "createdAt": "2026-08-04T11:57:20.494Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:27:41.026Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (2/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 3062,
+    "createdAt": "2026-08-04T11:57:20.503Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:28:11.415Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (3/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 3063,
+    "createdAt": "2026-08-04T11:57:20.512Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:28:11.585Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (4/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 3064,
+    "createdAt": "2026-08-04T11:57:20.521Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:28:11.782Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (5/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 3065,
+    "createdAt": "2026-08-04T11:57:20.530Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T12:28:11.995Z"
+  },
+  {
+    "description": "[craft queue] Manny (1/1) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "linear_actuator",
+          "quantity": 6
+        },
+        {
+          "type": "battery_pack",
+          "quantity": 4
+        },
+        {
+          "type": "integrated_circuit",
+          "quantity": 6
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 18
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 12
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "manny"
+    },
+    "id": 3066,
+    "createdAt": "2026-08-04T11:57:20.539Z",
+    "status": "pending"
   }
 ]
