@@ -190,6 +190,13 @@ async function runMiningAutomation(
         logger.info({ assignmentId: assignment.id }, "drift/mining: manny busy (409), deferring");
         return;
       }
+      // 422 "Target detached container is full" — usedCapacity may not be
+      // reported in inventory; treat as a transient guard failure, defer quietly.
+      if (err instanceof VngApiError && err.status === 422 &&
+          typeof err.message === "string" && err.message.includes("full")) {
+        logger.info({ assignmentId: assignment.id, err: err.message }, "drift: container full (422), deferring");
+        return;
+      }
       logger.error(
         { assignmentId: assignment.id, err: err.message },
         "drift/mining: cycle error"
@@ -300,10 +307,6 @@ async function runMiningCycle(
         (c.capacity != null && c.capacity > 0)
     );
     const container = invContainers.find((c: any) => c.id === assignment.containerId);
-    if (container && (container.usedCapacity ?? 0) > 0) {
-      logger.info({ label, usedCapacity: container.usedCapacity }, "mining: container not empty yet — waiting for unload");
-      return;
-    }
     if (!container) {
       // Container not in inventory — check if it's already deployed in sector
       const deployedId = toSectorObjectId(assignment.containerId);
