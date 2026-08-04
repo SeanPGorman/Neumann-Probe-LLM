@@ -86,11 +86,12 @@ export function MiningPanel({ probeId }: Props) {
   const containers: any[] = data?.containers ?? [];
   const mannies: any[] = data?.mannies ?? [];
 
-  // Containers not yet assigned (available for new assignments) — inventory + deployed
-  // Only offer containers that are empty (usedCapacity === 0 or deployed/unknown)
+  // Containers not yet assigned (available for new assignments)
+  // Non-empty containers are still shown — the poller waits for them to be
+  // unloaded before starting a cycle, so there's no need to hide them here.
   const assignedContainerIds = new Set(assignments.map((a) => a.containerId));
   const availableContainers = containers.filter(
-    (c: any) => !assignedContainerIds.has(c.id) && (c.deployed || (c.usedCapacity ?? 0) === 0)
+    (c: any) => !assignedContainerIds.has(c.id)
   );
 
   // Resource types present in sector asteroids

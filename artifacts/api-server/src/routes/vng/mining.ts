@@ -29,9 +29,15 @@ router.get("/mining", async (req, res) => {
       (a) => (a.probeId ?? null) === (probeId ?? null)
     );
 
-    // Inventory containers (on-board storage units)
+    // Inventory containers (on-board storage units).
+    // Accept any item whose kind contains "container" (catches "container",
+    // "mining_container", "storage_container", etc.) or that has a positive
+    // capacity field — so probe variants with different kind strings still appear.
     const inventoryContainers: any[] = (probe?.inventory?.containers ?? [])
-      .filter((c: any) => c.kind === "container")
+      .filter((c: any) =>
+        (typeof c.kind === "string" && c.kind.toLowerCase().includes("container")) ||
+        (c.capacity != null && c.capacity > 0)
+      )
       .map((c: any) => ({
         id: c.id,
         label: c.label ?? c.id,

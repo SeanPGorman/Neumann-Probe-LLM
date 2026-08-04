@@ -16,7 +16,8 @@
     ],
     "lastCycleAt": "2026-08-04T01:29:49.191Z",
     "asteroidObjectId": "77b3f74303045a6c4f85",
-    "containerCapacity": 1
+    "containerCapacity": 1,
+    "lastError": "VNG API error (422): Target detached container is full."
   },
   {
     "containerId": "container-itm_craft_69e0198b185dd8a34e90d68b",
@@ -29,13 +30,12 @@
     "id": 2,
     "miningMannyIds": [
       "mny_craft_4cf649d1e90f7f7ea683f15b",
-      "mny_craft_c15e7f67df56d909b3e5ee8b",
-      "mny_craft_f02b912e8cad9a8a323ea6a2"
+      "mny_craft_c15e7f67df56d909b3e5ee8b"
     ],
     "lastCycleAt": "2026-08-04T01:48:09.265Z",
     "asteroidObjectId": "77b3f74303045a6c4f85",
     "containerCapacity": 1,
-    "lastError": "VNG API error (400): JSON body must contain objectId, resources and targetAmount."
+    "lastError": "VNG API error (422): Target detached container is full."
   },
   {
     "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
@@ -44,12 +44,11 @@
     "mannyCount": 4,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "recovering",
+    "cycleState": "idle",
     "id": 3,
     "miningMannyIds": [],
-    "lastCycleAt": "2026-08-04T01:17:19.860Z",
-    "containerCapacity": 1,
-    "asteroidObjectId": "77b3f74303045a6c4f85"
+    "lastCycleAt": "2026-08-04T11:06:02.501Z",
+    "containerCapacity": 1
   },
   {
     "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
@@ -62,17 +61,14 @@
     "id": 4,
     "miningMannyIds": [
       "mny_craft_b8995c045b8304bf5ef88559",
-      "mny_craft_e983a0bde7393a21455e02b1",
-      "mny_craft_dbc75fcd68a35176419f5612",
-      "mny_craft_6a8ecb81122b4d667cd278b6",
-      "mny_465d32ed9bee8a6f47d4f48a",
       "mny_craft_ada5d3e695f6b5afe6627ff7",
       "mny_craft_2ec3248f06e5c7cebe30c4ad",
       "mny_craft_2da87b26021ffc8b4e21a49c"
     ],
     "lastCycleAt": "2026-08-04T01:21:51.984Z",
     "asteroidObjectId": "77b3f74303045a6c4f85",
-    "containerCapacity": 1
+    "containerCapacity": 1,
+    "lastError": "VNG API error (422): Target detached container is full."
   },
   {
     "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
@@ -81,10 +77,15 @@
     "mannyCount": 10,
     "probeId": 795,
     "enabled": true,
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 5,
-    "miningMannyIds": [],
-    "lastCycleAt": "2026-08-04T01:22:21.871Z"
+    "miningMannyIds": [
+      "mny_craft_58b856920065c82478110e3c"
+    ],
+    "lastCycleAt": "2026-08-04T02:45:18.741Z",
+    "asteroidObjectId": "77b3f74303045a6c4f85",
+    "containerCapacity": 1,
+    "lastError": "VNG API error (422): Target detached container is full."
   },
   {
     "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
@@ -101,6 +102,7 @@
     ],
     "lastCycleAt": "2026-08-04T01:23:22.155Z",
     "containerCapacity": 1,
-    "asteroidObjectId": "77b3f74303045a6c4f85"
+    "asteroidObjectId": "77b3f74303045a6c4f85",
+    "lastError": "VNG API error (422): Target detached container is full."
   }
 ]

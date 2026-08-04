@@ -37813,7 +37813,8 @@
     },
     "id": 2671,
     "createdAt": "2026-08-04T01:13:23.916Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:30:32.859Z"
   },
   {
     "description": "[craft queue] Electric motor (2/10) via Manny",
@@ -37827,7 +37828,8 @@
     },
     "id": 2672,
     "createdAt": "2026-08-04T01:13:23.926Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:31:02.918Z"
   },
   {
     "description": "[craft queue] Electric motor (3/10) via Manny",
@@ -37841,7 +37843,8 @@
     },
     "id": 2673,
     "createdAt": "2026-08-04T01:13:23.935Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:33:02.740Z"
   },
   {
     "description": "[craft queue] Electric motor (4/10) via Manny",
@@ -37855,7 +37858,8 @@
     },
     "id": 2674,
     "createdAt": "2026-08-04T01:13:23.944Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:33:32.855Z"
   },
   {
     "description": "[craft queue] Electric motor (5/10) via Manny",
@@ -37869,7 +37873,8 @@
     },
     "id": 2675,
     "createdAt": "2026-08-04T01:13:23.955Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:33:33.000Z"
   },
   {
     "description": "[craft queue] Electric motor (6/10) via Manny",
@@ -37883,7 +37888,8 @@
     },
     "id": 2676,
     "createdAt": "2026-08-04T01:13:23.965Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:34:03.007Z"
   },
   {
     "description": "[craft queue] Electric motor (7/10) via Manny",
@@ -37897,7 +37903,8 @@
     },
     "id": 2677,
     "createdAt": "2026-08-04T01:13:23.975Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:34:32.876Z"
   },
   {
     "description": "[craft queue] Electric motor (8/10) via Manny",
@@ -37911,7 +37918,8 @@
     },
     "id": 2678,
     "createdAt": "2026-08-04T01:13:23.984Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:35:33.121Z"
   },
   {
     "description": "[craft queue] Electric motor (9/10) via Manny",
@@ -37925,7 +37933,8 @@
     },
     "id": 2679,
     "createdAt": "2026-08-04T01:13:23.994Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:36:32.946Z"
   },
   {
     "description": "[craft queue] Electric motor (10/10) via Manny",
@@ -37939,6 +37948,7 @@
     },
     "id": 2680,
     "createdAt": "2026-08-04T01:13:24.003Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-04T11:37:02.909Z"
   }
 ]
