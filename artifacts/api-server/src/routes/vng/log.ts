@@ -310,23 +310,41 @@ router.post("/crafting-queue", async (req, res) => {
       return;
     }
 
+    // Items that are ONLY craftable by the Atomic Printer (not by a Manny).
+    // We never schedule these — they are treated like raw resources that must
+    // already be present in inventory (or will be produced independently by the
+    // printer).  The parent craft is still gated on them via requireItemsWithQty.
+    const printerOnlyIds = new Set<string>(
+      recipes
+        .filter((r: any) => {
+          const cb: string[] = r.craftableBy ?? [];
+          return cb.includes("atomic_3d_printer") && !cb.includes("manny");
+        })
+        .map((r: any) => r.id as string)
+    );
+
     // ── Step 1: Compute total raw need for the full dependency tree ───────────
+    // Do NOT recurse into printer-only sub-items — treat them as leaves.
     const totalNeeds = new Map<string, number>();
     function collectNeeds(id: string, qty: number): void {
       const r = recipeById.get(id);
       if (!r) return;
       totalNeeds.set(id, (totalNeeds.get(id) ?? 0) + qty);
       for (const ing of r.ingredients ?? []) {
-        if (ing.kind === "item") collectNeeds(ing.type, (ing.quantity as number) * qty);
+        if (ing.kind === "item" && !printerOnlyIds.has(ing.type as string)) {
+          collectNeeds(ing.type, (ing.quantity as number) * qty);
+        }
       }
     }
     collectNeeds(recipeId, quantity);
 
     // ── Step 2: Work orders — top-level always crafted; sub-items use inventory ─
+    // Printer-only items are never scheduled as work orders.
     const workOrders = new Map<string, number>();
     workOrders.set(recipeId, quantity); // always produce what was requested
     for (const [id, needed] of totalNeeds) {
       if (id === recipeId) continue;
+      if (printerOnlyIds.has(id)) continue; // printer handles these — skip
       const inStock = itemCountByType[id] ?? 0;
       const toCraft = Math.max(0, needed - inStock);
       if (toCraft > 0) workOrders.set(id, toCraft);
@@ -352,15 +370,15 @@ router.post("/crafting-queue", async (req, res) => {
       (a, b) => itemDepth(a[0]) - itemDepth(b[0])
     );
 
-    // ── Step 4: requireItemsWithQty = direct item deps also being crafted ──────
-    // Returns per-unit quantities from the recipe so the poller can block until
-    // exactly enough of each ingredient is present before firing the task.
+    // ── Step 4: requireItemsWithQty = direct item deps the poller must wait for ─
+    // Includes items being crafted (in workOrders) AND printer-only ingredients
+    // (not scheduled but must already be in inventory before we can proceed).
     function requireItemsFor(id: string): Array<{ type: string; quantity: number }> {
       const r = recipeById.get(id);
       if (!r) return [];
       const seen = new Map<string, number>();
       for (const i of r.ingredients ?? []) {
-        if (i.kind === "item" && workOrders.has(i.type as string)) {
+        if (i.kind === "item" && (workOrders.has(i.type as string) || printerOnlyIds.has(i.type as string))) {
           seen.set(i.type as string, (seen.get(i.type as string) ?? 0) + (i.quantity as number));
         }
       }
