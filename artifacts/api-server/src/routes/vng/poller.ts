@@ -307,21 +307,11 @@ async function runMiningCycle(
       "mining: container detached on asteroid"
     );
 
-    // 2. All N mannies mine 1/N of capacity into the container
-    for (const m of selected) {
-      await c.mineResources(
-        m.id as string,
-        asteroid.id as string,
-        [assignment.material],
-        perManny,
-        containerObjectId
-      );
-    }
-    logger.info(
-      { label, mannyCount: selected.length, perManny },
-      "mining: mine tasks dispatched"
-    );
-
+    // Save state immediately after the detach succeeds.  We do NOT dispatch
+    // mineResources here — the container doesn't physically exist on the
+    // asteroid until the detaching manny arrives (the API returns 404 if you
+    // try before that).  The mining-state handler issues mine tasks once the
+    // container appears in sector.
     await updateMiningCycleState(assignment.id, {
       cycleState: "mining",
       asteroidObjectId: asteroid.id as string,
@@ -348,39 +338,124 @@ async function runMiningCycle(
       (deployedContainerObj?.targetObjectId as string | undefined) ??
       (deployedContainerObj?.anchorObjectId as string | undefined);
 
+    const cap: number =
+      assignment.containerCapacity ??
+      (deployedContainerObj?.capacity as number | undefined) ??
+      1;
+    const perMannyMining = cap / assignment.mannyCount;
+    const containerObjectId = toSectorObjectId(assignment.containerId);
+
+    // ── Step 1: classify tracked mannies ────────────────────────────────────
+    // A tracked manny can be in one of three states:
+    //   • active  — has a non-crafting currentTask (mining, detaching, moving)
+    //   • pending — currently idle; the container may now be ready for mine dispatch
+    //   • stale   — explicitly crafting; remove from list
+    const stillActive: string[] = [];
+    const pendingDispatch: any[] = [];
+    const staleIds: string[] = [];
+
+    for (const id of miningIds) {
+      const m = mannies.find((m: any) => m.id === id);
+      if (!m) continue;
+      if (!m.currentTask) {
+        pendingDispatch.push(m);
+      } else {
+        const taskStr = String(m.currentTask).toLowerCase();
+        if (/^craft/.test(taskStr)) {
+          staleIds.push(id);
+          logger.info(
+            { label, mannyId: id, task: m.currentTask },
+            "mining: crafting manny in list — removing from cycle"
+          );
+        } else {
+          stillActive.push(id);
+        }
+      }
+    }
+
+    if (staleIds.length > 0) {
+      miningIds = miningIds.filter((id) => !staleIds.includes(id));
+      await updateMiningCycleState(assignment.id, { miningMannyIds: miningIds });
+    }
+
+    // ── Step 2: check whether the container is physically on the asteroid ────
+    // mineResources returns 404 until the detaching manny arrives and places the
+    // container.  Gate all mine dispatches on the container appearing in sector.
+    const containerInSector = rawSectorObjects.some(
+      (o: any) => o.id === containerObjectId || o.id === assignment.containerId
+    );
+
+    if (!containerInSector) {
+      // Container not yet placed — manny is still en route.
+      const activeTasks = stillActive.length + pendingDispatch.length;
+      if (activeTasks > 0) {
+        logger.info(
+          { label, activeTasks },
+          "mining: waiting for detaching manny to place container"
+        );
+      } else {
+        // All tracked mannies are idle and container is missing — lost in transit.
+        logger.info({ label }, "mining: container lost in transit — dispatching recovery");
+        const recoverer = mannies.find(
+          (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+        );
+        if (recoverer) {
+          claimedMannies.add(recoverer.id as string);
+          await c.recoverContainer(recoverer.id as string, containerObjectId);
+          await updateMiningCycleState(assignment.id, { cycleState: "recovering", miningMannyIds: [] });
+        }
+      }
+      return;
+    }
+
+    // ── Step 3: container is in sector — dispatch mine to idle tracked mannies ─
+    if (pendingDispatch.length > 0) {
+      for (const m of pendingDispatch) {
+        try {
+          await c.mineResources(
+            m.id as string,
+            effectiveAsteroidId!,
+            [assignment.material],
+            perMannyMining,
+            containerObjectId
+          );
+          stillActive.push(m.id as string);
+          logger.info({ label, mannyId: m.id }, "mining: dispatched mine to idle tracked manny");
+        } catch (err: any) {
+          if (err instanceof VngApiError && err.status === 409) {
+            stillActive.push(m.id as string); // still busy — count as active
+          } else {
+            throw err;
+          }
+        }
+      }
+    }
+
+    // ── Step 4: fill any remaining slots with fresh idle mannies ────────────
     const stillNeeded = assignment.mannyCount - miningIds.length;
     if (stillNeeded > 0 && effectiveAsteroidId) {
       const extraAvailable = mannies.filter(
         (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
       );
-      // Same crafting-reserve cap as the idle dispatch — don't steal mannies
-      // needed for the scheduled-task queue even when topping up mid-cycle.
       const extraClaimable = Math.max(0, extraAvailable.length - craftingReserve);
       if (extraClaimable > 0) {
         const toAdd = extraAvailable.slice(0, Math.min(stillNeeded, extraClaimable));
-        // Use stored capacity; fall back to sector object when assignment was
-        // created before this field was introduced.
-        const cap: number =
-          assignment.containerCapacity ??
-          (deployedContainerObj?.capacity as number | undefined) ??
-          1;
-        const perManny = cap / assignment.mannyCount;
-        const containerObjectId = toSectorObjectId(assignment.containerId);
         for (const m of toAdd) {
           await c.mineResources(
             m.id as string,
             effectiveAsteroidId,
             [assignment.material],
-            perManny,
+            perMannyMining,
             containerObjectId
           );
           claimedMannies.add(m.id as string);
+          stillActive.push(m.id as string);
         }
         miningIds = [...miningIds, ...toAdd.map((m: any) => m.id as string)];
         await updateMiningCycleState(assignment.id, {
           miningMannyIds: miningIds,
           containerCapacity: cap,
-          asteroidObjectId: effectiveAsteroidId, // persist for future ticks
+          asteroidObjectId: effectiveAsteroidId,
         });
         logger.info(
           { label, added: toAdd.length, total: miningIds.length },
@@ -389,59 +464,10 @@ async function runMiningCycle(
       }
     }
 
-    // Classify each tracked manny: still mining for us | done/idle | stale (different task)
-    //
-    // "Mining for us" means the manny's raw task targets our asteroid or our
-    // deployed container.  We check task.objectId (asteroid) and
-    // task.targetContainerId (deposit target) from the raw game API response.
-    // String-matching on currentTask is unreliable because "mine".includes("mine")
-    // is true but "mining".includes("mine") is FALSE — "mine"≠substring of "mining".
-    const containerSectorId = toSectorObjectId(assignment.containerId);
-    const effectiveAsteroidForCheck =
-      assignment.asteroidObjectId ??
-      rawSectorObjects.find((o: any) => o.id === containerSectorId)?.targetObjectId as string | undefined;
-
-    const stillMining: string[] = [];
-    const staleIds: string[] = [];
-    for (const id of miningIds) {
-      const m = mannies.find((m: any) => m.id === id);
-      if (!m || !m.currentTask) continue; // idle or not found — treat as done
-
-      // Check by raw task objectId/targetContainerId when available (most reliable).
-      const taskObj: any = m.task && typeof m.task === "object" ? m.task : null;
-      const taskTargetContainer: string | undefined = taskObj?.targetContainerId;
-      const taskAsteroid: string | undefined = taskObj?.objectId;
-
-      // String-based fallback — note: "mine" is NOT a substring of "mining"
-      // ("min-e" vs "min-i-ng"), so use a regex that matches both forms.
-      const taskStr = String(m.currentTask ?? "").toLowerCase();
-      const isMiningTaskName = /^min(e|ing)/.test(taskStr);
-
-      const isMiningForUs =
-        isMiningTaskName ||
-        taskTargetContainer === containerSectorId ||
-        (!!effectiveAsteroidForCheck && taskAsteroid === effectiveAsteroidForCheck);
-
-      if (isMiningForUs) {
-        stillMining.push(id);
-      } else {
-        // Manny's task points elsewhere — stale entry, do not block recovery.
-        staleIds.push(id);
-        logger.info(
-          { label, mannyId: id, task: m.currentTask, taskAsteroid, taskTargetContainer },
-          "mining: manny task targets different object — removing from cycle"
-        );
-      }
-    }
-    // Persist the cleaned-up list so we don't re-evaluate stale mannies
-    if (staleIds.length > 0) {
-      miningIds = miningIds.filter((id) => !staleIds.includes(id));
-      await updateMiningCycleState(assignment.id, { miningMannyIds: miningIds });
-    }
-
-    if (stillMining.length > 0) {
+    // ── Step 5: wait or recover ──────────────────────────────────────────────
+    if (stillActive.length > 0) {
       logger.info(
-        { label, busyCount: stillMining.length, total: miningIds.length },
+        { label, activeCount: stillActive.length, total: miningIds.length },
         "mining: waiting for miners to finish"
       );
       return;
@@ -457,7 +483,6 @@ async function runMiningCycle(
     }
     claimedMannies.add(recoverer.id as string);
 
-    const containerObjectId = toSectorObjectId(assignment.containerId);
     await c.recoverContainer(recoverer.id as string, containerObjectId);
     logger.info({ label, mannyId: recoverer.id }, "mining: recovery dispatched");
 
@@ -527,20 +552,19 @@ async function pollProbe(
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
 
-  // Pre-claim mannies that are ACTIVELY busy on a mining task so the crafting
-  // queue cannot steal them mid-cycle.  Only claim mannies that still have a
-  // currentTask — once they go idle they become candidates for the recovery
-  // dispatch and must not remain claimed.
+  // Pre-claim ALL mannies tracked by an active mining assignment so neither
+  // the crafting queue nor fill-slots can grab them while they are temporarily
+  // idle (e.g. a detaching manny between tasks).  The mining handler itself
+  // re-dispatches mine tasks to idle tracked mannies each tick.
   const activeMiningAssignments = await getMiningAssignments().catch(() => []);
   for (const a of activeMiningAssignments) {
     if (
       a.enabled &&
       (a.probeId ?? null) === (probeId ?? null) &&
-      a.cycleState !== "idle"
+      a.cycleState === "mining"
     ) {
       for (const id of a.miningMannyIds ?? []) {
-        const m = mannies.find((m: any) => m.id === id);
-        if (m?.currentTask) claimedMannies.add(id);
+        claimedMannies.add(id);
       }
     }
   }

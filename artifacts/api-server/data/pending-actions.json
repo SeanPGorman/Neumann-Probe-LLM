@@ -36951,76 +36951,6 @@
     "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
-    "description": "[craft queue] Steel plate (1/1) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_plate"
-    },
-    "id": 2601,
-    "createdAt": "2026-08-04T00:30:06.937Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (1/2) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 2602,
-    "createdAt": "2026-08-04T00:30:06.947Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Steel bar (2/2) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "steel_bar"
-    },
-    "id": 2603,
-    "createdAt": "2026-08-04T00:30:06.957Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Battery pack (1/2) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "battery_pack"
-    },
-    "id": 2604,
-    "createdAt": "2026-08-04T00:30:06.968Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Battery pack (2/2) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle"
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "battery_pack"
-    },
-    "id": 2605,
-    "createdAt": "2026-08-04T00:30:06.979Z",
-    "status": "pending"
-  },
-  {
     "description": "[craft queue] Micro-etched conductor (1/12) via atomic printer",
     "probeId": 795,
     "condition": {
@@ -37596,414 +37526,6 @@
     "error": "VNG API error (409): The atomic printer is already executing an order."
   },
   {
-    "description": "[craft queue] Electric motor (1/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2642,
-    "createdAt": "2026-08-04T00:30:07.344Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (2/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2643,
-    "createdAt": "2026-08-04T00:30:07.355Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (3/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2644,
-    "createdAt": "2026-08-04T00:30:07.367Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (4/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2645,
-    "createdAt": "2026-08-04T00:30:07.377Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (5/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2646,
-    "createdAt": "2026-08-04T00:30:07.387Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (6/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2647,
-    "createdAt": "2026-08-04T00:30:07.397Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (7/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2648,
-    "createdAt": "2026-08-04T00:30:07.408Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (8/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2649,
-    "createdAt": "2026-08-04T00:30:07.417Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (9/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2650,
-    "createdAt": "2026-08-04T00:30:07.434Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (10/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2651,
-    "createdAt": "2026-08-04T00:30:07.449Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (11/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2652,
-    "createdAt": "2026-08-04T00:30:07.458Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (12/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2653,
-    "createdAt": "2026-08-04T00:30:07.467Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (13/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2654,
-    "createdAt": "2026-08-04T00:30:07.476Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (14/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2655,
-    "createdAt": "2026-08-04T00:30:07.493Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (15/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2656,
-    "createdAt": "2026-08-04T00:30:07.509Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (16/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2657,
-    "createdAt": "2026-08-04T00:30:07.518Z",
-    "status": "pending"
-  },
-  {
-    "description": "[craft queue] Electric motor (17/17) via Manny",
-    "probeId": 795,
-    "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "steel_bar",
-          "quantity": 2
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 1
-        }
-      ]
-    },
-    "action": {
-      "type": "craft_item",
-      "recipe": "electric_motor"
-    },
-    "id": 2658,
-    "createdAt": "2026-08-04T00:30:07.527Z",
-    "status": "pending"
-  },
-  {
     "description": "[craft queue] Integrated circuit (1/6) via atomic printer",
     "probeId": 795,
     "condition": {
@@ -38280,43 +37802,143 @@
     "error": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
-    "description": "[craft queue] Manny (1/1) via Manny",
+    "description": "[craft queue] Electric motor (1/10) via Manny",
     "probeId": 795,
     "condition": {
-      "type": "manny_idle",
-      "requireItemsWithQty": [
-        {
-          "type": "linear_actuator",
-          "quantity": 6
-        },
-        {
-          "type": "electric_motor",
-          "quantity": 12
-        },
-        {
-          "type": "battery_pack",
-          "quantity": 4
-        },
-        {
-          "type": "integrated_circuit",
-          "quantity": 6
-        },
-        {
-          "type": "steel_plate",
-          "quantity": 18
-        },
-        {
-          "type": "steel_bar",
-          "quantity": 12
-        }
-      ]
+      "type": "manny_idle"
     },
     "action": {
       "type": "craft_item",
-      "recipe": "manny"
+      "recipe": "electric_motor"
     },
     "id": 2671,
-    "createdAt": "2026-08-04T00:30:07.676Z",
+    "createdAt": "2026-08-04T01:13:23.916Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2672,
+    "createdAt": "2026-08-04T01:13:23.926Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2673,
+    "createdAt": "2026-08-04T01:13:23.935Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2674,
+    "createdAt": "2026-08-04T01:13:23.944Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (5/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2675,
+    "createdAt": "2026-08-04T01:13:23.955Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (6/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2676,
+    "createdAt": "2026-08-04T01:13:23.965Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (7/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2677,
+    "createdAt": "2026-08-04T01:13:23.975Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (8/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2678,
+    "createdAt": "2026-08-04T01:13:23.984Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (9/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2679,
+    "createdAt": "2026-08-04T01:13:23.994Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Electric motor (10/10) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 2680,
+    "createdAt": "2026-08-04T01:13:24.003Z",
     "status": "pending"
   }
 ]
