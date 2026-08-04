@@ -15,6 +15,22 @@ const POLL_INTERVAL_MS = 30_000;
 let started = false;
 
 /**
+ * Distribute `capacity` across `n` mannies in multiples of 0.05.
+ * Mannies that get the larger slice come first.
+ * e.g. distributeAmounts(1.0, 3) → [0.35, 0.35, 0.30]
+ */
+function distributeAmounts(capacity: number, n: number): number[] {
+  if (n <= 0) return [];
+  const UNIT = 0.05;
+  const totalUnits = Math.round(capacity / UNIT);
+  const baseUnits = Math.floor(totalUnits / n);
+  const extraCount = totalUnits % n;
+  return Array.from({ length: n }, (_, i) =>
+    parseFloat(((i < extraCount ? baseUnits + 1 : baseUnits) * UNIT).toFixed(4))
+  );
+}
+
+/**
  * Persist a row's terminal status without letting a write failure abort the
  * probe's remaining rows.
  *
@@ -281,14 +297,15 @@ async function runMiningCycle(
       (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
     );
     const claimable = Math.max(0, available.length - craftingReserve);
-    if (claimable < assignment.mannyCount) {
+    if (claimable === 0) {
       logger.info(
-        { label, need: assignment.mannyCount, have: available.length, reserved: craftingReserve, claimable },
-        "mining: not enough mannies after crafting reserve, deferring"
+        { label, have: available.length, reserved: craftingReserve },
+        "mining: no mannies available after crafting reserve, deferring"
       );
       return;
     }
-    const selected = available.slice(0, assignment.mannyCount);
+    // mannyCount is the maximum — use however many are claimable up to that cap.
+    const selected = available.slice(0, Math.min(claimable, assignment.mannyCount));
     for (const m of selected) claimedMannies.add(m.id as string);
 
     const capacity: number = container.capacity ?? 1;
@@ -342,7 +359,6 @@ async function runMiningCycle(
       assignment.containerCapacity ??
       (deployedContainerObj?.capacity as number | undefined) ??
       1;
-    const perMannyMining = cap / assignment.mannyCount;
     const containerObjectId = toSectorObjectId(assignment.containerId);
 
     // ── Step 1: classify tracked mannies ────────────────────────────────────
@@ -409,18 +425,25 @@ async function runMiningCycle(
     }
 
     // ── Step 3: container is in sector — dispatch mine to idle tracked mannies ─
-    if (pendingDispatch.length > 0) {
-      for (const m of pendingDispatch) {
+    // Distribute cap across all currently tracked miners in 0.05-aligned amounts.
+    // Mannies already active have amounts from a prior dispatch; pendingDispatch
+    // mannies get the tail of the distribution (indices stillActive.length onward).
+    if (pendingDispatch.length > 0 && effectiveAsteroidId) {
+      const trackedTotal = stillActive.length + pendingDispatch.length;
+      const amounts = distributeAmounts(cap, trackedTotal);
+      for (let i = 0; i < pendingDispatch.length; i++) {
+        const m = pendingDispatch[i];
+        const amount = amounts[stillActive.length + i];
         try {
           await c.mineResources(
             m.id as string,
             effectiveAsteroidId!,
             [assignment.material],
-            perMannyMining,
+            amount,
             containerObjectId
           );
           stillActive.push(m.id as string);
-          logger.info({ label, mannyId: m.id }, "mining: dispatched mine to idle tracked manny");
+          logger.info({ label, mannyId: m.id, amount }, "mining: dispatched mine to idle tracked manny");
         } catch (err: any) {
           if (err instanceof VngApiError && err.status === 409) {
             stillActive.push(m.id as string); // still busy — count as active
@@ -432,6 +455,7 @@ async function runMiningCycle(
     }
 
     // ── Step 4: fill any remaining slots with fresh idle mannies ────────────
+    // mannyCount is the max; fill up to that cap (or fewer if the reserve limits it).
     const stillNeeded = assignment.mannyCount - miningIds.length;
     if (stillNeeded > 0 && effectiveAsteroidId) {
       const extraAvailable = mannies.filter(
@@ -440,12 +464,18 @@ async function runMiningCycle(
       const extraClaimable = Math.max(0, extraAvailable.length - craftingReserve);
       if (extraClaimable > 0) {
         const toAdd = extraAvailable.slice(0, Math.min(stillNeeded, extraClaimable));
-        for (const m of toAdd) {
+        // Each fill-slot manny gets a base 0.05-aligned amount.
+        // (Existing miners already have dispatched amounts we cannot change.)
+        const totalAfter = miningIds.length + toAdd.length;
+        const fillAmounts = distributeAmounts(cap, totalAfter);
+        for (let i = 0; i < toAdd.length; i++) {
+          const m = toAdd[i];
+          const amount = fillAmounts[miningIds.length + i];
           await c.mineResources(
             m.id as string,
             effectiveAsteroidId,
             [assignment.material],
-            perMannyMining,
+            amount,
             containerObjectId
           );
           claimedMannies.add(m.id as string);
