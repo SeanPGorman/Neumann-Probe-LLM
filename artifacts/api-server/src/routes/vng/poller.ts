@@ -734,29 +734,40 @@ async function pollProbe(
     }
   }
 
-  // If there are pending crafting/scheduled actions, reserve 25% of total
-  // mannies for them so mining never fully starves the crafting queue.
-  // Exception: if every crafting attempt last tick returned "insufficient
-  // resources", drop the reserve to 0 — all hands go to mining until
-  // materials arrive, then the reserve is restored automatically.
-  const hasPendingCrafting = actions.some(
-    (a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft"
-  );
+  // Reserve mannies for crafting ONLY when at least one craft action is
+  // immediately actionable — i.e. all its requireItemsWithQty are already
+  // satisfied by current inventory.  If every pending craft is blocked on
+  // missing sub-items, the reserve is 0 and mining uses all idle mannies.
+  const inventoryItems: any[] = probe?.inventory?.items ?? [];
+  const invItemCount: Record<string, number> = {};
+  for (const item of inventoryItems) {
+    const t: string = item.type ?? item.id;
+    invItemCount[t] = (invItemCount[t] ?? 0) + 1;
+  }
+
+  function craftActionReady(a: PendingAction): boolean {
+    if (a.action.type !== "craft_item" && a.action.type !== "atomic_printer_craft") return false;
+    const reqs = (a.condition as any).requireItemsWithQty as Array<{ type: string; quantity: number }> | undefined;
+    if (!reqs || reqs.length === 0) return true; // no item prereqs — ready immediately
+    return reqs.every((r) => (invItemCount[r.type] ?? 0) >= r.quantity);
+  }
+
+  const hasReadyCrafting = actions.some(craftActionReady);
   const probeKey = probeId != null ? String(probeId) : "main";
   const craftingBlockedLastTick = craftingMaterialsBlocked.has(probeKey);
 
-  const craftingReserve = hasPendingCrafting && !craftingBlockedLastTick
+  const craftingReserve = hasReadyCrafting && !craftingBlockedLastTick
     ? Math.ceil(mannies.length * 0.25)
     : 0;
   if (craftingReserve > 0) {
     logger.info(
       { craftingReserve, totalMannies: mannies.length },
-      "poller: reserving mannies for crafting queue"
+      "poller: reserving mannies for crafting queue (ready actions exist)"
     );
-  } else if (hasPendingCrafting && craftingBlockedLastTick) {
+  } else if (actions.some((a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft")) {
     logger.info(
       { totalMannies: mannies.length },
-      "poller: crafting blocked by missing materials — no reserve, all mannies available for mining"
+      "poller: all craft actions blocked on sub-items — no reserve, all mannies available for mining"
     );
   }
 
