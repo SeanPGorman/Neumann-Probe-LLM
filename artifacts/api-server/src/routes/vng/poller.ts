@@ -537,6 +537,7 @@ async function runMiningCycle(
       // loop would otherwise shift the index for every subsequent iteration, causing
       // later mannies to read undefined from amounts[] and send targetAmount:undefined.
       const baseIdx = stillActive.length;
+      let step3AnySucceeded = false;
       for (let i = 0; i < pendingDispatch.length; i++) {
         const m = pendingDispatch[i];
         const amount = amounts[baseIdx + i];
@@ -549,6 +550,7 @@ async function runMiningCycle(
             containerObjectId
           );
           stillActive.push(m.id as string);
+          step3AnySucceeded = true;
           logger.info({ label, mannyId: m.id, amount }, "mining: dispatched mine to idle tracked manny");
         } catch (err: any) {
           if (err instanceof VngApiError && err.status === 409) {
@@ -557,6 +559,10 @@ async function runMiningCycle(
             throw err;
           }
         }
+      }
+      // Clear any stale error badge now that at least one dispatch succeeded.
+      if (step3AnySucceeded) {
+        await updateMiningCycleState(assignment.id, { lastError: undefined }).catch(() => {});
       }
     }
 
@@ -592,6 +598,7 @@ async function runMiningCycle(
           miningMannyIds: miningIds,
           containerCapacity: cap,
           asteroidObjectId: effectiveAsteroidId,
+          lastError: undefined,
         });
         logger.info(
           { label, added: toAdd.length, total: miningIds.length },
