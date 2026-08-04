@@ -37,13 +37,22 @@
     "cycleState": "mining",
     "id": 3,
     "miningMannyIds": [
+      "mny_craft_b8995c045b8304bf5ef88559",
+      "mny_craft_e983a0bde7393a21455e02b1",
       "mny_f390528b63654332c7033679",
-      "mny_craft_dbba4193f237f35a3bf2b1c9"
+      "mny_craft_dbba4193f237f35a3bf2b1c9",
+      "mny_craft_972422f68842615497f97f6b",
+      "mny_craft_662ff31f278d8358cb551f24",
+      "mny_craft_dbc75fcd68a35176419f5612",
+      "mny_craft_6a8ecb81122b4d667cd278b6",
+      "mny_465d32ed9bee8a6f47d4f48a",
+      "mny_craft_ada5d3e695f6b5afe6627ff7",
+      "mny_craft_2ec3248f06e5c7cebe30c4ad",
+      "mny_craft_2da87b26021ffc8b4e21a49c"
     ],
     "lastCycleAt": "2026-08-04T01:17:19.860Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85",
     "containerCapacity": 1,
-    "lastError": "VNG API error (404): Detached storage container not found."
+    "asteroidObjectId": "77b3f74303045a6c4f85"
   },
   {
     "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
