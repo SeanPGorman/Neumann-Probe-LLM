@@ -179,19 +179,94 @@ async function runMiningAutomation(
 
   for (const assignment of assignments) {
     try {
-      await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
+      if (assignment.assignmentMode === "drift") {
+        await runDriftCycle(assignment, probe, mannies, claimedMannies, c);
+      } else {
+        await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
+      }
     } catch (err: any) {
       // 409 = manny busy; defer silently without marking lastError
       if (err instanceof VngApiError && err.status === 409) {
-        logger.info({ assignmentId: assignment.id }, "mining: manny busy (409), deferring");
+        logger.info({ assignmentId: assignment.id }, "drift/mining: manny busy (409), deferring");
         return;
       }
       logger.error(
         { assignmentId: assignment.id, err: err.message },
-        "mining: cycle error"
+        "drift/mining: cycle error"
       );
       await updateMiningCycleState(assignment.id, { lastError: err.message }).catch(() => {});
     }
+  }
+}
+
+// ── Drift cycle ───────────────────────────────────────────────────────────────
+// "drift" assignments: one manny detaches the container in "drifting" mode so
+// it floats in sector for other probes' mannies to pick up.  If the container
+// ever comes back to inventory (another probe returned it, or it was never
+// picked up), the cycle restarts automatically.
+async function runDriftCycle(
+  assignment: MiningAssignment,
+  probe: any,
+  mannies: any[],
+  claimedMannies: Set<string>,
+  c: ReturnType<typeof clientFor>,
+): Promise<void> {
+  const label = `drift assignment ${assignment.id} (${assignment.material})`;
+  const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
+    (c: any) => c.kind === "container"
+  );
+  const container = invContainers.find((c: any) => c.id === assignment.containerId);
+
+  if (assignment.cycleState === "idle") {
+    if (!container) {
+      // Not in inventory — may already be drifting from a prior cycle
+      logger.info({ label }, "drift: container not in inventory — skipping");
+      return;
+    }
+    const manny = mannies.find(
+      (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+    );
+    if (!manny) {
+      logger.info({ label }, "drift: no idle manny available — deferring");
+      return;
+    }
+    claimedMannies.add(manny.id as string);
+    await c.detachContainer(manny.id as string, assignment.containerId, "drifting");
+    await updateMiningCycleState(assignment.id, {
+      cycleState: "deploying",
+      miningMannyIds: [manny.id as string],
+      lastCycleAt: new Date().toISOString(),
+      lastError: undefined,
+    });
+    logger.info({ label, mannyId: manny.id }, "drift: detach dispatched — container leaving drifting");
+
+  } else if (assignment.cycleState === "deploying") {
+    const [mannyId] = assignment.miningMannyIds ?? [];
+    const manny = mannies.find((m: any) => m.id === mannyId);
+
+    if (manny?.currentTask) {
+      // Still travelling to deploy position
+      logger.info({ label, task: manny.currentTask }, "drift: manny en route — waiting");
+      return;
+    }
+
+    // Manny is idle (or gone) — deployment complete
+    if (!container) {
+      logger.info({ label }, "drift: container deployed — drifting in sector");
+      await updateMiningCycleState(assignment.id, { cycleState: "deployed", miningMannyIds: [] });
+    } else {
+      // Container unexpectedly still in inventory — reset
+      logger.info({ label }, "drift: manny done but container still in inventory — resetting");
+      await updateMiningCycleState(assignment.id, { cycleState: "idle", miningMannyIds: [] });
+    }
+
+  } else if (assignment.cycleState === "deployed") {
+    if (container) {
+      // Container came back (rare — another probe returned it, or cycle mismatch)
+      logger.info({ label }, "drift: container returned to inventory — restarting cycle");
+      await updateMiningCycleState(assignment.id, { cycleState: "idle", miningMannyIds: [] });
+    }
+    // Otherwise quietly waiting — no log spam
   }
 }
 
@@ -446,9 +521,13 @@ async function runMiningCycle(
     if (pendingDispatch.length > 0 && effectiveAsteroidId) {
       const trackedTotal = stillActive.length + pendingDispatch.length;
       const amounts = distributeAmounts(cap, trackedTotal);
+      // IMPORTANT: snapshot length before the loop — stillActive.push() inside the
+      // loop would otherwise shift the index for every subsequent iteration, causing
+      // later mannies to read undefined from amounts[] and send targetAmount:undefined.
+      const baseIdx = stillActive.length;
       for (let i = 0; i < pendingDispatch.length; i++) {
         const m = pendingDispatch[i];
-        const amount = amounts[stillActive.length + i];
+        const amount = amounts[baseIdx + i];
         try {
           await c.mineResources(
             m.id as string,
@@ -597,16 +676,15 @@ async function pollProbe(
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
 
-  // Pre-claim ALL mannies tracked by an active mining assignment so neither
-  // the crafting queue nor fill-slots can grab them while they are temporarily
-  // idle (e.g. a detaching manny between tasks).  The mining handler itself
-  // re-dispatches mine tasks to idle tracked mannies each tick.
+  // Pre-claim ALL mannies tracked by an active mining/drift assignment so
+  // neither the crafting queue nor fill-slots can grab them while they are
+  // temporarily idle between tasks.
   const activeMiningAssignments = await getMiningAssignments().catch(() => []);
   for (const a of activeMiningAssignments) {
     if (
       a.enabled &&
       (a.probeId ?? null) === (probeId ?? null) &&
-      a.cycleState === "mining"
+      (a.cycleState === "mining" || a.cycleState === "deploying")
     ) {
       for (const id of a.miningMannyIds ?? []) {
         claimedMannies.add(id);

@@ -33,6 +33,10 @@ function cycleStateBadge(state: string) {
       return <span className="text-[9px] px-1.5 py-0.5 rounded border border-blue-600/50 text-blue-400 bg-blue-950/40">↑ RECOVERING</span>;
     case "container_full":
       return <span className="text-[9px] px-1.5 py-0.5 rounded border border-amber-500/60 text-amber-300 bg-amber-900/30">⚠ FULL</span>;
+    case "deploying":
+      return <span className="text-[9px] px-1.5 py-0.5 rounded border border-violet-600/50 text-violet-400 bg-violet-950/40">🚀 DEPLOYING</span>;
+    case "deployed":
+      return <span className="text-[9px] px-1.5 py-0.5 rounded border border-cyan-600/50 text-cyan-400 bg-cyan-950/40">⬡ DRIFTING</span>;
     default:
       return <span className="text-[9px] px-1.5 py-0.5 rounded border border-border/40 text-muted-foreground">● IDLE</span>;
   }
@@ -49,6 +53,7 @@ export function MiningPanel({ probeId }: Props) {
   const [formContainerId, setFormContainerId] = useState("");
   const [formMaterial, setFormMaterial] = useState("metals");
   const [formMannyCount, setFormMannyCount] = useState(4);
+  const [formMode, setFormMode] = useState<"mine" | "drift">("mine");
   const [saving, setSaving] = useState(false);
   const [toastMsg, setToastMsg] = useState<string | null>(null);
   const [containerError, setContainerError] = useState<string | null>(null);
@@ -106,8 +111,9 @@ export function MiningPanel({ probeId }: Props) {
           containerId: formContainerId,
           containerName: selectedContainer?.label ?? formContainerId,
           material: formMaterial,
-          mannyCount: formMannyCount,
+          mannyCount: formMode === "drift" ? 1 : formMannyCount,
           probeId,
+          assignmentMode: formMode,
         }),
       });
       if (r.status === 409) {
@@ -287,84 +293,115 @@ export function MiningPanel({ probeId }: Props) {
                   </button>
                 </div>
 
-                {/* Material + manny count */}
+                {/* Material row */}
                 <div className="flex items-center gap-3 text-[10px]">
+                  <span className="text-[9px] text-muted-foreground/40">
+                    {a.assignmentMode === "drift" ? "⬡" : "⛏"}
+                  </span>
                   <span className={materialColor(a.material)}>{materialLabel(a.material)}</span>
-                  {!inSector && a.enabled && (
+                  {a.assignmentMode !== "drift" && !inSector && a.enabled && (
                     <span className="text-amber-500/70 text-[9px]">⚠ not in sector</span>
                   )}
-                  <div className="ml-auto flex items-center gap-1">
-                    <span className="text-muted-foreground/50">mannies:</span>
-                    <button
-                      onClick={() => updateMannyCount(a.id, Math.max(1, a.mannyCount - 1))}
-                      className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground border border-border/30 rounded text-[10px]"
-                    >−</button>
-                    <span className="w-4 text-center font-mono text-foreground/80">{a.mannyCount}</span>
-                    <button
-                      onClick={() => updateMannyCount(a.id, Math.min(10, a.mannyCount + 1))}
-                      className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground border border-border/30 rounded text-[10px]"
-                    >+</button>
-                    <span className="text-muted-foreground/40 ml-1">{perManny}</span>
-                  </div>
+                  {/* Manny count controls — mine only */}
+                  {a.assignmentMode !== "drift" && (
+                    <div className="ml-auto flex items-center gap-1">
+                      <span className="text-muted-foreground/50">mannies:</span>
+                      <button
+                        onClick={() => updateMannyCount(a.id, Math.max(1, a.mannyCount - 1))}
+                        className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground border border-border/30 rounded text-[10px]"
+                      >−</button>
+                      <span className="w-4 text-center font-mono text-foreground/80">{a.mannyCount}</span>
+                      <button
+                        onClick={() => updateMannyCount(a.id, Math.min(10, a.mannyCount + 1))}
+                        className="w-4 h-4 flex items-center justify-center text-muted-foreground hover:text-foreground border border-border/30 rounded text-[10px]"
+                      >+</button>
+                      <span className="text-muted-foreground/40 ml-1">{perManny}</span>
+                    </div>
+                  )}
                 </div>
 
-                {/* Container fill progress (mining state) */}
-                {a.cycleState === "mining" && (() => {
-                  const totalDeposited = miningMannies.reduce(
-                    (sum, m) => sum + (m.taskDepositedAmount ?? 0), 0
-                  );
-                  const totalTarget = miningMannies.reduce(
-                    (sum, m) => sum + (m.taskTargetAmount ?? 0), 0
-                  );
-                  if (totalTarget <= 0) return null;
-                  const pct = Math.min(100, (totalDeposited / totalTarget) * 100);
-                  return (
-                    <div className="space-y-0.5">
-                      <div className="flex items-center justify-between text-[9px]">
-                        <span className="text-muted-foreground/50">FILL</span>
-                        <span className="tabular-nums text-amber-400/80">
-                          {totalDeposited.toFixed(2)} / {totalTarget.toFixed(2)} ECE
-                        </span>
+                {/* ── MINE-specific body ──────────────────────────── */}
+                {a.assignmentMode !== "drift" && <>
+                  {/* Container fill progress */}
+                  {a.cycleState === "mining" && (() => {
+                    const totalDeposited = miningMannies.reduce(
+                      (sum, m) => sum + (m.taskDepositedAmount ?? 0), 0
+                    );
+                    const totalTarget = miningMannies.reduce(
+                      (sum, m) => sum + (m.taskTargetAmount ?? 0), 0
+                    );
+                    if (totalTarget <= 0) return null;
+                    const pct = Math.min(100, (totalDeposited / totalTarget) * 100);
+                    return (
+                      <div className="space-y-0.5">
+                        <div className="flex items-center justify-between text-[9px]">
+                          <span className="text-muted-foreground/50">FILL</span>
+                          <span className="tabular-nums text-amber-400/80">
+                            {totalDeposited.toFixed(2)} / {totalTarget.toFixed(2)} ECE
+                          </span>
+                        </div>
+                        <div className="h-1 w-full rounded-full bg-border/30 overflow-hidden">
+                          <div
+                            className="h-full rounded-full bg-amber-500/70 transition-all duration-500"
+                            style={{ width: `${pct}%` }}
+                          />
+                        </div>
                       </div>
-                      <div className="h-1 w-full rounded-full bg-border/30 overflow-hidden">
-                        <div
-                          className="h-full rounded-full bg-amber-500/70 transition-all duration-500"
-                          style={{ width: `${pct}%` }}
-                        />
+                    );
+                  })()}
+
+                  {/* Active mining mannies */}
+                  {a.cycleState === "mining" && miningMannies.length > 0 && (
+                    <div className="text-[9px] text-muted-foreground/60 space-y-0.5">
+                      {miningMannies.map((m) => (
+                        <div key={m.id} className="flex items-center gap-2">
+                          <span className={m.currentTask ? "text-amber-400/70" : "text-green-400/60"}>
+                            {m.currentTask ? "⛏" : "✓"}
+                          </span>
+                          <span className="truncate">{m.name}</span>
+                          {m.taskProgressPercent != null && m.currentTask && (
+                            <span className="ml-auto tabular-nums">{Math.round(m.taskProgressPercent)}%</span>
+                          )}
+                          {!m.currentTask && (
+                            <span className="ml-auto text-green-400/60">done</span>
+                          )}
+                        </div>
+                      ))}
+                      <div className="text-muted-foreground/40 pt-0.5">
+                        {idleMiners}/{miningMannies.length} miners done
                       </div>
                     </div>
-                  );
-                })()}
+                  )}
 
-                {/* Active mining mannies */}
-                {a.cycleState === "mining" && miningMannies.length > 0 && (
-                  <div className="text-[9px] text-muted-foreground/60 space-y-0.5">
-                    {miningMannies.map((m) => (
-                      <div key={m.id} className="flex items-center gap-2">
-                        <span className={m.currentTask ? "text-amber-400/70" : "text-green-400/60"}>
-                          {m.currentTask ? "⛏" : "✓"}
-                        </span>
-                        <span className="truncate">{m.name}</span>
-                        {m.taskProgressPercent != null && m.currentTask && (
-                          <span className="ml-auto tabular-nums">{Math.round(m.taskProgressPercent)}%</span>
-                        )}
-                        {!m.currentTask && (
-                          <span className="ml-auto text-green-400/60">done</span>
-                        )}
-                      </div>
-                    ))}
-                    <div className="text-muted-foreground/40 pt-0.5">
-                      {idleMiners}/{miningMannies.length} miners done
+                  {/* Container full notice */}
+                  {containerFull && (
+                    <div className="text-[9px] text-amber-400/80 leading-snug">
+                      Container holds {containerInfo!.usedCapacity?.toFixed(2)} / {containerInfo!.capacity?.toFixed(2)} ECE — unload to restart cycle.
                     </div>
-                  </div>
-                )}
+                  )}
+                </>}
 
-                {/* Container full notice */}
-                {containerFull && (
-                  <div className="text-[9px] text-amber-400/80 leading-snug">
-                    Container holds {containerInfo!.usedCapacity?.toFixed(2)} / {containerInfo!.capacity?.toFixed(2)} ECE — unload to restart cycle.
-                  </div>
-                )}
+                {/* ── DRIFT-specific body ─────────────────────────── */}
+                {a.assignmentMode === "drift" && <>
+                  {a.cycleState === "deploying" && miningMannies.length > 0 && (
+                    <div className="text-[9px] text-violet-400/60 space-y-0.5">
+                      {miningMannies.map((m) => (
+                        <div key={m.id} className="flex items-center gap-2">
+                          <span className="text-violet-400/70">🚀</span>
+                          <span className="truncate">{m.name}</span>
+                          {m.taskProgressPercent != null && m.currentTask && (
+                            <span className="ml-auto tabular-nums">{Math.round(m.taskProgressPercent)}%</span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  {a.cycleState === "deployed" && (
+                    <div className="text-[9px] text-cyan-400/60">
+                      Container is drifting — waiting for pickup by another probe.
+                    </div>
+                  )}
+                </>}
 
                 {/* Last error */}
                 {a.lastError && (
@@ -373,7 +410,8 @@ export function MiningPanel({ probeId }: Props) {
 
                 {/* Actions */}
                 <div className="flex gap-1 pt-0.5">
-                  {(a.cycleState === "mining" || a.cycleState === "recovering") && (
+                  {(a.cycleState === "mining" || a.cycleState === "recovering" ||
+                    a.cycleState === "deploying" || a.cycleState === "deployed") && (
                     <button
                       onClick={() => resetCycle(a.id)}
                       className="text-[9px] px-1.5 py-0.5 rounded border border-border/30 text-muted-foreground hover:text-amber-400 hover:border-amber-600/40 transition-colors"
@@ -430,6 +468,38 @@ export function MiningPanel({ probeId }: Props) {
             )}
           </div>
 
+          {/* Mode */}
+          <div className="space-y-0.5">
+            <label className="text-[9px] text-muted-foreground/50">MODE</label>
+            <div className="flex gap-1">
+              <button
+                onClick={() => setFormMode("mine")}
+                className={`flex-1 text-[9px] px-2 py-1 rounded border transition-colors ${
+                  formMode === "mine"
+                    ? "border-amber-600/50 text-amber-400 bg-amber-950/30"
+                    : "border-border/30 text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                ⛏ Mine
+              </button>
+              <button
+                onClick={() => setFormMode("drift")}
+                className={`flex-1 text-[9px] px-2 py-1 rounded border transition-colors ${
+                  formMode === "drift"
+                    ? "border-cyan-600/50 text-cyan-400 bg-cyan-950/30"
+                    : "border-border/30 text-muted-foreground hover:text-foreground"
+                }`}
+              >
+                ⬡ Leave Drifting
+              </button>
+            </div>
+            {formMode === "drift" && (
+              <p className="text-[9px] text-cyan-400/60 pt-0.5">
+                One manny deploys the container drifting for other probes to pick up.
+              </p>
+            )}
+          </div>
+
           {/* Material */}
           <div className="space-y-0.5">
             <label className="text-[9px] text-muted-foreground/50">MATERIAL</label>
@@ -444,33 +514,35 @@ export function MiningPanel({ probeId }: Props) {
                       formMaterial === m.value
                         ? "border-primary/50 text-primary bg-primary/10"
                         : "border-border/30 text-muted-foreground hover:text-foreground"
-                    } ${!available ? "opacity-40" : ""}`}
+                    } ${formMode === "mine" && !available ? "opacity-40" : ""}`}
                   >
-                    {m.label}{!available ? " ✗" : " ✓"}
+                    {m.label}{formMode === "mine" && (!available ? " ✗" : " ✓")}
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {/* Manny count */}
-          <div className="space-y-0.5">
-            <label className="text-[9px] text-muted-foreground/50">MANNIES</label>
-            <div className="flex items-center gap-2">
-              <input
-                type="range"
-                min={1}
-                max={10}
-                step={1}
-                value={formMannyCount}
-                onChange={(e) => setFormMannyCount(parseInt(e.target.value))}
-                className="flex-1 h-1 accent-primary"
-              />
-              <span className="text-[10px] font-mono w-16 text-right text-foreground/70">
-                {formMannyCount} × {(1 / formMannyCount * 100).toFixed(0)}%
-              </span>
+          {/* Manny count — mine only */}
+          {formMode === "mine" && (
+            <div className="space-y-0.5">
+              <label className="text-[9px] text-muted-foreground/50">MANNIES</label>
+              <div className="flex items-center gap-2">
+                <input
+                  type="range"
+                  min={1}
+                  max={10}
+                  step={1}
+                  value={formMannyCount}
+                  onChange={(e) => setFormMannyCount(parseInt(e.target.value))}
+                  className="flex-1 h-1 accent-primary"
+                />
+                <span className="text-[10px] font-mono w-16 text-right text-foreground/70">
+                  {formMannyCount} × {(1 / formMannyCount * 100).toFixed(0)}%
+                </span>
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Actions */}
           <div className="flex gap-1 pt-1">

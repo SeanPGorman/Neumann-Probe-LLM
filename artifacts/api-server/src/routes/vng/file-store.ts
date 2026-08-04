@@ -507,7 +507,11 @@ export async function recordSector(
 
 const MINING_FILE = "mining-assignments.json";
 
-export type MiningCycleState = "idle" | "mining" | "recovering";
+export type MiningCycleState = "idle" | "mining" | "recovering" | "deploying" | "deployed";
+
+/** "mine" = anchor on asteroid, mannies fill it, recover back.
+ *  "drift" = detach drifting so other probes' mannies can pick it up. */
+export type AssignmentMode = "mine" | "drift";
 
 export type MiningAssignment = {
   id: number;
@@ -517,10 +521,11 @@ export type MiningAssignment = {
   mannyCount: number;
   probeId: number | null;
   enabled: boolean;
+  assignmentMode?: AssignmentMode;  // defaults to "mine" if absent (backward compat)
   // Runtime cycle state — managed by the poller
   cycleState: MiningCycleState;
   asteroidObjectId?: string;   // objectId of asteroid currently being mined
-  miningMannyIds?: string[];   // mannyIds assigned to mine this cycle
+  miningMannyIds?: string[];   // mannyIds assigned to mine this cycle (or deploying manny for drift)
   containerCapacity?: number;  // total capacity stored at dispatch time, used to calculate perManny
   lastCycleAt?: string;
   lastError?: string;

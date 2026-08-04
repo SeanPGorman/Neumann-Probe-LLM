@@ -34,7 +34,8 @@
     ],
     "lastCycleAt": "2026-08-04T01:48:09.265Z",
     "asteroidObjectId": "77b3f74303045a6c4f85",
-    "containerCapacity": 1
+    "containerCapacity": 1,
+    "lastError": "VNG API error (400): JSON body must contain objectId, resources and targetAmount."
   },
   {
     "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
@@ -95,12 +96,11 @@
     "cycleState": "mining",
     "id": 6,
     "miningMannyIds": [
-      "mny_craft_972422f68842615497f97f6b",
-      "mny_craft_662ff31f278d8358cb551f24"
+      "mny_craft_b8995c045b8304bf5ef88559",
+      "mny_craft_2c297095f23996a12ef9f1aa"
     ],
     "lastCycleAt": "2026-08-04T01:23:22.155Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85",
     "containerCapacity": 1,
-    "lastError": "VNG API error (400): JSON body must contain objectId, resources and targetAmount."
+    "asteroidObjectId": "77b3f74303045a6c4f85"
   }
 ]

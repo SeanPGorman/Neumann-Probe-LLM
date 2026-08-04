@@ -120,18 +120,21 @@ router.get("/mining", async (req, res) => {
 // ── POST /api/vng/log/mining — create assignment ───────────────────────────────
 router.post("/mining", async (req, res) => {
   try {
-    const { containerId, containerName, material, mannyCount, probeId } = req.body;
+    const { containerId, containerName, material, mannyCount, probeId, assignmentMode } = req.body;
     if (!containerId || !material) {
       res.status(400).json({ error: "containerId and material are required" });
       return;
     }
+    const mode: "mine" | "drift" = assignmentMode === "drift" ? "drift" : "mine";
     const assignment = await upsertMiningAssignment({
       containerId,
       containerName: containerName ?? containerId,
       material,
-      mannyCount: Math.max(1, parseInt(String(mannyCount ?? "4"), 10)),
+      // Drift assignments only ever need 1 manny
+      mannyCount: mode === "drift" ? 1 : Math.max(1, parseInt(String(mannyCount ?? "4"), 10)),
       probeId: probeId != null ? Number(probeId) : null,
       enabled: true,
+      assignmentMode: mode,
       cycleState: "idle",
     });
     res.json({ assignment });
