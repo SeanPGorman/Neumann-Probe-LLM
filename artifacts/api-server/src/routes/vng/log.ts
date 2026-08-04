@@ -371,14 +371,16 @@ router.post("/crafting-queue", async (req, res) => {
     );
 
     // ── Step 4: requireItemsWithQty = direct item deps the poller must wait for ─
-    // Includes items being crafted (in workOrders) AND printer-only ingredients
-    // (not scheduled but must already be in inventory before we can proceed).
+    // Only includes items that are scheduled as work orders (Manny-crafted).
+    // Printer-only ingredients are intentionally excluded — the parent craft fires
+    // as soon as all Manny-crafted sub-items are ready, regardless of whether
+    // printer items are in stock.
     function requireItemsFor(id: string): Array<{ type: string; quantity: number }> {
       const r = recipeById.get(id);
       if (!r) return [];
       const seen = new Map<string, number>();
       for (const i of r.ingredients ?? []) {
-        if (i.kind === "item" && (workOrders.has(i.type as string) || printerOnlyIds.has(i.type as string))) {
+        if (i.kind === "item" && workOrders.has(i.type as string)) {
           seen.set(i.type as string, (seen.get(i.type as string) ?? 0) + (i.quantity as number));
         }
       }
