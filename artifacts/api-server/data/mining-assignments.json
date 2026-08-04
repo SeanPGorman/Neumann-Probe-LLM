@@ -1,1 +1,50 @@
-[]
+[
+  {
+    "containerId": "container-itm_craft_2ba19fecf04e3a64e4df2ce1",
+    "containerName": "Container 31",
+    "material": "metals",
+    "mannyCount": 4,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 1,
+    "miningMannyIds": [],
+    "lastCycleAt": "2026-08-04T00:33:21.403Z"
+  },
+  {
+    "containerId": "container-itm_craft_69e0198b185dd8a34e90d68b",
+    "containerName": "Container 30",
+    "material": "metals",
+    "mannyCount": 2,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "recovering",
+    "id": 2,
+    "miningMannyIds": [],
+    "lastCycleAt": "2026-08-04T00:23:21.293Z"
+  },
+  {
+    "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
+    "containerName": "Container 12",
+    "material": "metals",
+    "mannyCount": 2,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 3,
+    "miningMannyIds": [],
+    "lastCycleAt": "2026-08-04T00:27:51.098Z"
+  },
+  {
+    "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
+    "containerName": "Container 15",
+    "material": "metals",
+    "mannyCount": 8,
+    "probeId": 795,
+    "enabled": true,
+    "cycleState": "idle",
+    "id": 4,
+    "miningMannyIds": [],
+    "lastCycleAt": "2026-08-04T00:29:51.448Z"
+  }
+]

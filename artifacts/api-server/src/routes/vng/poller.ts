@@ -109,6 +109,7 @@ async function runMiningAutomation(
   mannies: any[],
   claimedMannies: Set<string>,
   c: ReturnType<typeof clientFor>,
+  craftingReserve: number,
 ): Promise<void> {
   const allAssignments = await getMiningAssignments().catch(() => []);
   const assignments = allAssignments.filter(
@@ -157,7 +158,7 @@ async function runMiningAutomation(
 
   for (const assignment of assignments) {
     try {
-      await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects);
+      await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
     } catch (err: any) {
       // 409 = manny busy; defer silently without marking lastError
       if (err instanceof VngApiError && err.status === 409) {
@@ -181,6 +182,7 @@ async function runMiningCycle(
   c: ReturnType<typeof clientFor>,
   asteroids: any[],
   rawSectorObjects: any[],
+  craftingReserve: number,
 ): Promise<void> {
   const label = `mining assignment ${assignment.id} (${assignment.material})`;
 
@@ -272,14 +274,17 @@ async function runMiningCycle(
       return;
     }
 
-    // Claim N idle mannies (unclaimed, no currentTask)
+    // Claim N idle mannies (unclaimed, no currentTask).
+    // Respect the crafting reserve: leave at least `craftingReserve` mannies
+    // free for the scheduled-task queue so mining never fully starves crafting.
     const available = mannies.filter(
       (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
     );
-    if (available.length < assignment.mannyCount) {
+    const claimable = Math.max(0, available.length - craftingReserve);
+    if (claimable < assignment.mannyCount) {
       logger.info(
-        { label, need: assignment.mannyCount, have: available.length },
-        "mining: not enough idle mannies, deferring"
+        { label, need: assignment.mannyCount, have: available.length, reserved: craftingReserve, claimable },
+        "mining: not enough mannies after crafting reserve, deferring"
       );
       return;
     }
@@ -348,8 +353,11 @@ async function runMiningCycle(
       const extraAvailable = mannies.filter(
         (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
       );
-      if (extraAvailable.length > 0) {
-        const toAdd = extraAvailable.slice(0, stillNeeded);
+      // Same crafting-reserve cap as the idle dispatch — don't steal mannies
+      // needed for the scheduled-task queue even when topping up mid-cycle.
+      const extraClaimable = Math.max(0, extraAvailable.length - craftingReserve);
+      if (extraClaimable > 0) {
+        const toAdd = extraAvailable.slice(0, Math.min(stillNeeded, extraClaimable));
         // Use stored capacity; fall back to sector object when assignment was
         // created before this field was introduced.
         const cap: number =
@@ -537,8 +545,23 @@ async function pollProbe(
     }
   }
 
+  // If there are pending crafting/scheduled actions, reserve 25% of total
+  // mannies for them so mining never fully starves the crafting queue.
+  const hasPendingCrafting = actions.some(
+    (a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft"
+  );
+  const craftingReserve = hasPendingCrafting
+    ? Math.ceil(mannies.length * 0.25)
+    : 0;
+  if (craftingReserve > 0) {
+    logger.info(
+      { craftingReserve, totalMannies: mannies.length },
+      "poller: reserving mannies for crafting queue"
+    );
+  }
+
   // Mining automation runs first — claims mannies before crafting queue can
-  await runMiningAutomation(probeId, probe, mannies, claimedMannies, c).catch((err) =>
+  await runMiningAutomation(probeId, probe, mannies, claimedMannies, c, craftingReserve).catch((err) =>
     logger.error({ err: err?.message, probeId }, "poller: mining automation error")
   );
 
