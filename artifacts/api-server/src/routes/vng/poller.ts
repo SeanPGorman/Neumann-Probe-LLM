@@ -14,6 +14,11 @@ import { mapSectorObjects } from "./sector-map.js";
 const POLL_INTERVAL_MS = 30_000;
 let started = false;
 
+// Probes where every crafting attempt last tick returned "insufficient resources".
+// When a probe is in this set, the crafting reserve is dropped to 0 so all
+// mannies are available for mining until materials arrive.
+const craftingMaterialsBlocked = new Set<string>();
+
 /**
  * Distribute `capacity` across `n` mannies in multiples of 0.05.
  * Mannies that get the larger slice come first.
@@ -341,6 +346,16 @@ async function runMiningCycle(
   } else if (assignment.cycleState === "mining") {
     let miningIds = assignment.miningMannyIds ?? [];
 
+    // Guard: miningIds must never exceed mannyCount — trim if corrupted.
+    if (miningIds.length > assignment.mannyCount) {
+      logger.warn(
+        { label, tracked: miningIds.length, cap: assignment.mannyCount },
+        "mining: miningIds exceeds mannyCount — trimming to cap"
+      );
+      miningIds = miningIds.slice(0, assignment.mannyCount);
+      await updateMiningCycleState(assignment.id, { miningMannyIds: miningIds });
+    }
+
     // If we dispatched fewer mannies than requested (e.g. not enough were idle
     // at cycle start), recruit additional idle mannies now rather than waiting
     // for the original set to finish with an under-filled container.
@@ -601,10 +616,16 @@ async function pollProbe(
 
   // If there are pending crafting/scheduled actions, reserve 25% of total
   // mannies for them so mining never fully starves the crafting queue.
+  // Exception: if every crafting attempt last tick returned "insufficient
+  // resources", drop the reserve to 0 — all hands go to mining until
+  // materials arrive, then the reserve is restored automatically.
   const hasPendingCrafting = actions.some(
     (a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft"
   );
-  const craftingReserve = hasPendingCrafting
+  const probeKey = probeId != null ? String(probeId) : "main";
+  const craftingBlockedLastTick = craftingMaterialsBlocked.has(probeKey);
+
+  const craftingReserve = hasPendingCrafting && !craftingBlockedLastTick
     ? Math.ceil(mannies.length * 0.25)
     : 0;
   if (craftingReserve > 0) {
@@ -612,7 +633,16 @@ async function pollProbe(
       { craftingReserve, totalMannies: mannies.length },
       "poller: reserving mannies for crafting queue"
     );
+  } else if (hasPendingCrafting && craftingBlockedLastTick) {
+    logger.info(
+      { totalMannies: mannies.length },
+      "poller: crafting blocked by missing materials — no reserve, all mannies available for mining"
+    );
   }
+
+  // Track crafting outcomes this tick so we can update craftingMaterialsBlocked.
+  let craftingAttempts = 0;
+  let craftingInsufficientCount = 0;
 
   // Mining automation runs first — claims mannies before crafting queue can
   await runMiningAutomation(probeId, probe, mannies, claimedMannies, c, craftingReserve).catch((err) =>
@@ -711,6 +741,9 @@ async function pollProbe(
       "poller: condition met — executing action"
     );
 
+    const isCraftingAction =
+      action.action.type === "craft_item" || action.action.type === "atomic_printer_craft";
+
     try {
       await executeAction(action, selectedMannyId, c);
       await resolveQuietly(action.id, { status: "triggered" });
@@ -718,6 +751,7 @@ async function pollProbe(
 
       if (selectedMannyId) claimedMannies.add(selectedMannyId);
       if (action.action.type === "move_probe") probeMoveClaimed = true;
+      if (isCraftingAction) craftingAttempts++;  // succeeded — not insufficient
     } catch (err: any) {
       const msg = err?.message ?? String(err);
       // 422 "Insufficient resources" — keep pending and retry next cycle
@@ -726,10 +760,25 @@ async function pollProbe(
           { actionId: action.id, label },
           "poller: insufficient resources — keeping pending, will retry next poll"
         );
+        if (isCraftingAction) {
+          craftingAttempts++;
+          craftingInsufficientCount++;
+        }
       } else {
         logger.error({ actionId: action.id, err: msg, label }, "poller: action execution failed");
         await resolveQuietly(action.id, { status: "failed", error: msg });
       }
+    }
+  }
+
+  // Update the blocked-by-materials flag for the next tick.
+  // Blocked = every crafting attempt this tick hit "insufficient resources".
+  // Unblocked = at least one succeeded (materials must have arrived).
+  if (hasPendingCrafting && craftingAttempts > 0) {
+    if (craftingInsufficientCount === craftingAttempts) {
+      craftingMaterialsBlocked.add(probeKey);
+    } else {
+      craftingMaterialsBlocked.delete(probeKey);
     }
   }
 }
