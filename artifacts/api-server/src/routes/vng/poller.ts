@@ -307,6 +307,13 @@ async function runMiningCycle(
         (c.capacity != null && c.capacity > 0)
     );
     const container = invContainers.find((c: any) => c.id === assignment.containerId);
+    if (container && (container.usedCapacity ?? 0) >= 0.99) {
+      logger.info(
+        { label, usedCapacity: container.usedCapacity },
+        "mining: container still full in inventory — waiting for unload before next cycle"
+      );
+      return;
+    }
     if (!container) {
       // Container not in inventory — check if it's already deployed in sector
       const deployedId = toSectorObjectId(assignment.containerId);
@@ -533,7 +540,18 @@ async function runMiningCycle(
     // Distribute cap across all currently tracked miners in 0.05-aligned amounts.
     // Mannies already active have amounts from a prior dispatch; pendingDispatch
     // mannies get the tail of the distribution (indices stillActive.length onward).
-    if (pendingDispatch.length > 0 && effectiveAsteroidId) {
+    //
+    // Skip re-dispatch entirely if the container is already full — the mannies
+    // have finished their work and we should fall through to recovery (step 5).
+    const containerUsedCapacity: number = deployedContainerObj?.usedCapacity ?? 0;
+    const containerFull = containerUsedCapacity >= 0.99;
+    if (containerFull) {
+      logger.info(
+        { label, usedCapacity: containerUsedCapacity },
+        "mining: container full in sector — skipping mine re-dispatch, proceeding to recovery"
+      );
+    }
+    if (!containerFull && pendingDispatch.length > 0 && effectiveAsteroidId) {
       const trackedTotal = stillActive.length + pendingDispatch.length;
       const amounts = distributeAmounts(cap, trackedTotal);
       // IMPORTANT: snapshot length before the loop — stillActive.push() inside the
