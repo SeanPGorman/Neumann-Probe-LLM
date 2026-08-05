@@ -718,10 +718,14 @@ async function pollProbe(
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
 
-  // Pre-claim ALL mannies tracked by an active mining/drift assignment so
-  // neither the crafting queue nor fill-slots can grab them while they are
-  // temporarily idle between tasks.
+  // Pre-claim mannies tracked by an active mining/drift assignment, but ONLY
+  // when they have an active task in VNG right now.  Idle tracked mannies are
+  // released so crafting can use them — they'll be re-claimed by the mining
+  // cycle on the next tick if the cycle still needs them.
   const activeMiningAssignments = await getMiningAssignments().catch(() => []);
+  const mannyTaskMap = new Map<string, string | null>(
+    mannies.map((m: any) => [m.id as string, m.currentTask ?? null])
+  );
   for (const a of activeMiningAssignments) {
     if (
       a.enabled &&
@@ -729,7 +733,11 @@ async function pollProbe(
       (a.cycleState === "mining" || a.cycleState === "deploying")
     ) {
       for (const id of a.miningMannyIds ?? []) {
-        claimedMannies.add(id);
+        const task = mannyTaskMap.get(id);
+        if (task != null) {
+          // Only pre-claim if the manny is actively doing something
+          claimedMannies.add(id);
+        }
       }
     }
   }
