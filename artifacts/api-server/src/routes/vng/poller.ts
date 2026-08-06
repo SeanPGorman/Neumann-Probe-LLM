@@ -441,6 +441,36 @@ async function runMiningCycle(
     });
 
   } else if (assignment.cycleState === "mining") {
+    // If the container has returned to probe inventory, the cycle completed
+    // (or the container was never successfully deployed).  Reset to idle so
+    // the next tick can start a fresh cycle rather than staying stuck.
+    const invContainersMining: any[] = (probe?.inventory?.containers ?? []).filter(
+      (c: any) =>
+        (typeof c.kind === "string" && c.kind.toLowerCase().includes("container")) ||
+        (c.capacity != null && c.capacity > 0)
+    );
+    const containerBackInInv = invContainersMining.find(
+      (c: any) => c.id === assignment.containerId
+    );
+    if (containerBackInInv) {
+      if ((containerBackInInv.usedCapacity ?? 0) >= 0.99) {
+        logger.info(
+          { label, usedCapacity: containerBackInInv.usedCapacity },
+          "mining: container back in inventory but still full — waiting for unload"
+        );
+        return;
+      }
+      // Empty and back in inventory — reset so next tick starts a fresh deploy.
+      logger.info({ label }, "mining: container returned to inventory empty — resetting to idle");
+      await updateMiningCycleState(assignment.id, {
+        cycleState: "idle",
+        miningMannyIds: [],
+        asteroidObjectId: undefined,
+        lastError: undefined,
+      });
+      return;
+    }
+
     let miningIds = assignment.miningMannyIds ?? [];
 
     // Guard: miningIds must never exceed mannyCount — trim if corrupted.
@@ -590,7 +620,7 @@ async function runMiningCycle(
     // ── Step 4: fill any remaining slots with fresh idle mannies ────────────
     // mannyCount is the max; fill up to that cap (or fewer if the reserve limits it).
     const stillNeeded = assignment.mannyCount - miningIds.length;
-    if (stillNeeded > 0 && effectiveAsteroidId) {
+    if (stillNeeded > 0 && effectiveAsteroidId && containerInSector) {
       const extraAvailable = mannies.filter(
         (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
       );
