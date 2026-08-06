@@ -185,17 +185,17 @@ async function runMiningAutomation(
         await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
       }
     } catch (err: any) {
-      // 409 = manny busy; defer silently without marking lastError
+      // 409 = manny busy; defer this assignment silently and continue to the next.
       if (err instanceof VngApiError && err.status === 409) {
         logger.info({ assignmentId: assignment.id }, "drift/mining: manny busy (409), deferring");
-        return;
+        continue;
       }
       // 422 "Target detached container is full" — usedCapacity may not be
       // reported in inventory; treat as a transient guard failure, defer quietly.
       if (err instanceof VngApiError && err.status === 422 &&
           typeof err.message === "string" && err.message.includes("full")) {
-        logger.info({ assignmentId: assignment.id, err: err.message }, "drift: container full (422), deferring");
-        return;
+        logger.info({ assignmentId: assignment.id, err: err.message }, "mining: container full (422), deferring");
+        continue;
       }
       logger.error(
         { assignmentId: assignment.id, err: err.message },
@@ -601,6 +601,7 @@ async function runMiningCycle(
             containerObjectId
           );
           stillActive.push(m.id as string);
+          claimedMannies.add(m.id as string); // prevent other assignments from double-booking this manny
           step3AnySucceeded = true;
           logger.info({ label, mannyId: m.id, amount }, "mining: dispatched mine to idle tracked manny");
         } catch (err: any) {
