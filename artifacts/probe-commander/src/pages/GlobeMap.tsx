@@ -863,10 +863,38 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
                   ))}
                 </div>
               )}
-              {scoutResult.objects?.length === 0
-                ? <div className="text-[10px] text-muted-foreground/40 italic">Empty sector — no objects detected.</div>
-                : <SectorObjectList objects={scoutResult.objects} />
-              }
+              {scoutResult.objects?.length === 0 && scoutResult.knowledgeLevel === "neighbor_scan" && scoutResult.estimatedObjects ? (
+                <div className="space-y-1 text-[10px]">
+                  <div className="text-amber-400/70 uppercase tracking-wider">
+                    Neighbor scan
+                    {scoutResult.confidence != null && (
+                      <span className="ml-1 text-muted-foreground/50 normal-case">
+                        ({Math.round(scoutResult.confidence * 100)}% conf.)
+                      </span>
+                    )}
+                  </div>
+                  <div className="flex flex-wrap gap-x-3 gap-y-0.5 text-muted-foreground/70">
+                    {scoutResult.estimatedObjects.star && <span>★ star</span>}
+                    {scoutResult.estimatedObjects.planetCountMin != null && (
+                      <span>○ {scoutResult.estimatedObjects.planetCountMin}–{scoutResult.estimatedObjects.planetCountMax} planets</span>
+                    )}
+                    {scoutResult.estimatedObjects.dangerEstimate && (
+                      <span className={
+                        scoutResult.estimatedObjects.dangerEstimate === "high" ? "text-red-400/80" :
+                        scoutResult.estimatedObjects.dangerEstimate === "medium" ? "text-yellow-400/80" :
+                        "text-green-400/60"
+                      }>danger: {scoutResult.estimatedObjects.dangerEstimate}</span>
+                    )}
+                  </div>
+                  {(scoutResult.scutNetworks ?? []).length > 0 && (
+                    <div className="text-cyan-400/60">◈ SCUT: {scoutResult.scutNetworks.map((n: any) => n.name).join(", ")}</div>
+                  )}
+                </div>
+              ) : scoutResult.objects?.length === 0 ? (
+                <div className="text-[10px] text-muted-foreground/40 italic">Empty sector — no objects detected.</div>
+              ) : (
+                <SectorObjectList objects={scoutResult.objects} />
+              )}
             </div>
           )}
         </div>

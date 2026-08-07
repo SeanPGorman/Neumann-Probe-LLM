@@ -633,12 +633,24 @@ router.get("/scout", async (req, res) => {
     }
 
     const body = await scanSector(x, y, z);
-    const rawObjects: any[] = body?.sector?.objects ?? [];
+    const sector = body?.sector ?? {};
+    const rawObjects: any[] = sector.objects ?? [];
 
     const objects = mapSectorObjects(rawObjects);
     const resourceSummary = sectorResourceSummary(rawObjects);
 
-    res.json({ x, y, z, objects, resourceSummary });
+    res.json({
+      x, y, z,
+      objects,
+      resourceSummary,
+      knowledgeLevel: sector.knowledgeLevel ?? null,
+      confidence: sector.confidence ?? null,
+      estimatedObjects: sector.estimatedObjects ?? null,
+      scan: sector.scan ?? null,
+      scutCoverageStatus: sector.scutCoverageStatus ?? null,
+      scutNetworks: sector.scutNetworks ?? [],
+      distances: sector.distances ?? [],
+    });
   } catch (err: any) {
     console.error(`[scout] failed for (${req.query.x},${req.query.y},${req.query.z}):`, err.message);
     // VNG rate-limits remote scans until the probe has sufficient dwell data —

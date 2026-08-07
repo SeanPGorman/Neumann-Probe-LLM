@@ -509,6 +509,71 @@ function AssistantBubble({ events }: { events: SseEvent[] }) {
   );
 }
 
+function NeighborScanSummary({
+  est,
+  confidence,
+  scutNetworks,
+  distances,
+}: {
+  est: {
+    star?: boolean;
+    planetCountMin?: number;
+    planetCountMax?: number;
+    blackHoleProbability?: number;
+    dangerEstimate?: string;
+    signalAge?: string;
+  };
+  confidence: number | null;
+  scutNetworks: { id: number; name: string }[];
+  distances: { probeId: number; probeName: string; distance: number; usedForScan: boolean }[];
+}) {
+  const dangerColor =
+    est.dangerEstimate === "high" ? "text-red-400" :
+    est.dangerEstimate === "medium" ? "text-yellow-400" :
+    "text-green-400/70";
+
+  return (
+    <div className="space-y-1.5 text-xs">
+      <div className="text-[10px] text-amber-400/70 uppercase tracking-wider">
+        Neighbor scan — estimated contents
+        {confidence != null && (
+          <span className="ml-1.5 text-muted-foreground/50 normal-case">
+            ({Math.round(confidence * 100)}% confidence)
+          </span>
+        )}
+      </div>
+
+      <div className="flex flex-wrap gap-x-4 gap-y-0.5 text-[10px] text-muted-foreground/70">
+        {est.star && <span>★ star detected</span>}
+        {est.planetCountMin != null && est.planetCountMax != null && (
+          <span>○ {est.planetCountMin}–{est.planetCountMax} planets estimated</span>
+        )}
+        {est.blackHoleProbability != null && est.blackHoleProbability > 0.05 && (
+          <span className="text-red-400/70">⬤ black hole {Math.round(est.blackHoleProbability * 100)}%</span>
+        )}
+        {est.dangerEstimate && (
+          <span className={dangerColor}>danger: {est.dangerEstimate}</span>
+        )}
+        {est.signalAge && (
+          <span className="text-muted-foreground/40">signal: {est.signalAge}</span>
+        )}
+      </div>
+
+      {scutNetworks.length > 0 && (
+        <div className="text-[10px] text-cyan-400/70">
+          ◈ SCUT covered — {scutNetworks.map(n => n.name).join(", ")}
+        </div>
+      )}
+
+      {distances.length > 0 && (
+        <div className="text-[10px] text-muted-foreground/40">
+          Nearest probe: {distances[0].probeName} ({distances[0].distance} sector{distances[0].distance !== 1 ? "s" : ""} away)
+        </div>
+      )}
+    </div>
+  );
+}
+
 function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number; z: number } | null }) {
   const [coords, setCoords] = useState({ x: "", y: "", z: "" });
   const [result, setResult] = useState<any>(null);
@@ -600,10 +665,13 @@ function ScoutPanel({ initialTarget }: { initialTarget?: { x: number; y: number;
               ))}
             </div>
           )}
-          {result.objects?.length === 0
-            ? <div className="text-xs text-muted-foreground/40 italic">Empty sector — no objects detected.</div>
-            : <SectorObjectList objects={result.objects} />
-          }
+          {result.objects?.length === 0 && result.knowledgeLevel === "neighbor_scan" && result.estimatedObjects ? (
+            <NeighborScanSummary est={result.estimatedObjects} confidence={result.confidence} scutNetworks={result.scutNetworks} distances={result.distances} />
+          ) : result.objects?.length === 0 ? (
+            <div className="text-xs text-muted-foreground/40 italic">Empty sector — no objects detected.</div>
+          ) : (
+            <SectorObjectList objects={result.objects} />
+          )}
         </div>
       )}
     </div>

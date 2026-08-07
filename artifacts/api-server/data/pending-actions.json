@@ -69007,5 +69007,6374 @@
     "createdAt": "2026-08-06T19:41:21.969Z",
     "status": "triggered",
     "triggeredAt": "2026-08-06T19:41:37.528Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4778,
+    "createdAt": "2026-08-06T21:17:58.913Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:19.946Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4779,
+    "createdAt": "2026-08-06T21:17:58.936Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:20.175Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4780,
+    "createdAt": "2026-08-06T21:17:58.954Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:20.388Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4781,
+    "createdAt": "2026-08-06T21:17:58.971Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:20.603Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4782,
+    "createdAt": "2026-08-06T21:17:58.991Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:20.825Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4783,
+    "createdAt": "2026-08-06T21:17:59.010Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:21.041Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4784,
+    "createdAt": "2026-08-06T21:17:59.033Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:21.265Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4785,
+    "createdAt": "2026-08-06T21:17:59.048Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:21.484Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4786,
+    "createdAt": "2026-08-06T21:17:59.077Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:21.705Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4787,
+    "createdAt": "2026-08-06T21:17:59.092Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:21.923Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4788,
+    "createdAt": "2026-08-06T21:17:59.126Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:22.148Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4789,
+    "createdAt": "2026-08-06T21:17:59.143Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:22.358Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4790,
+    "createdAt": "2026-08-06T21:17:59.160Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:22.567Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4791,
+    "createdAt": "2026-08-06T21:17:59.184Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:22.740Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4792,
+    "createdAt": "2026-08-06T21:17:59.201Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:23.009Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4793,
+    "createdAt": "2026-08-06T21:17:59.219Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:23.210Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4794,
+    "createdAt": "2026-08-06T21:17:59.237Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:23.445Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4795,
+    "createdAt": "2026-08-06T21:17:59.252Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:18:23.678Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4796,
+    "createdAt": "2026-08-06T21:17:59.270Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:50.532Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4797,
+    "createdAt": "2026-08-06T21:17:59.293Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:50.738Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4798,
+    "createdAt": "2026-08-06T21:17:59.319Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:50.958Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4799,
+    "createdAt": "2026-08-06T21:17:59.336Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:51.124Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (5/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4800,
+    "createdAt": "2026-08-06T21:17:59.351Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:51.296Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (6/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4801,
+    "createdAt": "2026-08-06T21:17:59.377Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:51.471Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (7/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4802,
+    "createdAt": "2026-08-06T21:17:59.397Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:51.679Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (8/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4803,
+    "createdAt": "2026-08-06T21:17:59.415Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:51.865Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (9/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4804,
+    "createdAt": "2026-08-06T21:17:59.439Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:52.047Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (10/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4805,
+    "createdAt": "2026-08-06T21:17:59.454Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:52.256Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (11/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4806,
+    "createdAt": "2026-08-06T21:17:59.471Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:52.451Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (12/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4807,
+    "createdAt": "2026-08-06T21:17:59.491Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:52.660Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (13/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4808,
+    "createdAt": "2026-08-06T21:17:59.506Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:52.833Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (14/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4809,
+    "createdAt": "2026-08-06T21:17:59.522Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:53.012Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (15/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4810,
+    "createdAt": "2026-08-06T21:17:59.550Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:53.186Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (16/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4811,
+    "createdAt": "2026-08-06T21:17:59.567Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:23:53.392Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (17/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4812,
+    "createdAt": "2026-08-06T21:17:59.582Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:38:58.972Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (18/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4813,
+    "createdAt": "2026-08-06T21:17:59.600Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T21:38:59.196Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4814,
+    "createdAt": "2026-08-06T22:08:12.848Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:28.758Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4815,
+    "createdAt": "2026-08-06T22:08:12.874Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:28.974Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4816,
+    "createdAt": "2026-08-06T22:08:12.898Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:29.175Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4817,
+    "createdAt": "2026-08-06T22:08:12.920Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:29.369Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4818,
+    "createdAt": "2026-08-06T22:08:12.937Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:29.572Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4819,
+    "createdAt": "2026-08-06T22:08:12.958Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:29.776Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4820,
+    "createdAt": "2026-08-06T22:08:12.976Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:29.994Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/8) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4821,
+    "createdAt": "2026-08-06T22:08:12.999Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:08:30.200Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4822,
+    "createdAt": "2026-08-06T22:08:13.017Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:13:59.098Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4823,
+    "createdAt": "2026-08-06T22:08:13.035Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:13:59.323Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4824,
+    "createdAt": "2026-08-06T22:08:13.052Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:13:59.535Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4825,
+    "createdAt": "2026-08-06T22:08:13.084Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-06T22:13:59.746Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4826,
+    "createdAt": "2026-08-07T01:09:46.713Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:51.750Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4827,
+    "createdAt": "2026-08-07T01:09:46.816Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:51.929Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4828,
+    "createdAt": "2026-08-07T01:09:46.832Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:52.134Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4829,
+    "createdAt": "2026-08-07T01:09:46.860Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:52.325Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4830,
+    "createdAt": "2026-08-07T01:09:46.877Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:52.533Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4831,
+    "createdAt": "2026-08-07T01:09:46.892Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:52.701Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4832,
+    "createdAt": "2026-08-07T01:09:46.908Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:52.915Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4833,
+    "createdAt": "2026-08-07T01:09:46.927Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:53.110Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4834,
+    "createdAt": "2026-08-07T01:09:46.943Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:53.303Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4835,
+    "createdAt": "2026-08-07T01:09:46.967Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:53.506Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4836,
+    "createdAt": "2026-08-07T01:09:46.995Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:53.721Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4837,
+    "createdAt": "2026-08-07T01:09:47.014Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:53.939Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4838,
+    "createdAt": "2026-08-07T01:09:47.034Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:54.151Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4839,
+    "createdAt": "2026-08-07T01:09:47.059Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:54.405Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (15/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4840,
+    "createdAt": "2026-08-07T01:09:47.076Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:54.620Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (16/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4841,
+    "createdAt": "2026-08-07T01:09:47.090Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:54.806Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (17/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4842,
+    "createdAt": "2026-08-07T01:09:47.105Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:55.014Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (18/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4843,
+    "createdAt": "2026-08-07T01:09:47.127Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:55.227Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (19/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4844,
+    "createdAt": "2026-08-07T01:09:47.159Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:55.444Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (20/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4845,
+    "createdAt": "2026-08-07T01:09:47.183Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:09:55.679Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (21/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4846,
+    "createdAt": "2026-08-07T01:09:47.208Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:22.401Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (22/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4847,
+    "createdAt": "2026-08-07T01:09:47.248Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:22.590Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (23/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4848,
+    "createdAt": "2026-08-07T01:09:47.279Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:22.833Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (24/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4849,
+    "createdAt": "2026-08-07T01:09:47.299Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:23.062Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (25/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4850,
+    "createdAt": "2026-08-07T01:09:47.336Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:23.276Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (26/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4851,
+    "createdAt": "2026-08-07T01:09:47.360Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:23.490Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (27/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4852,
+    "createdAt": "2026-08-07T01:09:47.380Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:23.690Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (28/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4853,
+    "createdAt": "2026-08-07T01:09:47.400Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:23.910Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (29/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4854,
+    "createdAt": "2026-08-07T01:09:47.414Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:24.120Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (30/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4855,
+    "createdAt": "2026-08-07T01:09:47.441Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:24.327Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (31/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4856,
+    "createdAt": "2026-08-07T01:09:47.460Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:24.537Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (32/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4857,
+    "createdAt": "2026-08-07T01:09:47.476Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:24.720Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (33/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4858,
+    "createdAt": "2026-08-07T01:09:47.491Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:24.924Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (34/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4859,
+    "createdAt": "2026-08-07T01:09:47.512Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:25.150Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (35/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4860,
+    "createdAt": "2026-08-07T01:09:47.571Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:25.366Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (36/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4861,
+    "createdAt": "2026-08-07T01:09:47.612Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:25.576Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (37/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4862,
+    "createdAt": "2026-08-07T01:09:47.624Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:25.791Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (38/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4863,
+    "createdAt": "2026-08-07T01:09:47.638Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:25.999Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (39/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4864,
+    "createdAt": "2026-08-07T01:09:47.651Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:15:52.245Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (40/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4865,
+    "createdAt": "2026-08-07T01:09:47.666Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:17:52.256Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (41/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4866,
+    "createdAt": "2026-08-07T01:09:47.681Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:18:22.246Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (42/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4867,
+    "createdAt": "2026-08-07T01:09:47.705Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:18:22.455Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (43/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4868,
+    "createdAt": "2026-08-07T01:09:47.718Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:18:22.689Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (44/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4869,
+    "createdAt": "2026-08-07T01:09:47.735Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:52.540Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (45/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4870,
+    "createdAt": "2026-08-07T01:09:47.754Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:52.698Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (46/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4871,
+    "createdAt": "2026-08-07T01:09:47.768Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:52.872Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (47/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4872,
+    "createdAt": "2026-08-07T01:09:47.783Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:53.047Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (48/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4873,
+    "createdAt": "2026-08-07T01:09:47.799Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:53.219Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4874,
+    "createdAt": "2026-08-07T01:09:47.813Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:53.390Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4875,
+    "createdAt": "2026-08-07T01:09:47.826Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:53.575Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4876,
+    "createdAt": "2026-08-07T01:09:47.839Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:53.744Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4877,
+    "createdAt": "2026-08-07T01:09:47.856Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:20:53.902Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4878,
+    "createdAt": "2026-08-07T01:09:47.869Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:22.792Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4879,
+    "createdAt": "2026-08-07T01:09:47.890Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:22.983Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4880,
+    "createdAt": "2026-08-07T01:09:47.905Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:23.148Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4881,
+    "createdAt": "2026-08-07T01:09:47.921Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:23.323Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4882,
+    "createdAt": "2026-08-07T01:09:47.935Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:23.514Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4883,
+    "createdAt": "2026-08-07T01:09:47.948Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:23.676Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4884,
+    "createdAt": "2026-08-07T01:09:47.970Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:23.848Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4885,
+    "createdAt": "2026-08-07T01:09:47.991Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:21:24.025Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4886,
+    "createdAt": "2026-08-07T01:09:48.017Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:22:52.481Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4887,
+    "createdAt": "2026-08-07T01:09:48.054Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:23:22.391Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4888,
+    "createdAt": "2026-08-07T01:09:48.092Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:23:22.565Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4889,
+    "createdAt": "2026-08-07T01:09:48.109Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:23:52.534Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4890,
+    "createdAt": "2026-08-07T01:09:48.125Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:25:52.490Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4891,
+    "createdAt": "2026-08-07T01:09:48.138Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:22.446Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (19/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4892,
+    "createdAt": "2026-08-07T01:09:48.160Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:22.622Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (20/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4893,
+    "createdAt": "2026-08-07T01:09:48.173Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:22.795Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (21/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4894,
+    "createdAt": "2026-08-07T01:09:48.188Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:23.005Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (22/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4895,
+    "createdAt": "2026-08-07T01:09:48.201Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:23.238Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (23/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4896,
+    "createdAt": "2026-08-07T01:09:48.213Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:23.414Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (24/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4897,
+    "createdAt": "2026-08-07T01:09:48.231Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:23.589Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (25/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4898,
+    "createdAt": "2026-08-07T01:09:48.256Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:23.775Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (26/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4899,
+    "createdAt": "2026-08-07T01:09:48.269Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:52.809Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (27/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4900,
+    "createdAt": "2026-08-07T01:09:48.284Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:52.980Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (28/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4901,
+    "createdAt": "2026-08-07T01:09:48.304Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:53.161Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (29/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4902,
+    "createdAt": "2026-08-07T01:09:48.318Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:53.337Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (30/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4903,
+    "createdAt": "2026-08-07T01:09:48.334Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:53.490Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (31/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4904,
+    "createdAt": "2026-08-07T01:09:48.351Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:53.677Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (32/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4905,
+    "createdAt": "2026-08-07T01:09:48.377Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:53.846Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (33/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4906,
+    "createdAt": "2026-08-07T01:09:48.395Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:26:54.021Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (34/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4907,
+    "createdAt": "2026-08-07T01:09:48.411Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:27:52.549Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (35/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4908,
+    "createdAt": "2026-08-07T01:09:48.430Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:28:22.636Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (36/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4909,
+    "createdAt": "2026-08-07T01:09:48.450Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:28:22.820Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (37/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4910,
+    "createdAt": "2026-08-07T01:09:48.474Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:28:52.719Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (38/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4911,
+    "createdAt": "2026-08-07T01:09:48.503Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:30:52.777Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (39/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4912,
+    "createdAt": "2026-08-07T01:09:48.525Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:22.762Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (40/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4913,
+    "createdAt": "2026-08-07T01:09:48.542Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:22.934Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (41/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4914,
+    "createdAt": "2026-08-07T01:09:48.554Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:52.725Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (42/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4915,
+    "createdAt": "2026-08-07T01:09:48.569Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:52.902Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (43/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4916,
+    "createdAt": "2026-08-07T01:09:48.606Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:53.128Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (44/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4917,
+    "createdAt": "2026-08-07T01:09:48.626Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:53.288Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (45/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4918,
+    "createdAt": "2026-08-07T01:09:48.644Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:53.463Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (46/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4919,
+    "createdAt": "2026-08-07T01:09:48.657Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:31:53.667Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (47/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4920,
+    "createdAt": "2026-08-07T01:09:48.675Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:22.863Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (48/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4921,
+    "createdAt": "2026-08-07T01:09:48.689Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:23.018Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (49/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4922,
+    "createdAt": "2026-08-07T01:09:48.704Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:23.191Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (50/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4923,
+    "createdAt": "2026-08-07T01:09:48.720Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:23.362Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (51/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4924,
+    "createdAt": "2026-08-07T01:09:48.736Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:23.521Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (52/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4925,
+    "createdAt": "2026-08-07T01:09:48.751Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:23.687Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (53/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4926,
+    "createdAt": "2026-08-07T01:09:48.766Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:23.870Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (54/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4927,
+    "createdAt": "2026-08-07T01:09:48.781Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:24.046Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/1) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 4928,
+    "createdAt": "2026-08-07T01:09:48.810Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:32:53.149Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (1/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 4929,
+    "createdAt": "2026-08-07T01:09:48.823Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:33:22.936Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (2/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 4930,
+    "createdAt": "2026-08-07T01:09:48.838Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:33:52.901Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (3/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 4931,
+    "createdAt": "2026-08-07T01:09:48.852Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:33:53.137Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (4/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 4932,
+    "createdAt": "2026-08-07T01:09:48.868Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:34:22.965Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (5/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 4933,
+    "createdAt": "2026-08-07T01:09:48.886Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:36:23.230Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4935,
+    "createdAt": "2026-08-07T01:10:15.683Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:36:53.202Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4936,
+    "createdAt": "2026-08-07T01:10:15.711Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:36:53.380Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4937,
+    "createdAt": "2026-08-07T01:10:15.747Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:23.211Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4938,
+    "createdAt": "2026-08-07T01:10:15.772Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:23.371Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4939,
+    "createdAt": "2026-08-07T01:10:15.788Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:23.531Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4940,
+    "createdAt": "2026-08-07T01:10:15.807Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:23.715Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4941,
+    "createdAt": "2026-08-07T01:10:15.826Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:23.877Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4942,
+    "createdAt": "2026-08-07T01:10:15.840Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:24.029Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4943,
+    "createdAt": "2026-08-07T01:10:15.861Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:53.090Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4944,
+    "createdAt": "2026-08-07T01:10:15.880Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:53.260Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4945,
+    "createdAt": "2026-08-07T01:10:15.896Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:53.447Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4946,
+    "createdAt": "2026-08-07T01:10:15.910Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:53.620Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4947,
+    "createdAt": "2026-08-07T01:10:15.933Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:53.800Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4948,
+    "createdAt": "2026-08-07T01:10:15.951Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:53.981Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (15/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4949,
+    "createdAt": "2026-08-07T01:10:15.965Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:54.161Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (16/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4950,
+    "createdAt": "2026-08-07T01:10:15.980Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:37:54.343Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (17/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4951,
+    "createdAt": "2026-08-07T01:10:15.997Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:40:23.677Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (18/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4952,
+    "createdAt": "2026-08-07T01:10:16.014Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:23.442Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (19/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4953,
+    "createdAt": "2026-08-07T01:10:16.034Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:23.786Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (20/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4954,
+    "createdAt": "2026-08-07T01:10:16.046Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:53.467Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (21/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4955,
+    "createdAt": "2026-08-07T01:10:16.061Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:53.699Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (22/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4956,
+    "createdAt": "2026-08-07T01:10:16.078Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:53.856Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (23/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4957,
+    "createdAt": "2026-08-07T01:10:16.090Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:54.029Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (24/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4958,
+    "createdAt": "2026-08-07T01:10:16.104Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:54.208Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (25/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4959,
+    "createdAt": "2026-08-07T01:10:16.125Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:42:54.379Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (26/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4960,
+    "createdAt": "2026-08-07T01:10:16.144Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:23.367Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (27/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4961,
+    "createdAt": "2026-08-07T01:10:16.160Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:23.578Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (28/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4962,
+    "createdAt": "2026-08-07T01:10:16.180Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:23.753Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (29/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4963,
+    "createdAt": "2026-08-07T01:10:16.194Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:23.928Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (30/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4964,
+    "createdAt": "2026-08-07T01:10:16.208Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:24.117Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (31/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4965,
+    "createdAt": "2026-08-07T01:10:16.222Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:24.300Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (32/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4966,
+    "createdAt": "2026-08-07T01:10:16.236Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:24.496Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (33/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4967,
+    "createdAt": "2026-08-07T01:10:16.251Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:43:24.683Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (34/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4968,
+    "createdAt": "2026-08-07T01:10:16.270Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:44:23.764Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (35/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4969,
+    "createdAt": "2026-08-07T01:10:16.287Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:44:23.944Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (36/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4970,
+    "createdAt": "2026-08-07T01:10:16.311Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:44:24.135Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (37/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4971,
+    "createdAt": "2026-08-07T01:10:16.338Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:45:53.415Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (38/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4972,
+    "createdAt": "2026-08-07T01:10:16.352Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:47:23.513Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (39/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4973,
+    "createdAt": "2026-08-07T01:10:16.371Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:47:53.550Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (40/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4974,
+    "createdAt": "2026-08-07T01:10:16.386Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:47:53.747Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (41/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4975,
+    "createdAt": "2026-08-07T01:10:16.404Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:47:53.965Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (42/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4976,
+    "createdAt": "2026-08-07T01:10:16.420Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:47:54.166Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (43/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4977,
+    "createdAt": "2026-08-07T01:10:16.434Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:23.648Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (44/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4978,
+    "createdAt": "2026-08-07T01:10:16.450Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:23.827Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (45/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4979,
+    "createdAt": "2026-08-07T01:10:16.468Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:23.997Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (46/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4980,
+    "createdAt": "2026-08-07T01:10:16.488Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:24.166Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (47/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4981,
+    "createdAt": "2026-08-07T01:10:16.504Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:24.325Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (48/48) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 4982,
+    "createdAt": "2026-08-07T01:10:16.520Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:24.505Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4983,
+    "createdAt": "2026-08-07T01:10:16.540Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:53.635Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4984,
+    "createdAt": "2026-08-07T01:10:16.553Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:53.805Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4985,
+    "createdAt": "2026-08-07T01:10:16.568Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:53.972Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4986,
+    "createdAt": "2026-08-07T01:10:16.583Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:54.163Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4987,
+    "createdAt": "2026-08-07T01:10:16.597Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:54.328Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4988,
+    "createdAt": "2026-08-07T01:10:16.612Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:48:54.517Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4989,
+    "createdAt": "2026-08-07T01:10:16.627Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:49:53.811Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4990,
+    "createdAt": "2026-08-07T01:10:16.648Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:49:53.972Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4991,
+    "createdAt": "2026-08-07T01:10:16.664Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:49:54.157Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4992,
+    "createdAt": "2026-08-07T01:10:16.684Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:50:53.732Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4993,
+    "createdAt": "2026-08-07T01:10:16.700Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:52:23.862Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4994,
+    "createdAt": "2026-08-07T01:10:16.714Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:52:53.890Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4995,
+    "createdAt": "2026-08-07T01:10:16.730Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:24.059Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4996,
+    "createdAt": "2026-08-07T01:10:16.745Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:24.229Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4997,
+    "createdAt": "2026-08-07T01:10:16.762Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:24.394Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4998,
+    "createdAt": "2026-08-07T01:10:16.778Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:24.566Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 4999,
+    "createdAt": "2026-08-07T01:10:16.797Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:24.725Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5000,
+    "createdAt": "2026-08-07T01:10:16.810Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:54.119Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (19/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5001,
+    "createdAt": "2026-08-07T01:10:16.824Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:54.300Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (20/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5002,
+    "createdAt": "2026-08-07T01:10:16.839Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:54.485Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (21/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5003,
+    "createdAt": "2026-08-07T01:10:16.856Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:54.656Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (22/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5004,
+    "createdAt": "2026-08-07T01:10:16.871Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:54.823Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (23/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5005,
+    "createdAt": "2026-08-07T01:10:16.888Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:54.988Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (24/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5006,
+    "createdAt": "2026-08-07T01:10:16.902Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:55.159Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (25/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5007,
+    "createdAt": "2026-08-07T01:10:16.919Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:53:55.322Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (26/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5008,
+    "createdAt": "2026-08-07T01:10:16.933Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:54:23.990Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (27/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5009,
+    "createdAt": "2026-08-07T01:10:16.948Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:54:24.181Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (28/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5010,
+    "createdAt": "2026-08-07T01:10:16.961Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:54:24.347Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (29/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5011,
+    "createdAt": "2026-08-07T01:10:16.974Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:54:24.511Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (30/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5012,
+    "createdAt": "2026-08-07T01:10:16.991Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:54:24.687Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (31/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5013,
+    "createdAt": "2026-08-07T01:10:17.007Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:54:24.864Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (32/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5014,
+    "createdAt": "2026-08-07T01:10:17.020Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:55:23.984Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (33/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5015,
+    "createdAt": "2026-08-07T01:10:17.033Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:55:24.152Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (34/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5016,
+    "createdAt": "2026-08-07T01:10:17.046Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:55:24.323Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (35/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5017,
+    "createdAt": "2026-08-07T01:10:17.062Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:56:24.146Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (36/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5018,
+    "createdAt": "2026-08-07T01:10:17.074Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:56:24.311Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (37/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5019,
+    "createdAt": "2026-08-07T01:10:17.089Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:57:54.230Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (38/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5020,
+    "createdAt": "2026-08-07T01:10:17.106Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:58:24.067Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (39/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5021,
+    "createdAt": "2026-08-07T01:10:17.122Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:58:54.109Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (40/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5022,
+    "createdAt": "2026-08-07T01:10:17.136Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:58:54.310Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (41/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5023,
+    "createdAt": "2026-08-07T01:10:17.151Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:58:54.487Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (42/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5024,
+    "createdAt": "2026-08-07T01:10:17.166Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:58:54.657Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (43/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5025,
+    "createdAt": "2026-08-07T01:10:17.182Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:58:54.872Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (44/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5026,
+    "createdAt": "2026-08-07T01:10:17.195Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:24.211Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (45/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5027,
+    "createdAt": "2026-08-07T01:10:17.209Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:24.458Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (46/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5028,
+    "createdAt": "2026-08-07T01:10:17.225Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:24.633Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (47/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5029,
+    "createdAt": "2026-08-07T01:10:17.239Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:24.802Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (48/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5030,
+    "createdAt": "2026-08-07T01:10:17.252Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:24.963Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (49/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5031,
+    "createdAt": "2026-08-07T01:10:17.267Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:25.138Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (50/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5032,
+    "createdAt": "2026-08-07T01:10:17.280Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:25.333Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (51/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5033,
+    "createdAt": "2026-08-07T01:10:17.296Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:25.522Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (52/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5034,
+    "createdAt": "2026-08-07T01:10:17.320Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:54.262Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (53/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5035,
+    "createdAt": "2026-08-07T01:10:17.336Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:54.446Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (54/54) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5036,
+    "createdAt": "2026-08-07T01:10:17.354Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:54.623Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/1) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5037,
+    "createdAt": "2026-08-07T01:10:17.371Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:54.786Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (1/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5038,
+    "createdAt": "2026-08-07T01:10:17.385Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:54.976Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (2/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5039,
+    "createdAt": "2026-08-07T01:10:17.400Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T01:59:55.164Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (3/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5040,
+    "createdAt": "2026-08-07T01:10:17.422Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T02:00:54.076Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (4/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5041,
+    "createdAt": "2026-08-07T01:10:17.435Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T02:00:54.254Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (5/5) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5042,
+    "createdAt": "2026-08-07T01:10:17.449Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T02:00:54.434Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5043,
+    "createdAt": "2026-08-07T13:10:05.272Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:24.292Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5044,
+    "createdAt": "2026-08-07T13:10:05.299Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:24.497Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5045,
+    "createdAt": "2026-08-07T13:10:05.314Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:24.668Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5046,
+    "createdAt": "2026-08-07T13:10:05.331Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:24.883Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (5/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5047,
+    "createdAt": "2026-08-07T13:10:05.346Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:25.098Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (6/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5048,
+    "createdAt": "2026-08-07T13:10:05.360Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:25.311Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (7/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5049,
+    "createdAt": "2026-08-07T13:10:05.383Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:25.520Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (8/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5050,
+    "createdAt": "2026-08-07T13:10:05.400Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:25.693Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (9/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5051,
+    "createdAt": "2026-08-07T13:10:05.417Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:25.895Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (10/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5052,
+    "createdAt": "2026-08-07T13:10:05.442Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:26.104Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (11/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5053,
+    "createdAt": "2026-08-07T13:10:05.457Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:10:26.308Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (12/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5054,
+    "createdAt": "2026-08-07T13:10:05.521Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:54.202Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (13/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5055,
+    "createdAt": "2026-08-07T13:10:05.546Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:54.410Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (14/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5056,
+    "createdAt": "2026-08-07T13:10:05.565Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:54.624Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (15/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5057,
+    "createdAt": "2026-08-07T13:10:05.586Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:54.781Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (16/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5058,
+    "createdAt": "2026-08-07T13:10:05.607Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:54.986Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (17/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5059,
+    "createdAt": "2026-08-07T13:10:05.626Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:55.203Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (18/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5060,
+    "createdAt": "2026-08-07T13:10:05.652Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:55.406Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (19/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5061,
+    "createdAt": "2026-08-07T13:10:05.673Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:55.596Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (20/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5062,
+    "createdAt": "2026-08-07T13:10:05.692Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:15:55.783Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (21/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5063,
+    "createdAt": "2026-08-07T13:10:05.713Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:16:24.849Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (22/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5064,
+    "createdAt": "2026-08-07T13:10:05.736Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:20:54.506Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (23/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5065,
+    "createdAt": "2026-08-07T13:10:05.762Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:20:54.702Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (24/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5066,
+    "createdAt": "2026-08-07T13:10:05.788Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:20:54.883Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (25/25) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5067,
+    "createdAt": "2026-08-07T13:10:05.811Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:24.516Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5068,
+    "createdAt": "2026-08-07T13:10:05.831Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:24.684Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5069,
+    "createdAt": "2026-08-07T13:10:05.846Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:24.894Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5070,
+    "createdAt": "2026-08-07T13:10:05.873Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:25.106Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5071,
+    "createdAt": "2026-08-07T13:10:05.896Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:25.308Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5072,
+    "createdAt": "2026-08-07T13:10:05.918Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:25.525Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5073,
+    "createdAt": "2026-08-07T13:10:05.937Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:21:54.739Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5074,
+    "createdAt": "2026-08-07T13:10:05.955Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:25:54.692Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5075,
+    "createdAt": "2026-08-07T13:10:05.973Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:24.706Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5076,
+    "createdAt": "2026-08-07T13:10:05.992Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:24.909Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5077,
+    "createdAt": "2026-08-07T13:10:06.010Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:25.118Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5078,
+    "createdAt": "2026-08-07T13:10:06.029Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:54.746Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5079,
+    "createdAt": "2026-08-07T13:10:06.046Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:54.949Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5080,
+    "createdAt": "2026-08-07T13:10:06.061Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:55.159Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5081,
+    "createdAt": "2026-08-07T13:10:06.075Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:55.367Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (15/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5082,
+    "createdAt": "2026-08-07T13:10:06.093Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:26:55.573Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (16/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5083,
+    "createdAt": "2026-08-07T13:10:06.110Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:27:24.757Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (17/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5084,
+    "createdAt": "2026-08-07T13:10:06.126Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:31:25.050Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (18/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5085,
+    "createdAt": "2026-08-07T13:10:06.145Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:31:55.086Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (19/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5086,
+    "createdAt": "2026-08-07T13:10:06.164Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:31:55.257Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (20/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5087,
+    "createdAt": "2026-08-07T13:10:06.189Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:31:55.460Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (21/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5088,
+    "createdAt": "2026-08-07T13:10:06.207Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:32:24.923Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (22/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5089,
+    "createdAt": "2026-08-07T13:10:06.222Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:32:25.131Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (23/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5090,
+    "createdAt": "2026-08-07T13:10:06.240Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:32:25.346Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (24/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5091,
+    "createdAt": "2026-08-07T13:10:06.256Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:32:25.571Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (25/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5092,
+    "createdAt": "2026-08-07T13:10:06.273Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:32:25.797Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (26/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5093,
+    "createdAt": "2026-08-07T13:10:06.289Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:32:55.211Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (27/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5094,
+    "createdAt": "2026-08-07T13:10:06.304Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:36:55.252Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (28/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5095,
+    "createdAt": "2026-08-07T13:10:06.322Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:25.256Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (29/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5096,
+    "createdAt": "2026-08-07T13:10:06.342Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:25.457Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (30/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5097,
+    "createdAt": "2026-08-07T13:10:06.358Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:25.665Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (31/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5098,
+    "createdAt": "2026-08-07T13:10:06.373Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:55.308Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (32/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5099,
+    "createdAt": "2026-08-07T13:10:06.388Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:55.531Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (33/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5100,
+    "createdAt": "2026-08-07T13:10:06.405Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:55.757Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (34/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5101,
+    "createdAt": "2026-08-07T13:10:06.427Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:55.970Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (35/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5102,
+    "createdAt": "2026-08-07T13:10:06.442Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:37:56.158Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (36/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5103,
+    "createdAt": "2026-08-07T13:10:06.457Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:38:25.278Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (37/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5104,
+    "createdAt": "2026-08-07T13:10:06.480Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:41:55.406Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (38/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5105,
+    "createdAt": "2026-08-07T13:10:06.495Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:42:25.651Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (39/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5106,
+    "createdAt": "2026-08-07T13:10:06.510Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:42:25.854Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (40/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5107,
+    "createdAt": "2026-08-07T13:10:06.524Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:42:26.034Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (41/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5108,
+    "createdAt": "2026-08-07T13:10:06.550Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:42:55.462Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (42/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5109,
+    "createdAt": "2026-08-07T13:10:06.566Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:42:55.671Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (43/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5110,
+    "createdAt": "2026-08-07T13:10:06.581Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:43:25.401Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (44/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5111,
+    "createdAt": "2026-08-07T13:10:06.596Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:43:25.585Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (45/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5112,
+    "createdAt": "2026-08-07T13:10:06.611Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:43:25.788Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (46/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5113,
+    "createdAt": "2026-08-07T13:10:06.625Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:43:25.953Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (47/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5114,
+    "createdAt": "2026-08-07T13:10:06.644Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:46:55.683Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (48/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5115,
+    "createdAt": "2026-08-07T13:10:06.659Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:47:25.722Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (49/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5116,
+    "createdAt": "2026-08-07T13:10:06.673Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:47:55.612Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (50/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5117,
+    "createdAt": "2026-08-07T13:10:06.689Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:47:55.823Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (51/51) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5118,
+    "createdAt": "2026-08-07T13:10:06.715Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:47:56.020Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 5119,
+    "createdAt": "2026-08-07T13:10:06.731Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:47:56.241Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 5120,
+    "createdAt": "2026-08-07T13:10:06.748Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:48:25.772Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 5121,
+    "createdAt": "2026-08-07T13:10:06.764Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:48:25.981Z"
+  },
+  {
+    "description": "[craft queue] Battery pack (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "battery_pack"
+    },
+    "id": 5122,
+    "createdAt": "2026-08-07T13:10:06.780Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:48:55.709Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (1/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5123,
+    "createdAt": "2026-08-07T13:10:06.805Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:48:55.902Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (2/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5124,
+    "createdAt": "2026-08-07T13:10:06.822Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:52:55.907Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (3/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5125,
+    "createdAt": "2026-08-07T13:10:06.838Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:52:56.130Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (4/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5126,
+    "createdAt": "2026-08-07T13:10:06.853Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:53:25.995Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (5/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5127,
+    "createdAt": "2026-08-07T13:10:06.868Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:53:26.188Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (6/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5128,
+    "createdAt": "2026-08-07T13:10:06.888Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:57:56.462Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (7/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5129,
+    "createdAt": "2026-08-07T13:10:06.906Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:57:56.675Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (8/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5130,
+    "createdAt": "2026-08-07T13:10:06.923Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:57:56.902Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (9/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5131,
+    "createdAt": "2026-08-07T13:10:06.948Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:57:57.122Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (10/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5132,
+    "createdAt": "2026-08-07T13:10:06.965Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:57:57.343Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (11/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5133,
+    "createdAt": "2026-08-07T13:10:06.980Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:57:57.566Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (12/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5134,
+    "createdAt": "2026-08-07T13:10:06.995Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:58:26.215Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (13/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5135,
+    "createdAt": "2026-08-07T13:10:07.011Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:58:26.440Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (14/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5136,
+    "createdAt": "2026-08-07T13:10:07.029Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:58:26.671Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (15/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5137,
+    "createdAt": "2026-08-07T13:10:07.048Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T13:58:26.881Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (16/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5138,
+    "createdAt": "2026-08-07T13:10:07.068Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T14:04:26.249Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (17/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5139,
+    "createdAt": "2026-08-07T13:10:07.088Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T14:07:56.511Z"
+  },
+  {
+    "description": "[craft queue] Electric motor (18/18) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 2
+        },
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "electric_motor"
+    },
+    "id": 5140,
+    "createdAt": "2026-08-07T13:10:07.107Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T14:07:56.679Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (1/2) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5141,
+    "createdAt": "2026-08-07T13:10:07.141Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T14:07:56.881Z"
+  },
+  {
+    "description": "[craft queue] Linear actuator (2/2) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 2
+        },
+        {
+          "type": "steel_bar",
+          "quantity": 1
+        },
+        {
+          "type": "electric_motor",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "linear_actuator"
+    },
+    "id": 5142,
+    "createdAt": "2026-08-07T13:10:07.157Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T14:08:26.416Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (1/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5144,
+    "createdAt": "2026-08-07T17:10:24.623Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:02.728Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (2/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5145,
+    "createdAt": "2026-08-07T17:10:24.642Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:02.909Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (3/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5146,
+    "createdAt": "2026-08-07T17:10:24.671Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:03.119Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (4/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5147,
+    "createdAt": "2026-08-07T17:10:24.687Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:03.342Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (5/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5148,
+    "createdAt": "2026-08-07T17:10:24.704Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:03.555Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (6/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5149,
+    "createdAt": "2026-08-07T17:10:24.724Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:03.723Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (7/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5150,
+    "createdAt": "2026-08-07T17:10:24.741Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:03.918Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (8/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5151,
+    "createdAt": "2026-08-07T17:10:24.755Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:04.108Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (9/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5152,
+    "createdAt": "2026-08-07T17:10:24.770Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:04.299Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (10/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5153,
+    "createdAt": "2026-08-07T17:10:24.787Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:04.561Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (11/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5154,
+    "createdAt": "2026-08-07T17:10:24.802Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:04.726Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (12/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5155,
+    "createdAt": "2026-08-07T17:10:24.816Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:04.937Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (13/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5156,
+    "createdAt": "2026-08-07T17:10:24.834Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:05.160Z"
+  },
+  {
+    "description": "[craft queue] Steel bar (14/14) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_bar"
+    },
+    "id": 5157,
+    "createdAt": "2026-08-07T17:10:24.847Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:05.342Z"
+  },
+  {
+    "description": "[craft queue] Additional container (1/2) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 15
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 5158,
+    "createdAt": "2026-08-07T17:10:24.869Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:10:35.214Z"
+  },
+  {
+    "description": "[craft queue] Additional container (2/2) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_bar",
+          "quantity": 15
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "additional_container"
+    },
+    "id": 5159,
+    "createdAt": "2026-08-07T17:10:24.883Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:32.470Z"
+  },
+  {
+    "description": "[craft queue] Atomic printer part (1/1) via atomic printer",
+    "probeId": 795,
+    "condition": {
+      "type": "probe_idle"
+    },
+    "action": {
+      "type": "atomic_printer_craft",
+      "recipe": "atomic_printer_part"
+    },
+    "id": 5160,
+    "createdAt": "2026-08-07T17:10:33.193Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T17:11:05.555Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5161,
+    "createdAt": "2026-08-07T18:17:44.395Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T18:18:04.737Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5162,
+    "createdAt": "2026-08-07T18:17:44.415Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T18:18:04.944Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5163,
+    "createdAt": "2026-08-07T18:17:44.434Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T18:18:05.134Z"
+  },
+  {
+    "description": "[craft queue] Steel plate (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle"
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "steel_plate"
+    },
+    "id": 5164,
+    "createdAt": "2026-08-07T18:17:44.452Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T18:18:05.339Z"
+  },
+  {
+    "description": "[craft queue] Solar panel (1/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "solar_panel"
+    },
+    "id": 5165,
+    "createdAt": "2026-08-07T18:17:44.480Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T18:23:35.022Z"
+  },
+  {
+    "description": "[craft queue] Solar panel (2/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "solar_panel"
+    },
+    "id": 5166,
+    "createdAt": "2026-08-07T18:17:44.499Z",
+    "status": "triggered",
+    "triggeredAt": "2026-08-07T18:23:35.232Z"
+  },
+  {
+    "description": "[craft queue] Solar panel (3/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "solar_panel"
+    },
+    "id": 5167,
+    "createdAt": "2026-08-07T18:17:44.520Z",
+    "status": "pending"
+  },
+  {
+    "description": "[craft queue] Solar panel (4/4) via Manny",
+    "probeId": 795,
+    "condition": {
+      "type": "manny_idle",
+      "requireItemsWithQty": [
+        {
+          "type": "steel_plate",
+          "quantity": 1
+        }
+      ]
+    },
+    "action": {
+      "type": "craft_item",
+      "recipe": "solar_panel"
+    },
+    "id": 5168,
+    "createdAt": "2026-08-07T18:17:44.546Z",
+    "status": "pending"
   }
 ]
