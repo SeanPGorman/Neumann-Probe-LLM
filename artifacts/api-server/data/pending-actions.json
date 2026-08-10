@@ -78450,7 +78450,8 @@
     },
     "id": 5358,
     "createdAt": "2026-08-09T23:21:54.296Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:01.349Z"
   },
   {
     "description": "[craft queue] Steel bar (35/42) via Manny",
@@ -78464,7 +78465,8 @@
     },
     "id": 5359,
     "createdAt": "2026-08-09T23:21:54.313Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:01.674Z"
   },
   {
     "description": "[craft queue] Steel bar (36/42) via Manny",
@@ -78478,7 +78480,8 @@
     },
     "id": 5360,
     "createdAt": "2026-08-09T23:21:54.330Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:01.874Z"
   },
   {
     "description": "[craft queue] Steel bar (37/42) via Manny",
@@ -78492,7 +78495,8 @@
     },
     "id": 5361,
     "createdAt": "2026-08-09T23:21:54.350Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:02.090Z"
   },
   {
     "description": "[craft queue] Steel bar (38/42) via Manny",
@@ -78506,7 +78510,8 @@
     },
     "id": 5362,
     "createdAt": "2026-08-09T23:21:54.369Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:02.282Z"
   },
   {
     "description": "[craft queue] Steel bar (39/42) via Manny",
@@ -78520,7 +78525,8 @@
     },
     "id": 5363,
     "createdAt": "2026-08-09T23:21:54.420Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:02.500Z"
   },
   {
     "description": "[craft queue] Steel bar (40/42) via Manny",
@@ -78534,7 +78540,8 @@
     },
     "id": 5364,
     "createdAt": "2026-08-09T23:21:54.439Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:02.711Z"
   },
   {
     "description": "[craft queue] Steel bar (41/42) via Manny",
@@ -78548,7 +78555,8 @@
     },
     "id": 5365,
     "createdAt": "2026-08-09T23:21:54.457Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:02.949Z"
   },
   {
     "description": "[craft queue] Steel bar (42/42) via Manny",
@@ -78562,7 +78570,8 @@
     },
     "id": 5366,
     "createdAt": "2026-08-09T23:21:54.473Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-10T07:26:03.128Z"
   },
   {
     "description": "[craft queue] Battery pack (1/6) via Manny",
