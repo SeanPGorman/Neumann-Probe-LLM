@@ -3,7 +3,7 @@
     "containerId": "container-itm_craft_22326f5399edb795ed71e81a",
     "containerName": "Container 14",
     "material": "metals",
-    "mannyCount": 4,
+    "mannyCount": 10,
     "probeId": 795,
     "enabled": true,
     "assignmentMode": "mine",
@@ -11,29 +11,12 @@
     "id": 17,
     "miningMannyIds": [
       "mny_craft_2c297095f23996a12ef9f1aa",
-      "mny_craft_972422f68842615497f97f6b"
+      "mny_craft_ed6ade8f0c14c5559264f9d4"
     ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-09T23:16:23.583Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85"
-  },
-  {
-    "containerId": "container-itm_craft_9336c11be49811b0856d07df",
-    "containerName": "Container 23",
-    "material": "metals",
-    "mannyCount": 2,
-    "probeId": 795,
-    "enabled": true,
-    "assignmentMode": "mine",
-    "cycleState": "mining",
-    "id": 18,
-    "miningMannyIds": [
-      "mny_craft_dbba4193f237f35a3bf2b1c9",
-      "mny_craft_71e345a18e9010c8618f3ffc"
-    ],
-    "containerCapacity": 1,
-    "lastCycleAt": "2026-08-09T23:16:23.773Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85"
+    "lastCycleAt": "2026-08-11T14:43:33.286Z",
+    "asteroidObjectId": "77b3f74303045a6c4f85",
+    "lastError": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "containerId": "container-itm_craft_06f381edbfe2394df5090ac6",
@@ -43,13 +26,11 @@
     "probeId": 795,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "mining",
+    "cycleState": "idle",
     "id": 19,
     "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-07T21:49:01.636Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85",
-    "lastError": "VNG API error (404): Detached storage container not found."
+    "lastCycleAt": "2026-08-07T21:49:01.636Z"
   },
   {
     "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
@@ -62,19 +43,19 @@
     "cycleState": "mining",
     "id": 20,
     "miningMannyIds": [
+      "mny_craft_71e345a18e9010c8618f3ffc",
       "mny_craft_dbc75fcd68a35176419f5612",
       "mny_craft_6a8ecb81122b4d667cd278b6",
+      "mny_465d32ed9bee8a6f47d4f48a",
+      "mny_eca2b8efa977a8bf1380e199",
       "mny_craft_a2e47e05026a4d18ca8f50ab",
-      "mny_craft_ada5d3e695f6b5afe6627ff7",
-      "mny_craft_02462054c4334502880bbdb2",
+      "mny_craft_44fe0aea79d8e93b31ab2f7c",
       "mny_craft_2ec3248f06e5c7cebe30c4ad",
       "mny_craft_2da87b26021ffc8b4e21a49c",
-      "mny_craft_ede30ea88eb5b480cf113ed4",
-      "mny_2e99b35cff3544167900a3d7",
-      "mny_05dc76cf9e04e6ec09e20a0a"
+      "mny_2e99b35cff3544167900a3d7"
     ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-09T23:27:24.751Z",
+    "lastCycleAt": "2026-08-11T16:39:37.792Z",
     "asteroidObjectId": "77b3f74303045a6c4f85"
   },
   {
@@ -88,7 +69,7 @@
     "cycleState": "deployed",
     "id": 22,
     "miningMannyIds": [],
-    "lastCycleAt": "2026-08-10T00:54:57.058Z"
+    "lastCycleAt": "2026-08-11T17:25:39.390Z"
   },
   {
     "containerId": "container-itm_craft_b91241d6ee395536b07b2d04",
@@ -98,10 +79,10 @@
     "probeId": 795,
     "enabled": true,
     "assignmentMode": "drift",
-    "cycleState": "idle",
+    "cycleState": "deployed",
     "id": 23,
     "miningMannyIds": [],
-    "lastCycleAt": "2026-08-06T04:09:50.098Z"
+    "lastCycleAt": "2026-08-11T16:39:07.918Z"
   },
   {
     "containerId": "container-itm_craft_5ea4028d65b47e6f77055aa4",
@@ -124,14 +105,11 @@
     "probeId": 795,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "mining",
+    "cycleState": "idle",
     "id": 25,
-    "miningMannyIds": [
-      "mny_craft_2c297095f23996a12ef9f1aa"
-    ],
+    "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-07T22:15:32.754Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85"
+    "lastCycleAt": "2026-08-07T22:15:32.754Z"
   },
   {
     "containerId": "container-itm_craft_ecaa7c38073bc0915a0eb276",
@@ -144,7 +122,7 @@
     "cycleState": "idle",
     "id": 26,
     "miningMannyIds": [],
-    "lastCycleAt": "2026-08-07T15:32:29.655Z"
+    "lastCycleAt": "2026-08-10T16:59:37.379Z"
   },
   {
     "containerId": "container-itm_craft_2ba19fecf04e3a64e4df2ce1",
@@ -157,7 +135,7 @@
     "cycleState": "deployed",
     "id": 27,
     "miningMannyIds": [],
-    "lastCycleAt": "2026-08-09T23:16:23.975Z"
+    "lastCycleAt": "2026-08-11T14:32:03.483Z"
   },
   {
     "containerId": "container-itm_craft_bd512613521a8bea8a2df1eb",
@@ -170,39 +148,45 @@
     "cycleState": "mining",
     "id": 28,
     "miningMannyIds": [
+      "mny_craft_643a8e8351820e71bb6c624c",
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_c15e7f67df56d909b3e5ee8b",
+      "mny_craft_0aa04b669253ede39c6bde48",
+      "mny_05dc76cf9e04e6ec09e20a0a",
       "mny_craft_f02b912e8cad9a8a323ea6a2",
       "mny_craft_068d6dc0206ecbd7cea2f54a",
-      "mny_craft_4c897a90304fa0c0d68a338d",
-      "mny_craft_44fe0aea79d8e93b31ab2f7c",
-      "mny_craft_662ff31f278d8358cb551f24",
-      "mny_craft_02462054c4334502880bbdb2",
-      "mny_craft_2ec3248f06e5c7cebe30c4ad",
-      "mny_craft_2da87b26021ffc8b4e21a49c",
-      "mny_craft_ede30ea88eb5b480cf113ed4",
-      "mny_2e99b35cff3544167900a3d7"
+      "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mny_craft_dd34d83b4d02992ae784e176",
+      "mny_craft_85511bdc26bf0ede26c34622"
     ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-09T23:40:25.076Z",
+    "lastCycleAt": "2026-08-11T16:39:38.200Z",
     "asteroidObjectId": "77b3f74303045a6c4f85"
   },
   {
     "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
     "containerName": "Container 15",
     "material": "metals",
-    "mannyCount": 4,
+    "mannyCount": 10,
     "probeId": 795,
     "enabled": true,
     "assignmentMode": "mine",
     "cycleState": "mining",
     "id": 29,
     "miningMannyIds": [
-      "mny_craft_dbc75fcd68a35176419f5612",
-      "mny_craft_2ec3248f06e5c7cebe30c4ad",
-      "mny_craft_2da87b26021ffc8b4e21a49c",
-      "mny_craft_ede30ea88eb5b480cf113ed4"
+      "mny_craft_2f0b4bdb6241162fef528e96",
+      "mny_craft_58b856920065c82478110e3c",
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_4cf649d1e90f7f7ea683f15b",
+      "mny_craft_8e3db2c0db8223314da01f70",
+      "mny_craft_c15e7f67df56d909b3e5ee8b",
+      "mny_craft_0aa04b669253ede39c6bde48",
+      "mny_05dc76cf9e04e6ec09e20a0a",
+      "mny_craft_f02b912e8cad9a8a323ea6a2",
+      "mny_craft_068d6dc0206ecbd7cea2f54a"
     ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-10T07:27:01.099Z",
+    "lastCycleAt": "2026-08-11T19:55:05.159Z",
     "asteroidObjectId": "77b3f74303045a6c4f85"
   },
   {
@@ -216,19 +200,13 @@
     "cycleState": "mining",
     "id": 30,
     "miningMannyIds": [
-      "mny_465d32ed9bee8a6f47d4f48a",
-      "mny_craft_068d6dc0206ecbd7cea2f54a",
-      "mny_craft_4c897a90304fa0c0d68a338d",
-      "mny_craft_a7302fcf78eed273c31d90b3",
-      "mny_craft_8e3db2c0db8223314da01f70",
-      "mny_craft_2445058eebc2753d53a7b65c",
-      "mny_craft_643a8e8351820e71bb6c624c",
-      "mny_craft_2f0b4bdb6241162fef528e96",
-      "mny_craft_acc87a04be7fb704d2c7fbec"
+      "mny_craft_02462054c4334502880bbdb2",
+      "mny_craft_a7302fcf78eed273c31d90b3"
     ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-09T23:16:24.364Z",
-    "asteroidObjectId": "77b3f74303045a6c4f85"
+    "lastCycleAt": "2026-08-11T14:37:33.209Z",
+    "asteroidObjectId": "77b3f74303045a6c4f85",
+    "lastError": "VNG API error (429): Too many API requests for this bearer token."
   },
   {
     "containerId": "container-itm_craft_8c8e9ee97821c0270b1f426f",
@@ -241,13 +219,13 @@
     "cycleState": "mining",
     "id": 31,
     "miningMannyIds": [
-      "mny_craft_dd34d83b4d02992ae784e176",
-      "mny_craft_4cf649d1e90f7f7ea683f15b",
-      "mny_craft_c15e7f67df56d909b3e5ee8b",
-      "mny_craft_0aa04b669253ede39c6bde48"
+      "mny_craft_71e345a18e9010c8618f3ffc",
+      "mny_craft_08dc26edeae77b95c3bd1599",
+      "mny_craft_dbc75fcd68a35176419f5612",
+      "mny_craft_6a8ecb81122b4d667cd278b6"
     ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-09T23:16:24.552Z",
+    "lastCycleAt": "2026-08-11T18:19:10.234Z",
     "asteroidObjectId": "77b3f74303045a6c4f85"
   },
   {
@@ -261,20 +239,7 @@
     "cycleState": "deployed",
     "id": 32,
     "miningMannyIds": [],
-    "lastCycleAt": "2026-08-09T23:44:24.133Z"
-  },
-  {
-    "containerId": "container-itm_craft_a0c2a5c9586c5c284e391ba4",
-    "containerName": "Container 25",
-    "material": "carbon_compounds",
-    "mannyCount": 1,
-    "probeId": 795,
-    "enabled": true,
-    "assignmentMode": "drift",
-    "cycleState": "idle",
-    "id": 33,
-    "miningMannyIds": [],
-    "lastCycleAt": "2026-08-07T19:17:57.706Z"
+    "lastCycleAt": "2026-08-11T16:39:08.661Z"
   },
   {
     "containerId": "container-itm_craft_7d409348aeb34e6d7d674eba",
@@ -285,6 +250,89 @@
     "enabled": true,
     "assignmentMode": "drift",
     "cycleState": "idle",
-    "id": 34
+    "id": 34,
+    "miningMannyIds": [],
+    "lastCycleAt": "2026-08-10T17:00:07.576Z"
+  },
+  {
+    "containerId": "container-itm_craft_a0c2a5c9586c5c284e391ba4",
+    "containerName": "Container 25",
+    "material": "metals",
+    "mannyCount": 10,
+    "probeId": 795,
+    "enabled": true,
+    "assignmentMode": "mine",
+    "cycleState": "mining",
+    "id": 35,
+    "miningMannyIds": [
+      "mny_craft_2565d08b49b29e0bdcda7be7",
+      "mny_craft_08dc26edeae77b95c3bd1599",
+      "mny_craft_dbc75fcd68a35176419f5612",
+      "mny_craft_6a8ecb81122b4d667cd278b6",
+      "mny_craft_2f0b4bdb6241162fef528e96",
+      "mny_craft_58b856920065c82478110e3c"
+    ],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-11T18:20:10.249Z",
+    "asteroidObjectId": "77b3f74303045a6c4f85"
+  },
+  {
+    "containerId": "container-itm_craft_87d0245c32e35eca62c61b7d",
+    "containerName": "Container 50",
+    "material": "carbon_compounds",
+    "mannyCount": 1,
+    "probeId": 795,
+    "enabled": true,
+    "assignmentMode": "drift",
+    "cycleState": "idle",
+    "id": 36
+  },
+  {
+    "containerId": "container-itm_craft_7fa4eab3c27e5f80f655fb86",
+    "containerName": "Container 42",
+    "material": "ice",
+    "mannyCount": 1,
+    "probeId": 795,
+    "enabled": true,
+    "assignmentMode": "drift",
+    "cycleState": "idle",
+    "id": 37
+  },
+  {
+    "containerId": "container-itm_craft_32178d2c94011b4abe9432d7",
+    "containerName": "Container 24",
+    "material": "carbon_compounds",
+    "mannyCount": 1,
+    "probeId": 795,
+    "enabled": true,
+    "assignmentMode": "drift",
+    "cycleState": "idle",
+    "id": 38
+  },
+  {
+    "containerId": "container-itm_craft_6ffd049ebcd464535d2bc06f",
+    "containerName": "Container 51",
+    "material": "metals",
+    "mannyCount": 10,
+    "probeId": 795,
+    "enabled": true,
+    "assignmentMode": "mine",
+    "cycleState": "mining",
+    "id": 39,
+    "miningMannyIds": [
+      "mny_craft_2c297095f23996a12ef9f1aa",
+      "mny_craft_ed6ade8f0c14c5559264f9d4",
+      "mny_craft_02462054c4334502880bbdb2",
+      "mny_craft_a7302fcf78eed273c31d90b3",
+      "mny_465d32ed9bee8a6f47d4f48a",
+      "mny_eca2b8efa977a8bf1380e199",
+      "mny_craft_a2e47e05026a4d18ca8f50ab",
+      "mny_craft_ada5d3e695f6b5afe6627ff7",
+      "mny_craft_2ec3248f06e5c7cebe30c4ad",
+      "mny_craft_2da87b26021ffc8b4e21a49c"
+    ],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-11T18:08:11.129Z",
+    "asteroidObjectId": "77b3f74303045a6c4f85"
   }
 ]

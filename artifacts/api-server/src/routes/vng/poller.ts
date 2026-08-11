@@ -574,7 +574,7 @@ async function runMiningCycle(
     // Skip re-dispatch entirely if the container is already full — the mannies
     // have finished their work and we should fall through to recovery (step 5).
     const containerUsedCapacity: number = deployedContainerObj?.usedCapacity ?? 0;
-    const containerFull = containerUsedCapacity >= 0.99;
+    let containerFull = containerUsedCapacity >= 0.99;
     if (containerFull) {
       logger.info(
         { label, usedCapacity: containerUsedCapacity },
@@ -607,6 +607,16 @@ async function runMiningCycle(
         } catch (err: any) {
           if (err instanceof VngApiError && err.status === 409) {
             stillActive.push(m.id as string); // still busy — count as active
+          } else if (
+            err instanceof VngApiError && err.status === 422 &&
+            typeof err.message === "string" && err.message.toLowerCase().includes("full")
+          ) {
+            // VNG confirms container is full even though usedCapacity on the sector
+            // object hasn't updated yet. Treat this as definitive — skip straight to
+            // recovery rather than deferring 30 seconds.
+            containerFull = true;
+            logger.info({ label }, "mining: 422 full on re-dispatch — treating container as full, proceeding to recovery");
+            break;
           } else {
             throw err;
           }
@@ -620,8 +630,9 @@ async function runMiningCycle(
 
     // ── Step 4: fill any remaining slots with fresh idle mannies ────────────
     // mannyCount is the max; fill up to that cap (or fewer if the reserve limits it).
+    // Skip entirely if the container is full — fall through to recovery.
     const stillNeeded = assignment.mannyCount - miningIds.length;
-    if (stillNeeded > 0 && effectiveAsteroidId && containerInSector) {
+    if (!containerFull && stillNeeded > 0 && effectiveAsteroidId && containerInSector) {
       const extraAvailable = mannies.filter(
         (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
       );
@@ -635,32 +646,48 @@ async function runMiningCycle(
         for (let i = 0; i < toAdd.length; i++) {
           const m = toAdd[i];
           const amount = fillAmounts[miningIds.length + i];
-          await c.mineResources(
-            m.id as string,
-            effectiveAsteroidId,
-            [assignment.material],
-            amount,
-            containerObjectId
-          );
-          claimedMannies.add(m.id as string);
-          stillActive.push(m.id as string);
+          try {
+            await c.mineResources(
+              m.id as string,
+              effectiveAsteroidId,
+              [assignment.material],
+              amount,
+              containerObjectId
+            );
+            claimedMannies.add(m.id as string);
+            stillActive.push(m.id as string);
+          } catch (err: any) {
+            if (
+              err instanceof VngApiError && err.status === 422 &&
+              typeof err.message === "string" && err.message.toLowerCase().includes("full")
+            ) {
+              containerFull = true;
+              logger.info({ label }, "mining: 422 full on fill dispatch — treating container as full, proceeding to recovery");
+              break;
+            }
+            throw err;
+          }
         }
-        miningIds = [...miningIds, ...toAdd.map((m: any) => m.id as string)];
-        await updateMiningCycleState(assignment.id, {
-          miningMannyIds: miningIds,
-          containerCapacity: cap,
-          asteroidObjectId: effectiveAsteroidId,
-          lastError: undefined,
-        });
-        logger.info(
-          { label, added: toAdd.length, total: miningIds.length },
-          "mining: filled remaining manny slots"
-        );
+        if (!containerFull) {
+          miningIds = [...miningIds, ...toAdd.map((m: any) => m.id as string)];
+          await updateMiningCycleState(assignment.id, {
+            miningMannyIds: miningIds,
+            containerCapacity: cap,
+            asteroidObjectId: effectiveAsteroidId,
+            lastError: undefined,
+          });
+          logger.info(
+            { label, added: toAdd.length, total: miningIds.length },
+            "mining: filled remaining manny slots"
+          );
+        }
       }
     }
 
     // ── Step 5: wait or recover ──────────────────────────────────────────────
-    if (stillActive.length > 0) {
+    // If the container is confirmed full (by usedCapacity or by a 422 from VNG),
+    // skip waiting and go straight to recovery regardless of stillActive count.
+    if (!containerFull && stillActive.length > 0) {
       logger.info(
         { label, activeCount: stillActive.length, total: miningIds.length },
         "mining: waiting for miners to finish"
