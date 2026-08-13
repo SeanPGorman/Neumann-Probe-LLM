@@ -1,17 +1,5 @@
 [
   {
-    "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
-    "containerName": "Container 12",
-    "material": "ice",
-    "mannyCount": 10,
-    "probeId": 716,
-    "enabled": false,
-    "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 1,
-    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
-  },
-  {
     "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
     "containerName": "Container 15",
     "material": "metals",
@@ -34,16 +22,18 @@
     "id": 3
   },
   {
-    "containerId": "container-itm_craft_a0c2a5c9586c5c284e391ba4",
-    "containerName": "Container 25",
-    "material": "metals",
+    "containerId": "container-itm_craft_87d0245c32e35eca62c61b7d",
+    "containerName": "Container 50",
+    "material": "carbon_compounds",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": false,
+    "enabled": true,
     "assignmentMode": "mine",
     "cycleState": "idle",
-    "id": 4,
-    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
+    "id": 9,
+    "miningMannyIds": [],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-13T19:16:53.499Z"
   },
   {
     "containerId": "container-itm_craft_b91241d6ee395536b07b2d04",
@@ -53,69 +43,46 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 5
+    "cycleState": "mining",
+    "id": 12,
+    "asteroidObjectId": "05476205866812ef89e5",
+    "miningMannyIds": [
+      "mny_eca2b8efa977a8bf1380e199",
+      "mny_craft_ada5d3e695f6b5afe6627ff7",
+      "mny_craft_44fe0aea79d8e93b31ab2f7c",
+      "mny_craft_2da87b26021ffc8b4e21a49c",
+      "mny_2e99b35cff3544167900a3d7",
+      "mny_craft_449013273a9d430b52fb8789",
+      "mny_craft_6a1997812bd5d4673b792041",
+      "mny_craft_58b856920065c82478110e3c",
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_4cf649d1e90f7f7ea683f15b"
+    ],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-13T19:10:53.415Z"
   },
   {
-    "containerId": "container-itm_craft_7bda6981d5fa1a1df9d5844a",
-    "containerName": "Container 41",
+    "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
+    "containerName": "Container 12",
+    "material": "ice",
+    "mannyCount": 10,
+    "probeId": 716,
+    "enabled": false,
+    "assignmentMode": "mine",
+    "cycleState": "idle",
+    "id": 13,
+    "lastError": "VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment."
+  },
+  {
+    "containerId": "container-itm_craft_a0c2a5c9586c5c284e391ba4",
+    "containerName": "Container 25",
     "material": "metals",
     "mannyCount": 10,
     "probeId": 716,
     "enabled": false,
     "assignmentMode": "mine",
     "cycleState": "idle",
-    "id": 6,
-    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
-  },
-  {
-    "containerId": "container-itm_craft_7fa4eab3c27e5f80f655fb86",
-    "containerName": "Container 42",
-    "material": "ice",
-    "mannyCount": 10,
-    "probeId": 716,
-    "enabled": false,
-    "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 7,
-    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
-  },
-  {
-    "containerId": "container-itm_craft_27f2855418f130a1de205e8b",
-    "containerName": "Container 46",
-    "material": "ice",
-    "mannyCount": 10,
-    "probeId": 716,
-    "enabled": false,
-    "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 8,
-    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
-  },
-  {
-    "containerId": "container-itm_craft_87d0245c32e35eca62c61b7d",
-    "containerName": "Container 50",
-    "material": "carbon_compounds",
-    "mannyCount": 10,
-    "probeId": 716,
-    "enabled": true,
-    "assignmentMode": "mine",
-    "cycleState": "mining",
-    "id": 9,
-    "asteroidObjectId": "05476205866812ef89e5",
-    "miningMannyIds": [
-      "mny_craft_8a97ad41a36a0cb0de71600c",
-      "mny_craft_dd34d83b4d02992ae784e176",
-      "mny_craft_85511bdc26bf0ede26c34622",
-      "mny_craft_4c897a90304fa0c0d68a338d",
-      "mny_craft_4d65f0fc6646fad9813fb311",
-      "mny_craft_ed6ade8f0c14c5559264f9d4",
-      "mny_craft_2565d08b49b29e0bdcda7be7",
-      "mny_craft_972422f68842615497f97f6b",
-      "mny_craft_02462054c4334502880bbdb2",
-      "mny_465d32ed9bee8a6f47d4f48a"
-    ],
-    "containerCapacity": 1,
-    "lastCycleAt": "2026-08-13T18:14:33.838Z"
+    "id": 14,
+    "lastError": "VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment."
   }
 ]
