@@ -5,11 +5,11 @@
     "material": "ice",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": true,
+    "enabled": false,
     "assignmentMode": "mine",
     "cycleState": "idle",
     "id": 1,
-    "lastError": "VNG API error (422): Hidden containers must be attached to an asteroid in the current sector."
+    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
   },
   {
     "containerId": "container-itm_craft_ac5fa3b8c4bb88830e6d3805",
@@ -39,11 +39,11 @@
     "material": "metals",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": true,
+    "enabled": false,
     "assignmentMode": "mine",
     "cycleState": "idle",
     "id": 4,
-    "lastError": "VNG API error (422): Hidden containers must be attached to an asteroid in the current sector."
+    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
   },
   {
     "containerId": "container-itm_craft_b91241d6ee395536b07b2d04",
@@ -62,11 +62,11 @@
     "material": "metals",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": true,
+    "enabled": false,
     "assignmentMode": "mine",
     "cycleState": "idle",
     "id": 6,
-    "lastError": "VNG API error (422): Hidden containers must be attached to an asteroid in the current sector."
+    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
   },
   {
     "containerId": "container-itm_craft_7fa4eab3c27e5f80f655fb86",
@@ -74,10 +74,11 @@
     "material": "ice",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": true,
+    "enabled": false,
     "assignmentMode": "mine",
     "cycleState": "idle",
-    "id": 7
+    "id": 7,
+    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
   },
   {
     "containerId": "container-itm_craft_27f2855418f130a1de205e8b",
@@ -85,10 +86,11 @@
     "material": "ice",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": true,
+    "enabled": false,
     "assignmentMode": "mine",
     "cycleState": "idle",
-    "id": 8
+    "id": 8,
+    "lastError": "Container stranded in previous sector — manually recover the container then re-enable this assignment."
   },
   {
     "containerId": "container-itm_craft_87d0245c32e35eca62c61b7d",
@@ -98,7 +100,22 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 9
+    "cycleState": "mining",
+    "id": 9,
+    "asteroidObjectId": "05476205866812ef89e5",
+    "miningMannyIds": [
+      "mny_craft_8a97ad41a36a0cb0de71600c",
+      "mny_craft_dd34d83b4d02992ae784e176",
+      "mny_craft_85511bdc26bf0ede26c34622",
+      "mny_craft_4c897a90304fa0c0d68a338d",
+      "mny_craft_4d65f0fc6646fad9813fb311",
+      "mny_craft_ed6ade8f0c14c5559264f9d4",
+      "mny_craft_2565d08b49b29e0bdcda7be7",
+      "mny_craft_972422f68842615497f97f6b",
+      "mny_craft_02462054c4334502880bbdb2",
+      "mny_465d32ed9bee8a6f47d4f48a"
+    ],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-13T18:14:33.838Z"
   }
 ]

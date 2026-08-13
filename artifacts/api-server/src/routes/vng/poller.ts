@@ -198,12 +198,13 @@ async function runMiningAutomation(
         continue;
       }
       // 422 "Hidden containers must be attached to an asteroid in the current sector"
-      // — the container is stranded on an asteroid in the previous sector.
-      // Auto-disable the assignment so the poller stops hammering VNG.
+      // — VNG still considers this container as hidden/deployed (likely a state
+      // sync issue after changing sector). Auto-disable so the poller stops
+      // hammering VNG — user must resolve the container state then re-enable.
       if (err instanceof VngApiError && err.status === 422 &&
           typeof err.message === "string" && err.message.includes("current sector")) {
-        const stranded = `Container stranded in previous sector — manually recover the container then re-enable this assignment.`;
-        logger.warn({ assignmentId: assignment.id }, "drift/mining: container stranded in old sector — auto-disabling assignment");
+        const stranded = `VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment.`;
+        logger.warn({ assignmentId: assignment.id }, "drift/mining: VNG reports container already hidden/deployed — auto-disabling assignment");
         await updateMiningCycleState(assignment.id, { enabled: false, lastError: stranded }).catch(() => {});
         continue;
       }
