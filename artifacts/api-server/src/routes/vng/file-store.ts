@@ -529,6 +529,8 @@ export type MiningAssignment = {
   containerCapacity?: number;  // total capacity stored at dispatch time, used to calculate perManny
   lastCycleAt?: string;
   lastError?: string;
+  /** Consecutive "current sector" 422 count — reset to 0 on any successful cycle. */
+  sectorErrorCount?: number;
 };
 
 export async function getMiningAssignments(): Promise<MiningAssignment[]> {
@@ -584,7 +586,7 @@ export async function removeMiningAssignment(id: number): Promise<void> {
 export async function updateMiningCycleState(
   id: number,
   patch: Partial<Pick<MiningAssignment,
-    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "containerCapacity" | "lastCycleAt" | "lastError" | "enabled">>
+    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "containerCapacity" | "lastCycleAt" | "lastError" | "enabled" | "sectorErrorCount">>
 ): Promise<void> {
   return withWriteLock(async () => {
     const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);

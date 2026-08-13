@@ -188,6 +188,11 @@ async function runMiningAutomation(
       } else {
         await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
       }
+      // Successful cycle — reset the consecutive sector-error counter if it was
+      // nonzero so past transient failures don't count against future ticks.
+      if ((assignment.sectorErrorCount ?? 0) > 0) {
+        await updateMiningCycleState(assignment.id, { sectorErrorCount: 0 }).catch(() => {});
+      }
     } catch (err: any) {
       // 409 = manny busy; defer this assignment silently and continue to the next.
       if (err instanceof VngApiError && err.status === 409) {
@@ -203,13 +208,27 @@ async function runMiningAutomation(
       }
       // 422 "Hidden containers must be attached to an asteroid in the current sector"
       // — VNG still considers this container as hidden/deployed (likely a state
-      // sync issue after changing sector). Auto-disable so the poller stops
-      // hammering VNG — user must resolve the container state then re-enable.
+      // sync issue after changing sector or a brief VNG state lag).  Tolerate up
+      // to SECTOR_ERROR_THRESHOLD consecutive occurrences before auto-disabling
+      // so a single transient hiccup doesn't kill the assignment.
       if (err instanceof VngApiError && err.status === 422 &&
           typeof err.message === "string" && err.message.includes("current sector")) {
-        const stranded = `VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment.`;
-        logger.warn({ assignmentId: assignment.id }, "drift/mining: VNG reports container already hidden/deployed — auto-disabling assignment");
-        await updateMiningCycleState(assignment.id, { enabled: false, lastError: stranded }).catch(() => {});
+        const SECTOR_ERROR_THRESHOLD = 3;
+        const newCount = (assignment.sectorErrorCount ?? 0) + 1;
+        if (newCount < SECTOR_ERROR_THRESHOLD) {
+          logger.warn(
+            { assignmentId: assignment.id, sectorErrorCount: newCount, threshold: SECTOR_ERROR_THRESHOLD },
+            "drift/mining: VNG 'current sector' 422 — incrementing error count, not yet disabling"
+          );
+          await updateMiningCycleState(assignment.id, {
+            sectorErrorCount: newCount,
+            lastError: `VNG 'current sector' error (${newCount}/${SECTOR_ERROR_THRESHOLD} — will auto-disable at threshold)`,
+          }).catch(() => {});
+        } else {
+          const stranded = `VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment.`;
+          logger.warn({ assignmentId: assignment.id, sectorErrorCount: newCount }, "drift/mining: VNG 'current sector' 422 reached threshold — auto-disabling assignment");
+          await updateMiningCycleState(assignment.id, { enabled: false, sectorErrorCount: newCount, lastError: stranded }).catch(() => {});
+        }
         continue;
       }
       logger.error(
