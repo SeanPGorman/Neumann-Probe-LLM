@@ -584,7 +584,7 @@ export async function removeMiningAssignment(id: number): Promise<void> {
 export async function updateMiningCycleState(
   id: number,
   patch: Partial<Pick<MiningAssignment,
-    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "containerCapacity" | "lastCycleAt" | "lastError">>
+    "cycleState" | "asteroidObjectId" | "miningMannyIds" | "containerCapacity" | "lastCycleAt" | "lastError" | "enabled">>
 ): Promise<void> {
   return withWriteLock(async () => {
     const rows = await readFile<MiningAssignment[]>(MINING_FILE, []);

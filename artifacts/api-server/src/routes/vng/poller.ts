@@ -197,6 +197,16 @@ async function runMiningAutomation(
         logger.info({ assignmentId: assignment.id, err: err.message }, "mining: container full (422), deferring");
         continue;
       }
+      // 422 "Hidden containers must be attached to an asteroid in the current sector"
+      // — the container is stranded on an asteroid in the previous sector.
+      // Auto-disable the assignment so the poller stops hammering VNG.
+      if (err instanceof VngApiError && err.status === 422 &&
+          typeof err.message === "string" && err.message.includes("current sector")) {
+        const stranded = `Container stranded in previous sector — manually recover the container then re-enable this assignment.`;
+        logger.warn({ assignmentId: assignment.id }, "drift/mining: container stranded in old sector — auto-disabling assignment");
+        await updateMiningCycleState(assignment.id, { enabled: false, lastError: stranded }).catch(() => {});
+        continue;
+      }
       logger.error(
         { assignmentId: assignment.id, err: err.message },
         "drift/mining: cycle error"
