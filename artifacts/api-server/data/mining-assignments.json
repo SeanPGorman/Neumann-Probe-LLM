@@ -7,8 +7,23 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 2
+    "cycleState": "mining",
+    "id": 2,
+    "asteroidObjectId": "ab1635c2c796f7958b5e",
+    "miningMannyIds": [
+      "mny_craft_ed6ade8f0c14c5559264f9d4",
+      "mny_craft_2565d08b49b29e0bdcda7be7",
+      "mny_craft_972422f68842615497f97f6b",
+      "mny_craft_02462054c4334502880bbdb2",
+      "mny_465d32ed9bee8a6f47d4f48a",
+      "mny_eca2b8efa977a8bf1380e199",
+      "mny_craft_ada5d3e695f6b5afe6627ff7",
+      "mny_craft_44fe0aea79d8e93b31ab2f7c",
+      "mny_craft_2da87b26021ffc8b4e21a49c",
+      "mny_2e99b35cff3544167900a3d7"
+    ],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-13T20:53:55.006Z"
   },
   {
     "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
@@ -43,35 +58,36 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "recovering",
+    "cycleState": "idle",
     "id": 12,
-    "asteroidObjectId": "05476205866812ef89e5",
     "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-13T19:10:53.415Z"
+    "lastCycleAt": "2026-08-13T20:12:24.660Z"
   },
   {
     "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
     "containerName": "Container 12",
-    "material": "ice",
+    "material": "metals",
     "mannyCount": 10,
     "probeId": 716,
-    "enabled": false,
+    "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 13,
-    "lastError": "VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment."
-  },
-  {
-    "containerId": "container-itm_craft_7fa4eab3c27e5f80f655fb86",
-    "containerName": "Container 42",
-    "material": "ice",
-    "mannyCount": 10,
-    "probeId": 716,
-    "enabled": false,
-    "assignmentMode": "mine",
-    "cycleState": "idle",
-    "id": 14,
-    "lastError": "VNG still thinks this container is deployed on an asteroid (likely from before your sector change). In the VNG game client, try interacting with the container to reset its state, then re-enable this assignment."
+    "asteroidObjectId": "ab1635c2c796f7958b5e",
+    "miningMannyIds": [
+      "mny_craft_449013273a9d430b52fb8789",
+      "mny_craft_6a1997812bd5d4673b792041",
+      "mny_craft_58b856920065c82478110e3c",
+      "mny_craft_acc87a04be7fb704d2c7fbec",
+      "mny_craft_4cf649d1e90f7f7ea683f15b",
+      "mny_craft_c15e7f67df56d909b3e5ee8b",
+      "mny_craft_0aa04b669253ede39c6bde48",
+      "mny_05dc76cf9e04e6ec09e20a0a",
+      "mny_craft_068d6dc0206ecbd7cea2f54a",
+      "mny_craft_8a97ad41a36a0cb0de71600c"
+    ],
+    "containerCapacity": 1,
+    "lastCycleAt": "2026-08-13T20:53:55.133Z"
   }
 ]

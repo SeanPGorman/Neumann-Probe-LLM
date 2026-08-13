@@ -154,6 +154,10 @@ async function runMiningAutomation(
   for (const obj of mappedSector) {
     if (obj.type === "solar_system") {
       for (const body of (obj.bodies ?? [])) {
+        // Only asteroid-type bodies can have containers hidden on them.
+        // Planets are mineable via a different mechanism and must be excluded
+        // here or detachContainer(hidden_on_asteroid) returns 422.
+        if (body.type !== "asteroid") continue;
         const rt: string[] = body.resourceTypes ?? [];
         if (rt.length > 0) {
           asteroids.push({
