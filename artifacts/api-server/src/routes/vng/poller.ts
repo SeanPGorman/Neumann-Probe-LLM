@@ -341,10 +341,10 @@ async function runMiningCycle(
         (c.capacity != null && c.capacity > 0)
     );
     const container = invContainers.find((c: any) => c.id === assignment.containerId);
-    if (container && (container.usedCapacity ?? 0) >= 0.99) {
+    if (container && (container.usedCapacity ?? 0) > 0) {
       logger.info(
         { label, usedCapacity: container.usedCapacity },
-        "mining: container still full in inventory — waiting for unload before next cycle"
+        "mining: container not empty yet — waiting for unload before next cycle"
       );
       return;
     }
@@ -487,10 +487,10 @@ async function runMiningCycle(
       (c: any) => c.id === assignment.containerId
     );
     if (containerBackInInv) {
-      if ((containerBackInInv.usedCapacity ?? 0) >= 0.99) {
+      if ((containerBackInInv.usedCapacity ?? 0) > 0) {
         logger.info(
           { label, usedCapacity: containerBackInInv.usedCapacity },
-          "mining: container back in inventory but still full — waiting for unload"
+          "mining: container back in inventory, not empty yet — waiting for unload"
         );
         return;
       }
