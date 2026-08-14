@@ -11,9 +11,9 @@ async function fetchJson<T = any>(url: string): Promise<T> {
   return json as T;
 }
 
-const DEFAULT_RADIUS = 4;
-const MIN_RADIUS = 2;
-const MAX_RADIUS = 6;
+const DEFAULT_RADIUS = 8;
+const MIN_RADIUS = 4;
+const MAX_RADIUS = 12;
 
 /** Indexed colours for probe journeys; index 0 = main/first probe. */
 const PROBE_COLORS: [number, number, number][] = [
@@ -392,9 +392,11 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
 
           const isDrone = id !== originalProbeId;
 
+          // Other probes/drones: skip journey path — only their current-position
+          // dot (drawn separately in section 6) is shown on the globe.
+          if (isDrone) continue;
+
           // Draw path line when there are ≥2 sectors (segment-break on large jumps).
-          // Drones use projectClamped so their paths always appear on the sphere
-          // surface even when the sectors are beyond the current globe radius.
           const projFn = isDrone ? projectClamped : project;
           if (pSectors.length >= 2) {
             const MAX_JUMP_SQ = isDrone ? Infinity : 64; // never break drone paths
@@ -607,34 +609,21 @@ export function GlobeMap({ probeX, probeY, probeZ, priorX, priorY, priorZ, isMov
         ctx.arc(sx, sy, r, 0, Math.PI * 2);
         ctx.fillStyle = dotFill;
         ctx.fill();
-        // Name label
-        ctx.font = "8px monospace";
-        ctx.fillStyle = dotLabel;
-        ctx.fillText(op.name, sx + r + 3, sy + 3);
+        void dotLabel; // label suppressed — location dot only
       }
     }
 
     // Legend
     ctx.font = "9px monospace";
-    const journeyLegends: [string, string][] = (allProbes && allProbes.length > 0)
-      ? allProbes.map((p, pi) => {
-          const [cr, cg, cb] = PROBE_COLORS[pi % PROBE_COLORS.length];
-          const isThis = p.id === (selectedProbeId ?? null);
-          return [`── ${p.name}${isThis ? " ✦" : ""}`, `rgba(${cr},${cg},${cb},0.85)`] as [string, string];
-        })
-      : [["── journey", "rgba(0,220,80,0.85)"] as [string, string]];
-    const droneLegend: [string, string][] = otherProbes && otherProbes.length > 0
-      ? [["◉ drone", `rgba(${PROBE_COLORS[1][0]},${PROBE_COLORS[1][1]},${PROBE_COLORS[1][2]},0.85)`]]
-      : [];
     const legends: [string, string][] = [
       ["◉ probe", "rgba(200,255,220,0.9)"],
-      ...droneLegend,
+      ...(otherProbes && otherProbes.length > 0 ? [["◉ drone", `rgba(${PROBE_COLORS[1][0]},${PROBE_COLORS[1][1]},${PROBE_COLORS[1][2]},0.85)`] as [string, string]] : []),
       ...(hasPrior ? [["○ prior", "rgba(255,200,80,0.7)"] as [string, string]] : []),
       ["⌂ home [0,0,0]", "rgba(120,200,255,0.8)"],
       ["● visited", "rgba(60,220,110,0.8)"],
       ["◈ SCUT relay", "rgba(0,220,220,0.8)"],
       ["★ waypoint", "rgba(255,215,60,0.9)"],
-      ...journeyLegends,
+      ["── journey", "rgba(0,220,80,0.85)"],
     ];
     legends.forEach(([label, color], i) => {
       ctx.fillStyle = color;

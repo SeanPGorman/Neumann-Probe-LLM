@@ -7,12 +7,11 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "recovering",
+    "cycleState": "idle",
     "id": 2,
     "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-14T16:29:11.946Z",
-    "asteroidObjectId": "ab1635c2c796f7958b5e"
+    "lastCycleAt": "2026-08-14T17:39:57.979Z"
   },
   {
     "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
@@ -50,12 +49,11 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "recovering",
+    "cycleState": "idle",
     "id": 12,
     "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-14T16:29:41.987Z",
-    "asteroidObjectId": "05476205866812ef89e5"
+    "lastCycleAt": "2026-08-14T17:39:57.982Z"
   },
   {
     "containerId": "container-itm_craft_575e2b682b36ae5662dcb697",
@@ -147,12 +145,11 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "recovering",
+    "cycleState": "idle",
     "id": 18,
     "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-14T14:42:40.891Z",
-    "asteroidObjectId": "05476205866812ef89e5"
+    "lastCycleAt": "2026-08-14T17:39:57.983Z"
   },
   {
     "containerId": "container-itm_craft_9e6d6229c87c306e0fe5a928",
