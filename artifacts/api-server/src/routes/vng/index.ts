@@ -179,9 +179,14 @@ function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 
-router.get("/scheduled", async (_req, res) => {
+router.get("/scheduled", async (req, res) => {
   try {
-    const actions = await getPendingActions();
+    const rawProbeId = req.query.probeId;
+    const probeId = rawProbeId != null ? parseInt(rawProbeId as string, 10) : null;
+    let actions = await getPendingActions();
+    if (probeId != null && !isNaN(probeId)) {
+      actions = actions.filter((a) => (a.probeId ?? null) === probeId);
+    }
     res.json({ actions });
   } catch (err: any) {
     res.status(500).json({ error: err.message });

@@ -995,10 +995,10 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
   );
 }
 
-function ScheduledPanel({ refetchSignal }: { refetchSignal: number }) {
+function ScheduledPanel({ refetchSignal, probeId }: { refetchSignal: number; probeId?: number | null }) {
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["scheduled-actions", refetchSignal],
-    queryFn: () => fetchJson(`${BASE}/api/vng/scheduled`),
+    queryKey: ["scheduled-actions", refetchSignal, probeId],
+    queryFn: () => fetchJson(`${BASE}/api/vng/scheduled${probeId != null ? `?probeId=${probeId}` : ""}`),
     refetchInterval: 15000,
   });
 
@@ -1276,7 +1276,7 @@ export default function Commander() {
           <>
             <CraftingCalcPanel probeId={selectedProbeId} />
             <div className="my-3 border-t border-border/30" />
-            <ScheduledPanel refetchSignal={logRefetch} />
+            <ScheduledPanel refetchSignal={logRefetch} probeId={selectedProbeId} />
           </>
         )}
         {sideTab === "mining" && (
