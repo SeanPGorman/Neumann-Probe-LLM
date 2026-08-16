@@ -183,9 +183,13 @@ router.get("/scheduled", async (req, res) => {
   try {
     const rawProbeId = req.query.probeId;
     const probeId = rawProbeId != null ? parseInt(rawProbeId as string, 10) : null;
+    const includeNull = req.query.includeNull === "true";
     let actions = await getPendingActions();
     if (probeId != null && !isNaN(probeId)) {
-      actions = actions.filter((a) => (a.probeId ?? null) === probeId);
+      actions = actions.filter((a) => {
+        const aid = a.probeId ?? null;
+        return aid === probeId || (includeNull && aid === null);
+      });
     }
     res.json({ actions });
   } catch (err: any) {

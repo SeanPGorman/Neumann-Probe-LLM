@@ -995,10 +995,21 @@ function CraftingCalcPanel({ probeId }: { probeId: number | null }) {
   );
 }
 
-function ScheduledPanel({ refetchSignal, probeId }: { refetchSignal: number; probeId?: number | null }) {
+function ScheduledPanel({
+  refetchSignal,
+  probeId,
+  isDefaultProbe,
+}: {
+  refetchSignal: number;
+  probeId?: number | null;
+  isDefaultProbe?: boolean;
+}) {
+  const qs = probeId != null
+    ? `?probeId=${probeId}${isDefaultProbe ? "&includeNull=true" : ""}`
+    : "";
   const { data, isLoading, error, refetch } = useQuery({
-    queryKey: ["scheduled-actions", refetchSignal, probeId],
-    queryFn: () => fetchJson(`${BASE}/api/vng/scheduled${probeId != null ? `?probeId=${probeId}` : ""}`),
+    queryKey: ["scheduled-actions", refetchSignal, probeId, isDefaultProbe],
+    queryFn: () => fetchJson(`${BASE}/api/vng/scheduled${qs}`),
     refetchInterval: 15000,
   });
 
@@ -1276,7 +1287,11 @@ export default function Commander() {
           <>
             <CraftingCalcPanel probeId={selectedProbeId} />
             <div className="my-3 border-t border-border/30" />
-            <ScheduledPanel refetchSignal={logRefetch} probeId={selectedProbeId} />
+            <ScheduledPanel
+              refetchSignal={logRefetch}
+              probeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
+              isDefaultProbe={selectedProbeId === null || selectedProbeId === probeListData?.defaultProbeId}
+            />
           </>
         )}
         {sideTab === "mining" && (
