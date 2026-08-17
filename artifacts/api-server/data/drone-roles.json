@@ -27,8 +27,12 @@
     "roleType": "factory",
     "enabled": true,
     "config": {
-      "deliveryProbeIds": [],
-      "deliveryProbeNames": []
+      "deliveryProbeIds": [
+        823
+      ],
+      "deliveryProbeNames": [
+        "CharlieDrone"
+      ]
     },
     "id": 2,
     "createdAt": "2026-08-17T19:48:14.643Z",
@@ -53,14 +57,30 @@
     "id": 3,
     "createdAt": "2026-08-17T19:58:56.700Z",
     "state": {
-      "phase": "dropping_container",
+      "phase": "waiting_for_delivery",
       "wpCounter": 99,
-      "lastUpdated": "2026-08-17T20:20:47.508Z",
+      "lastUpdated": "2026-08-17T21:27:36.442Z",
       "travelTarget": {
         "x": 26,
         "y": 20,
         "z": 8
-      }
+      },
+      "deliveryRequestId": 1
+    }
+  },
+  {
+    "probeId": 823,
+    "probeName": "CharlieDrone",
+    "roleType": "delivery",
+    "enabled": true,
+    "config": {
+      "factoryProbeId": 716,
+      "factoryProbeName": "AlphaFactory"
+    },
+    "id": 4,
+    "createdAt": "2026-08-17T21:08:16.043Z",
+    "state": {
+      "phase": "waiting"
     }
   }
 ]

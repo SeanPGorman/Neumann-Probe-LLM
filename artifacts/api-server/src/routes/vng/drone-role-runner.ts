@@ -219,8 +219,15 @@ async function runRefuelRole(
       return;
     }
     if (targetFuel < threshold) {
-      logger.info({ label, targetFuel, threshold }, "drone-role: target needs fuel — heading to source");
-      await updateDroneRoleState(role.id, { phase: "traveling_to_source" });
+      // If we already have enough fuel on board, skip the source trip entirely.
+      const ourFuel = probe?.fuel?.deuterium ?? 0;
+      if (ourFuel >= 99) {
+        logger.info({ label, targetFuel, threshold, ourFuel }, "drone-role: target needs fuel, tank already sufficient — delivering directly");
+        await updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+      } else {
+        logger.info({ label, targetFuel, threshold }, "drone-role: target needs fuel — heading to source");
+        await updateDroneRoleState(role.id, { phase: "traveling_to_source" });
+      }
     } else {
       logger.info({ label, targetFuel }, "drone-role: target fuel OK — staying idle");
     }
@@ -961,7 +968,13 @@ export async function runExplorerRole(
       claimed.add(manny.id);
       await updateDroneRoleState(role.id, { phase: "waiting_for_delivery" });
     } catch (err: any) {
-      logger.warn({ label, err: err?.message }, "drone-role: drop container failed");
+      // 404 means the container is already gone (dropped or collected); advance anyway.
+      if (err instanceof VngApiError && err.status === 404) {
+        logger.info({ label, containerId: container.id }, "drone-role: container not found on drop — treating as already dropped");
+        await updateDroneRoleState(role.id, { phase: "waiting_for_delivery" });
+      } else {
+        logger.warn({ label, err: err?.message }, "drone-role: drop container failed");
+      }
     }
     return;
   }

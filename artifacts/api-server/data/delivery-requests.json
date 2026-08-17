@@ -1,0 +1,14 @@
+[
+  {
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "explorerSector": {
+      "x": 26,
+      "y": 20,
+      "z": 8
+    },
+    "id": 1,
+    "status": "pending",
+    "createdAt": "2026-08-17T21:27:36.440Z"
+  }
+]
