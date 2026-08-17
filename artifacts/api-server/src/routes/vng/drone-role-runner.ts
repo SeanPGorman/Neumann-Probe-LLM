@@ -42,6 +42,13 @@ export function isContainerItem(i: any): boolean {
   );
 }
 
+/** SCUT relay sector objects report state as `status: "off" | "on"` (per the
+ *  VNG OpenAPI spec); older code assumed a boolean `active`. Accept both. */
+export function isInactiveRelay(o: any): boolean {
+  return (
+    o?.type === "scut_relay" && (o.status === "off" || o.active === false)
+  );
+}
 function pickIdleManny(mannies: any[], claimed: Set<string>): any | null {
   return (
     mannies.find(
@@ -621,7 +628,7 @@ function pickWpAnchor(sectorObjects: any[]): any | null {
   );
 }
 
-async function runExplorerRole(
+export async function runExplorerRole(
   role: DroneRole,
   probe: any,
   mannies: any[],
@@ -775,23 +782,61 @@ async function runExplorerRole(
       sectorObjects = resp?.sector?.objects ?? [];
     } catch { return; }
 
-    const inactiveRelay = sectorObjects.find((o: any) => o.type === "scut_relay" && o.active === false);
+    const inactiveRelay = sectorObjects.find(isInactiveRelay);
     if (inactiveRelay) {
       logger.info({ label, relayId: inactiveRelay.id }, "drone-role: inactive relay found — activating");
       await updateDroneRoleState(role.id, { phase: "activating_relay" });
       return;
     }
 
-    const activeRelay = sectorObjects.find((o: any) => o.type === "scut_relay" && o.active === true);
+    const activeRelay = sectorObjects.find(isActiveRelay);
     if (activeRelay) {
       logger.info({ label }, "drone-role: relay already active — proceeding");
       await updateDroneRoleState(role.id, { phase: "dropping_container" });
       return;
     }
 
-    // No relay object present — Task #26 handles placing one from inventory.
-    const hasRelayItem = (probe?.inventory?.items ?? []).some((i: any) => i.type === "scut_relay");
-    logger.info({ label, hasRelayItem }, "drone-role: no relay in sector — waiting for relay placement (Task #26)");
+    // No relay object in sector. Deploy one from inventory: per the VNG
+    // OpenAPI spec, POST /inventory/{itemId}/jettison on a scut_relay item
+    // "deploys a scut_relay item as an inactive SCUT relay in the current
+    // sector". Then the next tick sees the inactive relay and advances to
+    // activating_relay.
+    const items: any[] = probe?.inventory?.items ?? [];
+    const relayItem = items.find((i: any) => i.type === "scut_relay");
+    if (relayItem) {
+      logger.info({ label, itemId: relayItem.id }, "drone-role: deploying scut_relay from inventory (jettison)");
+      try {
+        await c.jettisonItem(relayItem.id);
+        // Don't advance yet — re-scan next tick so we pick up the real
+        // sector object (and its ID) before activation.
+      } catch (err: any) {
+        logger.warn({ label, err: err?.message }, "drone-role: relay deployment (jettison) failed");
+      }
+      return;
+    }
+
+    // No relay item either — have an idle Manny craft one. Crafting is a
+    // long-running task; subsequent ticks keep landing here until the
+    // finished scut_relay shows up in probe inventory.
+    const crafting = mannies.some(
+      (m: any) => m.currentTask === "craft" || m.currentTask === "crafting",
+    );
+    if (crafting) {
+      logger.info({ label }, "drone-role: scut_relay craft in progress — waiting");
+      return;
+    }
+    const manny = pickIdleManny(mannies, claimed);
+    if (!manny) {
+      logger.info({ label }, "drone-role: no idle manny to craft scut_relay");
+      return;
+    }
+    logger.info({ label, mannyId: manny.id }, "drone-role: crafting scut_relay");
+    try {
+      await c.craftItem(manny.id, "scut_relay");
+      claimed.add(manny.id);
+    } catch (err: any) {
+      logger.warn({ label, err: err?.message }, "drone-role: scut_relay craft failed (missing ingredients?)");
+    }
     return;
   }
 
@@ -804,9 +849,9 @@ async function runExplorerRole(
       sectorObjects = resp?.sector?.objects ?? [];
     } catch { return; }
 
-    const inactiveRelay = sectorObjects.find((o: any) => o.type === "scut_relay" && o.active === false);
+    const inactiveRelay = sectorObjects.find(isInactiveRelay);
     if (!inactiveRelay) {
-      if (sectorObjects.find((o: any) => o.type === "scut_relay" && o.active === true)) {
+      if (sectorObjects.find(isActiveRelay)) {
         await updateDroneRoleState(role.id, { phase: "dropping_container" });
       }
       return;
@@ -1182,4 +1227,8 @@ async function craftAboardDelivery(
     logger.warn({ label, deliveryId, recipe: supply.recipe, err: err?.message }, "drone-role: supply craft failed");
     return false;
   }
+}
+
+export function isActiveRelay(o: any): boolean {
+  return o?.type === "scut_relay" && (o.status === "on" || o.active === true);
 }
