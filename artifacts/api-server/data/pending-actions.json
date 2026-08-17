@@ -148765,7 +148765,8 @@
     },
     "id": 9671,
     "createdAt": "2026-08-17T13:42:28.565Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:10.110Z"
   },
   {
     "description": "[craft queue] Solar panel (1/24) via Manny",
@@ -148794,7 +148795,8 @@
     },
     "id": 9673,
     "createdAt": "2026-08-17T13:42:44.072Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:10.443Z"
   },
   {
     "description": "[craft queue] Solar panel (3/24) via Manny",
@@ -148808,7 +148810,8 @@
     },
     "id": 9674,
     "createdAt": "2026-08-17T13:42:44.119Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:10.654Z"
   },
   {
     "description": "[craft queue] Solar panel (4/24) via Manny",
@@ -148822,7 +148825,8 @@
     },
     "id": 9675,
     "createdAt": "2026-08-17T13:42:44.243Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:10.870Z"
   },
   {
     "description": "[craft queue] Solar panel (5/24) via Manny",
@@ -148836,7 +148840,8 @@
     },
     "id": 9676,
     "createdAt": "2026-08-17T13:42:44.286Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:11.123Z"
   },
   {
     "description": "[craft queue] Solar panel (6/24) via Manny",
@@ -148850,7 +148855,8 @@
     },
     "id": 9677,
     "createdAt": "2026-08-17T13:42:44.318Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:11.553Z"
   },
   {
     "description": "[craft queue] Solar panel (7/24) via Manny",
@@ -148864,7 +148870,8 @@
     },
     "id": 9678,
     "createdAt": "2026-08-17T13:42:44.352Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:11.867Z"
   },
   {
     "description": "[craft queue] Solar panel (8/24) via Manny",
@@ -148878,7 +148885,8 @@
     },
     "id": 9679,
     "createdAt": "2026-08-17T13:42:44.394Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:12.070Z"
   },
   {
     "description": "[craft queue] Solar panel (9/24) via Manny",
@@ -148892,7 +148900,8 @@
     },
     "id": 9680,
     "createdAt": "2026-08-17T13:42:44.427Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:12.329Z"
   },
   {
     "description": "[craft queue] Solar panel (10/24) via Manny",
@@ -148906,7 +148915,8 @@
     },
     "id": 9681,
     "createdAt": "2026-08-17T13:42:44.463Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:12.607Z"
   },
   {
     "description": "[craft queue] Solar panel (11/24) via Manny",
@@ -148920,7 +148930,8 @@
     },
     "id": 9682,
     "createdAt": "2026-08-17T13:42:44.498Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:12.849Z"
   },
   {
     "description": "[craft queue] Solar panel (12/24) via Manny",
@@ -148934,7 +148945,8 @@
     },
     "id": 9683,
     "createdAt": "2026-08-17T13:42:44.530Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:13.120Z"
   },
   {
     "description": "[craft queue] Solar panel (13/24) via Manny",
@@ -148948,7 +148960,8 @@
     },
     "id": 9684,
     "createdAt": "2026-08-17T13:42:44.569Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T17:59:13.375Z"
   },
   {
     "description": "[craft queue] Solar panel (14/24) via Manny",
@@ -148962,7 +148975,8 @@
     },
     "id": 9685,
     "createdAt": "2026-08-17T13:42:44.602Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:01:40.312Z"
   },
   {
     "description": "[craft queue] Solar panel (15/24) via Manny",
@@ -148976,7 +148990,8 @@
     },
     "id": 9686,
     "createdAt": "2026-08-17T13:42:44.636Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:01:40.579Z"
   },
   {
     "description": "[craft queue] Solar panel (16/24) via Manny",
@@ -148990,7 +149005,8 @@
     },
     "id": 9687,
     "createdAt": "2026-08-17T13:42:44.685Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:11:40.817Z"
   },
   {
     "description": "[craft queue] Solar panel (17/24) via Manny",
@@ -149004,7 +149020,8 @@
     },
     "id": 9688,
     "createdAt": "2026-08-17T13:42:44.720Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:11:41.081Z"
   },
   {
     "description": "[craft queue] Solar panel (18/24) via Manny",
@@ -149018,7 +149035,8 @@
     },
     "id": 9689,
     "createdAt": "2026-08-17T13:42:44.765Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:11:41.359Z"
   },
   {
     "description": "[craft queue] Solar panel (19/24) via Manny",
@@ -149032,7 +149050,8 @@
     },
     "id": 9690,
     "createdAt": "2026-08-17T13:42:44.799Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:11:41.594Z"
   },
   {
     "description": "[craft queue] Solar panel (20/24) via Manny",
@@ -149046,7 +149065,8 @@
     },
     "id": 9691,
     "createdAt": "2026-08-17T13:42:44.834Z",
-    "status": "pending"
+    "status": "triggered",
+    "triggeredAt": "2026-08-17T18:11:41.834Z"
   },
   {
     "description": "[craft queue] Solar panel (21/24) via Manny",

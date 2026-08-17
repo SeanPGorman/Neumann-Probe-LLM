@@ -1068,7 +1068,7 @@ function ScheduledPanel({
 
 // ── Drone Roles Panel ──────────────────────────────────────────────────────────
 
-type DroneRoleType = "refuel" | "delivery" | "explorer";
+type DroneRoleType = "refuel" | "delivery" | "explorer" | "factory";
 type DroneRole = {
   id: number;
   probeId: number;
@@ -1084,11 +1084,13 @@ const ROLE_LABELS: Record<DroneRoleType, string> = {
   refuel:   "REFUEL DRONE",
   delivery: "DELIVERY DRONE",
   explorer: "EXPLORER DRONE",
+  factory:  "FACTORY DRONE",
 };
 const ROLE_ICONS: Record<DroneRoleType, string> = {
   refuel:   "⛽",
   delivery: "📦",
   explorer: "🔭",
+  factory:  "🏭",
 };
 const PHASE_COLOR: Record<string, string> = {
   idle:                  "text-muted-foreground",
@@ -1106,6 +1108,8 @@ const PHASE_COLOR: Record<string, string> = {
   installing_beacon:     "text-cyan-400",
   dropping_container:    "text-cyan-400",
   waiting_for_delivery:  "text-purple-400",
+  crafting:              "text-orange-400",
+  staging:               "text-green-400",
 };
 
 function SectorInput({
@@ -1204,6 +1208,9 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
     if (roleType === "delivery") return {
       factoryProbeId: parseInt(factoryProbeId),
       factoryProbeName: probeList.find((p) => p.id === parseInt(factoryProbeId))?.name,
+    };
+    if (roleType === "factory") return {
+      // stockItems left undefined → runner uses default (scut_relay, IC, waypoint_bookmark)
     };
     return {
       targetVector: { x: parseInt(vecX), y: parseInt(vecY), z: parseInt(vecZ) },
@@ -1314,6 +1321,13 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             </div>
           )}
 
+          {/* Factory: staged container status */}
+          {role.roleType === "factory" && role.state.stagedContainerId && (
+            <div className="text-[10px] text-green-400/80 font-mono">
+              📦 container staged — awaiting pickup
+            </div>
+          )}
+
           {/* Config summary — role-type specific */}
           <div className="border-t border-border/30 pt-2 space-y-1">
             {role.roleType === "refuel" && (() => {
@@ -1359,6 +1373,28 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                 </>
               );
             })()}
+
+            {role.roleType === "factory" && (() => {
+              const cfg = role.config as any;
+              const items: Array<{ recipe: string; quantity: number }> =
+                cfg.stockItems?.length
+                  ? cfg.stockItems
+                  : [
+                      { recipe: "scut_relay",         quantity: 1 },
+                      { recipe: "integrated_circuit", quantity: 1 },
+                      { recipe: "waypoint_bookmark",  quantity: 1 },
+                    ];
+              return (
+                <div className="space-y-0.5">
+                  <div className="text-[10px] text-muted-foreground mb-1">Container load per cycle:</div>
+                  {items.map((item) => (
+                    <div key={item.recipe} className="text-[10px] font-mono text-foreground">
+                      × {item.quantity} {item.recipe}
+                    </div>
+                  ))}
+                </div>
+              );
+            })()}
           </div>
 
           {role.state.lastUpdated && (
@@ -1389,12 +1425,12 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
 
           {/* Role type selector — only when adding */}
           {!editing && (
-            <div className="flex gap-1">
-              {(["refuel", "delivery", "explorer"] as DroneRoleType[]).map((rt) => (
+            <div className="grid grid-cols-2 gap-1">
+              {(["refuel", "delivery", "explorer", "factory"] as DroneRoleType[]).map((rt) => (
                 <button
                   key={rt}
                   onClick={() => setRoleType(rt)}
-                  className={`flex-1 py-1 text-[10px] rounded border transition-all ${
+                  className={`py-1 text-[10px] rounded border transition-all ${
                     roleType === rt
                       ? "border-primary/60 bg-primary/10 text-primary"
                       : "border-border text-muted-foreground hover:text-foreground"
@@ -1481,6 +1517,32 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               </div>
               <div className="text-[10px] text-muted-foreground/60 italic">
                 Explorer moves sector-by-sector toward the target. At each hop it deploys a SCUT relay, installs a transit beacon, drops its container, then waits for a Delivery Drone before moving on.
+              </div>
+            </div>
+          )}
+
+          {/* Factory config */}
+          {roleType === "factory" && (
+            <div className="space-y-2">
+              <div className="text-[10px] text-muted-foreground/60 italic">
+                Factory stays in its home sector. It crafts supply items and stages a drifting container for Delivery Drones to pick up before dispatch. When the container is collected it immediately begins prepping the next one.
+              </div>
+              <div className="border border-border/40 rounded p-2 space-y-1">
+                <div className="text-[10px] text-muted-foreground tracking-wide mb-1">DEFAULT CONTAINER LOAD</div>
+                {[
+                  { recipe: "scut_relay",         label: "SCUT Relay" },
+                  { recipe: "integrated_circuit",  label: "Integrated Circuit" },
+                  { recipe: "waypoint_bookmark",   label: "Waypoint Bookmark" },
+                ].map(({ recipe, label }) => (
+                  <div key={recipe} className="flex items-center gap-2 text-[10px]">
+                    <span className="text-primary/60">×1</span>
+                    <span className="font-mono text-foreground">{recipe}</span>
+                    <span className="text-muted-foreground/50">({label})</span>
+                  </div>
+                ))}
+              </div>
+              <div className="text-[9px] text-muted-foreground/40 italic">
+                Custom stock items can be configured after saving by editing the role.
               </div>
             </div>
           )}

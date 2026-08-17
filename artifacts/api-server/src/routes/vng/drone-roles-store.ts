@@ -4,7 +4,7 @@ import { DATA_DIR } from "./file-store.js";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type DroneRoleType = "refuel" | "delivery" | "explorer";
+export type DroneRoleType = "refuel" | "delivery" | "explorer" | "factory";
 
 export type RefuelConfig = {
   /** Sector where deuterium is sourced (e.g. a planet with a refuel station). */
@@ -29,6 +29,15 @@ export type ExplorerConfig = {
   scutNetworkName?: string;
 };
 
+export type FactoryConfig = {
+  /**
+   * Items to craft and keep stocked in inventory before staging a container.
+   * Each item is crafted by a Manny one at a time per tick.
+   * Default: scut_relay × 1, integrated_circuit × 1, waypoint_bookmark × 1.
+   */
+  stockItems?: Array<{ recipe: string; quantity: number }>;
+};
+
 export type RoleState = {
   /** Current automation phase for this role. */
   phase: string;
@@ -42,6 +51,10 @@ export type RoleState = {
   lastDeployedSector?: { x: number; y: number; z: number };
   /** Delivery: explorer probe ID this drone is currently serving. */
   assignedExplorerId?: number;
+  /** Factory: ID of the container currently staged (drifting) in sector. */
+  stagedContainerId?: string;
+  /** Factory: which stock items have been crafted so far this cycle (recipe → count). */
+  craftedStock?: Record<string, number>;
 };
 
 export type DroneRole = {
@@ -51,7 +64,7 @@ export type DroneRole = {
   roleType: DroneRoleType;
   enabled: boolean;
   createdAt: string;
-  config: RefuelConfig | DeliveryConfig | ExplorerConfig;
+  config: RefuelConfig | DeliveryConfig | ExplorerConfig | FactoryConfig;
   state: RoleState;
 };
 
@@ -111,7 +124,9 @@ export async function addDroneRole(
 ): Promise<DroneRole> {
   return withLock(async () => {
     const rows = await readJson<DroneRole[]>(ROLES_FILE, []);
-    const defaultPhase: string = entry.roleType === "delivery" ? "waiting" : "idle";
+    const defaultPhase: string =
+      entry.roleType === "delivery" ? "waiting" :
+      entry.roleType === "factory"  ? "idle"    : "idle";
     const newRow: DroneRole = {
       ...entry,
       id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,

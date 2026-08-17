@@ -7,11 +7,17 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 2,
-    "miningMannyIds": [],
+    "miningMannyIds": [
+      "mny_craft_d01c6aad6a20b5f5d4714c3e",
+      "mny_craft_dd34d83b4d02992ae784e176",
+      "mny_craft_85511bdc26bf0ede26c34622",
+      "mny_craft_6728db3dd05ca2e662cc5719"
+    ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-17T16:29:38.562Z"
+    "lastCycleAt": "2026-08-17T18:00:10.110Z",
+    "asteroidObjectId": "ab1635c2c796f7958b5e"
   },
   {
     "containerId": "container-itm_craft_a49f05fd3e4caf1783bcde84",
@@ -63,23 +69,11 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "mining",
+    "cycleState": "idle",
     "id": 13,
-    "miningMannyIds": [
-      "mny_craft_ede30ea88eb5b480cf113ed4",
-      "mny_2e99b35cff3544167900a3d7",
-      "mny_craft_a7302fcf78eed273c31d90b3",
-      "mny_craft_e65ee9315d4c213385b761ba",
-      "mny_craft_c455c194b0e7b816c4a1ecbb",
-      "mny_craft_449013273a9d430b52fb8789",
-      "mny_craft_643a8e8351820e71bb6c624c",
-      "mny_craft_6a1997812bd5d4673b792041",
-      "mny_craft_2f0b4bdb6241162fef528e96",
-      "mny_craft_58b856920065c82478110e3c"
-    ],
+    "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-17T16:34:08.916Z",
-    "asteroidObjectId": "ab1635c2c796f7958b5e"
+    "lastCycleAt": "2026-08-17T18:01:40.115Z"
   },
   {
     "containerId": "container-itm_craft_7fa4eab3c27e5f80f655fb86",
@@ -193,11 +187,15 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 25,
-    "miningMannyIds": [],
+    "miningMannyIds": [
+      "mny_craft_dd34d83b4d02992ae784e176",
+      "mny_craft_85511bdc26bf0ede26c34622"
+    ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-17T16:55:39.038Z"
+    "lastCycleAt": "2026-08-17T18:00:40.155Z",
+    "asteroidObjectId": "ab1635c2c796f7958b5e"
   },
   {
     "containerId": "container-itm_craft_5015f903d6cb6bbbea513732",
@@ -207,23 +205,11 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "mining",
+    "cycleState": "idle",
     "id": 26,
-    "miningMannyIds": [
-      "mny_f390528b63654332c7033679",
-      "mny_craft_2565d08b49b29e0bdcda7be7",
-      "mny_craft_6728db3dd05ca2e662cc5719",
-      "mny_craft_71e345a18e9010c8618f3ffc",
-      "mny_craft_08dc26edeae77b95c3bd1599",
-      "mny_craft_372e64bdebeec77f7cffaea3",
-      "mny_craft_6a8ecb81122b4d667cd278b6",
-      "mny_craft_f2bd7a93db863e7d92060d23",
-      "mny_craft_e2d504cd1c0bac6e1ff4e3b2",
-      "mny_craft_8e3db2c0db8223314da01f70"
-    ],
+    "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-17T14:38:07.981Z",
-    "asteroidObjectId": "ab1635c2c796f7958b5e"
+    "lastCycleAt": "2026-08-17T18:10:10.101Z"
   },
   {
     "containerId": "container-itm_craft_bd512613521a8bea8a2df1eb",
@@ -233,11 +219,14 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "idle",
+    "cycleState": "mining",
     "id": 27,
-    "miningMannyIds": [],
+    "miningMannyIds": [
+      "mny_craft_85511bdc26bf0ede26c34622"
+    ],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-16T18:28:30.600Z"
+    "lastCycleAt": "2026-08-17T18:01:10.413Z",
+    "asteroidObjectId": "05476205866812ef89e5"
   },
   {
     "containerId": "container-itm_craft_69e0198b185dd8a34e90d68b",
@@ -318,22 +307,10 @@
     "probeId": 716,
     "enabled": true,
     "assignmentMode": "mine",
-    "cycleState": "mining",
+    "cycleState": "idle",
     "id": 32,
-    "asteroidObjectId": "05476205866812ef89e5",
-    "miningMannyIds": [
-      "mny_craft_662ff31f278d8358cb551f24",
-      "mny_craft_ada5d3e695f6b5afe6627ff7",
-      "mny_craft_44fe0aea79d8e93b31ab2f7c",
-      "mny_craft_2ec3248f06e5c7cebe30c4ad",
-      "mny_craft_d01c6aad6a20b5f5d4714c3e",
-      "mny_craft_acc87a04be7fb704d2c7fbec",
-      "mny_craft_4cf649d1e90f7f7ea683f15b",
-      "mny_craft_c15e7f67df56d909b3e5ee8b",
-      "mny_craft_0aa04b669253ede39c6bde48",
-      "mny_craft_3a6be26dc7325807af30d448"
-    ],
+    "miningMannyIds": [],
     "containerCapacity": 1,
-    "lastCycleAt": "2026-08-17T16:57:38.497Z"
+    "lastCycleAt": "2026-08-17T17:59:39.973Z"
   }
 ]
