@@ -30,12 +30,9 @@ export type ExplorerConfig = {
 };
 
 export type FactoryConfig = {
-  /**
-   * Items to craft and keep stocked in inventory before staging a container.
-   * Each item is crafted by a Manny one at a time per tick.
-   * Default: scut_relay × 1, integrated_circuit × 1, waypoint_bookmark × 1.
-   */
-  stockItems?: Array<{ recipe: string; quantity: number }>;
+  /** Probe IDs of the Delivery Drones this factory keeps supplied. */
+  deliveryProbeIds: number[];
+  deliveryProbeNames?: string[];
 };
 
 export type RoleState = {
@@ -51,10 +48,10 @@ export type RoleState = {
   lastDeployedSector?: { x: number; y: number; z: number };
   /** Delivery: explorer probe ID this drone is currently serving. */
   assignedExplorerId?: number;
-  /** Factory: ID of the container currently staged (drifting) in sector. */
-  stagedContainerId?: string;
-  /** Factory: which stock items have been crafted so far this cycle (recipe → count). */
-  craftedStock?: Record<string, number>;
+  /** Factory: delivery probe ID currently being resupplied. */
+  servingDeliveryProbeId?: number;
+  /** Factory: sector object ID of the container staged (drifting) for pickup. */
+  stagedContainerObjectId?: string;
 };
 
 export type DroneRole = {
@@ -124,9 +121,7 @@ export async function addDroneRole(
 ): Promise<DroneRole> {
   return withLock(async () => {
     const rows = await readJson<DroneRole[]>(ROLES_FILE, []);
-    const defaultPhase: string =
-      entry.roleType === "delivery" ? "waiting" :
-      entry.roleType === "factory"  ? "idle"    : "idle";
+    const defaultPhase: string = entry.roleType === "delivery" ? "waiting" : "idle";
     const newRow: DroneRole = {
       ...entry,
       id: rows.length > 0 ? Math.max(...rows.map((r) => r.id)) + 1 : 1,

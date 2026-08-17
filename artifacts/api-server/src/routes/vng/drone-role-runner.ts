@@ -12,6 +12,7 @@ import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError } from "./client.js";
 import {
   getDroneRoleByProbeId,
+  getDroneRoles,
   updateDroneRoleState,
   getPendingDeliveryRequest,
   addDeliveryRequest,
@@ -30,6 +31,16 @@ const MOVING_STATUSES = new Set(["accelerating", "cruising", "decelerating"]);
 const MIN_DEUTERIUM_RESERVE = 5; // always keep this much before transferring
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
+
+/** True when an inventory item is a storage container (the live game uses
+ *  `additional_container`; older data may use `storage_container`). */
+export function isContainerItem(i: any): boolean {
+  return (
+    i?.type === "storage_container" ||
+    i?.type === "additional_container" ||
+    i?.category === "container"
+  );
+}
 
 function pickIdleManny(mannies: any[], claimed: Set<string>): any | null {
   return (
@@ -300,7 +311,7 @@ async function runRefuelRole(
 
 // ── Delivery Role ─────────────────────────────────────────────────────────────
 
-async function runDeliveryRole(
+export async function runDeliveryRole(
   role: DroneRole,
   probe: any,
   mannies: any[],
@@ -312,6 +323,60 @@ async function runDeliveryRole(
   const phase = role.state.phase;
 
   if (phase === "waiting") {
+    // A delivery drone must have its supply loadout before it can accept a
+    // dispatch: always a container, and — when a Factory Drone serves this
+    // drone — the full supply loadout the factory is responsible for.
+    const items: any[] = probe?.inventory?.items ?? [];
+    const hasContainer = items.some(isContainerItem);
+    const allRoles = await getDroneRoles().catch(() => [] as DroneRole[]);
+    const myFactory = allRoles.find(
+      (r) =>
+        r.enabled &&
+        r.roleType === "factory" &&
+        ((r.config as FactoryConfig).deliveryProbeIds ?? []).includes(role.probeId),
+    );
+    if (myFactory && missingSupplies(probe).length > 0) {
+      logger.info({ label }, "drone-role: loadout incomplete — waiting for factory supply run");
+      // fall through only to attempt staged-container pickup below
+    }
+    if (!hasContainer) {
+      if (isMoving) return;
+      let sectorObjects: any[] = [];
+      try {
+        const resp = await c.getSector();
+        sectorObjects = resp?.sector?.objects ?? [];
+      } catch {
+        return;
+      }
+      // Prefer the specific container our factory staged for us (if any).
+      const stagedId = myFactory?.state.stagedContainerObjectId;
+      const drifting =
+        (stagedId != null
+          ? sectorObjects.find((o: any) => o.id === stagedId)
+          : undefined) ??
+        sectorObjects.find(
+          (o: any) => o.type === "storage_container" && o.mode === "drifting",
+        );
+      if (drifting) {
+        const manny = pickIdleManny(mannies, claimed);
+        if (manny) {
+          logger.info({ label, objectId: drifting.id }, "drone-role: loading staged supply container");
+          try {
+            await c.recoverContainer(manny.id, drifting.id);
+            claimed.add(manny.id);
+          } catch (err: any) {
+            logger.warn({ label, err: err?.message }, "drone-role: staged container recovery failed");
+          }
+        }
+      } else {
+        logger.info({ label }, "drone-role: no container loaded — waiting for factory to stage one");
+      }
+      return; // never accept a dispatch while empty
+    }
+
+    // Factory-served drones also wait for the full supply loadout.
+    if (myFactory && missingSupplies(probe).length > 0) return;
+
     // Poll for a pending delivery request
     const request = await getPendingDeliveryRequest();
     if (!request) {
@@ -358,9 +423,7 @@ async function runDeliveryRole(
     // Find a container in inventory to detach for the explorer.
     // Also transfer deuterium if the explorer is present as a sector object.
     const items: any[] = probe?.inventory?.items ?? [];
-    const container = items.find(
-      (i: any) => i.type === "storage_container" || i.category === "container",
-    );
+    const container = items.find(isContainerItem);
 
     let sectorObjects: any[] = [];
     try {
@@ -669,9 +732,7 @@ async function runExplorerRole(
   if (phase === "dropping_container") {
     if (isMoving) return;
     const items: any[] = probe?.inventory?.items ?? [];
-    const container = items.find(
-      (i: any) => i.type === "storage_container" || i.category === "container",
-    );
+    const container = items.find(isContainerItem);
     if (!container) {
       logger.info({ label }, "drone-role: no container to drop — signaling delivery anyway");
       await updateDroneRoleState(role.id, { phase: "waiting_for_delivery" });
@@ -730,20 +791,44 @@ async function runExplorerRole(
 
 // ── Factory Role ──────────────────────────────────────────────────────────────
 //
-// Keeps one fully-stocked container staged (drifting) in sector at all times.
-// Delivery Drones recover it on dispatch; when it disappears the factory
-// crafts the next load and stages a fresh container.
-//
-// Default stock: scut_relay × 1, integrated_circuit × 1, waypoint_bookmark × 1
-// These supply an Explorer for one hop.
+// The VNG API has no operation that moves crafted items into a storage
+// container (probed: no store/load/move-item endpoints exist). The only way
+// supplies physically travel with a Delivery Drone is to exist in *its*
+// probe inventory. So the factory coordinates the supply run remotely:
+// it crafts each missing supply item directly aboard the docked Delivery
+// Drone using that drone's own Mannies/printer, and — when the drone lacks a
+// container the factory can't craft aboard it — stages one of its own
+// containers (drifting) for the drone to recover.
 
-const DEFAULT_STOCK: Array<{ recipe: string; quantity: number }> = [
-  { recipe: "scut_relay",         quantity: 1 },
-  { recipe: "integrated_circuit", quantity: 1 },
-  { recipe: "waypoint_bookmark",  quantity: 1 },
+/** Supply loadout a Delivery Drone ships with (1 of each). `printer: true`
+ *  items are printer-only and must be built with the Atomic Printer. */
+export const FACTORY_SUPPLY_ITEMS: { type: string; recipe: string; printer?: boolean }[] = [
+  { type: "scut_relay", recipe: "scut_relay" },
+  { type: "integrated_circuit", recipe: "integrated_circuit", printer: true },
+  { type: "waypoint_bookmark", recipe: "waypoint_bookmark" }, // transit beacon
 ];
 
-async function runFactoryRole(
+export type FactoryDeps = {
+  getDroneRoles: typeof getDroneRoles;
+  updateDroneRoleState: typeof updateDroneRoleState;
+  clientFor: typeof clientFor;
+};
+
+const defaultFactoryDeps: FactoryDeps = { getDroneRoles, updateDroneRoleState, clientFor };
+
+/** What the delivery drone is still missing for a full supply loadout. */
+export function missingSupplies(dProbe: any): { type: string; recipe: string; printer?: boolean }[] {
+  const items: any[] = dProbe?.inventory?.items ?? [];
+  const missing = FACTORY_SUPPLY_ITEMS.filter(
+    (s) => !items.some((i: any) => i.type === s.type),
+  );
+  if (!items.some(isContainerItem)) {
+    return [{ type: "additional_container", recipe: "additional_container" }, ...missing];
+  }
+  return missing;
+}
+
+export async function runFactoryRole(
   role: DroneRole,
   probe: any,
   mannies: any[],
@@ -751,164 +836,244 @@ async function runFactoryRole(
   c: ReturnType<typeof clientFor>,
   isMoving: boolean,
   label: string,
+  deps: FactoryDeps = defaultFactoryDeps,
 ): Promise<void> {
-  if (isMoving) return; // factory stays put
-
   const cfg = role.config as FactoryConfig;
-  const stock = cfg.stockItems?.length ? cfg.stockItems : DEFAULT_STOCK;
   const phase = role.state.phase;
-  const items: any[] = probe?.inventory?.items ?? [];
+  const servedIds = cfg.deliveryProbeIds ?? [];
 
-  // ── idle ──────────────────────────────────────────────────────────────────
   if (phase === "idle") {
-    // Scan sector for our previously staged (drifting) container.
-    let sectorObjects: any[] = [];
-    try {
-      const resp = await c.getSector();
-      sectorObjects = resp?.sector?.objects ?? [];
-    } catch {
+    if (servedIds.length === 0) {
+      logger.info({ label }, "drone-role: factory has no delivery drones configured");
       return;
     }
-
-    const stagedId = role.state.stagedContainerId;
-    if (stagedId) {
-      const stillThere = sectorObjects.some(
-        (o: any) => o.id === stagedId && o.mode === "drifting",
+    // Find a served Delivery Drone that is docked here (same sector, waiting)
+    // and is missing part of its supply loadout.
+    const allRoles = await deps.getDroneRoles();
+    for (const deliveryId of servedIds) {
+      const dRole = allRoles.find(
+        (r) => r.probeId === deliveryId && r.enabled && r.roleType === "delivery",
       );
-      if (stillThere) {
-        logger.info({ label, containerId: stagedId }, "drone-role: factory — staged container waiting for pickup");
-        return;
-      }
-      // Container was picked up — start next load cycle
-      logger.info({ label }, "drone-role: factory — container picked up, starting next cycle");
-      await updateDroneRoleState(role.id, { stagedContainerId: undefined, phase: "crafting" });
-      return;
-    }
+      if (!dRole || dRole.state.phase !== "waiting") continue;
 
-    // No staged container on record — check if one is already drifting (e.g. leftover)
-    const anyDrifting = sectorObjects.find(
-      (o: any) =>
-        (o.type === "storage_container" || o.category === "container") &&
-        o.mode === "drifting",
-    );
-    if (anyDrifting) {
-      logger.info({ label, containerId: anyDrifting.id }, "drone-role: factory — drifting container found, adopting");
-      await updateDroneRoleState(role.id, { stagedContainerId: anyDrifting.id });
-      return;
-    }
-
-    // Nothing staged — determine if stock is ready
-    const missingItems = getMissingStock(items, stock);
-    if (missingItems.length === 0) {
-      await updateDroneRoleState(role.id, { phase: "staging" });
-    } else {
-      await updateDroneRoleState(role.id, { phase: "crafting" });
-    }
-    return;
-  }
-
-  // ── crafting ──────────────────────────────────────────────────────────────
-  if (phase === "crafting") {
-    const missing = getMissingStock(items, stock);
-    if (missing.length === 0) {
-      logger.info({ label }, "drone-role: factory — stock complete, staging container");
-      await updateDroneRoleState(role.id, { phase: "staging" });
-      return;
-    }
-
-    // Craft one missing item this tick
-    const { recipe, needed } = missing[0];
-    const manny = pickIdleManny(mannies, claimed);
-    if (!manny) {
-      logger.info({ label }, "drone-role: factory — no idle manny for crafting");
-      return;
-    }
-
-    logger.info({ label, recipe, needed, mannyId: manny.id }, "drone-role: factory — crafting stock item");
-    try {
-      await c.craftItem(manny.id, recipe);
-      claimed.add(manny.id);
-    } catch (err: any) {
-      if (err instanceof VngApiError && err.status === 409) {
-        // Manny busy — defer
-      } else {
-        logger.warn({ label, recipe, err: err?.message }, "drone-role: factory — craft failed");
-      }
-    }
-    return;
-  }
-
-  // ── staging ───────────────────────────────────────────────────────────────
-  if (phase === "staging") {
-    // Find a container in inventory to detach
-    const container = items.find(
-      (i: any) => i.type === "storage_container" || i.category === "container",
-    );
-    if (!container) {
-      logger.warn({ label }, "drone-role: factory — no container in inventory to stage");
-      // Check if there is one in sector we can recover first
-      let sectorObjects: any[] = [];
+      let dProbe: any = null;
       try {
-        const resp = await c.getSector();
-        sectorObjects = resp?.sector?.objects ?? [];
+        const resp = await deps.clientFor(deliveryId).getProbe();
+        dProbe = resp?.probe ?? null;
       } catch {
-        return;
+        logger.warn({ label, deliveryId }, "drone-role: could not fetch delivery drone state");
+        continue;
       }
-      const loose = sectorObjects.find(
-        (o: any) =>
-          (o.type === "storage_container" || o.category === "container") &&
-          o.mode !== "drifting",
-      );
-      if (loose) {
-        const manny = pickIdleManny(mannies, claimed);
-        if (manny) {
-          logger.info({ label, objectId: loose.id }, "drone-role: factory — recovering container from sector");
+      if (!dProbe?.sector || !atSector(probe, dProbe.sector)) continue; // not docked here
+
+      if (missingSupplies(dProbe).length === 0) continue; // fully loaded
+
+      logger.info({ label, deliveryId }, "drone-role: delivery drone docked under-supplied — starting supply run");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "supplying",
+        servingDeliveryProbeId: deliveryId,
+      });
+      return;
+    }
+    return;
+  }
+
+  if (phase === "supplying") {
+    const deliveryId = role.state.servingDeliveryProbeId;
+    if (deliveryId == null) {
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
+      return;
+    }
+
+    // Revalidate the target: it must still hold the delivery role, be in
+    // its waiting phase, and be docked in our sector. Otherwise abandon.
+    const allRoles = await deps.getDroneRoles();
+    const dRole = allRoles.find(
+      (r) => r.probeId === deliveryId && r.enabled && r.roleType === "delivery",
+    );
+    if (!dRole || dRole.state.phase !== "waiting") {
+      logger.info({ label, deliveryId }, "drone-role: delivery drone no longer waiting — abandoning supply run");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        servingDeliveryProbeId: undefined,
+        stagedContainerObjectId: undefined,
+      });
+      return;
+    }
+
+    const dc = deps.clientFor(deliveryId);
+    let dProbe: any = null;
+    try {
+      const resp = await dc.getProbe();
+      dProbe = resp?.probe ?? null;
+    } catch {
+      logger.warn({ label, deliveryId }, "drone-role: could not fetch delivery drone during supply run");
+      return;
+    }
+    if (!dProbe?.sector || !atSector(probe, dProbe.sector)) {
+      logger.info({ label, deliveryId }, "drone-role: delivery drone left the sector — abandoning supply run");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        servingDeliveryProbeId: undefined,
+        stagedContainerObjectId: undefined,
+      });
+      return;
+    }
+
+    const missing = missingSupplies(dProbe);
+    if (missing.length === 0) {
+      logger.info({ label, deliveryId }, "drone-role: delivery drone fully supplied");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        servingDeliveryProbeId: undefined,
+      });
+      return;
+    }
+
+    const next = missing[0];
+
+    // Container shortfall: craft one aboard the drone; if that fails and the
+    // factory has a spare, stage it (drifting) for the drone to recover.
+    if (next.type === "additional_container") {
+      const staged = await craftAboardDelivery(dc, deliveryId, next, label, dProbe);
+      if (!staged) {
+        const spare = (probe?.inventory?.items ?? []).find(isContainerItem);
+        if (spare) {
+          const manny = pickIdleManny(mannies, claimed);
+          if (!manny) {
+            logger.info({ label }, "drone-role: no idle manny to stage spare container");
+            return;
+          }
+          logger.info({ label, containerId: spare.id }, "drone-role: staging spare container for delivery drone");
           try {
-            await c.recoverContainer(manny.id, loose.id);
+            await c.detachContainer(manny.id, spare.id, "drifting");
             claimed.add(manny.id);
+            const { toSectorObjectId } = await import("./file-store.js");
+            await deps.updateDroneRoleState(role.id, {
+              phase: "handoff",
+              stagedContainerObjectId: toSectorObjectId(spare.id),
+            });
           } catch (err: any) {
-            logger.warn({ label, err: err?.message }, "drone-role: factory — container recovery failed");
+            logger.warn({ label, err: err?.message }, "drone-role: container staging failed");
           }
         }
       }
       return;
     }
 
-    const manny = pickIdleManny(mannies, claimed);
-    if (!manny) {
-      logger.info({ label }, "drone-role: factory — no idle manny for staging");
+    // Regular supply item: craft it aboard the delivery drone (one per tick).
+    await craftAboardDelivery(dc, deliveryId, next, label, dProbe);
+    return;
+  }
+
+  if (phase === "handoff") {
+    // Wait until the served delivery drone has recovered the staged container.
+    const deliveryId = role.state.servingDeliveryProbeId;
+    if (deliveryId == null) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        stagedContainerObjectId: undefined,
+      });
       return;
     }
 
-    logger.info({ label, containerId: container.id, mannyId: manny.id }, "drone-role: factory — detaching container as staged supply");
-    try {
-      await c.detachContainer(manny.id, container.id, "drifting");
-      claimed.add(manny.id);
-      await updateDroneRoleState(role.id, {
+    // Same revalidation as `supplying`: abandon if the drone is no longer an
+    // enabled, waiting delivery drone (the staged container stays drifting
+    // and will be found by the next waiting drone / supply run).
+    const allRoles = await deps.getDroneRoles();
+    const dRole = allRoles.find(
+      (r) => r.probeId === deliveryId && r.enabled && r.roleType === "delivery",
+    );
+    if (!dRole || dRole.state.phase !== "waiting") {
+      logger.info({ label, deliveryId }, "drone-role: delivery drone no longer waiting — abandoning handoff");
+      await deps.updateDroneRoleState(role.id, {
         phase: "idle",
-        stagedContainerId: container.id,
+        servingDeliveryProbeId: undefined,
+        stagedContainerObjectId: undefined,
       });
-    } catch (err: any) {
-      logger.warn({ label, err: err?.message }, "drone-role: factory — detach container failed");
+      return;
+    }
+
+    let dProbe: any = null;
+    try {
+      const resp = await deps.clientFor(deliveryId).getProbe();
+      dProbe = resp?.probe ?? null;
+    } catch {
+      logger.warn({ label, deliveryId }, "drone-role: could not fetch delivery drone during handoff");
+      return;
+    }
+    if (!dProbe?.sector || !atSector(probe, dProbe.sector)) {
+      logger.info({ label, deliveryId }, "drone-role: delivery drone left the sector — abandoning handoff");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        servingDeliveryProbeId: undefined,
+        stagedContainerObjectId: undefined,
+      });
+      return;
+    }
+    const dHasContainer = (dProbe?.inventory?.items ?? []).some(isContainerItem);
+    if (dHasContainer) {
+      logger.info({ label, deliveryId }, "drone-role: container handoff complete — resuming supply run");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "supplying",
+        stagedContainerObjectId: undefined,
+      });
+    } else {
+      logger.info({ label, deliveryId }, "drone-role: waiting for delivery drone to recover staged container");
     }
     return;
   }
 }
 
-/** Returns list of stock items not yet present in inventory (with how many are missing). */
-function getMissingStock(
-  inventoryItems: any[],
-  stock: Array<{ recipe: string; quantity: number }>,
-): Array<{ recipe: string; needed: number }> {
-  const countByType = new Map<string, number>();
-  for (const item of inventoryItems) {
-    const t: string = item.type ?? item.recipe ?? "";
-    countByType.set(t, (countByType.get(t) ?? 0) + 1);
+/** Craft one supply item aboard the delivery drone using its own Mannies or
+ *  printer. Returns true when a craft was successfully started. */
+async function craftAboardDelivery(
+  dc: ReturnType<typeof clientFor>,
+  deliveryId: number,
+  supply: { type: string; recipe: string; printer?: boolean },
+  label: string,
+  dProbe?: any,
+): Promise<boolean> {
+  try {
+    if (supply.printer) {
+      // Idempotency: the printer runs one job at a time — if it is already
+      // busy, the previous print is still in flight; wait, don't re-issue.
+      const printer = (dProbe?.inventory?.items ?? []).find(
+        (i: any) => i.type === "atomic_3d_printer",
+      );
+      if (printer?.currentTask) {
+        logger.info({ label, deliveryId }, "drone-role: printer busy aboard delivery drone — waiting");
+        return false;
+      }
+      logger.info({ label, deliveryId, recipe: supply.recipe }, "drone-role: printing supply item aboard delivery drone");
+      await dc.atomicPrinterCraft(supply.recipe);
+      return true;
+    }
+    let dMannies: any[] = [];
+    try {
+      const resp = await dc.getMannies();
+      dMannies = resp?.mannies ?? [];
+    } catch {
+      return false;
+    }
+    // Idempotency: crafts are long-running and the item only appears in
+    // inventory on completion. If ANY manny aboard the delivery drone is
+    // already busy, assume our previous supply craft is still in flight and
+    // wait — never hand the same recipe to a second idle manny.
+    if (dMannies.some((m: any) => m.currentTask)) {
+      logger.info({ label, deliveryId }, "drone-role: craft already in progress aboard delivery drone — waiting");
+      return false;
+    }
+    const manny = pickIdleManny(dMannies, new Set());
+    if (!manny) {
+      logger.info({ label, deliveryId }, "drone-role: no idle manny aboard delivery drone");
+      return false;
+    }
+    logger.info({ label, deliveryId, recipe: supply.recipe, mannyId: manny.id }, "drone-role: crafting supply item aboard delivery drone");
+    await dc.craftItem(manny.id, supply.recipe);
+    return true;
+  } catch (err: any) {
+    logger.warn({ label, deliveryId, recipe: supply.recipe, err: err?.message }, "drone-role: supply craft failed");
+    return false;
   }
-  const result: Array<{ recipe: string; needed: number }> = [];
-  for (const { recipe, quantity } of stock) {
-    const have = countByType.get(recipe) ?? 0;
-    if (have < quantity) result.push({ recipe, needed: quantity - have });
-  }
-  return result;
 }

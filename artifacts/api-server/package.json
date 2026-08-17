@@ -8,7 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsx --test src/routes/vng/mining-dedup.test.ts"
+    "test": "tsx --test src/routes/vng/mining-dedup.test.ts src/routes/vng/factory-role.test.ts src/routes/vng/delivery-flow.test.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

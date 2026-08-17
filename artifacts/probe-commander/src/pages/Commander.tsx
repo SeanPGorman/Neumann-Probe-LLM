@@ -1108,8 +1108,8 @@ const PHASE_COLOR: Record<string, string> = {
   installing_beacon:     "text-cyan-400",
   dropping_container:    "text-cyan-400",
   waiting_for_delivery:  "text-purple-400",
-  crafting:              "text-orange-400",
-  staging:               "text-green-400",
+  supplying:             "text-blue-400",
+  handoff:               "text-purple-400",
 };
 
 function SectorInput({
@@ -1168,6 +1168,9 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   // Delivery config
   const [factoryProbeId, setFactoryProbeId] = useState("");
 
+  // Factory config
+  const [deliveryProbeIds, setDeliveryProbeIds] = useState<number[]>([]);
+
   // Explorer config
   const [vecX, setVecX] = useState("");
   const [vecY, setVecY] = useState("");
@@ -1181,6 +1184,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
     setSrcX(""); setSrcY(""); setSrcZ("");
     setTargetProbeId(""); setMinFuel("80");
     setFactoryProbeId("");
+    setDeliveryProbeIds([]);
     setVecX(""); setVecY(""); setVecZ(""); setScutNetwork("");
     setSaveError(null);
   };
@@ -1199,6 +1203,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       const cfg = r.config as any;
       setVecX(String(cfg.targetVector?.x ?? "")); setVecY(String(cfg.targetVector?.y ?? "")); setVecZ(String(cfg.targetVector?.z ?? ""));
       setScutNetwork(cfg.scutNetworkName ?? "");
+    } else if (r.roleType === "factory") {
+      setDeliveryProbeIds(((r.config as any).deliveryProbeIds ?? []) as number[]);
     }
     setEditing(true); setShowForm(true);
   };
@@ -1215,7 +1221,10 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       factoryProbeName: probeList.find((p) => p.id === parseInt(factoryProbeId))?.name,
     };
     if (roleType === "factory") return {
-      // stockItems left undefined → runner uses default (scut_relay, IC, waypoint_bookmark)
+      deliveryProbeIds,
+      deliveryProbeNames: deliveryProbeIds.map(
+        (id) => probeList.find((p) => p.id === id)?.name ?? `probe ${id}`,
+      ),
     };
     return {
       targetVector: { x: parseInt(vecX), y: parseInt(vecY), z: parseInt(vecZ) },
@@ -1326,13 +1335,6 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             </div>
           )}
 
-          {/* Factory: staged container status */}
-          {role.roleType === "factory" && role.state.stagedContainerId && (
-            <div className="text-[10px] text-green-400/80 font-mono">
-              📦 container staged — awaiting pickup
-            </div>
-          )}
-
           {/* Config summary — role-type specific */}
           <div className="border-t border-border/30 pt-2 space-y-1">
             {role.roleType === "refuel" && (() => {
@@ -1363,6 +1365,31 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               );
             })()}
 
+            {role.roleType === "factory" && (() => {
+              const cfg = role.config as any;
+              const ids: number[] = cfg.deliveryProbeIds ?? [];
+              const names: string[] = cfg.deliveryProbeNames ?? [];
+              return (
+                <>
+                  <div className="text-[10px] text-muted-foreground">
+                    Serves:{" "}
+                    <span className="text-foreground">
+                      {ids.length === 0
+                        ? "no delivery drones"
+                        : ids.map((id, i) => probeList.find((p) => p.id === id)?.name ?? names[i] ?? `probe ${id}`).join(", ")}
+                    </span>
+                  </div>
+                  {(role.state as any).servingDeliveryProbeId != null && (
+                    <div className="text-[10px] text-muted-foreground">
+                      Resupplying: <span className="text-foreground">
+                        {probeList.find((p) => p.id === (role.state as any).servingDeliveryProbeId)?.name ?? `probe ${(role.state as any).servingDeliveryProbeId}`}
+                      </span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
+
             {role.roleType === "explorer" && (() => {
               const cfg = role.config as any;
               return (
@@ -1376,28 +1403,6 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                     </div>
                   )}
                 </>
-              );
-            })()}
-
-            {role.roleType === "factory" && (() => {
-              const cfg = role.config as any;
-              const items: Array<{ recipe: string; quantity: number }> =
-                cfg.stockItems?.length
-                  ? cfg.stockItems
-                  : [
-                      { recipe: "scut_relay",         quantity: 1 },
-                      { recipe: "integrated_circuit", quantity: 1 },
-                      { recipe: "waypoint_bookmark",  quantity: 1 },
-                    ];
-              return (
-                <div className="space-y-0.5">
-                  <div className="text-[10px] text-muted-foreground mb-1">Container load per cycle:</div>
-                  {items.map((item) => (
-                    <div key={item.recipe} className="text-[10px] font-mono text-foreground">
-                      × {item.quantity} {item.recipe}
-                    </div>
-                  ))}
-                </div>
               );
             })()}
           </div>
@@ -1430,12 +1435,12 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
 
           {/* Role type selector — only when adding */}
           {!editing && (
-            <div className="grid grid-cols-2 gap-1">
+            <div className="flex gap-1">
               {(["refuel", "delivery", "explorer", "factory"] as DroneRoleType[]).map((rt) => (
                 <button
                   key={rt}
                   onClick={() => setRoleType(rt)}
-                  className={`py-1 text-[10px] rounded border transition-all ${
+                  className={`flex-1 py-1 text-[10px] rounded border transition-all ${
                     roleType === rt
                       ? "border-primary/60 bg-primary/10 text-primary"
                       : "border-border text-muted-foreground hover:text-foreground"
@@ -1502,6 +1507,38 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             </div>
           )}
 
+          {/* Factory config */}
+          {roleType === "factory" && (
+            <div className="space-y-2">
+              <div>
+                <div className="text-[10px] text-muted-foreground mb-1">DELIVERY DRONES SERVED</div>
+                <div className="space-y-1">
+                  {probeList.filter((p) => p.id !== probeId).map((p) => (
+                    <label key={p.id} className="flex items-center gap-2 text-xs cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={deliveryProbeIds.includes(p.id)}
+                        onChange={(e) =>
+                          setDeliveryProbeIds((prev) =>
+                            e.target.checked ? [...prev, p.id] : prev.filter((id) => id !== p.id),
+                          )
+                        }
+                        className="accent-primary"
+                      />
+                      <span className="text-foreground">{p.name} ({p.id})</span>
+                    </label>
+                  ))}
+                  {probeList.filter((p) => p.id !== probeId).length === 0 && (
+                    <div className="text-[10px] text-muted-foreground/60 italic">No other probes available.</div>
+                  )}
+                </div>
+              </div>
+              <div className="text-[10px] text-muted-foreground/60 italic">
+                Watches the selected Delivery Drones. When one docks here under-supplied, the factory coordinates crafting aboard it (container, SCUT relay, integrated circuit, transit beacon) and stages a spare container if needed, so the drone is fully loaded before its next dispatch.
+              </div>
+            </div>
+          )}
+
           {/* Explorer config */}
           {roleType === "explorer" && (
             <div className="space-y-2">
@@ -1522,32 +1559,6 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               </div>
               <div className="text-[10px] text-muted-foreground/60 italic">
                 Explorer moves sector-by-sector toward the target. At each hop it deploys a SCUT relay, installs a transit beacon, drops its container, then waits for a Delivery Drone before moving on.
-              </div>
-            </div>
-          )}
-
-          {/* Factory config */}
-          {roleType === "factory" && (
-            <div className="space-y-2">
-              <div className="text-[10px] text-muted-foreground/60 italic">
-                Factory stays in its home sector. It crafts supply items and stages a drifting container for Delivery Drones to pick up before dispatch. When the container is collected it immediately begins prepping the next one.
-              </div>
-              <div className="border border-border/40 rounded p-2 space-y-1">
-                <div className="text-[10px] text-muted-foreground tracking-wide mb-1">DEFAULT CONTAINER LOAD</div>
-                {[
-                  { recipe: "scut_relay",         label: "SCUT Relay" },
-                  { recipe: "integrated_circuit",  label: "Integrated Circuit" },
-                  { recipe: "waypoint_bookmark",   label: "Waypoint Bookmark" },
-                ].map(({ recipe, label }) => (
-                  <div key={recipe} className="flex items-center gap-2 text-[10px]">
-                    <span className="text-primary/60">×1</span>
-                    <span className="font-mono text-foreground">{recipe}</span>
-                    <span className="text-muted-foreground/50">({label})</span>
-                  </div>
-                ))}
-              </div>
-              <div className="text-[9px] text-muted-foreground/40 italic">
-                Custom stock items can be configured after saving by editing the role.
               </div>
             </div>
           )}

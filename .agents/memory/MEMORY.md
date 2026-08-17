@@ -1,3 +1,4 @@
 - [API routing — /api vs /api-server](api-routing.md) — client fetches must use `/api/vng/...` not `/api-server/api/vng/...`
 - [Mining targets live inside solar_system bodies](mining-targets.md) — sector has no standalone asteroids; mineable bodies are in solar_system.bodies after mapSectorObjects()
 - [Mining planet filter](mining-planet-filter.md) — planets appear in minableTargets but hidden_on_asteroid mode rejects them; filter to asteroid type only in poller
+- [VNG containers can't hold crafted items](vng-container-items.md) — no store/load-item API; craft aboard the recipient probe instead; container item type is additional_container
