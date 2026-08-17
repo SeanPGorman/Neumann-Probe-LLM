@@ -1176,6 +1176,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   const [vecY, setVecY] = useState("");
   const [vecZ, setVecZ] = useState("");
   const [scutNetwork, setScutNetwork] = useState("");
+  const [explorerPlayerName, setExplorerPlayerName] = useState("");
+  const [explorerWpStart, setExplorerWpStart] = useState("1");
 
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -1186,6 +1188,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
     setFactoryProbeId("");
     setDeliveryProbeIds([]);
     setVecX(""); setVecY(""); setVecZ(""); setScutNetwork("");
+    setExplorerPlayerName(""); setExplorerWpStart("1");
     setSaveError(null);
   };
 
@@ -1203,6 +1206,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       const cfg = r.config as any;
       setVecX(String(cfg.targetVector?.x ?? "")); setVecY(String(cfg.targetVector?.y ?? "")); setVecZ(String(cfg.targetVector?.z ?? ""));
       setScutNetwork(cfg.scutNetworkName ?? "");
+      setExplorerPlayerName(cfg.playerName ?? "");
+      setExplorerWpStart(String(cfg.wpStartNumber ?? 1));
     } else if (r.roleType === "factory") {
       setDeliveryProbeIds(((r.config as any).deliveryProbeIds ?? []) as number[]);
     }
@@ -1229,6 +1234,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
     return {
       targetVector: { x: parseInt(vecX), y: parseInt(vecY), z: parseInt(vecZ) },
       scutNetworkName: scutNetwork || undefined,
+      playerName: explorerPlayerName || undefined,
+      wpStartNumber: explorerWpStart ? parseInt(explorerWpStart) : undefined,
     };
   };
 
@@ -1392,11 +1399,22 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
 
             {role.roleType === "explorer" && (() => {
               const cfg = role.config as any;
+              const wpCounter: number | undefined = (role.state as any).wpCounter;
               return (
                 <>
                   <div className="text-[10px] text-muted-foreground">
-                    Target vector: <span className="text-foreground font-mono">[{cfg.targetVector?.x}, {cfg.targetVector?.y}, {cfg.targetVector?.z}]</span>
+                    Target: <span className="text-foreground font-mono">[{cfg.targetVector?.x}, {cfg.targetVector?.y}, {cfg.targetVector?.z}]</span>
                   </div>
+                  {cfg.playerName && (
+                    <div className="text-[10px] text-muted-foreground">
+                      Pilot: <span className="text-foreground">{cfg.playerName}</span>
+                    </div>
+                  )}
+                  {wpCounter != null && (
+                    <div className="text-[10px] text-muted-foreground">
+                      WP counter: <span className="text-foreground font-mono">WP-{String(wpCounter).padStart(3, "0")}</span>
+                    </div>
+                  )}
                   {cfg.scutNetworkName && (
                     <div className="text-[10px] text-muted-foreground">
                       SCUT network: <span className="text-foreground">{cfg.scutNetworkName}</span>
@@ -1548,17 +1566,40 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                 onChange={(v) => { setVecX(v.x); setVecY(v.y); setVecZ(v.z); }}
               />
               <div>
-                <div className="text-[10px] text-muted-foreground mb-1">SCUT NETWORK NAME (optional)</div>
+                <div className="text-[10px] text-muted-foreground mb-1">PILOT NAME (embedded in WP bookmarks)</div>
                 <input
                   type="text"
-                  placeholder="e.g. Alpha Network"
-                  value={scutNetwork}
-                  onChange={(e) => setScutNetwork(e.target.value)}
+                  placeholder="e.g. Snoozy"
+                  value={explorerPlayerName}
+                  onChange={(e) => setExplorerPlayerName(e.target.value)}
                   className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
                 />
               </div>
+              <div className="flex gap-2">
+                <div className="flex-1">
+                  <div className="text-[10px] text-muted-foreground mb-1">WP START NUMBER</div>
+                  <input
+                    type="number"
+                    min={1}
+                    placeholder="1"
+                    value={explorerWpStart}
+                    onChange={(e) => setExplorerWpStart(e.target.value)}
+                    className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
+                  />
+                </div>
+                <div className="flex-1">
+                  <div className="text-[10px] text-muted-foreground mb-1">SCUT NETWORK NAME (optional)</div>
+                  <input
+                    type="text"
+                    placeholder="e.g. Alpha Network"
+                    value={scutNetwork}
+                    onChange={(e) => setScutNetwork(e.target.value)}
+                    className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
+                  />
+                </div>
+              </div>
               <div className="text-[10px] text-muted-foreground/60 italic">
-                Explorer moves sector-by-sector toward the target. At each hop it deploys a SCUT relay, installs a transit beacon, drops its container, then waits for a Delivery Drone before moving on.
+                Moves sector-by-sector toward the target. Installs a WP bookmark at each arrival, deploys a SCUT relay only when the next hop is out of coverage, then drops its container and waits for Delivery.
               </div>
             </div>
           )}

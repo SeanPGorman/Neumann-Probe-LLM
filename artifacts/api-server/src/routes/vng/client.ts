@@ -143,6 +143,7 @@ export const getVisitedSectorsByProbe = (probeId: number) =>
   vngFetch(`/api/probe/${probeId}/visited-sectors`);
 export const getProbeList        = () => vngFetch("/api/probes");
 export const getScutNetwork      = (networkId: number) => vngFetch(`/api/probe/scut-network/${networkId}`);
+export const getScutNetworksRaw  = () => vngFetch("/api/probe/scut-networks");
 export const getProbeImprovements = () => main().getProbeImprovements();
 export const getMissions         = () => vngFetch("/api/probe/missions");
 export const scanSector = (x: number, y: number, z: number) =>

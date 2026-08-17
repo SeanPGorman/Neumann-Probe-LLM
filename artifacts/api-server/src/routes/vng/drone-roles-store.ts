@@ -27,6 +27,10 @@ export type ExplorerConfig = {
   targetVector: { x: number; y: number; z: number };
   /** SCUT network name to use when activating relays. */
   scutNetworkName?: string;
+  /** Player / pilot name embedded in waypoint bookmark names. */
+  playerName?: string;
+  /** Starting WP counter override (defaults to 1). */
+  wpStartNumber?: number;
 };
 
 export type FactoryConfig = {
@@ -52,6 +56,8 @@ export type RoleState = {
   servingDeliveryProbeId?: number;
   /** Factory: sector object ID of the container staged (drifting) for pickup. */
   stagedContainerObjectId?: string;
+  /** Explorer: sequential WP counter — increments each time a waypoint bookmark is installed. */
+  wpCounter?: number;
 };
 
 export type DroneRole = {
