@@ -1140,13 +1140,18 @@ function SectorInput({
 
 function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList: ProbeEntry[] }) {
   const queryClient = useQueryClient();
+  // Fetch ALL roles once — filter client-side to avoid a double-fetch when
+  // probeId resolves from null → number as the probe list loads.
   const { data, isLoading } = useQuery({
-    queryKey: ["drone-roles", probeId],
-    queryFn: () => fetchJson(`${BASE}/api/vng/drone-roles${probeId != null ? `?probeId=${probeId}` : ""}`),
+    queryKey: ["drone-roles"],
+    queryFn: () => fetchJson(`${BASE}/api/vng/drone-roles`),
     refetchInterval: 15000,
+    staleTime: 10_000,
+    placeholderData: (prev: any) => prev,
   });
 
-  const roles: DroneRole[] = data?.roles ?? [];
+  const allRoles: DroneRole[] = data?.roles ?? [];
+  const roles = probeId != null ? allRoles.filter((r) => r.probeId === probeId) : allRoles;
   const role = roles.find((r) => r.enabled) ?? roles[0] ?? null;
 
   const [showForm, setShowForm] = useState(false);
