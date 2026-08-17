@@ -3,3 +3,5 @@
 - [Mining planet filter](mining-planet-filter.md) — planets appear in minableTargets but hidden_on_asteroid mode rejects them; filter to asteroid type only in poller
 - [VNG SCUT relay deployment](vng-relay-deployment.md) — jettison a scut_relay item to deploy it as an inactive sector relay; API spec lives at /openapi.yaml
 - [VNG containers can't hold crafted items](vng-container-items.md) — no store/load-item API; craft aboard the recipient probe instead; container item type is additional_container
+- [VNG probe sector coordinates](vng-probe-sector-shape.md) — coords at probe.sector.relative.{x,y,z}; sectors must have x+y+z even; step exactly 2 axes per hop
+- [VNG SCUT coverage check](vng-scut-endpoint.md) — /api/probe/scut-networks is 404; use getSectors()+getScutNetwork(id) aggregation instead

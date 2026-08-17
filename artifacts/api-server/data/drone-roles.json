@@ -1,0 +1,66 @@
+[
+  {
+    "probeId": 795,
+    "probeName": "FT-1",
+    "roleType": "refuel",
+    "enabled": true,
+    "config": {
+      "sourceSector": {
+        "x": 3,
+        "y": 6,
+        "z": -1
+      },
+      "targetProbeId": 716,
+      "targetProbeName": "AlphaFactory",
+      "minFuelThreshold": 20
+    },
+    "id": 1,
+    "createdAt": "2026-08-17T19:42:29.768Z",
+    "state": {
+      "phase": "traveling_to_source",
+      "lastUpdated": "2026-08-17T19:42:41.836Z"
+    }
+  },
+  {
+    "probeId": 716,
+    "probeName": "AlphaFactory",
+    "roleType": "factory",
+    "enabled": true,
+    "config": {
+      "deliveryProbeIds": [],
+      "deliveryProbeNames": []
+    },
+    "id": 2,
+    "createdAt": "2026-08-17T19:48:14.643Z",
+    "state": {
+      "phase": "idle"
+    }
+  },
+  {
+    "probeId": 761,
+    "probeName": "BravoDrone",
+    "roleType": "explorer",
+    "enabled": true,
+    "config": {
+      "targetVector": {
+        "x": 30,
+        "y": 30,
+        "z": 30
+      },
+      "playerName": "SnoozyBob",
+      "wpStartNumber": 98
+    },
+    "id": 3,
+    "createdAt": "2026-08-17T19:58:56.700Z",
+    "state": {
+      "phase": "dropping_container",
+      "wpCounter": 99,
+      "lastUpdated": "2026-08-17T20:20:47.508Z",
+      "travelTarget": {
+        "x": 26,
+        "y": 20,
+        "z": 8
+      }
+    }
+  }
+]

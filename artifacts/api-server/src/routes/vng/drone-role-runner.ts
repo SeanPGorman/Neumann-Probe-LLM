@@ -9,7 +9,8 @@
  */
 
 import { logger } from "../../lib/logger.js";
-import { clientFor, VngApiError, getScutNetworksRaw } from "./client.js";
+import { clientFor, VngApiError, getScutNetwork } from "./client.js";
+import { getSectors } from "./file-store.js";
 import {
   getDroneRoleByProbeId,
   getDroneRoles,
@@ -67,20 +68,49 @@ function atSector(
   probe: any,
   target: { x: number; y: number; z: number },
 ): boolean {
-  const s = probe?.sector;
+  // VNG API returns coordinates at probe.sector.relative, not probe.sector directly.
+  const s = probe?.sector?.relative;
   return s != null && s.x === target.x && s.y === target.y && s.z === target.z;
 }
 
-/** Next sector toward target, one step per axis direction. */
+/**
+ * Compute the next sector one hop toward `target` from `current`.
+ *
+ * VNG sectors only exist where x + y + z is even.  Stepping on all three axes
+ * simultaneously changes the sum by an odd amount (always invalid).  To keep
+ * parity we must step on EXACTLY TWO axes per hop — net ±2 or 0 change in sum.
+ *
+ * Strategy: sort axes by |remaining delta| descending, step the two largest.
+ * When only one axis has nonzero delta the other step is a "detour" (+1 on a
+ * neutral axis) that the following tick automatically corrects.  Because the
+ * target's sum and the current sum are both even, the total remaining delta sum
+ * is always even, guaranteeing convergence.
+ */
 function nextSectorToward(
   current: { x: number; y: number; z: number },
   target: { x: number; y: number; z: number },
 ): { x: number; y: number; z: number } {
-  return {
-    x: current.x + Math.sign(target.x - current.x),
-    y: current.y + Math.sign(target.y - current.y),
-    z: current.z + Math.sign(target.z - current.z),
-  };
+  const deltas: Array<{ key: "x" | "y" | "z"; delta: number }> = [
+    { key: "x", delta: target.x - current.x },
+    { key: "y", delta: target.y - current.y },
+    { key: "z", delta: target.z - current.z },
+  ];
+
+  if (deltas.every((d) => d.delta === 0)) return { ...current };
+
+  // Sort descending by absolute delta so we advance the axes that need it most.
+  deltas.sort((a, b) => Math.abs(b.delta) - Math.abs(a.delta));
+
+  const result = { ...current };
+
+  // Step the two highest-delta axes.
+  const s0 = Math.sign(deltas[0].delta) || 1;          // primary step
+  const s1 = Math.sign(deltas[1].delta) || (s0 > 0 ? 1 : -1); // detour if delta=0
+
+  result[deltas[0].key] += s0;
+  result[deltas[1].key] += s1;
+
+  return result;
 }
 
 function reachedTarget(
@@ -255,7 +285,7 @@ async function runRefuelRole(
     let targetSector: { x: number; y: number; z: number } | null = null;
     try {
       const resp = await c2.getProbe();
-      targetSector = resp?.probe?.sector ?? null;
+      targetSector = resp?.probe?.sector?.relative ?? null;
     } catch {
       logger.warn({ label }, "drone-role: could not fetch target probe sector");
       return;
@@ -521,7 +551,7 @@ export async function runDeliveryRole(
     let factorySector: { x: number; y: number; z: number } | null = null;
     try {
       const resp = await clientFor(cfg.factoryProbeId).getProbe();
-      factorySector = resp?.probe?.sector ?? null;
+      factorySector = resp?.probe?.sector?.relative ?? null;
     } catch {
       logger.warn({ label }, "drone-role: could not fetch factory sector");
       return;
@@ -552,17 +582,44 @@ export async function runDeliveryRole(
 
 const SCUT_RADIUS = 10; // default coverage radius in sectors (Euclidean distance)
 
-/** Returns true if `nextSector` is within coverage of any active SCUT relay. Fails open. */
+/**
+ * Returns true if `nextSector` is within coverage of any active SCUT relay.
+ *
+ * Uses locally-stored visited-sector data to discover network IDs, then queries
+ * the game's per-network endpoint for authoritative relay positions and radius.
+ * The global `/api/probe/scut-networks` endpoint does not exist (404); this
+ * replicates the same aggregation that the local /api/vng/scut-networks route
+ * performs.  Fails open so the explorer keeps moving if data is unavailable.
+ */
 async function isInScutCoverage(
   nextSector: { x: number; y: number; z: number },
   label: string,
 ): Promise<boolean> {
   try {
-    const data = await getScutNetworksRaw();
-    const networks: any[] = data?.networks ?? [];
-    for (const net of networks) {
+    // Collect network IDs from locally-cached sector objects.
+    const networkIds = new Set<number>();
+    const sectors = await getSectors();
+    for (const s of sectors) {
+      for (const obj of (s.objects ?? []) as any[]) {
+        if (obj.type === "scut_relay" && obj.network?.id) {
+          networkIds.add(obj.network.id as number);
+        }
+      }
+    }
+
+    if (networkIds.size === 0) return false;
+
+    // Fetch relay data for every known network.
+    const results = await Promise.allSettled(
+      [...networkIds].map((id) => getScutNetwork(id)),
+    );
+
+    for (const r of results) {
+      if (r.status !== "fulfilled") continue;
+      const net = r.value?.network;
       for (const relay of (net?.relays ?? [])) {
-        if (relay.status !== "active") continue;
+        // VNG relay status is "on" | "off" (not a boolean active field).
+        if (relay.status !== "on") continue;
         const rx: number = relay.sector?.relative?.x ?? 0;
         const ry: number = relay.sector?.relative?.y ?? 0;
         const rz: number = relay.sector?.relative?.z ?? 0;
@@ -639,7 +696,7 @@ export async function runExplorerRole(
 ): Promise<void> {
   const cfg = role.config as ExplorerConfig;
   const phase = role.state.phase;
-  const currentSector = probe?.sector ?? null;
+  const currentSector = probe?.sector?.relative ?? null;
   const playerName = cfg.playerName ?? "Explorer";
 
   // ── idle ──────────────────────────────────────────────────────────────────
