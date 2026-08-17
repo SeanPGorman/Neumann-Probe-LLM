@@ -235,6 +235,13 @@ async function runRefuelRole(
   }
 
   if (phase === "traveling_to_source") {
+    // Skip source trip if we already have a full tank (e.g. after a server restart).
+    const ourFuelAtSource = probe?.fuel?.deuterium ?? 0;
+    if (ourFuelAtSource >= 99) {
+      logger.info({ label, ourFuel: ourFuelAtSource }, "drone-role: already fueled — skipping source, heading to target");
+      await updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+      return;
+    }
     if (isMoving) return; // wait for arrival
     if (atSector(probe, cfg.sourceSector)) {
       logger.info({ label }, "drone-role: arrived at source — refilling");
