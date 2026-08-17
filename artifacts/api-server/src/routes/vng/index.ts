@@ -17,6 +17,13 @@ import {
   getPendingActions,
   DATA_DIR,
 } from "./file-store.js";
+import {
+  getDroneRoles,
+  addDroneRole,
+  updateDroneRole,
+  deleteDroneRole,
+  getDeliveryRequests,
+} from "./drone-roles-store.js";
 import { afterTool } from "./after-tool.js";
 import {
   allowedTools,
@@ -203,6 +210,74 @@ router.delete("/scheduled/:id", async (req, res) => {
     const ok = await cancelPendingAction(id);
     if (ok) res.json({ ok: true });
     else res.status(404).json({ error: `No pending action with id ${id}` });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ── Drone Roles ───────────────────────────────────────────────────────────────
+
+router.get("/drone-roles", async (req, res) => {
+  try {
+    const rawProbeId = req.query.probeId;
+    const probeId = rawProbeId != null ? parseInt(rawProbeId as string, 10) : null;
+    let roles = await getDroneRoles();
+    if (probeId != null && !isNaN(probeId)) {
+      roles = roles.filter((r) => r.probeId === probeId);
+    }
+    res.json({ roles });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post("/drone-roles", async (req, res) => {
+  try {
+    const { probeId, probeName, roleType, config } = req.body;
+    if (!probeId || !roleType || !config) {
+      res.status(400).json({ error: "probeId, roleType, and config are required" });
+      return;
+    }
+    // Prevent duplicate roles for the same probe
+    const existing = await getDroneRoles();
+    if (existing.some((r) => r.probeId === probeId && r.enabled)) {
+      res.status(409).json({ error: "This probe already has an active role assignment" });
+      return;
+    }
+    const role = await addDroneRole({ probeId, probeName, roleType, enabled: true, config });
+    res.status(201).json({ role });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.put("/drone-roles/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const patch = req.body;
+    const updated = await updateDroneRole(id, patch);
+    if (!updated) res.status(404).json({ error: "Role not found" });
+    else res.json({ role: updated });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete("/drone-roles/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    const ok = await deleteDroneRole(id);
+    if (ok) res.json({ ok: true });
+    else res.status(404).json({ error: "Role not found" });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/drone-roles/delivery-requests", async (_req, res) => {
+  try {
+    const requests = await getDeliveryRequests();
+    res.json({ requests });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

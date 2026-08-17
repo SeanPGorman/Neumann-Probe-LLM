@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { Maximize2, Minimize2 } from "lucide-react";
 import { GlobeMap } from "./GlobeMap";
-import { SystemMap } from "./SystemMap";
+// SystemMap removed — tab dropped from UI
 import { MiningPanel } from "./MiningPanel";
 import { objectIcon, SectorObjectList } from "../components/SectorObject";
 import { ResizablePanelGroup, ResizablePanel, ResizableHandle } from "@/components/ui/resizable";
@@ -31,7 +31,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "containers" | "sectors" | "scout" | "globe" | "system" | "scheduled" | "mining";
+type SideTab = "telemetry" | "roles" | "containers" | "scout" | "globe" | "scheduled" | "mining";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -1066,6 +1066,448 @@ function ScheduledPanel({
   );
 }
 
+// ── Drone Roles Panel ──────────────────────────────────────────────────────────
+
+type DroneRoleType = "refuel" | "delivery" | "explorer";
+type DroneRole = {
+  id: number;
+  probeId: number;
+  probeName?: string;
+  roleType: DroneRoleType;
+  enabled: boolean;
+  createdAt: string;
+  config: Record<string, any>;
+  state: { phase: string; lastError?: string; lastUpdated?: string; travelTarget?: { x: number; y: number; z: number } };
+};
+
+const ROLE_LABELS: Record<DroneRoleType, string> = {
+  refuel:   "REFUEL DRONE",
+  delivery: "DELIVERY DRONE",
+  explorer: "EXPLORER DRONE",
+};
+const ROLE_ICONS: Record<DroneRoleType, string> = {
+  refuel:   "⛽",
+  delivery: "📦",
+  explorer: "🔭",
+};
+const PHASE_COLOR: Record<string, string> = {
+  idle:                  "text-muted-foreground",
+  waiting:               "text-muted-foreground",
+  traveling:             "text-yellow-400",
+  traveling_to_source:   "text-yellow-400",
+  traveling_to_target:   "text-yellow-400",
+  traveling_to_explorer: "text-yellow-400",
+  returning:             "text-yellow-400",
+  refilling:             "text-blue-400",
+  transferring:          "text-blue-400",
+  delivering:            "text-blue-400",
+  deploying_relay:       "text-cyan-400",
+  activating_relay:      "text-cyan-400",
+  installing_beacon:     "text-cyan-400",
+  dropping_container:    "text-cyan-400",
+  waiting_for_delivery:  "text-purple-400",
+};
+
+function SectorInput({
+  label, value, onChange,
+}: {
+  label: string;
+  value: { x: string; y: string; z: string };
+  onChange: (v: { x: string; y: string; z: string }) => void;
+}) {
+  return (
+    <div>
+      <div className="text-[10px] text-muted-foreground mb-1">{label}</div>
+      <div className="flex gap-1">
+        {(["x", "y", "z"] as const).map((axis) => (
+          <input
+            key={axis}
+            type="number"
+            placeholder={axis.toUpperCase()}
+            value={value[axis]}
+            onChange={(e) => onChange({ ...value, [axis]: e.target.value })}
+            className="w-full bg-background border border-border rounded px-2 py-1 text-xs font-mono text-center"
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList: ProbeEntry[] }) {
+  const queryClient = useQueryClient();
+  const { data, isLoading } = useQuery({
+    queryKey: ["drone-roles", probeId],
+    queryFn: () => fetchJson(`${BASE}/api/vng/drone-roles${probeId != null ? `?probeId=${probeId}` : ""}`),
+    refetchInterval: 15000,
+  });
+
+  const roles: DroneRole[] = data?.roles ?? [];
+  const role = roles.find((r) => r.enabled) ?? roles[0] ?? null;
+
+  const [showForm, setShowForm] = useState(false);
+  const [editing, setEditing] = useState(false);
+  const [roleType, setRoleType] = useState<DroneRoleType>("explorer");
+
+  // Refuel config fields
+  const [srcX, setSrcX] = useState("");
+  const [srcY, setSrcY] = useState("");
+  const [srcZ, setSrcZ] = useState("");
+  const [targetProbeId, setTargetProbeId] = useState("");
+  const [minFuel, setMinFuel] = useState("80");
+
+  // Delivery config
+  const [factoryProbeId, setFactoryProbeId] = useState("");
+
+  // Explorer config
+  const [vecX, setVecX] = useState("");
+  const [vecY, setVecY] = useState("");
+  const [vecZ, setVecZ] = useState("");
+  const [scutNetwork, setScutNetwork] = useState("");
+
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+
+  const resetForm = () => {
+    setSrcX(""); setSrcY(""); setSrcZ("");
+    setTargetProbeId(""); setMinFuel("80");
+    setFactoryProbeId("");
+    setVecX(""); setVecY(""); setVecZ(""); setScutNetwork("");
+    setSaveError(null);
+  };
+
+  const openAdd = () => { resetForm(); setEditing(false); setShowForm(true); };
+  const openEdit = (r: DroneRole) => {
+    setRoleType(r.roleType);
+    if (r.roleType === "refuel") {
+      const cfg = r.config as any;
+      setSrcX(String(cfg.sourceSector?.x ?? "")); setSrcY(String(cfg.sourceSector?.y ?? "")); setSrcZ(String(cfg.sourceSector?.z ?? ""));
+      setTargetProbeId(String(cfg.targetProbeId ?? ""));
+      setMinFuel(String(cfg.minFuelThreshold ?? 80));
+    } else if (r.roleType === "delivery") {
+      setFactoryProbeId(String((r.config as any).factoryProbeId ?? ""));
+    } else if (r.roleType === "explorer") {
+      const cfg = r.config as any;
+      setVecX(String(cfg.targetVector?.x ?? "")); setVecY(String(cfg.targetVector?.y ?? "")); setVecZ(String(cfg.targetVector?.z ?? ""));
+      setScutNetwork(cfg.scutNetworkName ?? "");
+    }
+    setEditing(true); setShowForm(true);
+  };
+
+  const buildConfig = () => {
+    if (roleType === "refuel") return {
+      sourceSector: { x: parseInt(srcX), y: parseInt(srcY), z: parseInt(srcZ) },
+      targetProbeId: parseInt(targetProbeId),
+      targetProbeName: probeList.find((p) => p.id === parseInt(targetProbeId))?.name,
+      minFuelThreshold: parseInt(minFuel),
+    };
+    if (roleType === "delivery") return {
+      factoryProbeId: parseInt(factoryProbeId),
+      factoryProbeName: probeList.find((p) => p.id === parseInt(factoryProbeId))?.name,
+    };
+    return {
+      targetVector: { x: parseInt(vecX), y: parseInt(vecY), z: parseInt(vecZ) },
+      scutNetworkName: scutNetwork || undefined,
+    };
+  };
+
+  const handleSave = async () => {
+    if (!probeId) return;
+    setSaving(true); setSaveError(null);
+    try {
+      const config = buildConfig();
+      const probeName = probeList.find((p) => p.id === probeId)?.name;
+      if (editing && role) {
+        await fetchJson(`${BASE}/api/vng/drone-roles/${role.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ roleType, config, probeName }),
+        });
+      } else {
+        await fetchJson(`${BASE}/api/vng/drone-roles`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ probeId, probeName, roleType, config }),
+        });
+      }
+      await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
+      setShowForm(false);
+    } catch (err: any) {
+      setSaveError(err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const handleDelete = async (r: DroneRole) => {
+    if (!confirm(`Remove ${ROLE_LABELS[r.roleType]} assignment?`)) return;
+    await fetchJson(`${BASE}/api/vng/drone-roles/${r.id}`, { method: "DELETE" });
+    await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
+  };
+
+  const handleToggle = async (r: DroneRole) => {
+    await fetchJson(`${BASE}/api/vng/drone-roles/${r.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ enabled: !r.enabled }),
+    });
+    await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
+  };
+
+  if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
+
+  return (
+    <div className="space-y-4">
+      <div className="text-xs text-muted-foreground tracking-widest">DRONE ROLE</div>
+
+      {/* Current role card */}
+      {role ? (
+        <div className="border border-border rounded p-3 space-y-2">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-2">
+              <span>{ROLE_ICONS[role.roleType]}</span>
+              <span className="text-xs font-mono text-primary">{ROLE_LABELS[role.roleType]}</span>
+              {!role.enabled && (
+                <span className="text-[9px] text-muted-foreground border border-border rounded px-1">PAUSED</span>
+              )}
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => handleToggle(role)}
+                className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                title={role.enabled ? "Pause" : "Resume"}
+              >
+                {role.enabled ? "⏸" : "▶"}
+              </button>
+              <button
+                onClick={() => openEdit(role)}
+                className="text-[10px] text-muted-foreground hover:text-foreground transition-colors"
+                title="Edit"
+              >
+                ✎
+              </button>
+              <button
+                onClick={() => handleDelete(role)}
+                className="text-[10px] text-destructive hover:text-destructive/70 transition-colors"
+                title="Remove"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+
+          {/* Phase status */}
+          <div className="flex items-center gap-2">
+            <span className="text-[10px] text-muted-foreground">PHASE</span>
+            <span className={`text-[10px] font-mono uppercase tracking-wide ${PHASE_COLOR[role.state.phase] ?? "text-foreground"}`}>
+              {role.state.phase.replace(/_/g, " ")}
+            </span>
+          </div>
+
+          {role.state.lastError && (
+            <div className="text-[10px] text-destructive/80 break-words">⚠ {role.state.lastError}</div>
+          )}
+
+          {role.state.travelTarget && (
+            <div className="text-[10px] text-muted-foreground font-mono">
+              → [{role.state.travelTarget.x}, {role.state.travelTarget.y}, {role.state.travelTarget.z}]
+            </div>
+          )}
+
+          {/* Config summary — role-type specific */}
+          <div className="border-t border-border/30 pt-2 space-y-1">
+            {role.roleType === "refuel" && (() => {
+              const cfg = role.config as any;
+              const tgt = probeList.find((p) => p.id === cfg.targetProbeId);
+              return (
+                <>
+                  <div className="text-[10px] text-muted-foreground">
+                    Source: <span className="text-foreground font-mono">[{cfg.sourceSector?.x}, {cfg.sourceSector?.y}, {cfg.sourceSector?.z}]</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Target: <span className="text-foreground">{tgt?.name ?? cfg.targetProbeName ?? `probe ${cfg.targetProbeId}`}</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Refuel when below: <span className="text-foreground">{cfg.minFuelThreshold ?? 80}%</span>
+                  </div>
+                </>
+              );
+            })()}
+
+            {role.roleType === "delivery" && (() => {
+              const cfg = role.config as any;
+              const fac = probeList.find((p) => p.id === cfg.factoryProbeId);
+              return (
+                <div className="text-[10px] text-muted-foreground">
+                  Factory: <span className="text-foreground">{fac?.name ?? cfg.factoryProbeName ?? `probe ${cfg.factoryProbeId}`}</span>
+                </div>
+              );
+            })()}
+
+            {role.roleType === "explorer" && (() => {
+              const cfg = role.config as any;
+              return (
+                <>
+                  <div className="text-[10px] text-muted-foreground">
+                    Target vector: <span className="text-foreground font-mono">[{cfg.targetVector?.x}, {cfg.targetVector?.y}, {cfg.targetVector?.z}]</span>
+                  </div>
+                  {cfg.scutNetworkName && (
+                    <div className="text-[10px] text-muted-foreground">
+                      SCUT network: <span className="text-foreground">{cfg.scutNetworkName}</span>
+                    </div>
+                  )}
+                </>
+              );
+            })()}
+          </div>
+
+          {role.state.lastUpdated && (
+            <div className="text-[9px] text-muted-foreground/40 font-mono">
+              updated {new Date(role.state.lastUpdated).toLocaleTimeString()}
+            </div>
+          )}
+        </div>
+      ) : (
+        <div className="text-xs text-muted-foreground/50 italic">No role assigned to this vessel.</div>
+      )}
+
+      {/* Add / Edit form */}
+      {!showForm && !role && (
+        <button
+          onClick={openAdd}
+          className="w-full border border-border rounded py-1.5 text-xs text-muted-foreground hover:text-foreground hover:border-primary/50 transition-all"
+        >
+          + ASSIGN ROLE
+        </button>
+      )}
+
+      {showForm && (
+        <div className="border border-border rounded p-3 space-y-3">
+          <div className="text-[10px] text-muted-foreground tracking-widest">
+            {editing ? "EDIT ROLE" : "ASSIGN ROLE"}
+          </div>
+
+          {/* Role type selector — only when adding */}
+          {!editing && (
+            <div className="flex gap-1">
+              {(["refuel", "delivery", "explorer"] as DroneRoleType[]).map((rt) => (
+                <button
+                  key={rt}
+                  onClick={() => setRoleType(rt)}
+                  className={`flex-1 py-1 text-[10px] rounded border transition-all ${
+                    roleType === rt
+                      ? "border-primary/60 bg-primary/10 text-primary"
+                      : "border-border text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {ROLE_ICONS[rt]} {rt.toUpperCase()}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {/* Refuel config */}
+          {roleType === "refuel" && (
+            <div className="space-y-2">
+              <SectorInput
+                label="SOURCE SECTOR (deuterium refuel station)"
+                value={{ x: srcX, y: srcY, z: srcZ }}
+                onChange={(v) => { setSrcX(v.x); setSrcY(v.y); setSrcZ(v.z); }}
+              />
+              <div>
+                <div className="text-[10px] text-muted-foreground mb-1">TARGET PROBE (to keep fuelled)</div>
+                <select
+                  value={targetProbeId}
+                  onChange={(e) => setTargetProbeId(e.target.value)}
+                  className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
+                >
+                  <option value="">— select probe —</option>
+                  {probeList.filter((p) => p.id !== probeId).map((p) => (
+                    <option key={p.id} value={p.id}>{p.name} ({p.id})</option>
+                  ))}
+                </select>
+              </div>
+              <div>
+                <div className="text-[10px] text-muted-foreground mb-1">REFUEL THRESHOLD (%)</div>
+                <input
+                  type="number" min={1} max={100}
+                  value={minFuel}
+                  onChange={(e) => setMinFuel(e.target.value)}
+                  className="w-full bg-background border border-border rounded px-2 py-1 text-xs font-mono"
+                />
+              </div>
+            </div>
+          )}
+
+          {/* Delivery config */}
+          {roleType === "delivery" && (
+            <div className="space-y-2">
+              <div>
+                <div className="text-[10px] text-muted-foreground mb-1">FACTORY PROBE (where containers are loaded)</div>
+                <select
+                  value={factoryProbeId}
+                  onChange={(e) => setFactoryProbeId(e.target.value)}
+                  className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
+                >
+                  <option value="">— select factory probe —</option>
+                  {probeList.filter((p) => p.id !== probeId).map((p) => (
+                    <option key={p.id} value={p.id}>{p.name} ({p.id})</option>
+                  ))}
+                </select>
+              </div>
+              <div className="text-[10px] text-muted-foreground/60 italic">
+                This drone waits at the factory. When an Explorer signals it needs resupply, the drone will travel to the Explorer's sector, transfer deuterium, drop a full container, and collect the empty one.
+              </div>
+            </div>
+          )}
+
+          {/* Explorer config */}
+          {roleType === "explorer" && (
+            <div className="space-y-2">
+              <SectorInput
+                label="TARGET VECTOR (explore toward these coordinates)"
+                value={{ x: vecX, y: vecY, z: vecZ }}
+                onChange={(v) => { setVecX(v.x); setVecY(v.y); setVecZ(v.z); }}
+              />
+              <div>
+                <div className="text-[10px] text-muted-foreground mb-1">SCUT NETWORK NAME (optional)</div>
+                <input
+                  type="text"
+                  placeholder="e.g. Alpha Network"
+                  value={scutNetwork}
+                  onChange={(e) => setScutNetwork(e.target.value)}
+                  className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
+                />
+              </div>
+              <div className="text-[10px] text-muted-foreground/60 italic">
+                Explorer moves sector-by-sector toward the target. At each hop it deploys a SCUT relay, installs a transit beacon, drops its container, then waits for a Delivery Drone before moving on.
+              </div>
+            </div>
+          )}
+
+          {saveError && <div className="text-[10px] text-destructive">{saveError}</div>}
+
+          <div className="flex gap-2 pt-1">
+            <button
+              onClick={handleSave}
+              disabled={saving}
+              className="flex-1 py-1.5 text-[10px] rounded border border-primary/60 bg-primary/10 text-primary hover:bg-primary/20 transition-all disabled:opacity-50"
+            >
+              {saving ? "SAVING…" : "SAVE"}
+            </button>
+            <button
+              onClick={() => setShowForm(false)}
+              className="py-1.5 px-3 text-[10px] rounded border border-border text-muted-foreground hover:text-foreground transition-all"
+            >
+              CANCEL
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Commander() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([{
@@ -1240,13 +1682,12 @@ export default function Commander() {
 
   const TABS: { id: SideTab; label: string }[] = [
     { id: "telemetry", label: "PROBE" },
+    { id: "roles",     label: "ROLES" },
     { id: "containers", label: "CNTRS" },
-    { id: "sectors", label: "MAP" },
-    { id: "scout", label: "SCOUT" },
-    { id: "mining", label: "MINE" },
-    { id: "globe", label: "GLOBE" },
-    { id: "system", label: "SYS" },
+    { id: "mining",    label: "MINE" },
     { id: "scheduled", label: "SCHED" },
+    { id: "globe",     label: "GLOBE" },
+    { id: "scout",     label: "SCOUT" },
   ];
 
   const leftContent = (
@@ -1281,7 +1722,12 @@ export default function Commander() {
           />
         )}
         {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} probeId={selectedProbeId} />}
-        {sideTab === "sectors" && <SectorsPanel refetchSignal={logRefetch} />}
+        {sideTab === "roles" && (
+          <RolesPanel
+            probeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
+            probeList={probeList}
+          />
+        )}
         {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
         {sideTab === "scheduled" && (
           <>
@@ -1315,17 +1761,6 @@ export default function Commander() {
             allProbes={probeList.map(p => ({ id: p.id, name: p.name, isDefault: p.isDefault ?? false }))}
             selectedProbeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
             scutRelays={scutNetworkData?.relays}
-          />
-        )}
-        {sideTab === "system" && (
-          <SystemMap
-            probe={state?.probe}
-            sectorObjects={state?.sectorObjects}
-            otherProbes={state?.otherProbes}
-            mannies={state?.mannies}
-            isMoving={globeCenter.isMoving}
-            sectorUnavailable={state?.sectorUnavailable}
-            onScoutRequest={handleScoutRequest}
           />
         )}
       </div>

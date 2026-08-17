@@ -1,5 +1,7 @@
 import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError } from "./client.js";
+import { runDroneRoleAutomation } from "./drone-role-runner.js";
+import { getDroneRoles } from "./drone-roles-store.js";
 import {
   getPendingActions,
   resolvePendingAction,
@@ -880,6 +882,11 @@ async function pollProbe(
     logger.error({ err: err?.message, probeId }, "poller: mining automation error")
   );
 
+  // Drone role automation (refuel / delivery / explorer)
+  await runDroneRoleAutomation(probeId, probe, mannies, c).catch((err) =>
+    logger.error({ err: err?.message, probeId }, "poller: drone role automation error")
+  );
+
   for (const action of actions) {
     let selectedMannyId: string | null = null;
 
@@ -1037,6 +1044,14 @@ async function poll(): Promise<void> {
     if (!ma.enabled) continue;
     const key = ma.probeId != null ? String(ma.probeId) : "main";
     if (!byProbe.has(key)) byProbe.set(key, { probeId: ma.probeId ?? null, actions: [] });
+  }
+
+  // Also include probes with active drone roles
+  const droneRoles = await getDroneRoles().catch(() => [] as Awaited<ReturnType<typeof getDroneRoles>>);
+  for (const role of droneRoles) {
+    if (!role.enabled) continue;
+    const key = String(role.probeId);
+    if (!byProbe.has(key)) byProbe.set(key, { probeId: role.probeId, actions: [] });
   }
 
   if (byProbe.size === 0) return;
