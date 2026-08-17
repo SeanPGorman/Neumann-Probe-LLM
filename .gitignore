@@ -50,3 +50,7 @@ Thumbs.db
 
 # Runtime data (live state, not versioned)
 artifacts/api-server/data/visited-sectors.json
+
+# transient VNG runtime state
+artifacts/api-server/data/mining-assignments.json
+artifacts/api-server/data/pending-actions.json
