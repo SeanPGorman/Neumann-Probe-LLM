@@ -8,13 +8,8 @@ const isBuild = process.argv.includes("build");
 
 const rawPort = process.env.PORT;
 
-if (!rawPort && !isBuild) {
-  throw new Error(
-    "PORT environment variable is required but was not provided.",
-  );
-}
-
-const port = Number(rawPort ?? "0");
+// On Replit, PORT is injected automatically. Locally, fall back to 5173.
+const port = Number(rawPort ?? "5173");
 
 if (!isBuild && (Number.isNaN(port) || port <= 0)) {
   throw new Error(`Invalid PORT value: "${rawPort}"`);
