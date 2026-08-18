@@ -306,16 +306,33 @@ export async function runRefuelRole(
   if (phase === "traveling_to_target") {
     if (isMoving) return;
     // We need to be in the same sector as the target probe.
-    // Fetch target probe's sector.
+    // Fetch target probe's current state (sector + fuel).
     const c2 = deps.clientFor(cfg.targetProbeId);
     let targetSector: { x: number; y: number; z: number } | null = null;
+    let targetFuelNow = 100;
     try {
       const resp = await c2.getProbe();
       targetSector = resp?.probe?.sector?.relative ?? null;
+      targetFuelNow = resp?.probe?.fuel?.deuterium ?? 100;
     } catch {
       logger.warn({ label }, "drone-role: could not fetch target probe sector");
       return;
     }
+
+    // Short-circuit: if the target is already at or above threshold, no
+    // delivery is needed — return to idle and save our deuterium.
+    if (targetFuelNow >= threshold) {
+      logger.info(
+        { label, targetFuelNow, threshold },
+        "drone-role: target already full en route — aborting delivery, returning to idle",
+      );
+      await deps.updateDroneRoleState(role.id, { phase: "idle", lastTargetFuel: targetFuelNow });
+      return;
+    }
+
+    // Persist fresh reading so the UI stays current.
+    await deps.updateDroneRoleState(role.id, { lastTargetFuel: targetFuelNow });
+
     if (!targetSector) {
       logger.warn({ label }, "drone-role: target probe has no sector — may be in transit");
       return;
