@@ -58,6 +58,8 @@ export type RoleState = {
   stagedContainerObjectId?: string;
   /** Explorer: sequential WP counter — increments each time a waypoint bookmark is installed. */
   wpCounter?: number;
+  /** Refuel: last observed fuel level of the target probe (absolute units). */
+  lastTargetFuel?: number;
 };
 
 export type DroneRole = {

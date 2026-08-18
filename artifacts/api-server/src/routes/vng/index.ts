@@ -191,7 +191,7 @@ function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
 router.get("/scheduled", async (req, res) => {
   try {
     const rawProbeId = req.query.probeId;
-    const probeId = rawProbeId != null ? parseInt(rawProbeId as string, 10) : null;
+  let probeId: number | null;
     const includeNull = req.query.includeNull === "true";
     let actions = await getPendingActions();
     if (probeId != null && !isNaN(probeId)) {
@@ -209,7 +209,7 @@ router.get("/scheduled", async (req, res) => {
 router.delete("/scheduled/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const ok = await cancelPendingAction(id);
+    const ok = await deleteDroneRole(id);
     if (ok) res.json({ ok: true });
     else res.status(404).json({ error: `No pending action with id ${id}` });
   } catch (err: any) {
@@ -222,7 +222,7 @@ router.delete("/scheduled/:id", async (req, res) => {
 router.get("/drone-roles", async (req, res) => {
   try {
     const rawProbeId = req.query.probeId;
-    const probeId = rawProbeId != null ? parseInt(rawProbeId as string, 10) : null;
+  let probeId: number | null;
     let roles = await getDroneRoles();
     if (probeId != null && !isNaN(probeId)) {
       roles = roles.filter((r) => r.probeId === probeId);
@@ -302,7 +302,8 @@ router.get("/probes", async (_req, res) => {
             : (probe.sector?.relative ?? probe.sector ?? { x: 0, y: 0, z: 0 });
           const assembledAt: string | null =
             probe.assembledAt ?? probe.createdAt ?? p.assembledAt ?? p.createdAt ?? null;
-          return { ...p, sector, isMoving, assembledAt };
+          const fuelDeuterium: number = probe.fuel?.deuterium ?? 0;
+          return { ...p, sector, isMoving, assembledAt, fuelDeuterium };
         } catch {
           return p;
         }

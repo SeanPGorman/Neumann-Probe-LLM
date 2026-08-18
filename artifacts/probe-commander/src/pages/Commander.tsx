@@ -126,7 +126,7 @@ function ScanReadinessBar({ scan }: { scan: { currentSectorResidenceSeconds: num
   );
 }
 
-type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean; sector?: { x: number; y: number; z: number }; isMoving?: boolean };
+type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean; sector?: { x: number; y: number; z: number }; isMoving?: boolean; fuelDeuterium?: number };
 
 function TelemetryPanel({
   state, error, probeList = [], selectedProbeId = null, onSelectProbe = () => {},
@@ -1347,6 +1347,9 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             {role.roleType === "refuel" && (() => {
               const cfg = role.config as any;
               const tgt = probeList.find((p) => p.id === cfg.targetProbeId);
+              const carrier = probeList.find((p) => p.id === role.probeId);
+              const lastTargetFuel: number | undefined = (role.state as any).lastTargetFuel;
+              const threshold = cfg.minFuelThreshold ?? 80;
               return (
                 <>
                   <div className="text-[10px] text-muted-foreground">
@@ -1356,7 +1359,23 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                     Target: <span className="text-foreground">{tgt?.name ?? cfg.targetProbeName ?? `probe ${cfg.targetProbeId}`}</span>
                   </div>
                   <div className="text-[10px] text-muted-foreground">
-                    Refuel when below: <span className="text-foreground">{cfg.minFuelThreshold ?? 80}%</span>
+                    Refuel when below: <span className="text-foreground">{threshold}%</span>
+                  </div>
+                  {carrier?.fuelDeuterium != null && (
+                    <div className="text-[10px] text-muted-foreground">
+                      Carrier fuel: <span className="text-primary font-mono">{carrier.fuelDeuterium.toFixed(2)} units</span>
+                    </div>
+                  )}
+                  <div className="text-[10px] text-muted-foreground">
+                    Target last seen:{" "}
+                    {lastTargetFuel != null ? (
+                      <span className={`font-mono ${lastTargetFuel < threshold ? "text-yellow-400" : "text-primary"}`}>
+                        {lastTargetFuel.toFixed(2)} units
+                      </span>
+                    ) : (
+                      <span className="text-muted-foreground/50 italic">not yet checked</span>
+                    )}
+                    <span className="text-muted-foreground/50"> (threshold {threshold})</span>
                   </div>
                 </>
               );
@@ -1682,6 +1701,7 @@ export default function Commander() {
     isDefault: p.isDefault ?? (p.id === probeListData?.defaultProbeId),
     sector: p.sector,
     isMoving: p.isMoving ?? false,
+    fuelDeuterium: p.fuelDeuterium,
   }));
 
   const { data: state, error: stateError } = useQuery({

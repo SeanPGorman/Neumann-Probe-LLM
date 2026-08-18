@@ -194,7 +194,15 @@ export async function runDroneRoleAutomation(
 
 // ── Refuel Role ───────────────────────────────────────────────────────────────
 
-async function runRefuelRole(
+export type RefuelDeps = {
+  updateDroneRoleState: typeof updateDroneRoleState;
+  /** Return a probe-scoped client for the given probe ID (used to query the target). */
+  clientFor: typeof clientFor;
+};
+
+const defaultRefuelDeps: RefuelDeps = { updateDroneRoleState, clientFor };
+
+export async function runRefuelRole(
   role: DroneRole,
   probe: any,
   mannies: any[],
@@ -202,6 +210,7 @@ async function runRefuelRole(
   c: ReturnType<typeof clientFor>,
   isMoving: boolean,
   label: string,
+  deps: RefuelDeps = defaultRefuelDeps,
 ): Promise<void> {
   const cfg = role.config as RefuelConfig;
   const phase = role.state.phase;
@@ -209,7 +218,7 @@ async function runRefuelRole(
 
   if (phase === "idle") {
     // Fetch target probe's fuel level
-    const c2 = clientFor(cfg.targetProbeId);
+    const c2 = deps.clientFor(cfg.targetProbeId);
     let targetFuel = 100;
     try {
       const resp = await c2.getProbe();
@@ -218,15 +227,18 @@ async function runRefuelRole(
       logger.warn({ label }, "drone-role: could not fetch target probe state");
       return;
     }
+    // Always persist the last-seen target fuel so the UI can display it.
+    await deps.updateDroneRoleState(role.id, { lastTargetFuel: targetFuel });
+
     if (targetFuel < threshold) {
       // If we already have enough fuel on board, skip the source trip entirely.
       const ourFuel = probe?.fuel?.deuterium ?? 0;
       if (ourFuel >= 99) {
         logger.info({ label, targetFuel, threshold, ourFuel }, "drone-role: target needs fuel, tank already sufficient — delivering directly");
-        await updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+        await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
       } else {
         logger.info({ label, targetFuel, threshold }, "drone-role: target needs fuel — heading to source");
-        await updateDroneRoleState(role.id, { phase: "traveling_to_source" });
+        await deps.updateDroneRoleState(role.id, { phase: "traveling_to_source" });
       }
     } else {
       logger.info({ label, targetFuel }, "drone-role: target fuel OK — staying idle");
@@ -239,13 +251,13 @@ async function runRefuelRole(
     const ourFuelAtSource = probe?.fuel?.deuterium ?? 0;
     if (ourFuelAtSource >= 99) {
       logger.info({ label, ourFuel: ourFuelAtSource }, "drone-role: already fueled — skipping source, heading to target");
-      await updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
       return;
     }
     if (isMoving) return; // wait for arrival
     if (atSector(probe, cfg.sourceSector)) {
       logger.info({ label }, "drone-role: arrived at source — refilling");
-      await updateDroneRoleState(role.id, { phase: "refilling" });
+      await deps.updateDroneRoleState(role.id, { phase: "refilling" });
       return;
     }
     // Issue move
@@ -263,7 +275,7 @@ async function runRefuelRole(
     const ourFuel = probe?.fuel?.deuterium ?? 0;
     if (ourFuel >= 99) {
       logger.info({ label }, "drone-role: tank full — heading to target");
-      await updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
       return;
     }
     if (isMoving) return;
@@ -295,7 +307,7 @@ async function runRefuelRole(
     if (isMoving) return;
     // We need to be in the same sector as the target probe.
     // Fetch target probe's sector.
-    const c2 = clientFor(cfg.targetProbeId);
+    const c2 = deps.clientFor(cfg.targetProbeId);
     let targetSector: { x: number; y: number; z: number } | null = null;
     try {
       const resp = await c2.getProbe();
@@ -310,7 +322,7 @@ async function runRefuelRole(
     }
     if (atSector(probe, targetSector)) {
       logger.info({ label }, "drone-role: arrived at target — transferring deuterium");
-      await updateDroneRoleState(role.id, { phase: "transferring" });
+      await deps.updateDroneRoleState(role.id, { phase: "transferring" });
       return;
     }
     logger.info({ label, target: targetSector }, "drone-role: moving to target probe sector");
@@ -328,7 +340,7 @@ async function runRefuelRole(
     const transferable = Math.floor(ourFuel) - MIN_DEUTERIUM_RESERVE;
     if (transferable <= 0) {
       logger.warn({ label, ourFuel }, "drone-role: not enough fuel to transfer — returning to idle");
-      await updateDroneRoleState(role.id, { phase: "idle" });
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
       return;
     }
     // Find target probe as a sector object
@@ -344,7 +356,7 @@ async function runRefuelRole(
     );
     if (!targetObj) {
       logger.warn({ label, targetProbeId: cfg.targetProbeId }, "drone-role: target probe not visible in sector — re-fetching target sector next tick");
-      await updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
       return;
     }
     const manny = pickIdleManny(mannies, claimed);
@@ -355,7 +367,7 @@ async function runRefuelRole(
     logger.info({ label, amount: transferable, mannyId: manny.id }, "drone-role: transferring deuterium");
     await c.transferDeuteriumToProbe(manny.id, cfg.targetProbeId, transferable);
     claimed.add(manny.id);
-    await updateDroneRoleState(role.id, { phase: "idle" });
+    await deps.updateDroneRoleState(role.id, { phase: "idle" });
     return;
   }
 }
