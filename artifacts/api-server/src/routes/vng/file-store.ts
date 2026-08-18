@@ -353,6 +353,7 @@ export async function setVisitedByProbe(
  */
 export async function backfillLegacySectors(originalProbeId: number): Promise<number> {
   const rows = await getSectors();
+  if (!Array.isArray(rows)) return 0;
   const legacy = rows
     .filter((r) => r.visitedBy == null)
     .map((r) => ({ x: r.sectorX, y: r.sectorY, z: r.sectorZ }));
