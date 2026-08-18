@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "pnpm run build && pnpm run start",
     "build": "node ./build.mjs",
-    "start": "node --enable-source-maps ./dist/index.mjs",
+    "start": "node --enable-source-maps --env-file-if-exists=.env ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "test": "tsx --test src/routes/vng/mining-dedup.test.ts src/routes/vng/factory-role.test.ts src/routes/vng/delivery-flow.test.ts src/routes/vng/explorer-relay.test.ts"
   },

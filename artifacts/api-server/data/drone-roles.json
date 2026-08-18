@@ -17,8 +17,8 @@
     "id": 1,
     "createdAt": "2026-08-17T19:42:29.768Z",
     "state": {
-      "phase": "traveling_to_source",
-      "lastUpdated": "2026-08-17T19:42:41.836Z"
+      "phase": "traveling_to_target",
+      "lastUpdated": "2026-08-17T21:52:34.956Z"
     }
   },
   {

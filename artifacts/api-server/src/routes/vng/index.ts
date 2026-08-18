@@ -40,7 +40,9 @@ const router = Router();
 
 const openai = new OpenAI({
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
-  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY,
+  // Fall back to a placeholder so the server starts locally even without the key.
+  // AI-assisted routes will return errors if called without a real key.
+  apiKey: process.env.AI_INTEGRATIONS_OPENAI_API_KEY ?? "not-configured",
 });
 
 // ── Claude brain (optional second provider) ───────────────────────────────────
