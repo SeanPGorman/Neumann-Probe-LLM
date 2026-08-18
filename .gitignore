@@ -54,3 +54,5 @@ artifacts/api-server/data/visited-sectors.json
 # transient VNG runtime state
 artifacts/api-server/data/mining-assignments.json
 artifacts/api-server/data/pending-actions.json
+artifacts/api-server/data/drone-roles.json
+artifacts/api-server/data/delivery-requests.json
