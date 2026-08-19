@@ -124,6 +124,75 @@ function reachedTarget(
   );
 }
 
+/** Chebyshev distance between two sectors (= minimum hops needed). */
+function chebyshevDist(
+  a: { x: number; y: number; z: number },
+  b: { x: number; y: number; z: number },
+): number {
+  return Math.max(Math.abs(a.x - b.x), Math.abs(a.y - b.y), Math.abs(a.z - b.z));
+}
+
+/**
+ * Delivery-drone waypoint router.
+ *
+ * Rules:
+ *  1. If the destination is within 2 sectors (Chebyshev ≤ 2), go there directly.
+ *  2. Otherwise find the active SCUT relay that makes the most progress toward
+ *     the destination and jump to its sector (relay-to-relay long hop).
+ *  3. If no relay helps, fall back to a single short hop via nextSectorToward.
+ *
+ * This keeps delivery drones either within short communication range OR hopping
+ * through the SCUT network — never making uncovered long-range jumps.
+ */
+async function nextDeliveryWaypoint(
+  from: { x: number; y: number; z: number },
+  to: { x: number; y: number; z: number },
+  label: string,
+): Promise<{ x: number; y: number; z: number }> {
+  // Within short range — go directly.
+  if (chebyshevDist(from, to) <= 2) return to;
+
+  // Collect known SCUT network IDs from cached sector data.
+  const sectors = await getSectors();
+  const networkIds = new Set<string>();
+  for (const s of sectors) {
+    for (const obj of (s as any).objects ?? []) {
+      if (obj?.type === "scut_relay" && obj?.network?.id) {
+        networkIds.add(String(obj.network.id));
+      }
+    }
+  }
+
+  const totalDist = chebyshevDist(from, to);
+  let bestSector: { x: number; y: number; z: number } | null = null;
+  let bestProgress = 0; // must beat 0 — relay must bring us closer
+
+  for (const netId of Array.from(networkIds)) {
+    let net: any;
+    try { net = await getScutNetwork(netId); } catch { continue; }
+    for (const relay of net?.relays ?? []) {
+      if (relay.status !== "on") continue;
+      const rs = relay.sector?.relative;
+      if (!rs) continue;
+      const progress = totalDist - chebyshevDist(rs, to);
+      if (progress > bestProgress) {
+        bestProgress = progress;
+        bestSector = { x: rs.x, y: rs.y, z: rs.z };
+      }
+    }
+  }
+
+  if (bestSector) {
+    logger.info({ label, waypoint: bestSector, progress: bestProgress },
+      "drone-role: delivery — routing via SCUT relay");
+    return bestSector;
+  }
+
+  // No relay on path — take one short hop only.
+  logger.info({ label }, "drone-role: delivery — no SCUT relay on path, short-hopping");
+  return nextSectorToward(from, to);
+}
+
 /** Repair up to one damaged Manny per tick (works while probe is moving). */
 async function repairDamagedMannies(
   mannies: any[],
@@ -489,9 +558,12 @@ export async function runDeliveryRole(
       await updateDroneRoleState(role.id, { phase: "delivering" });
       return;
     }
-    logger.info({ label, target }, "drone-role: moving to explorer sector");
+    const currentSectorD = probe?.sector?.relative ?? null;
+    if (!currentSectorD) return;
+    const waypoint = await nextDeliveryWaypoint(currentSectorD, target, label);
+    logger.info({ label, waypoint, finalTarget: target }, "drone-role: moving toward explorer sector");
     try {
-      await c.moveProbe(target.x, target.y, target.z);
+      await c.moveProbe(waypoint.x, waypoint.y, waypoint.z);
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: move to explorer failed");
     }
@@ -606,9 +678,12 @@ export async function runDeliveryRole(
       await updateDroneRoleState(role.id, { phase: "waiting" });
       return;
     }
-    logger.info({ label, target: factorySector }, "drone-role: returning to factory");
+    const currentSectorR = probe?.sector?.relative ?? null;
+    if (!currentSectorR) return;
+    const waypointR = await nextDeliveryWaypoint(currentSectorR, factorySector, label);
+    logger.info({ label, waypoint: waypointR, finalTarget: factorySector }, "drone-role: returning to factory");
     try {
-      await c.moveProbe(factorySector.x, factorySector.y, factorySector.z);
+      await c.moveProbe(waypointR.x, waypointR.y, waypointR.z);
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: return move failed");
     }
