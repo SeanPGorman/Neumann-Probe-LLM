@@ -429,31 +429,22 @@ export async function runRefuelRole(
       await deps.updateDroneRoleState(role.id, { phase: "idle" });
       return;
     }
-    // Find target probe as a sector object
-    let sectorObjects: any[] = [];
-    try {
-      const resp = await c.getSector();
-      sectorObjects = resp?.sector?.objects ?? [];
-    } catch {
-      return;
-    }
-    const targetObj = sectorObjects.find(
-      (o: any) => o.type === "probe" && o.probeId === cfg.targetProbeId,
-    );
-    if (!targetObj) {
-      logger.warn({ label, targetProbeId: cfg.targetProbeId }, "drone-role: target probe not visible in sector — re-fetching target sector next tick");
-      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
-      return;
-    }
+    // We already confirmed co-location via atSector in traveling_to_target.
+    // Skip the redundant sector-object lookup (probeId type mismatches caused
+    // false-negatives); let transferDeuteriumToProbe be the authoritative guard.
     const manny = pickIdleManny(mannies, claimed);
     if (!manny) {
       logger.info({ label }, "drone-role: no idle manny for deuterium transfer");
       return;
     }
-    logger.info({ label, amount: transferable, mannyId: manny.id }, "drone-role: transferring deuterium");
-    await c.transferDeuteriumToProbe(manny.id, cfg.targetProbeId, transferable);
-    claimed.add(manny.id);
-    await deps.updateDroneRoleState(role.id, { phase: "idle" });
+    logger.info({ label, amount: transferable, mannyId: manny.id, targetProbeId: cfg.targetProbeId }, "drone-role: transferring deuterium");
+    try {
+      await c.transferDeuteriumToProbe(manny.id, cfg.targetProbeId, transferable);
+      claimed.add(manny.id);
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
+    } catch (err: any) {
+      logger.warn({ label, err: err?.message }, "drone-role: deuterium transfer failed — will retry next tick");
+    }
     return;
   }
 }
