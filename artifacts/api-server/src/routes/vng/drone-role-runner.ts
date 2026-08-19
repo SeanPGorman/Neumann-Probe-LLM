@@ -30,6 +30,8 @@ import type {
 
 const MOVING_STATUSES = new Set(["accelerating", "cruising", "decelerating"]);
 const MIN_DEUTERIUM_RESERVE = 5; // always keep this much before transferring
+/** An idle refueler returns to its source at or below this share of its own tank. */
+const REFUELER_RETURN_THRESHOLD_PERCENT = 20;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -271,6 +273,23 @@ export type RefuelDeps = {
 
 const defaultRefuelDeps: RefuelDeps = { updateDroneRoleState, clientFor };
 
+function fuelCapacity(probe: any): number {
+  const max = Number(probe?.fuel?.maxDeuterium);
+  return Number.isFinite(max) && max > 0 ? max : 100;
+}
+
+function fuelPercent(probe: any): number {
+  return ((Number(probe?.fuel?.deuterium) || 0) / fuelCapacity(probe)) * 100;
+}
+
+function refuelerNeedsSourceTrip(probe: any): boolean {
+  return fuelPercent(probe) <= REFUELER_RETURN_THRESHOLD_PERCENT;
+}
+
+function refuelerTankIsFull(probe: any): boolean {
+  return (Number(probe?.fuel?.deuterium) || 0) >= fuelCapacity(probe);
+}
+
 export async function runRefuelRole(
   role: DroneRole,
   probe: any,
@@ -286,6 +305,27 @@ export async function runRefuelRole(
   const threshold = cfg.minFuelThreshold ?? 80;
 
   if (phase === "idle") {
+    // A refueler's own reserve is independent of the target's dispatch
+    // threshold. Refill at 20% or lower, even while the target is healthy.
+    const ourFuel = probe?.fuel?.deuterium ?? 0;
+    const ourFuelPercent = fuelPercent(probe);
+    if (refuelerNeedsSourceTrip(probe)) {
+      if (atSector(probe, cfg.sourceSector)) {
+        logger.info(
+          { label, ourFuel, ourFuelPercent, threshold: REFUELER_RETURN_THRESHOLD_PERCENT },
+          "drone-role: refueler fuel at or below return threshold — refilling at source",
+        );
+        await deps.updateDroneRoleState(role.id, { phase: "refilling" });
+      } else {
+        logger.info(
+          { label, ourFuel, ourFuelPercent, threshold: REFUELER_RETURN_THRESHOLD_PERCENT },
+          "drone-role: refueler fuel at or below return threshold — heading to source",
+        );
+        await deps.updateDroneRoleState(role.id, { phase: "traveling_to_source" });
+      }
+      return;
+    }
+
     // Fetch target probe's fuel level
     const c2 = deps.clientFor(cfg.targetProbeId);
     let targetFuel = 100;
@@ -300,15 +340,11 @@ export async function runRefuelRole(
     await deps.updateDroneRoleState(role.id, { lastTargetFuel: targetFuel });
 
     if (targetFuel < threshold) {
-      // If we already have enough fuel on board, skip the source trip entirely.
-      const ourFuel = probe?.fuel?.deuterium ?? 0;
-      if (ourFuel >= 99) {
-        logger.info({ label, targetFuel, threshold, ourFuel }, "drone-role: target needs fuel, tank already sufficient — delivering directly");
-        await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
-      } else {
-        logger.info({ label, targetFuel, threshold }, "drone-role: target needs fuel — heading to source");
-        await deps.updateDroneRoleState(role.id, { phase: "traveling_to_source" });
-      }
+      logger.info(
+        { label, targetFuel, threshold, ourFuel, ourFuelPercent },
+        "drone-role: target needs fuel and refueler reserve is above return threshold — delivering directly",
+      );
+      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
     } else {
       logger.info({ label, targetFuel }, "drone-role: target fuel OK — staying idle");
     }
@@ -316,11 +352,13 @@ export async function runRefuelRole(
   }
 
   if (phase === "traveling_to_source") {
-    // Skip source trip if we already have a full tank (e.g. after a server restart).
-    const ourFuelAtSource = probe?.fuel?.deuterium ?? 0;
-    if (ourFuelAtSource >= 99) {
-      logger.info({ label, ourFuel: ourFuelAtSource }, "drone-role: already fueled — skipping source, heading to target");
-      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+    // A restart may find a refueler that already completed its source refill.
+    if (refuelerTankIsFull(probe)) {
+      logger.info(
+        { label, ourFuel: probe?.fuel?.deuterium ?? 0, capacity: fuelCapacity(probe) },
+        "drone-role: already fully fueled — returning to idle",
+      );
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
       return;
     }
     if (isMoving) return; // wait for arrival
@@ -340,11 +378,13 @@ export async function runRefuelRole(
   }
 
   if (phase === "refilling") {
-    // Check if our tank is at 100%
-    const ourFuel = probe?.fuel?.deuterium ?? 0;
-    if (ourFuel >= 99) {
-      logger.info({ label }, "drone-role: tank full — heading to target");
-      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+    // Stations fill to the model's actual maximum (including improvements).
+    if (refuelerTankIsFull(probe)) {
+      logger.info(
+        { label, ourFuel: probe?.fuel?.deuterium ?? 0, capacity: fuelCapacity(probe) },
+        "drone-role: tank full — returning to idle",
+      );
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
       return;
     }
     if (isMoving) return;

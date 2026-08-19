@@ -1361,6 +1361,9 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                   <div className="text-[10px] text-muted-foreground">
                     Refuel when below: <span className="text-foreground">{threshold}%</span>
                   </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Carrier returns to source: <span className="text-foreground">at or below 20%</span>
+                  </div>
                   {carrier?.fuelDeuterium != null && (
                     <div className="text-[10px] text-muted-foreground">
                       Carrier fuel: <span className="text-primary font-mono">{carrier.fuelDeuterium.toFixed(2)} units</span>

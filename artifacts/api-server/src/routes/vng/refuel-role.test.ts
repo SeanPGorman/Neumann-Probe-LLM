@@ -41,7 +41,7 @@ function makeDeps(targetFuel: number): { deps: RefuelDeps; patches: any[] } {
     },
     clientFor: ((probeId?: number | null) => ({
       getProbe: async () => ({
-        probe: { fuel: { deuterium: targetFuel }, sector: { relative: { x: 0, y: 0, z: 0 } } },
+        probe: { fuel: { deuterium: targetFuel, maxDeuterium: 100 }, sector: { relative: { x: 0, y: 0, z: 0 } } },
       }),
     })) as any,
   };
@@ -81,7 +81,7 @@ test("idle: persists lastTargetFuel when target fuel is below threshold", async 
   assert.equal(fuelPatch.lastTargetFuel, 50);
 });
 
-test("idle: transitions to traveling_to_source when target is low and carrier tank is not full", async () => {
+test("idle: transitions to traveling_to_target when target is low and carrier fuel is above 20%", async () => {
   const { deps, patches } = makeDeps(50); // below threshold
   const role = refuelRole();
   const carrierProbe = { fuel: { deuterium: 30 }, sector: { relative: { x: 0, y: 0, z: 0 } }, status: "idle" };
@@ -90,7 +90,7 @@ test("idle: transitions to traveling_to_source when target is low and carrier ta
 
   const phasePatch = patches.find((p) => p.phase != null);
   assert.ok(phasePatch, "a phase transition patch must be written");
-  assert.equal(phasePatch.phase, "traveling_to_source");
+  assert.equal(phasePatch.phase, "traveling_to_target");
 });
 
 test("idle: transitions to traveling_to_target directly when carrier is already full", async () => {
@@ -118,4 +118,34 @@ test("idle: stays idle and records fuel when target is above threshold", async (
   const fuelPatch = patches.find((p) => "lastTargetFuel" in p);
   assert.ok(fuelPatch, "lastTargetFuel must still be recorded even when no action is taken");
   assert.equal(fuelPatch.lastTargetFuel, 90);
+});
+
+test("idle: a tanker at exactly 20% returns to source even when its target is healthy", async () => {
+  const { deps, patches } = makeDeps(95);
+  const role = refuelRole();
+  const carrierProbe = {
+    fuel: { deuterium: 80, maxDeuterium: 400 },
+    sector: { relative: { x: 0, y: 0, z: 0 } },
+    status: "idle",
+  };
+
+  await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
+
+  const phasePatch = patches.find((p) => p.phase != null);
+  assert.equal(phasePatch?.phase, "traveling_to_source");
+});
+
+test("idle: a tanker above 20% does not return to source merely for refueling", async () => {
+  const { deps, patches } = makeDeps(95);
+  const role = refuelRole();
+  const carrierProbe = {
+    fuel: { deuterium: 81, maxDeuterium: 400 },
+    sector: { relative: { x: 0, y: 0, z: 0 } },
+    status: "idle",
+  };
+
+  await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
+
+  const phasePatch = patches.find((p) => p.phase != null);
+  assert.equal(phasePatch, undefined);
 });
