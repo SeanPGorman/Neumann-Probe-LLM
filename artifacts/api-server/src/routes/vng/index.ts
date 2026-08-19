@@ -209,7 +209,7 @@ router.get("/scheduled", async (req, res) => {
 router.delete("/scheduled/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
-    const ok = await deleteDroneRole(id);
+    const ok = await cancelPendingAction(id);
     if (ok) res.json({ ok: true });
     else res.status(404).json({ error: `No pending action with id ${id}` });
   } catch (err: any) {
