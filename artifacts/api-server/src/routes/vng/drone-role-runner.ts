@@ -361,6 +361,17 @@ export async function runRefuelRole(
       await deps.updateDroneRoleState(role.id, { phase: "idle" });
       return;
     }
+    // Clear stale travel phases created before the percentage-based return
+    // threshold was introduced. A refueler with more than 20% does not need
+    // a source trip.
+    if (!refuelerNeedsSourceTrip(probe)) {
+      logger.info(
+        { label, ourFuel: probe?.fuel?.deuterium ?? 0, ourFuelPercent: fuelPercent(probe) },
+        "drone-role: refueler reserve is above return threshold — cancelling source trip",
+      );
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
+      return;
+    }
     if (isMoving) return; // wait for arrival
     if (atSector(probe, cfg.sourceSector)) {
       logger.info({ label }, "drone-role: arrived at source — refilling");
@@ -463,12 +474,37 @@ export async function runRefuelRole(
   if (phase === "transferring") {
     if (isMoving) return;
     const ourFuel = probe?.fuel?.deuterium ?? 0;
-    const transferable = Math.floor(ourFuel) - MIN_DEUTERIUM_RESERVE;
-    if (transferable <= 0) {
+    const availableFuel = Math.floor(ourFuel) - MIN_DEUTERIUM_RESERVE;
+    if (availableFuel <= 0) {
       logger.warn({ label, ourFuel }, "drone-role: not enough fuel to transfer — returning to idle");
       await deps.updateDroneRoleState(role.id, { phase: "idle" });
       return;
     }
+
+    // VNG returns any amount above the target's capacity to the tanker. Asking
+    // only for the target's missing fuel keeps the transfer deterministic and
+    // avoids a misleading oversized handoff / surplus return.
+    let targetFuel = 0;
+    let targetCapacity = 100;
+    try {
+      const targetResp = await deps.clientFor(cfg.targetProbeId).getProbe();
+      targetFuel = Number(targetResp?.probe?.fuel?.deuterium) || 0;
+      targetCapacity = fuelCapacity(targetResp?.probe);
+    } catch {
+      logger.warn({ label }, "drone-role: could not fetch target fuel before transfer");
+      return;
+    }
+    const targetMissingFuel = Math.max(0, Math.floor(targetCapacity - targetFuel));
+    const transferable = Math.min(availableFuel, targetMissingFuel);
+    if (transferable <= 0) {
+      logger.info(
+        { label, targetFuel, targetCapacity },
+        "drone-role: target tank is already full — no deuterium transfer needed",
+      );
+      await deps.updateDroneRoleState(role.id, { phase: "idle", lastTargetFuel: targetFuel });
+      return;
+    }
+
     // We already confirmed co-location via atSector in traveling_to_target.
     // Skip the redundant sector-object lookup (probeId type mismatches caused
     // false-negatives); let transferDeuteriumToProbe be the authoritative guard.
@@ -477,7 +513,10 @@ export async function runRefuelRole(
       logger.info({ label }, "drone-role: no idle manny for deuterium transfer");
       return;
     }
-    logger.info({ label, amount: transferable, mannyId: manny.id, targetProbeId: cfg.targetProbeId }, "drone-role: transferring deuterium");
+    logger.info(
+      { label, amount: transferable, availableFuel, targetFuel, targetCapacity, mannyId: manny.id, targetProbeId: cfg.targetProbeId },
+      "drone-role: transferring deuterium",
+    );
     try {
       await c.transferDeuteriumToProbe(manny.id, cfg.targetProbeId, transferable);
       claimed.add(manny.id);

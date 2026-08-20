@@ -12,3 +12,5 @@ Our `/api/vng/state` route (index.ts line 398) flattens it to `probe.fuelDeuteri
 **Why:** Confusing this caused the runner to fall back to 0 every tick, dispatching repeated refills and over-fueling FT-1 to 227 units. It also makes a raw-unit threshold incorrect for tanker fuel. The state endpoint masks the nested structure.
 
 **How to apply:** When writing runner code that reads `probe` (from the poller/`getProbe()`), always use `probe?.fuel?.deuterium`. Never use `probe?.fuelDeuterium` in runner code — that field only exists on state-route responses.
+
+When transferring deuterium, the VNG API fills the target only to its maximum and returns any surplus to the source tanker. Always fetch the target fuel/capacity immediately before dispatch and request no more than its missing capacity.
