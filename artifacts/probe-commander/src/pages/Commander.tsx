@@ -1349,6 +1349,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               const tgt = probeList.find((p) => p.id === cfg.targetProbeId);
               const carrier = probeList.find((p) => p.id === role.probeId);
               const lastTargetFuel: number | undefined = (role.state as any).lastTargetFuel;
+              const lastTargetFuelPercent: number | undefined = (role.state as any).lastTargetFuelPercent;
               const threshold = cfg.minFuelThreshold ?? 80;
               return (
                 <>
@@ -1356,10 +1357,13 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                     Source: <span className="text-foreground font-mono">[{cfg.sourceSector?.x}, {cfg.sourceSector?.y}, {cfg.sourceSector?.z}]</span>
                   </div>
                   <div className="text-[10px] text-muted-foreground">
-                    Target: <span className="text-foreground">{tgt?.name ?? cfg.targetProbeName ?? `probe ${cfg.targetProbeId}`}</span>
+                    Service sector anchor: <span className="text-foreground">{tgt?.name ?? cfg.targetProbeName ?? `probe ${cfg.targetProbeId}`}</span>
                   </div>
                   <div className="text-[10px] text-muted-foreground">
-                    Refuel when below: <span className="text-foreground">{threshold}%</span>
+                    Services: <span className="text-foreground">all Explorer, Delivery, and Factory drones in that sector</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Service when below: <span className="text-foreground">{threshold}%</span>
                   </div>
                   <div className="text-[10px] text-muted-foreground">
                     Carrier returns to source: <span className="text-foreground">at or below 20%</span>
@@ -1370,16 +1374,26 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                     </div>
                   )}
                   <div className="text-[10px] text-muted-foreground">
-                    Target last seen:{" "}
-                    {lastTargetFuel != null ? (
-                      <span className={`font-mono ${lastTargetFuel < threshold ? "text-yellow-400" : "text-primary"}`}>
-                        {lastTargetFuel.toFixed(2)} units
+                    Anchor last seen:{" "}
+                    {lastTargetFuelPercent != null ? (
+                      <span className={`font-mono ${lastTargetFuelPercent < threshold ? "text-yellow-400" : "text-primary"}`}>
+                        {lastTargetFuelPercent.toFixed(0)}%
                       </span>
                     ) : (
                       <span className="text-muted-foreground/50 italic">not yet checked</span>
                     )}
-                    <span className="text-muted-foreground/50"> (threshold {threshold})</span>
+                    {lastTargetFuel != null && <span className="text-muted-foreground/50"> ({lastTargetFuel.toFixed(2)} units)</span>}
+                    <span className="text-muted-foreground/50"> (threshold {threshold}%)</span>
                   </div>
+                  {(role.state as any).servingTargetProbeId != null && (
+                    <div className="text-[10px] text-muted-foreground">
+                      Serving: <span className="text-foreground">
+                        {probeList.find((p) => p.id === (role.state as any).servingTargetProbeId)?.name
+                          ?? (role.state as any).servingTargetProbeName
+                          ?? `probe ${(role.state as any).servingTargetProbeId}`}
+                      </span>
+                    </div>
+                  )}
                 </>
               );
             })()}
@@ -1501,7 +1515,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                 onChange={(v) => { setSrcX(v.x); setSrcY(v.y); setSrcZ(v.z); }}
               />
               <div>
-                <div className="text-[10px] text-muted-foreground mb-1">TARGET PROBE (to keep fuelled)</div>
+                <div className="text-[10px] text-muted-foreground mb-1">SERVICE SECTOR ANCHOR</div>
                 <select
                   value={targetProbeId}
                   onChange={(e) => setTargetProbeId(e.target.value)}
@@ -1512,6 +1526,9 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                     <option key={p.id} value={p.id}>{p.name} ({p.id})</option>
                   ))}
                 </select>
+                <div className="text-[10px] text-muted-foreground/60 mt-1">
+                  The tanker services every eligible Explorer, Delivery, and Factory drone co-located with this probe.
+                </div>
               </div>
               <div>
                 <div className="text-[10px] text-muted-foreground mb-1">REFUEL THRESHOLD (%)</div>

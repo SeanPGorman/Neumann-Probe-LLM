@@ -33,19 +33,49 @@ function refuelRole(stateOverrides: Partial<DroneRole["state"]> = {}): DroneRole
 }
 
 /** Build injectable deps + capture state patches. */
-function makeDeps(targetFuel: number): { deps: RefuelDeps; patches: any[] } {
+function serviceRole(probeId: number, roleType: "factory" | "delivery" | "explorer", probeName?: string): DroneRole {
+  return {
+    id: probeId + 100,
+    probeId,
+    probeName,
+    roleType,
+    enabled: true,
+    createdAt: new Date().toISOString(),
+    config: {} as any,
+    state: { phase: "idle" },
+  };
+}
+
+function makeDeps(
+  targetFuel: number,
+  options: {
+    probes?: Record<number, any>;
+    roles?: DroneRole[];
+    claimResult?: boolean;
+  } = {},
+): { deps: RefuelDeps; patches: any[]; claims: number[] } {
   const patches: any[] = [];
+  const claims: number[] = [];
+  const defaultTargetProbe = {
+    fuel: { deuterium: targetFuel, maxDeuterium: 100 },
+    sector: { relative: { x: 0, y: 0, z: 0 } },
+  };
   const deps: RefuelDeps = {
     updateDroneRoleState: async (_id: number, patch: any) => {
       patches.push(patch);
     },
     clientFor: ((probeId?: number | null) => ({
       getProbe: async () => ({
-        probe: { fuel: { deuterium: targetFuel, maxDeuterium: 100 }, sector: { relative: { x: 0, y: 0, z: 0 } } },
+        probe: options.probes?.[Number(probeId)] ?? defaultTargetProbe,
       }),
     })) as any,
+    getDroneRoles: async () => options.roles ?? [serviceRole(20, "factory", "Factory")],
+    claimRefuelTarget: async (_roleId: number, targetProbeId: number) => {
+      claims.push(targetProbeId);
+      return options.claimResult ?? true;
+    },
   };
-  return { deps, patches };
+  return { deps, patches, claims };
 }
 
 const noopClient = {
@@ -103,6 +133,27 @@ test("idle: transitions to traveling_to_target directly when carrier is already 
   const phasePatch = patches.find((p) => p.phase != null);
   assert.ok(phasePatch);
   assert.equal(phasePatch.phase, "traveling_to_target", "full carrier should skip source trip");
+});
+
+test("idle: uses the target's live tank capacity when applying the percentage service threshold", async () => {
+  const { deps, patches } = makeDeps(200, {
+    probes: {
+      20: {
+        fuel: { deuterium: 200, maxDeuterium: 400 },
+        sector: { relative: { x: 4, y: 6, z: 8 } },
+      },
+    },
+  });
+  const role = refuelRole();
+  const carrierProbe = { fuel: { deuterium: 90 }, sector: { relative: { x: 0, y: 0, z: 0 } }, status: "idle" };
+
+  await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
+
+  assert.equal(
+    patches.find((patch) => patch.phase != null)?.phase,
+    "traveling_to_target",
+    "200/400 fuel is 50%, so it must be served below an 80% threshold",
+  );
 });
 
 test("idle: stays idle and records fuel when target is above threshold", async () => {
@@ -178,7 +229,7 @@ test("transferring: sends only the fuel the target tank is missing", async () =>
   );
 
   assert.deepEqual(calls, [{ targetProbeId: 20, amount: 80 }]);
-  assert.equal(patches.at(-1)?.phase, "idle");
+  assert.equal(patches.length, 0, "the target claim remains until the Manny transfer completes");
 });
 
 test("traveling_to_source: cancels a stale source trip when the tanker is above 20%", async () => {
@@ -193,4 +244,72 @@ test("traveling_to_source: cancels a stale source trip when the tanker is above 
   await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
 
   assert.equal(patches.at(-1)?.phase, "idle");
+});
+
+test("idle: dispatches to its service sector when a co-located delivery drone is low even if the anchor is healthy", async () => {
+  const sector = { x: 4, y: 6, z: 8 };
+  const { deps, patches } = makeDeps(95, {
+    probes: {
+      20: { fuel: { deuterium: 95, maxDeuterium: 100 }, sector: { relative: sector } },
+      30: { fuel: { deuterium: 20, maxDeuterium: 100 }, sector: { relative: sector } },
+      40: { fuel: { deuterium: 5, maxDeuterium: 100 }, sector: { relative: { x: 0, y: 0, z: 0 } } },
+    },
+    roles: [
+      serviceRole(20, "factory", "Anchor Factory"),
+      serviceRole(30, "delivery", "Local Delivery"),
+      serviceRole(40, "explorer", "Elsewhere Explorer"),
+    ],
+  });
+  const role = refuelRole();
+  const carrierProbe = { fuel: { deuterium: 90 }, sector: { relative: { x: 0, y: 0, z: 0 } }, status: "idle" };
+
+  await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
+
+  assert.deepEqual(patches.at(-1), { phase: "traveling_to_target", travelTarget: sector });
+});
+
+test("servicing_sector: claims the lowest-fuel eligible co-located drone and excludes refuelers", async () => {
+  const sector = { x: 4, y: 6, z: 8 };
+  const { deps, claims } = makeDeps(95, {
+    probes: {
+      20: { fuel: { deuterium: 95, maxDeuterium: 100 }, sector: { relative: sector } },
+      30: { fuel: { deuterium: 45, maxDeuterium: 100 }, sector: { relative: sector } },
+      40: { fuel: { deuterium: 10, maxDeuterium: 100 }, sector: { relative: sector } },
+      50: { fuel: { deuterium: 1, maxDeuterium: 100 }, sector: { relative: sector } },
+    },
+    roles: [
+      serviceRole(20, "factory", "Factory"),
+      serviceRole(30, "delivery", "Delivery"),
+      serviceRole(40, "explorer", "Explorer"),
+      {
+        ...refuelRole(),
+        id: 99,
+        probeId: 50,
+        state: { phase: "idle" },
+      },
+    ],
+  });
+  const role = refuelRole({ phase: "servicing_sector", travelTarget: sector });
+  const carrierProbe = { fuel: { deuterium: 90 }, sector: { relative: sector }, status: "idle" };
+
+  await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
+
+  assert.deepEqual(claims, [40], "the explorer is the lowest-fuel eligible recipient");
+});
+
+test("servicing_sector: does not transfer a recipient already claimed by another refueler", async () => {
+  const sector = { x: 4, y: 6, z: 8 };
+  const { deps, claims } = makeDeps(10, {
+    probes: {
+      20: { fuel: { deuterium: 10, maxDeuterium: 100 }, sector: { relative: sector } },
+    },
+    roles: [serviceRole(20, "factory", "Factory")],
+    claimResult: false,
+  });
+  const role = refuelRole({ phase: "servicing_sector", travelTarget: sector });
+  const carrierProbe = { fuel: { deuterium: 90 }, sector: { relative: sector }, status: "idle" };
+
+  await runRefuelRole(role, carrierProbe, [], new Set(), noopClient, false, "test", deps);
+
+  assert.deepEqual(claims, [20]);
 });

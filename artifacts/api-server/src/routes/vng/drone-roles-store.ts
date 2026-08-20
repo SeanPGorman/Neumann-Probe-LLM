@@ -9,10 +9,10 @@ export type DroneRoleType = "refuel" | "delivery" | "explorer" | "factory";
 export type RefuelConfig = {
   /** Sector where deuterium is sourced (e.g. a planet with a refuel station). */
   sourceSector: { x: number; y: number; z: number };
-  /** Probe ID to keep fuelled. */
+  /** Probe used as the destination-sector anchor for the refuel service. */
   targetProbeId: number;
   targetProbeName?: string;
-  /** Only travel to refuel when target fuel drops below this % (0–100). Default 80. */
+  /** Service eligible drones whose fuel is below this threshold. Default 80. */
   minFuelThreshold?: number;
 };
 
@@ -60,6 +60,11 @@ export type RoleState = {
   wpCounter?: number;
   /** Refuel: last observed fuel level of the target probe (absolute units). */
   lastTargetFuel?: number;
+  /** Refuel: last observed target fuel as a share of that probe's live tank. */
+  lastTargetFuelPercent?: number;
+  /** Refuel: eligible probe currently claimed for a transfer. */
+  servingTargetProbeId?: number;
+  servingTargetProbeName?: string;
 };
 
 export type DroneRole = {
@@ -170,6 +175,38 @@ export async function updateDroneRoleState(
       lastUpdated: new Date().toISOString(),
     };
     await writeJson(ROLES_FILE, rows);
+  });
+}
+
+/** Claim a refuel recipient so another tanker cannot start a duplicate transfer. */
+export async function claimRefuelTarget(
+  roleId: number,
+  targetProbeId: number,
+  targetProbeName?: string,
+): Promise<boolean> {
+  return withLock(async () => {
+    const rows = await readJson<DroneRole[]>(ROLES_FILE, []);
+    const idx = rows.findIndex((r) => r.id === roleId && r.roleType === "refuel" && r.enabled);
+    if (idx === -1) return false;
+
+    const claimedByAnotherRefueler = rows.some(
+      (r) =>
+        r.id !== roleId &&
+        r.enabled &&
+        r.roleType === "refuel" &&
+        r.state.servingTargetProbeId === targetProbeId,
+    );
+    if (claimedByAnotherRefueler) return false;
+
+    rows[idx].state = {
+      ...rows[idx].state,
+      phase: "transferring",
+      servingTargetProbeId: targetProbeId,
+      servingTargetProbeName: targetProbeName,
+      lastUpdated: new Date().toISOString(),
+    };
+    await writeJson(ROLES_FILE, rows);
+    return true;
   });
 }
 

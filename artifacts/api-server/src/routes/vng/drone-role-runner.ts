@@ -15,6 +15,7 @@ import {
   getDroneRoleByProbeId,
   getDroneRoles,
   updateDroneRoleState,
+  claimRefuelTarget,
   getPendingDeliveryRequest,
   addDeliveryRequest,
   updateDeliveryRequest,
@@ -269,9 +270,16 @@ export type RefuelDeps = {
   updateDroneRoleState: typeof updateDroneRoleState;
   /** Return a probe-scoped client for the given probe ID (used to query the target). */
   clientFor: typeof clientFor;
+  getDroneRoles: typeof getDroneRoles;
+  claimRefuelTarget: typeof claimRefuelTarget;
 };
 
-const defaultRefuelDeps: RefuelDeps = { updateDroneRoleState, clientFor };
+const defaultRefuelDeps: RefuelDeps = {
+  updateDroneRoleState,
+  clientFor,
+  getDroneRoles,
+  claimRefuelTarget,
+};
 
 function fuelCapacity(probe: any): number {
   const max = Number(probe?.fuel?.maxDeuterium);
@@ -288,6 +296,71 @@ function refuelerNeedsSourceTrip(probe: any): boolean {
 
 function refuelerTankIsFull(probe: any): boolean {
   return (Number(probe?.fuel?.deuterium) || 0) >= fuelCapacity(probe);
+}
+
+const REFUEL_SERVICE_ROLE_TYPES = new Set<DroneRole["roleType"]>([
+  "explorer",
+  "delivery",
+  "factory",
+]);
+
+type RefuelServiceTarget = {
+  probeId: number;
+  probeName?: string;
+  fuel: number;
+  capacity: number;
+  fuelPercent: number;
+};
+
+async function getRefuelServiceTargets(
+  serviceSector: { x: number; y: number; z: number },
+  threshold: number,
+  refuelRoleId: number,
+  deps: RefuelDeps,
+): Promise<RefuelServiceTarget[]> {
+  const roles = await deps.getDroneRoles().catch(() => [] as DroneRole[]);
+  const claimedTargetIds = new Set(
+    roles
+      .filter(
+        (r) =>
+          r.id !== refuelRoleId &&
+          r.enabled &&
+          r.roleType === "refuel" &&
+          r.state.servingTargetProbeId != null,
+      )
+      .map((r) => r.state.servingTargetProbeId as number),
+  );
+  const candidates = roles.filter(
+    (r) =>
+      r.enabled &&
+      REFUEL_SERVICE_ROLE_TYPES.has(r.roleType) &&
+      !claimedTargetIds.has(r.probeId),
+  );
+
+  const targets = await Promise.all(
+    candidates.map(async (candidate): Promise<RefuelServiceTarget | null> => {
+      try {
+        const response = await deps.clientFor(candidate.probeId).getProbe();
+        const targetProbe = response?.probe;
+        const fuel = Number(targetProbe?.fuel?.deuterium) || 0;
+        const targetFuelPercent = fuelPercent(targetProbe);
+        if (!atSector(targetProbe, serviceSector) || targetFuelPercent >= threshold) return null;
+        return {
+          probeId: candidate.probeId,
+          probeName: candidate.probeName ?? targetProbe?.name,
+          fuel,
+          capacity: fuelCapacity(targetProbe),
+          fuelPercent: targetFuelPercent,
+        };
+      } catch {
+        return null;
+      }
+    }),
+  );
+
+  return targets
+    .filter((target): target is RefuelServiceTarget => target != null)
+    .sort((a, b) => a.fuelPercent - b.fuelPercent);
 }
 
 export async function runRefuelRole(
@@ -326,27 +399,42 @@ export async function runRefuelRole(
       return;
     }
 
-    // Fetch target probe's fuel level
+    // The configured target is a destination-sector anchor. Service every
+    // eligible role-assigned drone that is co-located with it, not just the
+    // anchor probe itself.
     const c2 = deps.clientFor(cfg.targetProbeId);
-    let targetFuel = 100;
+    let anchorProbe: any;
     try {
       const resp = await c2.getProbe();
-      targetFuel = resp?.probe?.fuel?.deuterium ?? 100;
+      anchorProbe = resp?.probe;
     } catch {
-      logger.warn({ label }, "drone-role: could not fetch target probe state");
+      logger.warn({ label }, "drone-role: could not fetch service-sector anchor state");
       return;
     }
+    const targetFuel = Number(anchorProbe?.fuel?.deuterium) || 0;
     // Always persist the last-seen target fuel so the UI can display it.
-    await deps.updateDroneRoleState(role.id, { lastTargetFuel: targetFuel });
+    await deps.updateDroneRoleState(role.id, {
+      lastTargetFuel: targetFuel,
+      lastTargetFuelPercent: fuelPercent(anchorProbe),
+    });
 
-    if (targetFuel < threshold) {
+    const serviceSector = anchorProbe?.sector?.relative;
+    if (!serviceSector) {
+      logger.warn({ label }, "drone-role: service-sector anchor has no sector — may be in transit");
+      return;
+    }
+    const targets = await getRefuelServiceTargets(serviceSector, threshold, role.id, deps);
+    if (targets.length > 0) {
       logger.info(
-        { label, targetFuel, threshold, ourFuel, ourFuelPercent },
-        "drone-role: target needs fuel and refueler reserve is above return threshold — delivering directly",
+        { label, targetIds: targets.map((target) => target.probeId), threshold, ourFuel, ourFuelPercent },
+        "drone-role: eligible drones need fuel in the service sector — heading there",
       );
-      await deps.updateDroneRoleState(role.id, { phase: "traveling_to_target" });
+      await deps.updateDroneRoleState(role.id, {
+        phase: "traveling_to_target",
+        travelTarget: { x: serviceSector.x, y: serviceSector.y, z: serviceSector.z },
+      });
     } else {
-      logger.info({ label, targetFuel }, "drone-role: target fuel OK — staying idle");
+      logger.info({ label, targetFuel }, "drone-role: no eligible low-fuel drones in service sector — staying idle");
     }
     return;
   }
@@ -425,59 +513,78 @@ export async function runRefuelRole(
 
   if (phase === "traveling_to_target") {
     if (isMoving) return;
-    // We need to be in the same sector as the target probe.
-    // Fetch target probe's current state (sector + fuel).
-    const c2 = deps.clientFor(cfg.targetProbeId);
-    let targetSector: { x: number; y: number; z: number } | null = null;
-    let targetFuelNow = 100;
+    const serviceSector = role.state.travelTarget;
+    if (!serviceSector) {
+      logger.warn({ label }, "drone-role: missing service-sector destination — returning to idle");
+      await deps.updateDroneRoleState(role.id, { phase: "idle" });
+      return;
+    }
+    if (atSector(probe, serviceSector)) {
+      logger.info({ label }, "drone-role: arrived at service sector — checking eligible drones");
+      await deps.updateDroneRoleState(role.id, { phase: "servicing_sector" });
+      return;
+    }
+    logger.info({ label, target: serviceSector }, "drone-role: moving to service sector");
     try {
-      const resp = await c2.getProbe();
-      targetSector = resp?.probe?.sector?.relative ?? null;
-      targetFuelNow = resp?.probe?.fuel?.deuterium ?? 100;
-    } catch {
-      logger.warn({ label }, "drone-role: could not fetch target probe sector");
-      return;
-    }
-
-    // Short-circuit: if the target is already at or above threshold, no
-    // delivery is needed — return to idle and save our deuterium.
-    if (targetFuelNow >= threshold) {
-      logger.info(
-        { label, targetFuelNow, threshold },
-        "drone-role: target already full en route — aborting delivery, returning to idle",
-      );
-      await deps.updateDroneRoleState(role.id, { phase: "idle", lastTargetFuel: targetFuelNow });
-      return;
-    }
-
-    // Persist fresh reading so the UI stays current.
-    await deps.updateDroneRoleState(role.id, { lastTargetFuel: targetFuelNow });
-
-    if (!targetSector) {
-      logger.warn({ label }, "drone-role: target probe has no sector — may be in transit");
-      return;
-    }
-    if (atSector(probe, targetSector)) {
-      logger.info({ label }, "drone-role: arrived at target — transferring deuterium");
-      await deps.updateDroneRoleState(role.id, { phase: "transferring" });
-      return;
-    }
-    logger.info({ label, target: targetSector }, "drone-role: moving to target probe sector");
-    try {
-      await c.moveProbe(targetSector.x, targetSector.y, targetSector.z);
+      await c.moveProbe(serviceSector.x, serviceSector.y, serviceSector.z);
     } catch (err: any) {
-      logger.warn({ label, err: err?.message }, "drone-role: move to target failed");
+      logger.warn({ label, err: err?.message }, "drone-role: move to service sector failed");
     }
+    return;
+  }
+
+  if (phase === "servicing_sector") {
+    if (isMoving) return;
+    if (refuelerNeedsSourceTrip(probe)) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: atSector(probe, cfg.sourceSector) ? "refilling" : "traveling_to_source",
+        servingTargetProbeId: undefined,
+        servingTargetProbeName: undefined,
+      });
+      return;
+    }
+    const serviceSector = probe?.sector?.relative;
+    if (!serviceSector) {
+      logger.warn({ label }, "drone-role: no current sector while servicing");
+      return;
+    }
+    const targets = await getRefuelServiceTargets(serviceSector, threshold, role.id, deps);
+    const target = targets[0];
+    if (!target) {
+      logger.info({ label }, "drone-role: service sector has no remaining low-fuel drones");
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        servingTargetProbeId: undefined,
+        servingTargetProbeName: undefined,
+      });
+      return;
+    }
+    const claimedTarget = await deps.claimRefuelTarget(role.id, target.probeId, target.probeName);
+    if (!claimedTarget) {
+      logger.info({ label, targetProbeId: target.probeId }, "drone-role: another refueler claimed target — checking again later");
+      return;
+    }
+    logger.info(
+      { label, targetProbeId: target.probeId, targetFuel: target.fuel },
+      "drone-role: claimed low-fuel drone in service sector",
+    );
     return;
   }
 
   if (phase === "transferring") {
     if (isMoving) return;
+    // Existing persisted roles may still be in the old transferring phase with
+    // no explicit claim. In that case, preserve their configured anchor target.
+    const targetProbeId = role.state.servingTargetProbeId ?? cfg.targetProbeId;
     const ourFuel = probe?.fuel?.deuterium ?? 0;
     const availableFuel = Math.floor(ourFuel) - MIN_DEUTERIUM_RESERVE;
     if (availableFuel <= 0) {
-      logger.warn({ label, ourFuel }, "drone-role: not enough fuel to transfer — returning to idle");
-      await deps.updateDroneRoleState(role.id, { phase: "idle" });
+      logger.warn({ label, ourFuel }, "drone-role: not enough fuel to transfer — returning to source");
+      await deps.updateDroneRoleState(role.id, {
+        phase: atSector(probe, cfg.sourceSector) ? "refilling" : "traveling_to_source",
+        servingTargetProbeId: undefined,
+        servingTargetProbeName: undefined,
+      });
       return;
     }
 
@@ -486,10 +593,22 @@ export async function runRefuelRole(
     // avoids a misleading oversized handoff / surplus return.
     let targetFuel = 0;
     let targetCapacity = 100;
+    let targetFuelPercent = 0;
     try {
-      const targetResp = await deps.clientFor(cfg.targetProbeId).getProbe();
+      const targetResp = await deps.clientFor(targetProbeId).getProbe();
       targetFuel = Number(targetResp?.probe?.fuel?.deuterium) || 0;
       targetCapacity = fuelCapacity(targetResp?.probe);
+      targetFuelPercent = fuelPercent(targetResp?.probe);
+      const currentSector = probe?.sector?.relative;
+      if (!currentSector || !atSector(targetResp?.probe, currentSector)) {
+        logger.info({ label, targetProbeId }, "drone-role: claimed target left service sector — releasing claim");
+        await deps.updateDroneRoleState(role.id, {
+          phase: "servicing_sector",
+          servingTargetProbeId: undefined,
+          servingTargetProbeName: undefined,
+        });
+        return;
+      }
     } catch {
       logger.warn({ label }, "drone-role: could not fetch target fuel before transfer");
       return;
@@ -498,10 +617,16 @@ export async function runRefuelRole(
     const transferable = Math.min(availableFuel, targetMissingFuel);
     if (transferable <= 0) {
       logger.info(
-        { label, targetFuel, targetCapacity },
+        { label, targetProbeId, targetFuel, targetCapacity },
         "drone-role: target tank is already full — no deuterium transfer needed",
       );
-      await deps.updateDroneRoleState(role.id, { phase: "idle", lastTargetFuel: targetFuel });
+      await deps.updateDroneRoleState(role.id, {
+        phase: "servicing_sector",
+        lastTargetFuel: targetFuel,
+        lastTargetFuelPercent: targetFuelPercent,
+        servingTargetProbeId: undefined,
+        servingTargetProbeName: undefined,
+      });
       return;
     }
 
@@ -514,13 +639,15 @@ export async function runRefuelRole(
       return;
     }
     logger.info(
-      { label, amount: transferable, availableFuel, targetFuel, targetCapacity, mannyId: manny.id, targetProbeId: cfg.targetProbeId },
+      { label, amount: transferable, availableFuel, targetFuel, targetCapacity, mannyId: manny.id, targetProbeId },
       "drone-role: transferring deuterium",
     );
     try {
-      await c.transferDeuteriumToProbe(manny.id, cfg.targetProbeId, transferable);
+      await c.transferDeuteriumToProbe(manny.id, targetProbeId, transferable);
       claimed.add(manny.id);
-      await deps.updateDroneRoleState(role.id, { phase: "idle" });
+      // Keep the target claim until the asynchronous Manny transfer completes.
+      // The next tick observes the target's fresh fuel level and then moves on
+      // to another eligible drone in this sector.
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: deuterium transfer failed — will retry next tick");
     }
