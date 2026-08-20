@@ -196,30 +196,58 @@ async function nextDeliveryWaypoint(
   return nextSectorToward(from, to);
 }
 
-/** Repair up to one damaged Manny per tick (works while probe is moving). */
-async function repairDamagedMannies(
+/** Use up to one idle Manny per tick to repair the probe hull (works in transit). */
+async function repairDamagedProbe(
+  probe: any,
   mannies: any[],
   claimed: Set<string>,
   c: ReturnType<typeof clientFor>,
   label: string,
 ): Promise<void> {
-  for (const m of mannies) {
-    if (claimed.has(m.id)) continue;
-    const integrity = m.integrityPercent ?? 100;
-    if (
-      integrity < 99 &&
-      (m.currentTask == null || m.currentTask === "idle")
-    ) {
-      try {
-        await c.repairManny(m.id, 100);
-        claimed.add(m.id);
-        logger.info({ label, mannyId: m.id, integrity }, "drone-role: repairing manny");
-        return; // one per tick
-      } catch (err: any) {
-        if (!(err instanceof VngApiError && err.status === 409)) {
-          logger.warn({ label, err: err?.message }, "drone-role: repair manny failed");
-        }
-      }
+  const integrity = Number(probe?.systems?.integrityPercent);
+  if (!Number.isFinite(integrity) || integrity >= 99) return;
+
+  const manny = pickIdleManny(mannies, claimed);
+  if (!manny) return;
+
+  const metalsAvailable = (probe?.inventory?.resourceStocks ?? [])
+    .filter((stock: any) => String(stock?.type ?? "").toLowerCase() === "metals")
+    .reduce((total: number, stock: any) => {
+      const amount = Number(stock?.amount);
+      return Number.isFinite(amount) && amount > 0 ? total + amount : total;
+    }, 0);
+  const missingIntegrity = Math.max(0, 100 - integrity);
+  const metalsPerIntegrityPoint = 0.01;
+  const affordableIntegrity = Math.floor(
+    (metalsAvailable / metalsPerIntegrityPoint + Number.EPSILON) * 100,
+  ) / 100;
+  const integrityToRestore = Math.min(missingIntegrity, affordableIntegrity);
+
+  if (integrityToRestore <= 0) {
+    logger.info(
+      { label, mannyId: manny.id, integrity, metalsAvailable },
+      "drone-role: probe repair waiting for metals",
+    );
+    return;
+  }
+
+  try {
+    await c.repairManny(manny.id, integrityToRestore);
+    claimed.add(manny.id);
+    logger.info(
+      {
+        label,
+        mannyId: manny.id,
+        integrity,
+        metalsAvailable,
+        integrityToRestore,
+        metalsRequired: integrityToRestore * metalsPerIntegrityPoint,
+      },
+      "drone-role: repairing probe hull with Manny",
+    );
+  } catch (err: any) {
+    if (!(err instanceof VngApiError && err.status === 409)) {
+      logger.warn({ label, err: err?.message }, "drone-role: probe repair failed");
     }
   }
 }
@@ -242,7 +270,7 @@ export async function runDroneRoleAutomation(
   const isMoving = MOVING_STATUSES.has(probe?.status ?? "");
 
   // Always repair regardless of phase or movement status.
-  await repairDamagedMannies(mannies, claimed, c, label);
+  await repairDamagedProbe(probe, mannies, claimed, c, label);
 
   try {
     if (role.roleType === "refuel") {

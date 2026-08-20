@@ -5,5 +5,6 @@
 - [VNG containers can't hold crafted items](vng-container-items.md) — no store/load-item API; craft aboard the recipient probe instead; container item type is additional_container
 - [VNG probe sector coordinates](vng-probe-sector-shape.md) — coords at probe.sector.relative.{x,y,z}; sectors must have x+y+z even; step exactly 2 axes per hop
 - [VNG SCUT coverage check](vng-scut-endpoint.md) — /api/probe/scut-networks is 404; use getSectors()+getScutNetwork(id) aggregation instead
+- [VNG Manny repair target](vng-manny-repair-target.md) — the Manny repair endpoint restores the probe hull, not a Manny; repair work consumes metals per integrity point
 - [VNG fuel field — raw vs state](vng-fuel-field.md) — runner uses probe.fuel.deuterium (nested, absolute units); state route exposes fuelDeuterium (flat); never mix them
 - [Refuel role persistence](refuel-role-persistence.md) — verify the active role store before debugging refueling; a merge can remove runtime assignments

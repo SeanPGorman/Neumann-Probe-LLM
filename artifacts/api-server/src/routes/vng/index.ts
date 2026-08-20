@@ -407,6 +407,11 @@ router.get("/state", async (req, res) => {
         capacity: inv.capacity ?? 0,
         usedCapacity: inv.usedCapacity ?? 0,
         freeCapacity: inv.freeCapacity ?? 0,
+        resources: (inv.resourceStocks ?? []).map((stock: any) => ({
+          type: stock.type,
+          name: stock.name,
+          amount: stock.amount,
+        })),
       },
       mannies: manniesNorm,
       stowedMannies: stowedNorm,
