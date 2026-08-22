@@ -4,13 +4,14 @@
  * Called once per probe per poll tick.  Each role type has its own state
  * machine; state is persisted between ticks via drone-roles-store.
  *
- * Repair in transit: every drone repairs damaged Mannies at the start of
+ * Repair in transit: every drone repairs damaged probe hulls at the start of
  * every tick, regardless of travel status.
  */
 
 import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError, getScutNetwork } from "./client.js";
 import { getSectors } from "./file-store.js";
+import { mapSectorObjects } from "./sector-map.js";
 import {
   getDroneRoleByProbeId,
   getDroneRoles,
@@ -984,7 +985,7 @@ async function isInScutCoverage(
 
 type ResourceCounts = { metal: number; deut: number; ice: number; organics: number };
 
-/** Count mineable resources across all sector objects (asteroids + solar system bodies). */
+/** Count mineable resources across standalone objects and solar-system bodies. */
 function countSectorResources(sectorObjects: any[]): ResourceCounts {
   const counts: ResourceCounts = { metal: 0, deut: 0, ice: 0, organics: 0 };
   const tally = (rt: string) => {
@@ -994,14 +995,61 @@ function countSectorResources(sectorObjects: any[]): ResourceCounts {
     else if (r === "ice") counts.ice++;
     else if (r === "carbon_compounds" || r === "organics") counts.organics++;
   };
-  for (const obj of sectorObjects) {
-    for (const rt of (obj.resourceTypes ?? [])) tally(rt as string);
-    // Solar system: descend into bodies
-    for (const body of (obj.bodies ?? [])) {
-      for (const rt of (body.resourceTypes ?? [])) tally(rt as string);
+
+  // Raw VNG solar-system objects keep asteroid resources in minableTargets,
+  // with object IDs in bookmarkTargets. The shared mapper merges those arrays
+  // into complete bodies, so the waypoint sees the same mineable targets as
+  // mining automation.
+  for (const obj of mapSectorObjects(sectorObjects)) {
+    if (obj.type === "solar_system") {
+      for (const body of (obj.bodies ?? [])) {
+        for (const rt of (body.resourceTypes ?? [])) tally(rt as string);
+      }
+    } else {
+      for (const rt of (obj.resourceTypes ?? [])) tally(rt as string);
     }
   }
   return counts;
+}
+
+function hasResource(object: any, resource: string): boolean {
+  return (object?.resourceTypes ?? []).some(
+    (value: unknown) => String(value).toLowerCase() === resource,
+  );
+}
+
+/** True when the current sector already contains any waypoint beacon. */
+function hasExistingWaypoint(sectorObjects: any[]): boolean {
+  const containsWaypoint = (object: any): boolean => {
+    if (!object || typeof object !== "object") return false;
+    if (Array.isArray(object.waypointBookmarks) && object.waypointBookmarks.length > 0) {
+      return true;
+    }
+    return Array.isArray(object.bodies) && object.bodies.some(containsWaypoint);
+  };
+  return sectorObjects.some(containsWaypoint);
+}
+
+/** Pick a durable waypoint anchor, prioritizing a mineable metal asteroid. */
+function pickWpAnchor(sectorObjects: any[]): any | null {
+  const mapped = mapSectorObjects(sectorObjects);
+  const solarBodies = mapped.flatMap((obj: any) =>
+    obj.type === "solar_system" ? (obj.bodies ?? []) : [],
+  );
+  const asteroids = [
+    ...mapped.filter((obj: any) => obj.type === "asteroid"),
+    ...solarBodies.filter((body: any) => body.type === "asteroid"),
+  ];
+
+  return (
+    asteroids.find((asteroid: any) => hasResource(asteroid, "metals")) ??
+    asteroids[0] ??
+    solarBodies.find((body: any) => body.type === "planet") ??
+    mapped.find((obj: any) => obj.type === "planet") ??
+    mapped.find((obj: any) => obj.type === "star") ??
+    mapped.find((obj: any) => obj.id != null) ??
+    null
+  );
 }
 
 /** Build the standard WP bookmark name. */
@@ -1013,19 +1061,6 @@ function buildWpName(
 ): string {
   const num = String(counter).padStart(3, "0");
   return `WP-${num}- ${playerName}. This is ${sector.x}.${sector.y}.${sector.z} ${res.metal} Metal. ${res.deut} Deut. ${res.ice} Ice. ${res.organics} Organics`;
-}
-
-/** Pick the best sector object to anchor a waypoint bookmark on. */
-function pickWpAnchor(sectorObjects: any[]): any | null {
-  // VNG accepts: asteroid, planet, star. Prefer asteroid.
-  return (
-    sectorObjects.find((o: any) => o.type === "asteroid") ??
-    // Solar system body (has its own ID and is a valid anchor)
-    (sectorObjects.find((o: any) => o.type === "solar_system")?.bodies?.[0] ?? null) ??
-    sectorObjects.find((o: any) => o.type === "star") ??
-    sectorObjects.find((o: any) => o.id != null) ??
-    null
-  );
 }
 
 export async function runExplorerRole(
@@ -1064,7 +1099,9 @@ export async function runExplorerRole(
       const hasBookmark = items.some((i: any) => i.type === "waypoint_bookmark");
       const startCounter = cfg.wpStartNumber ?? 1;
 
-      if (anchor && hasBookmark) {
+      if (hasExistingWaypoint(sectorObjects)) {
+        logger.info({ label }, "drone-role: waypoint already exists — skipping starting WP");
+      } else if (anchor && hasBookmark) {
         const manny = pickIdleManny(mannies, claimed);
         if (manny) {
           const res = countSectorResources(sectorObjects);
@@ -1129,7 +1166,9 @@ export async function runExplorerRole(
     const hasBookmark = items.some((i: any) => i.type === "waypoint_bookmark");
     const anchor = pickWpAnchor(sectorObjects);
 
-    if (anchor && hasBookmark) {
+    if (hasExistingWaypoint(sectorObjects)) {
+      logger.info({ label }, "drone-role: waypoint already exists — skipping WP installation");
+    } else if (anchor && hasBookmark) {
       const manny = pickIdleManny(mannies, claimed);
       if (!manny) {
         logger.info({ label }, "drone-role: no idle manny for WP installation — deferring");

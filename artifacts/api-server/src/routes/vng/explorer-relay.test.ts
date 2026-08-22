@@ -231,6 +231,73 @@ test("installing_beacon: has bookmark + asteroid anchor → installs WP and adva
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
+test("installing_beacon: includes solar-system metal asteroids in the WP and anchors on one", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "installing_beacon");
+  await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 1 });
+  const freshRole = (await store.getDroneRoles())[0];
+  const calls: any[] = [];
+  const sector = [{
+    id: "system-1",
+    type: "solar_system",
+    bookmarkTargets: [
+      { id: "deut-asteroid", type: "asteroid" },
+      { id: "metal-asteroid-a", type: "asteroid" },
+      { id: "metal-asteroid-b", type: "asteroid" },
+    ],
+    minableTargets: [
+      { id: "deut-asteroid", type: "asteroid", resourceTypes: ["deuterium"] },
+      { id: "metal-asteroid-a", type: "asteroid", resourceTypes: ["metals"] },
+      { id: "metal-asteroid-b", type: "asteroid", resourceTypes: ["metals"] },
+    ],
+  }];
+
+  await runner.runExplorerRole(
+    freshRole,
+    probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, sector),
+    false,
+    "test",
+  );
+
+  const wp = calls.find((c: any) => c.op === "installWP");
+  assert.ok(wp, "expected installWaypointBookmark to be called");
+  assert.equal(wp.objectId, "metal-asteroid-a");
+  assert.match(wp.name, /2 Metal\. 1 Deut\. 0 Ice\. 0 Organics/);
+});
+
+test("installing_beacon: existing nested waypoint skips installation and preserves the bookmark", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "installing_beacon");
+  await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 1 });
+  const freshRole = (await store.getDroneRoles())[0];
+  const calls: any[] = [];
+  const sector = [{
+    id: "system-1",
+    type: "solar_system",
+    waypointBookmarks: [
+      { name: "WP-001- Existing. This is 3.6.-1 2 Metal. 1 Deut. 0 Ice. 0 Organics" },
+    ],
+    bookmarkTargets: [{ id: "metal-asteroid-a", type: "asteroid" }],
+    minableTargets: [{ id: "metal-asteroid-a", type: "asteroid", resourceTypes: ["metals"] }],
+  }];
+
+  await runner.runExplorerRole(
+    freshRole,
+    probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, sector),
+    false,
+    "test",
+  );
+
+  assert.equal(calls.some((c: any) => c.op === "installWP"), false);
+  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
+});
+
 test("installing_beacon: no bookmark → skips WP silently and advances to dropping_container", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "installing_beacon");
