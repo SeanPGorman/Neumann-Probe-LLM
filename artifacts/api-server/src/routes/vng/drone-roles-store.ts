@@ -261,3 +261,14 @@ export async function updateDeliveryRequest(
     await writeJson(DELIVERY_REQUESTS_FILE, rows);
   });
 }
+
+export async function deleteDeliveryRequest(id: number): Promise<boolean> {
+  return withLock(async () => {
+    const rows = await readJson<DeliveryRequest[]>(DELIVERY_REQUESTS_FILE, []);
+    const idx = rows.findIndex((r) => r.id === id);
+    if (idx === -1) return false;
+    rows.splice(idx, 1);
+    await writeJson(DELIVERY_REQUESTS_FILE, rows);
+    return true;
+  });
+}

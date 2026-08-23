@@ -23,6 +23,7 @@ import {
   updateDroneRole,
   deleteDroneRole,
   getDeliveryRequests,
+  deleteDeliveryRequest,
 } from "./drone-roles-store.js";
 import { afterTool } from "./after-tool.js";
 import {
@@ -280,6 +281,24 @@ router.get("/drone-roles/delivery-requests", async (_req, res) => {
   try {
     const requests = await getDeliveryRequests();
     res.json({ requests });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.delete("/drone-roles/delivery-requests/:id", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    if (!Number.isInteger(id)) {
+      res.status(400).json({ error: "Invalid delivery request id" });
+      return;
+    }
+    const deleted = await deleteDeliveryRequest(id);
+    if (!deleted) {
+      res.status(404).json({ error: "Delivery request not found" });
+      return;
+    }
+    res.json({ ok: true });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }
