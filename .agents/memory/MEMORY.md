@@ -1,6 +1,6 @@
 - [API routing — /api vs /api-server](api-routing.md) — client fetches must use `/api/vng/...` not `/api-server/api/vng/...`
 - [Mining targets live inside solar_system bodies](mining-targets.md) — sector has no standalone asteroids; mineable bodies are in solar_system.bodies after mapSectorObjects()
-- [Waypoint bookmarks on solar-system bodies](waypoint-solar-system-targets.md) — map minable/bookmark targets before counting resources; skip a sector when any waypoint already exists
+- [Waypoint bookmarks on SCUT relays](waypoint-solar-system-targets.md) — count mapped solar-system resources but install only on an activated relay; skip sectors with an existing waypoint
 - [Mining planet filter](mining-planet-filter.md) — planets appear in minableTargets but hidden_on_asteroid mode rejects them; filter to asteroid type only in poller
 - [VNG SCUT relay deployment](vng-relay-deployment.md) — jettison a scut_relay item to deploy it as an inactive sector relay; API spec lives at /openapi.yaml
 - [VNG containers can't hold crafted items](vng-container-items.md) — no store/load-item API; craft aboard the recipient probe instead; container item type is additional_container

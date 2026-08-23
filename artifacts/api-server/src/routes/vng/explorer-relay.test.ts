@@ -82,7 +82,7 @@ async function seedExplorer(store: any, phase: string) {
 }
 
 const probeWith = (items: any[]) => ({
-  sector: { x: 1, y: 1, z: 1 },
+  sector: { relative: { x: 1, y: 1, z: 1 } },
   inventory: { items },
   fuel: { deuterium: 50 },
   status: "idle",
@@ -137,15 +137,15 @@ test("deploying_relay: sector has status:'off' relay → advances to activating_
   assert.equal((await store.getDroneRoles())[0].state.phase, "activating_relay");
 });
 
-test("deploying_relay: sector has status:'on' relay → skips ahead to dropping_container", async () => {
+test("deploying_relay: sector has status:'on' relay → proceeds to installing_beacon", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "deploying_relay");
   const sector = [{ id: "42", type: "scut_relay", status: "on" }];
   await runner.runExplorerRole(role, probeWith([]), IDLE_MANNY, new Set(), makeClient([], sector), false, "test");
-  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
 });
 
-test("activating_relay: off relay + integrated_circuit → turn-on-relay with numeric id", async () => {
+test("activating_relay: off relay + integrated_circuit → turns on relay then installs beacon", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "activating_relay");
   const calls: any[] = [];
@@ -160,17 +160,17 @@ test("activating_relay: off relay + integrated_circuit → turn-on-relay with nu
     "test",
   );
   assert.deepEqual(calls, [{ op: "turnOnRelay", mannyId: "m-1", relayId: 42, networkName: "net" }]);
-  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
 });
 
-test("activating_relay: relay now status:'on' → advances to dropping_container without acting", async () => {
+test("activating_relay: relay now status:'on' → advances to installing_beacon without acting", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "activating_relay");
   const calls: any[] = [];
   const sector = [{ id: "42", type: "scut_relay", status: "on" }];
   await runner.runExplorerRole(role, probeWith([]), IDLE_MANNY, new Set(), makeClient(calls, sector), false, "test");
   assert.deepEqual(calls, []);
-  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
 });
 
 test("relay state helpers accept both status strings and legacy active booleans", async () => {
@@ -194,27 +194,30 @@ test("traveling: still moving → stays in traveling", async () => {
   assert.equal((await store.getDroneRoles())[0].state.phase, "traveling");
 });
 
-test("traveling: arrived (not moving) → advances to installing_beacon", async () => {
+test("traveling: arrived (not moving) → returns to idle for the next coverage check", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "traveling");
   const calls: any[] = [];
   await runner.runExplorerRole(role, probeWith([]), IDLE_MANNY, new Set(), makeClient(calls), false, "test");
   assert.deepEqual(calls, []);
-  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "idle");
 });
 
 // ── installing_beacon ─────────────────────────────────────────────────────────
 // isInScutCoverage calls the real VNG API which is unreachable in tests; the
-// function fails open (returns true = covered), so installing_beacon always
-// advances to dropping_container in the test environment.
+// function fails open (returns true = covered), so this phase is exercised
+// directly with an already-active relay.
 
-test("installing_beacon: has bookmark + asteroid anchor → installs WP and advances to dropping_container", async () => {
+test("installing_beacon: has bookmark + active relay → installs WP on the relay", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "installing_beacon");
   await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 1 });
   const freshRole = (await store.getDroneRoles())[0];
   const calls: any[] = [];
-  const sector = [{ id: "ast-1", type: "asteroid" }];
+  const sector = [
+    { id: "relay-1", type: "scut_relay", status: "on" },
+    { id: "ast-1", type: "asteroid" },
+  ];
   await runner.runExplorerRole(
     freshRole,
     probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
@@ -226,31 +229,34 @@ test("installing_beacon: has bookmark + asteroid anchor → installs WP and adva
   );
   const wp = calls.find((c: any) => c.op === "installWP");
   assert.ok(wp, "expected installWaypointBookmark to be called");
-  assert.equal(wp.objectId, "ast-1");
-  assert.ok(wp.name.startsWith("WP-002-"), `unexpected WP name: ${wp.name}`);
+  assert.equal(wp.objectId, "relay-1");
+  assert.ok(wp.name.startsWith("WP-001-"), `unexpected WP name: ${wp.name}`);
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
-test("installing_beacon: includes solar-system metal asteroids in the WP and anchors on one", async () => {
+test("installing_beacon: includes solar-system metal asteroids in the relay WP", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "installing_beacon");
   await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 1 });
   const freshRole = (await store.getDroneRoles())[0];
   const calls: any[] = [];
-  const sector = [{
-    id: "system-1",
-    type: "solar_system",
-    bookmarkTargets: [
-      { id: "deut-asteroid", type: "asteroid" },
-      { id: "metal-asteroid-a", type: "asteroid" },
-      { id: "metal-asteroid-b", type: "asteroid" },
-    ],
-    minableTargets: [
-      { id: "deut-asteroid", type: "asteroid", resourceTypes: ["deuterium"] },
-      { id: "metal-asteroid-a", type: "asteroid", resourceTypes: ["metals"] },
-      { id: "metal-asteroid-b", type: "asteroid", resourceTypes: ["metals"] },
-    ],
-  }];
+  const sector = [
+    {
+      id: "system-1",
+      type: "solar_system",
+      bookmarkTargets: [
+        { id: "deut-asteroid", type: "asteroid" },
+        { id: "metal-asteroid-a", type: "asteroid" },
+        { id: "metal-asteroid-b", type: "asteroid" },
+      ],
+      minableTargets: [
+        { id: "deut-asteroid", type: "asteroid", resourceTypes: ["deuterium"] },
+        { id: "metal-asteroid-a", type: "asteroid", resourceTypes: ["metals"] },
+        { id: "metal-asteroid-b", type: "asteroid", resourceTypes: ["metals"] },
+      ],
+    },
+    { id: "relay-1", type: "scut_relay", status: "on" },
+  ];
 
   await runner.runExplorerRole(
     freshRole,
@@ -264,7 +270,7 @@ test("installing_beacon: includes solar-system metal asteroids in the WP and anc
 
   const wp = calls.find((c: any) => c.op === "installWP");
   assert.ok(wp, "expected installWaypointBookmark to be called");
-  assert.equal(wp.objectId, "metal-asteroid-a");
+  assert.equal(wp.objectId, "relay-1");
   assert.match(wp.name, /2 Metal\. 1 Deut\. 0 Ice\. 0 Organics/);
 });
 
@@ -274,15 +280,18 @@ test("installing_beacon: existing nested waypoint skips installation and preserv
   await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 1 });
   const freshRole = (await store.getDroneRoles())[0];
   const calls: any[] = [];
-  const sector = [{
-    id: "system-1",
-    type: "solar_system",
-    waypointBookmarks: [
-      { name: "WP-001- Existing. This is 3.6.-1 2 Metal. 1 Deut. 0 Ice. 0 Organics" },
-    ],
-    bookmarkTargets: [{ id: "metal-asteroid-a", type: "asteroid" }],
-    minableTargets: [{ id: "metal-asteroid-a", type: "asteroid", resourceTypes: ["metals"] }],
-  }];
+  const sector = [
+    {
+      id: "system-1",
+      type: "solar_system",
+      waypointBookmarks: [
+        { name: "WP-001- Existing. This is 3.6.-1 2 Metal. 1 Deut. 0 Ice. 0 Organics" },
+      ],
+      bookmarkTargets: [{ id: "metal-asteroid-a", type: "asteroid" }],
+      minableTargets: [{ id: "metal-asteroid-a", type: "asteroid", resourceTypes: ["metals"] }],
+    },
+    { id: "relay-1", type: "scut_relay", status: "on" },
+  ];
 
   await runner.runExplorerRole(
     freshRole,
@@ -298,7 +307,7 @@ test("installing_beacon: existing nested waypoint skips installation and preserv
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
-test("installing_beacon: no bookmark → skips WP silently and advances to dropping_container", async () => {
+test("installing_beacon: no bookmark → waits before delivery", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "installing_beacon");
   await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 5 });
@@ -309,12 +318,12 @@ test("installing_beacon: no bookmark → skips WP silently and advances to dropp
     probeWith([]),           // no waypoint_bookmark
     IDLE_MANNY,
     new Set(),
-    makeClient(calls, [{ id: "ast-1", type: "asteroid" }]),
+    makeClient(calls, [{ id: "relay-1", type: "scut_relay", status: "on" }]),
     false,
     "test",
   );
   assert.ok(!calls.find((c: any) => c.op === "installWP"), "should not attempt WP without bookmark");
-  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
 });
 
 test("installing_beacon: no idle manny → defers (stays in installing_beacon)", async () => {
@@ -328,7 +337,7 @@ test("installing_beacon: no idle manny → defers (stays in installing_beacon)",
     probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
     busyMannies,
     new Set(),
-    makeClient([], [{ id: "ast-1", type: "asteroid" }]),
+    makeClient([], [{ id: "relay-1", type: "scut_relay", status: "on" }]),
     false,
     "test",
   );
@@ -464,7 +473,7 @@ test("full relay hop: jettison → turn-on → drop → signal delivery in four 
   );
   assert.equal((await store.getDroneRoles())[0].state.phase, "activating_relay");
 
-  // Tick 3 (activating_relay): turn on the relay → advance to dropping_container
+  // Tick 3 (activating_relay): turn on the relay → advance to installing_beacon
   await runner.runExplorerRole(
     (await store.getDroneRoles())[0],
     probeWith([{ id: "ic-1", type: "integrated_circuit" }]),
@@ -475,9 +484,25 @@ test("full relay hop: jettison → turn-on → drop → signal delivery in four 
     "test",
   );
   assert.ok(calls.some((c: any) => c.op === "turnOnRelay"), "tick 3: turnOnRelay expected");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
+
+  // Tick 4 (installing_beacon): install the waypoint on the active relay.
+  await runner.runExplorerRole(
+    (await store.getDroneRoles())[0],
+    probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, [{ id: "55", type: "scut_relay", status: "on" }]),
+    false,
+    "test",
+  );
+  assert.ok(
+    calls.some((c: any) => c.op === "installWP" && c.objectId === "55"),
+    "tick 4: waypoint installation on the relay expected",
+  );
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 
-  // Tick 4 (dropping_container): no container → skip detach → waiting_for_delivery
+  // Tick 5 (dropping_container): no container → skip detach → waiting_for_delivery
   await runner.runExplorerRole(
     (await store.getDroneRoles())[0],
     probeWith([]),
@@ -489,7 +514,7 @@ test("full relay hop: jettison → turn-on → drop → signal delivery in four 
   );
   assert.equal((await store.getDroneRoles())[0].state.phase, "waiting_for_delivery");
 
-  // Tick 5 (waiting_for_delivery): no prior request → delivery request created
+  // Tick 6 (waiting_for_delivery): no prior request → delivery request created
   await runner.runExplorerRole(
     (await store.getDroneRoles())[0],
     probeWith([]),

@@ -1012,12 +1012,6 @@ function countSectorResources(sectorObjects: any[]): ResourceCounts {
   return counts;
 }
 
-function hasResource(object: any, resource: string): boolean {
-  return (object?.resourceTypes ?? []).some(
-    (value: unknown) => String(value).toLowerCase() === resource,
-  );
-}
-
 /** True when the current sector already contains any waypoint beacon. */
 function hasExistingWaypoint(sectorObjects: any[]): boolean {
   const containsWaypoint = (object: any): boolean => {
@@ -1028,28 +1022,6 @@ function hasExistingWaypoint(sectorObjects: any[]): boolean {
     return Array.isArray(object.bodies) && object.bodies.some(containsWaypoint);
   };
   return sectorObjects.some(containsWaypoint);
-}
-
-/** Pick a durable waypoint anchor, prioritizing a mineable metal asteroid. */
-function pickWpAnchor(sectorObjects: any[]): any | null {
-  const mapped = mapSectorObjects(sectorObjects);
-  const solarBodies = mapped.flatMap((obj: any) =>
-    obj.type === "solar_system" ? (obj.bodies ?? []) : [],
-  );
-  const asteroids = [
-    ...mapped.filter((obj: any) => obj.type === "asteroid"),
-    ...solarBodies.filter((body: any) => body.type === "asteroid"),
-  ];
-
-  return (
-    asteroids.find((asteroid: any) => hasResource(asteroid, "metals")) ??
-    asteroids[0] ??
-    solarBodies.find((body: any) => body.type === "planet") ??
-    mapped.find((obj: any) => obj.type === "planet") ??
-    mapped.find((obj: any) => obj.type === "star") ??
-    mapped.find((obj: any) => obj.id != null) ??
-    null
-  );
 }
 
 /** Build the standard WP bookmark name. */
@@ -1086,40 +1058,6 @@ export async function runExplorerRole(
       return;
     }
 
-    // First-ever tick: install WP at starting sector before moving.
-    if (role.state.wpCounter == null) {
-      let sectorObjects: any[] = [];
-      try {
-        const resp = await c.getSector();
-        sectorObjects = resp?.sector?.objects ?? [];
-      } catch { /* proceed without WP */ }
-
-      const anchor = pickWpAnchor(sectorObjects);
-      const items: any[] = probe?.inventory?.items ?? [];
-      const hasBookmark = items.some((i: any) => i.type === "waypoint_bookmark");
-      const startCounter = cfg.wpStartNumber ?? 1;
-
-      if (hasExistingWaypoint(sectorObjects)) {
-        logger.info({ label }, "drone-role: waypoint already exists — skipping starting WP");
-      } else if (anchor && hasBookmark) {
-        const manny = pickIdleManny(mannies, claimed);
-        if (manny) {
-          const res = countSectorResources(sectorObjects);
-          const name = buildWpName(startCounter, playerName, currentSector, res);
-          logger.info({ label, name }, "drone-role: explorer — installing starting sector WP");
-          try {
-            await c.installWaypointBookmark(manny.id, anchor.id, name);
-            claimed.add(manny.id);
-          } catch (err: any) {
-            logger.warn({ label, err: err?.message }, "drone-role: starting WP failed");
-          }
-        }
-      }
-      // Mark counter so we don't retry even if WP failed (no bookmark / no anchor).
-      await updateDroneRoleState(role.id, { wpCounter: startCounter });
-      return;
-    }
-
     // Check SCUT coverage for the next sector.
     const next = nextSectorToward(currentSector, cfg.targetVector);
     const covered = await isInScutCoverage(next, label);
@@ -1144,14 +1082,15 @@ export async function runExplorerRole(
   // ── traveling ─────────────────────────────────────────────────────────────
   if (phase === "traveling") {
     if (isMoving) return;
-    logger.info({ label, sector: currentSector }, "drone-role: explorer arrived — installing beacon");
-    await updateDroneRoleState(role.id, { phase: "installing_beacon" });
+    logger.info({ label, sector: currentSector }, "drone-role: explorer arrived — checking next hop");
+    await updateDroneRoleState(role.id, { phase: "idle" });
     return;
   }
 
   // ── installing_beacon ─────────────────────────────────────────────────────
-  // Runs on arrival: install WP with resource counts, then check if next hop
-  // needs a relay. If yes → deploying_relay; if no → dropping_container.
+  // Runs after a relay is activated: install WP on that relay, then drop the
+  // container and request delivery. This phase is never reached merely by
+  // arriving in a covered sector.
   if (phase === "installing_beacon") {
     if (isMoving) return;
 
@@ -1161,52 +1100,43 @@ export async function runExplorerRole(
       sectorObjects = resp?.sector?.objects ?? [];
     } catch { return; }
 
-    // Install waypoint bookmark
+    const activeRelay = sectorObjects.find(isActiveRelay);
+    if (!activeRelay && !hasExistingWaypoint(sectorObjects)) {
+      logger.warn({ label }, "drone-role: no active relay for waypoint installation — deferring");
+      return;
+    }
+
+    // Install waypoint bookmark on the active relay.
     const items: any[] = probe?.inventory?.items ?? [];
     const hasBookmark = items.some((i: any) => i.type === "waypoint_bookmark");
-    const anchor = pickWpAnchor(sectorObjects);
 
     if (hasExistingWaypoint(sectorObjects)) {
       logger.info({ label }, "drone-role: waypoint already exists — skipping WP installation");
-    } else if (anchor && hasBookmark) {
+    } else if (activeRelay && hasBookmark) {
       const manny = pickIdleManny(mannies, claimed);
       if (!manny) {
         logger.info({ label }, "drone-role: no idle manny for WP installation — deferring");
         return;
       }
-      const counter = (role.state.wpCounter ?? 0) + 1;
+      const counter = role.state.wpCounter ?? (cfg.wpStartNumber ?? 1);
       const res = countSectorResources(sectorObjects);
       const name = buildWpName(counter, playerName, currentSector ?? { x: 0, y: 0, z: 0 }, res);
-      logger.info({ label, name, objectId: anchor.id }, "drone-role: installing waypoint bookmark");
+      logger.info({ label, name, objectId: activeRelay.id }, "drone-role: installing waypoint bookmark on relay");
       try {
-        await c.installWaypointBookmark(manny.id, anchor.id, name);
+        await c.installWaypointBookmark(manny.id, activeRelay.id, name);
         claimed.add(manny.id);
-        await updateDroneRoleState(role.id, { wpCounter: counter });
+        await updateDroneRoleState(role.id, { wpCounter: counter + 1 });
       } catch (err: any) {
         logger.warn({ label, err: err?.message }, "drone-role: WP installation failed — continuing");
         // Increment anyway to avoid re-trying the same counter on the next tick.
-        await updateDroneRoleState(role.id, { wpCounter: (role.state.wpCounter ?? 0) + 1 });
+        await updateDroneRoleState(role.id, { wpCounter: counter + 1 });
       }
     } else if (!hasBookmark) {
-      logger.warn({ label }, "drone-role: no waypoint_bookmark in inventory — skipping WP");
-    } else {
-      logger.warn({ label }, "drone-role: no suitable anchor object for WP installation");
-    }
-
-    // Decide whether a relay is needed before the next hop.
-    if (!currentSector || reachedTarget(currentSector, cfg.targetVector)) {
-      await updateDroneRoleState(role.id, { phase: "dropping_container" });
+      logger.warn({ label }, "drone-role: no waypoint_bookmark in inventory — waiting before delivery");
       return;
     }
-    const next = nextSectorToward(currentSector, cfg.targetVector);
-    const covered = await isInScutCoverage(next, label);
-    if (covered) {
-      logger.info({ label, next }, "drone-role: next sector covered — no relay needed");
-      await updateDroneRoleState(role.id, { phase: "dropping_container" });
-    } else {
-      logger.info({ label, next }, "drone-role: next sector not covered — deploying relay first");
-      await updateDroneRoleState(role.id, { phase: "deploying_relay", travelTarget: next });
-    }
+
+    await updateDroneRoleState(role.id, { phase: "dropping_container" });
     return;
   }
 
@@ -1230,8 +1160,8 @@ export async function runExplorerRole(
 
     const activeRelay = sectorObjects.find(isActiveRelay);
     if (activeRelay) {
-      logger.info({ label }, "drone-role: relay already active — proceeding");
-      await updateDroneRoleState(role.id, { phase: "dropping_container" });
+      logger.info({ label }, "drone-role: relay already active — installing waypoint");
+      await updateDroneRoleState(role.id, { phase: "installing_beacon" });
       return;
     }
 
@@ -1291,7 +1221,7 @@ export async function runExplorerRole(
     const inactiveRelay = sectorObjects.find(isInactiveRelay);
     if (!inactiveRelay) {
       if (sectorObjects.find(isActiveRelay)) {
-        await updateDroneRoleState(role.id, { phase: "dropping_container" });
+        await updateDroneRoleState(role.id, { phase: "installing_beacon" });
       }
       return;
     }
@@ -1314,8 +1244,8 @@ export async function runExplorerRole(
     try {
       await c.turnOnRelay(manny.id, relayId, cfg.scutNetworkName);
       claimed.add(manny.id);
-      // WP already installed in installing_beacon; go straight to drop container.
-      await updateDroneRoleState(role.id, { phase: "dropping_container" });
+      // The relay must be active before the waypoint is installed on it.
+      await updateDroneRoleState(role.id, { phase: "installing_beacon" });
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: relay activation failed");
     }
