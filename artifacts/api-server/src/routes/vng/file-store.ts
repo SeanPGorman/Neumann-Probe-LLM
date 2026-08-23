@@ -1,5 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { mapSectorObjects } from "./sector-map.js";
 
 /**
  * Resolved once and exported so callers that spawn a subprocess writing the same
@@ -208,6 +209,323 @@ export type VisitedSector = {
 
 const CONTAINERS_FILE = "detached-containers.json";
 const SECTORS_FILE = "visited-sectors.json";
+const EXPLORER_JOURNAL_FILE = "explorer-journal.json";
+
+export type ExplorerJournalAlert = {
+  level: string | null;
+  source: string;
+  message: string;
+  objectId?: string | null;
+  objectName?: string | null;
+};
+
+export type ExplorerJournalLifeFinding = {
+  id: string | null;
+  name: string | null;
+  type: string | null;
+  finding: unknown;
+};
+
+export type ExplorerJournalWaypointEvent = {
+  key: string;
+  type: "installed" | "skipped" | "failed";
+  recordedAt: string;
+  reason?: string;
+  name?: string;
+  relayId?: string | null;
+  targetObjectId?: string | null;
+  targetObjectName?: string | null;
+};
+
+export type ExplorerJournalEntry = {
+  id: string;
+  explorerId: number;
+  explorerName: string | null;
+  sectorX: number;
+  sectorY: number;
+  sectorZ: number;
+  firstVisitedAt: string;
+  lastVisitedAt: string;
+  visitCount: number;
+  scanAvailable: boolean;
+  knowledgeLevel: string | null;
+  confidence: number | null;
+  scan: unknown;
+  /** Canonical VNG discovery data. `objects` is its UI-friendly projection. */
+  rawObjects?: object[];
+  objects: object[];
+  resourceSummary: string[];
+  intelligentLife: ExplorerJournalLifeFinding[];
+  alerts: ExplorerJournalAlert[];
+  dangerSignals: ExplorerJournalAlert[];
+  waypointEvents: ExplorerJournalWaypointEvent[];
+};
+
+type ExplorerJournalScan = {
+  explorerId: number;
+  explorerName?: string | null;
+  sectorX: number;
+  sectorY: number;
+  sectorZ: number;
+  objects: any[];
+  scan?: unknown;
+  knowledgeLevel?: string | null;
+  confidence?: number | null;
+};
+
+function journalResourceSummary(objects: any[]): string[] {
+  const resources = new Set<string>();
+  const visit = (value: any) => {
+    if (!value || typeof value !== "object") return;
+    for (const resource of value.resourceTypes ?? []) resources.add(String(resource));
+    for (const child of value.bodies ?? []) visit(child);
+  };
+  for (const object of objects) visit(object);
+  return [...resources];
+}
+
+function journalFindings(objects: any[]): {
+  intelligentLife: ExplorerJournalLifeFinding[];
+  alerts: ExplorerJournalAlert[];
+  dangerSignals: ExplorerJournalAlert[];
+} {
+  const intelligentLife: ExplorerJournalLifeFinding[] = [];
+  const alerts: ExplorerJournalAlert[] = [];
+  const dangerSignals: ExplorerJournalAlert[] = [];
+  const seenLife = new Set<string>();
+  const seenSignals = new Set<string>();
+
+  const addSignal = (
+    value: any,
+    source: string,
+    objectId?: string | null,
+    objectName?: string | null,
+  ) => {
+    if (value == null || value === false) return;
+    const values = Array.isArray(value) ? value : [value];
+    for (const item of values) {
+      const message = typeof item === "string"
+        ? item
+        : String(item?.message ?? item?.description ?? item?.text ?? JSON.stringify(item));
+      const level = typeof item === "object" && item?.level != null
+        ? String(item.level)
+        : null;
+      const signal = { level, source, message, objectId, objectName };
+      const key = `${source}:${objectId ?? ""}:${message}`;
+      if (seenSignals.has(key)) continue;
+      seenSignals.add(key);
+      (source.toLowerCase().includes("danger") || source.toLowerCase().includes("warning")
+        ? dangerSignals
+        : alerts).push(signal);
+    }
+  };
+
+  const visit = (value: any, source: string) => {
+    if (!value || typeof value !== "object") return;
+    const id = value.id != null ? String(value.id) : null;
+    const name = value.name != null ? String(value.name) : null;
+    if (value.intelligentLife) {
+      const key = `${id ?? ""}:${name ?? ""}:${JSON.stringify(value.intelligentLife)}`;
+      if (!seenLife.has(key)) {
+        seenLife.add(key);
+        intelligentLife.push({
+          id,
+          name,
+          type: value.type != null ? String(value.type) : null,
+          finding: value.intelligentLife,
+        });
+      }
+    }
+
+    if (value.dangerLevel != null) {
+      addSignal(value.dangerLevel, "danger level", id, name);
+    }
+    for (const field of ["alerts", "alert", "warnings", "warning", "signals", "dangerSignals"]) {
+      addSignal(value[field], field, id, name);
+    }
+    for (const child of [
+      ...(value.bodies ?? []),
+      ...(value.bookmarkTargets ?? []),
+      ...(value.minableTargets ?? []),
+    ]) {
+      visit(child, `${source}.body`);
+    }
+  };
+
+  for (const object of objects) visit(object, "sector object");
+  return { intelligentLife, alerts, dangerSignals };
+}
+
+function discoveryKey(value: any, index: number): string {
+  if (!value || typeof value !== "object") return `value:${index}:${String(value)}`;
+  if (value.id != null) return `id:${String(value.id)}`;
+  return `shape:${String(value.type ?? "")}:${String(value.name ?? "")}:${index}`;
+}
+
+function mergeDiscoveryValue(previous: any, incoming: any): any {
+  if (incoming == null) return previous;
+  if (previous == null) return incoming;
+  if (Array.isArray(previous) && Array.isArray(incoming)) {
+    const objectsOnly = [...previous, ...incoming].every(
+      (value) => value && typeof value === "object" && !Array.isArray(value),
+    );
+    const allHaveStableIds = objectsOnly && [...previous, ...incoming].every(
+      (value) => value.id != null,
+    );
+    if (allHaveStableIds) {
+      return mergeDiscoveryObjects(previous, incoming);
+    }
+    // Anonymous arrays such as alerts and signals have no stable entity ID.
+    // Preserve each distinct observation rather than treating its index as identity.
+    const values = new Map<string, any>();
+    for (const value of [...previous, ...incoming]) {
+      values.set(JSON.stringify(value), value);
+    }
+    return [...values.values()];
+  }
+  if (
+    typeof previous === "object" &&
+    !Array.isArray(previous) &&
+    typeof incoming === "object" &&
+    !Array.isArray(incoming)
+  ) {
+    const merged = { ...previous };
+    for (const [key, value] of Object.entries(incoming)) {
+      merged[key] = mergeDiscoveryValue((previous as any)[key], value);
+    }
+    return merged;
+  }
+  return incoming;
+}
+
+/**
+ * Keep a canonical, cumulative raw view of discoveries. VNG responses can be
+ * partial on later polls, so the journal must not discard a previously observed
+ * body, signal, or provider-specific field simply because it is absent later.
+ */
+function mergeDiscoveryObjects(previous: any[], incoming: any[]): any[] {
+  const rows = new Map<string, any>();
+  for (const [index, value] of previous.entries()) {
+    rows.set(discoveryKey(value, index), value);
+  }
+  for (const [index, value] of incoming.entries()) {
+    const key = discoveryKey(value, index);
+    rows.set(key, mergeDiscoveryValue(rows.get(key), value));
+  }
+  return [...rows.values()];
+}
+
+export async function getExplorerJournal(): Promise<ExplorerJournalEntry[]> {
+  const rows = await readFile<ExplorerJournalEntry[]>(EXPLORER_JOURNAL_FILE, []);
+  return Array.isArray(rows) ? rows : [];
+}
+
+/**
+ * Upsert a completed explorer scan. This is intentionally separate from
+ * recordSector: visited-sectors is a latest-state cache, while this store
+ * retains per-explorer discoveries and waypoint outcomes.
+ */
+export async function recordExplorerScan(scan: ExplorerJournalScan): Promise<ExplorerJournalEntry> {
+  const id = `${scan.explorerId}:${scan.sectorX},${scan.sectorY},${scan.sectorZ}`;
+
+  return withWriteLock(async () => {
+    const rows = await getExplorerJournal();
+    const now = new Date().toISOString();
+    const idx = rows.findIndex((row) => row.id === id);
+    if (idx === -1) {
+      const rawObjects = mergeDiscoveryObjects([], scan.objects ?? []);
+      const mappedObjects = mapSectorObjects(rawObjects);
+      const entry: ExplorerJournalEntry = {
+        id,
+        explorerId: scan.explorerId,
+        explorerName: scan.explorerName ?? null,
+        sectorX: scan.sectorX,
+        sectorY: scan.sectorY,
+        sectorZ: scan.sectorZ,
+        firstVisitedAt: now,
+        lastVisitedAt: now,
+        visitCount: 1,
+        scanAvailable: true,
+        knowledgeLevel: scan.knowledgeLevel ?? null,
+        confidence: scan.confidence ?? null,
+        scan: scan.scan ?? null,
+        rawObjects,
+        objects: mappedObjects,
+        resourceSummary: journalResourceSummary(mappedObjects),
+        ...journalFindings(rawObjects),
+        waypointEvents: [],
+      };
+      rows.push(entry);
+      await writeFile(EXPLORER_JOURNAL_FILE, rows);
+      return entry;
+    }
+
+    const entry = rows[idx];
+    const rawObjects = mergeDiscoveryObjects(entry.rawObjects ?? entry.objects ?? [], scan.objects ?? []);
+    const mappedObjects = mapSectorObjects(rawObjects);
+    entry.explorerName = scan.explorerName ?? entry.explorerName ?? null;
+    entry.lastVisitedAt = now;
+    entry.visitCount += 1;
+    entry.scanAvailable = true;
+    entry.knowledgeLevel = scan.knowledgeLevel ?? entry.knowledgeLevel ?? null;
+    entry.confidence = scan.confidence ?? entry.confidence ?? null;
+    entry.scan = scan.scan ?? entry.scan ?? null;
+    entry.rawObjects = rawObjects;
+    entry.objects = mappedObjects;
+    entry.resourceSummary = journalResourceSummary(mappedObjects);
+    Object.assign(entry, journalFindings(rawObjects));
+    await writeFile(EXPLORER_JOURNAL_FILE, rows);
+    return entry;
+  });
+}
+
+export async function recordExplorerWaypointEvent(input: {
+  explorerId: number;
+  explorerName?: string | null;
+  sector: { x: number; y: number; z: number };
+  event: Omit<ExplorerJournalWaypointEvent, "recordedAt">;
+}): Promise<void> {
+  const id = `${input.explorerId}:${input.sector.x},${input.sector.y},${input.sector.z}`;
+  return withWriteLock(async () => {
+    const rows = await getExplorerJournal();
+    const now = new Date().toISOString();
+    let entry = rows.find((row) => row.id === id);
+    if (!entry) {
+      entry = {
+        id,
+        explorerId: input.explorerId,
+        explorerName: input.explorerName ?? null,
+        sectorX: input.sector.x,
+        sectorY: input.sector.y,
+        sectorZ: input.sector.z,
+        firstVisitedAt: now,
+        lastVisitedAt: now,
+        visitCount: 0,
+        scanAvailable: false,
+        knowledgeLevel: null,
+        confidence: null,
+        scan: null,
+        rawObjects: [],
+        objects: [],
+        resourceSummary: [],
+        intelligentLife: [],
+        alerts: [],
+        dangerSignals: [],
+        waypointEvents: [],
+      };
+      rows.push(entry);
+    }
+    entry.explorerName = input.explorerName ?? entry.explorerName ?? null;
+    entry.waypointEvents ??= [];
+    if (entry.waypointEvents.some((event) => event.key === input.event.key)) return;
+    entry.waypointEvents.push({
+      ...input.event,
+      recordedAt: now,
+    });
+    entry.lastVisitedAt = now;
+    await writeFile(EXPLORER_JOURNAL_FILE, rows);
+  });
+}
 
 /** Derive the sector object ID from an inventory container ID. */
 export function toSectorObjectId(containerId: string): string {

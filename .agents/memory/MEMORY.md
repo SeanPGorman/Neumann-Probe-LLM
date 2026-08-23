@@ -9,3 +9,4 @@
 - [VNG Manny repair target](vng-manny-repair-target.md) — the Manny repair endpoint restores the probe hull, not a Manny; repair work consumes metals per integrity point
 - [VNG fuel field — raw vs state](vng-fuel-field.md) — runner uses probe.fuel.deuterium (nested, absolute units); state route exposes fuelDeuterium (flat); never mix them
 - [Refuel role persistence](refuel-role-persistence.md) — verify the active role store before debugging refueling; a merge can remove runtime assignments
+- [Explorer journal durability](explorer-journal-durability.md) — merge raw discoveries cumulatively and retain waypoint activity even when scan capture is unavailable

@@ -8,6 +8,8 @@ import {
   getMiningAssignments,
   updateMiningCycleState,
   toSectorObjectId,
+  recordSector,
+  recordExplorerScan,
   type PendingAction,
   type MiningAssignment,
 } from "./file-store.js";
@@ -808,6 +810,38 @@ async function pollProbe(
 
   const mannies: any[] = manniesResp?.mannies ?? [];
   const probe = probeResp?.probe ?? null;
+
+  // Explorer scans are recorded from the same successful sector response that
+  // drives role automation. Do not scan while the probe is in transit: the
+  // sector endpoint may be unavailable or still describe the departure sector.
+  const explorerRole = (await getDroneRoles().catch(() => []))
+    .find((role) => role.enabled && role.probeId === probeId && role.roleType === "explorer");
+  const movingStatuses = new Set(["preparing", "accelerating", "cruising", "decelerating", "moving"]);
+  const isProbeMoving = movingStatuses.has(probe?.status) || movingStatuses.has(probe?.movement?.status);
+  const currentSector = probe?.sector?.relative ?? probe?.sector;
+  if (explorerRole && probe && !isProbeMoving && currentSector &&
+      Number.isInteger(currentSector.x) && Number.isInteger(currentSector.y) && Number.isInteger(currentSector.z)) {
+    try {
+      const sectorResp = await c.getSector();
+      const sector = sectorResp?.sector;
+      if (sector && Array.isArray(sector.objects)) {
+        await recordSector(currentSector.x, currentSector.y, currentSector.z, sector.objects, probeId);
+        await recordExplorerScan({
+          explorerId: probeId as number,
+          explorerName: explorerRole.probeName ?? probe.name ?? null,
+          sectorX: currentSector.x,
+          sectorY: currentSector.y,
+          sectorZ: currentSector.z,
+          objects: sector.objects,
+          scan: sector.scan ?? null,
+          knowledgeLevel: sector.knowledgeLevel ?? null,
+          confidence: sector.confidence ?? null,
+        });
+      }
+    } catch (err: any) {
+      logger.warn({ probeId, err: err?.message }, "poller: explorer scan journal update failed");
+    }
+  }
 
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;

@@ -192,10 +192,13 @@ function extractCoreState(probeResp: any, manniesResp: any, sectorResp: any) {
 router.get("/scheduled", async (req, res) => {
   try {
     const rawProbeId = req.query.probeId;
-  let probeId: number | null;
+    const probeId =
+      rawProbeId == null || Array.isArray(rawProbeId)
+        ? null
+        : Number(rawProbeId);
     const includeNull = req.query.includeNull === "true";
     let actions = await getPendingActions();
-    if (probeId != null && !isNaN(probeId)) {
+    if (probeId != null && Number.isInteger(probeId)) {
       actions = actions.filter((a) => {
         const aid = a.probeId ?? null;
         return aid === probeId || (includeNull && aid === null);
@@ -223,9 +226,12 @@ router.delete("/scheduled/:id", async (req, res) => {
 router.get("/drone-roles", async (req, res) => {
   try {
     const rawProbeId = req.query.probeId;
-  let probeId: number | null;
+    const probeId =
+      rawProbeId == null || Array.isArray(rawProbeId)
+        ? null
+        : Number(rawProbeId);
     let roles = await getDroneRoles();
-    if (probeId != null && !isNaN(probeId)) {
+    if (probeId != null && Number.isInteger(probeId)) {
       roles = roles.filter((r) => r.probeId === probeId);
     }
     res.json({ roles });

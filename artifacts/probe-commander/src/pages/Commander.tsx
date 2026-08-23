@@ -31,7 +31,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "roles" | "containers" | "scout" | "globe" | "scheduled" | "mining";
+type SideTab = "telemetry" | "roles" | "containers" | "scout" | "globe" | "scheduled" | "mining" | "journal";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -1666,6 +1666,228 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   );
 }
 
+function ExplorerJournalPanel({
+  probeId,
+  probeList,
+  refetchSignal,
+}: {
+  probeId: number | null;
+  probeList: ProbeEntry[];
+  refetchSignal: number;
+}) {
+  const [filterExp, setFilterExp] = useState<string>("auto");
+  const [filterEvt, setFilterEvt] = useState<string>("all");
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
+
+  const activeExp = filterExp === "auto" ? (probeId != null ? String(probeId) : "all") : filterExp;
+
+  const qs = new URLSearchParams();
+  if (activeExp !== "all") qs.set("explorerId", activeExp);
+  if (filterEvt !== "all") qs.set("event", filterEvt);
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["explorer-journal", activeExp, filterEvt, refetchSignal],
+    queryFn: () => fetchJson(`${BASE}/api/vng/log/explorer-journal?${qs.toString()}`),
+    refetchInterval: 15000,
+  });
+
+  const entries: any[] = data?.entries ?? [];
+
+  const toggle = (id: string) => {
+    setExpanded(prev => {
+      const n = new Set(prev);
+      if (n.has(id)) n.delete(id); else n.add(id);
+      return n;
+    });
+  };
+
+  if (error) return <ApiError error={error as Error} />;
+
+  return (
+    <div className="space-y-4">
+      <div className="flex flex-col gap-2 shrink-0" data-testid="explorer-journal">
+        <div className="text-xs text-muted-foreground tracking-widest">EXPLORER JOURNAL</div>
+        <div className="flex flex-wrap gap-2 text-[10px]">
+          <select
+            value={filterExp}
+            onChange={e => setFilterExp(e.target.value)}
+            className="bg-card/60 border border-border rounded px-1.5 py-0.5 outline-none text-muted-foreground hover:text-foreground focus:border-primary font-mono uppercase"
+          >
+            <option value="auto">AUTO (SELECTED)</option>
+            <option value="all">ALL EXPLORERS</option>
+            {probeList.map(p => (
+              <option key={p.id} value={String(p.id)}>{p.name}</option>
+            ))}
+          </select>
+          <select
+            value={filterEvt}
+            onChange={e => setFilterEvt(e.target.value)}
+            className="bg-card/60 border border-border rounded px-1.5 py-0.5 outline-none text-muted-foreground hover:text-foreground focus:border-primary font-mono uppercase"
+          >
+            <option value="all">ALL EVENTS</option>
+            <option value="scan">SCANS</option>
+            <option value="resource">RESOURCES</option>
+            <option value="intelligent-life">INTELLIGENT LIFE</option>
+            <option value="life">LIFE</option>
+            <option value="alert">ALERTS</option>
+            <option value="danger">DANGER</option>
+            <option value="waypoint">WAYPOINTS</option>
+          </select>
+        </div>
+      </div>
+
+      <div className="space-y-2">
+        {isLoading && <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>}
+        {!isLoading && entries.length === 0 && (
+          <div className="text-xs text-muted-foreground/40 italic">
+            No completed explorer scans match these filters. An unscanned sector is not treated as an empty discovery.
+          </div>
+        )}
+        {!isLoading && entries.map((entry: any) => {
+          const hasAlerts = entry.alerts?.length > 0;
+          const hasDanger = entry.dangerSignals?.length > 0;
+          const hasIntelligentLife = entry.intelligentLife?.length > 0;
+          const isExp = expanded.has(entry.id);
+          const hlBorder = hasDanger ? "border-red-900/50" : hasAlerts ? "border-amber-900/50" : hasIntelligentLife ? "border-purple-900/50" : "border-border/30";
+
+          return (
+            <div key={entry.id} className={`border rounded overflow-hidden ${hlBorder} bg-black/10`}>
+              <button
+                type="button"
+                className="w-full flex flex-col px-2 py-2 hover:bg-primary/5 transition-colors cursor-pointer text-left"
+                onClick={() => toggle(entry.id)}
+                aria-expanded={isExp}
+              >
+                <div className="flex items-start justify-between">
+                  <div className="flex items-center gap-1.5">
+                    <span className="text-[11px] text-primary font-bold tracking-wider glow-green">
+                      [{entry.sectorX},{entry.sectorY},{entry.sectorZ}]
+                    </span>
+                    <span className="text-[10px] text-muted-foreground/60 font-mono">
+                      {entry.explorerName}
+                    </span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-[9px] text-muted-foreground/40 text-right font-mono">
+                      {new Date(entry.lastVisitedAt).toLocaleString()}
+                    </span>
+                    <span className="text-[9px] text-muted-foreground/30">{isExp ? "▲" : "▼"}</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-1 mt-1.5">
+                  {hasDanger && <span className="text-[9px] bg-red-900/40 text-red-400 px-1 rounded glow-red uppercase tracking-wider font-bold">DANGER</span>}
+                  {hasAlerts && <span className="text-[9px] bg-amber-900/40 text-amber-400 px-1 rounded uppercase tracking-wider font-bold">ALERT</span>}
+                  {hasIntelligentLife && <span className="text-[9px] bg-purple-900/40 text-purple-400 px-1 rounded uppercase tracking-wider font-bold">INTELLIGENT LIFE</span>}
+                  {entry.waypointEvents?.length > 0 && <span className="text-[9px] bg-cyan-900/30 text-cyan-400 px-1 rounded uppercase tracking-wider">WAYPOINT</span>}
+                  {!entry.scanAvailable && <span className="text-[9px] bg-secondary text-muted-foreground px-1 rounded tracking-wider">NO SCAN</span>}
+                  {entry.scanAvailable && entry.objects?.length === 0 && <span className="text-[9px] bg-border/40 text-muted-foreground/70 px-1 rounded tracking-wider">EMPTY SYSTEM</span>}
+                </div>
+              </button>
+
+              {isExp && (
+                <div className="px-3 pb-3 pt-2 space-y-3 border-t border-border/20 bg-black/40 text-[10px] shadow-inner">
+                  
+                  {hasDanger && (
+                    <div className="text-red-400 border-l-2 border-red-500/50 pl-2">
+                      <div className="font-bold tracking-widest text-[9px] mb-1 opacity-80">DANGER SIGNALS</div>
+                      <ul className="list-disc list-inside ml-1 opacity-90 space-y-0.5">
+                        {entry.dangerSignals.map((d: any, i: number) => (
+                          <li key={i}>
+                            {d.message ?? String(d)}
+                            {d.objectName ? ` — ${d.objectName}` : ""}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {hasAlerts && (
+                    <div className="text-amber-400 border-l-2 border-amber-500/50 pl-2">
+                      <div className="font-bold tracking-widest text-[9px] mb-1 opacity-80">ALERTS</div>
+                      <ul className="list-disc list-inside ml-1 opacity-90 space-y-0.5">
+                        {entry.alerts.map((a: any, i: number) => (
+                          <li key={i}>
+                            {a.message ?? String(a)}
+                            {a.objectName ? ` — ${a.objectName}` : ""}
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+                  )}
+                  
+                  {hasIntelligentLife && (
+                    <div className="text-purple-400 border-l-2 border-purple-500/50 pl-2">
+                      <div className="font-bold tracking-widest text-[9px] mb-1 opacity-80">INTELLIGENT LIFE</div>
+                      {entry.intelligentLife.map((il: any, i: number) => (
+                        <div key={i} className="opacity-90 mb-1">
+                          <span className="font-bold text-purple-300">{il.name ?? il.type?.replace(/_/g, " ") ?? "UNKNOWN"}</span>
+                          {il.type && <span className="text-purple-400/60 ml-2">{il.type.replace(/_/g, " ")}</span>}
+                          {il.finding && (
+                            <div className="text-[9px] text-purple-200/50 mt-0.5 break-words">
+                              {typeof il.finding === "string" ? il.finding : JSON.stringify(il.finding)}
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                  
+                  {entry.waypointEvents?.length > 0 && (
+                    <div className="text-cyan-400 border-l-2 border-cyan-500/50 pl-2">
+                      <div className="font-bold tracking-widest text-[9px] mb-1 opacity-80">WAYPOINT ACTIVITY</div>
+                      {entry.waypointEvents.map((w: any, i: number) => (
+                        <div key={i} className="opacity-90 flex items-start gap-2">
+                          <span className="font-mono text-cyan-300 shrink-0">{new Date(w.recordedAt).toLocaleTimeString()}</span>
+                          <span className="flex-1">
+                            <span className="font-bold">{w.type.toUpperCase()}</span>
+                            {w.name && <span className="ml-1 text-cyan-200/70">({w.name})</span>}
+                            {w.reason && <span className="ml-1 text-cyan-400/50">- {w.reason}</span>}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {entry.resourceSummary?.length > 0 && (
+                    <div className="text-primary/70">
+                      <div className="font-bold tracking-widest text-[9px] mb-1 opacity-80">RESOURCES DETECTED</div>
+                      <div className="flex flex-wrap gap-1">
+                        {entry.resourceSummary.map((r: string) => (
+                          <span key={r} className="px-1.5 py-0.5 bg-primary/10 text-primary border border-primary/20 rounded text-[9px] uppercase font-bold">{r}</span>
+                        ))}
+                      </div>
+                    </div>
+                  )}
+
+                  {entry.scanAvailable && entry.objects?.length > 0 && (
+                    <div className="pt-1">
+                      <div className="font-bold tracking-widest text-[9px] text-muted-foreground mb-1">SCANNED OBJECTS</div>
+                      <SectorObjectList objects={entry.objects} />
+                    </div>
+                  )}
+                  
+                  {!entry.scanAvailable && (
+                    <div className="text-muted-foreground/50 italic border-l-2 border-border/40 pl-2 py-0.5">
+                      Detailed scan data is unavailable for this sector.
+                    </div>
+                  )}
+
+                  <div className="text-[9px] text-muted-foreground/40 pt-2 border-t border-border/20 flex justify-between font-mono">
+                    <span>VISITS: {entry.visitCount}</span>
+                    <span>KNOWLEDGE: {entry.knowledgeLevel?.toUpperCase() || 'NONE'}</span>
+                  </div>
+
+                </div>
+              )}
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 export default function Commander() {
   const [input, setInput] = useState("");
   const [messages, setMessages] = useState<ChatMessage[]>([{
@@ -1847,6 +2069,7 @@ export default function Commander() {
     { id: "scheduled", label: "SCHED" },
     { id: "globe",     label: "GLOBE" },
     { id: "scout",     label: "SCOUT" },
+    { id: "journal",   label: "JOURNAL" },
   ];
 
   const leftContent = (
@@ -1888,6 +2111,13 @@ export default function Commander() {
           />
         )}
         {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
+        {sideTab === "journal" && (
+          <ExplorerJournalPanel
+            probeId={selectedProbeId}
+            probeList={probeList}
+            refetchSignal={logRefetch}
+          />
+        )}
         {sideTab === "scheduled" && (
           <>
             <CraftingCalcPanel probeId={selectedProbeId} />

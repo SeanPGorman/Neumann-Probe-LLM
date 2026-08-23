@@ -10,7 +10,7 @@
 
 import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError, getScutNetwork } from "./client.js";
-import { getSectors } from "./file-store.js";
+import { getSectors, recordExplorerWaypointEvent } from "./file-store.js";
 import { mapSectorObjects } from "./sector-map.js";
 import {
   getDroneRoleByProbeId,
@@ -158,11 +158,12 @@ async function nextDeliveryWaypoint(
 
   // Collect known SCUT network IDs from cached sector data.
   const sectors = await getSectors();
-  const networkIds = new Set<string>();
+  const networkIds = new Set<number>();
   for (const s of sectors) {
     for (const obj of (s as any).objects ?? []) {
       if (obj?.type === "scut_relay" && obj?.network?.id) {
-        networkIds.add(String(obj.network.id));
+        const networkId = Number(obj.network.id);
+        if (Number.isInteger(networkId)) networkIds.add(networkId);
       }
     }
   }
@@ -1112,6 +1113,16 @@ export async function runExplorerRole(
 
     if (hasExistingWaypoint(sectorObjects)) {
       logger.info({ label }, "drone-role: waypoint already exists — skipping WP installation");
+      await recordExplorerWaypointEvent({
+        explorerId: role.probeId,
+        explorerName: role.probeName,
+        sector: currentSector ?? { x: 0, y: 0, z: 0 },
+        event: {
+          key: `skipped:${currentSector?.x},${currentSector?.y},${currentSector?.z}`,
+          type: "skipped",
+          reason: "waypoint already exists in this sector",
+        },
+      }).catch((err: any) => logger.warn({ label, err: err?.message }, "drone-role: could not journal waypoint skip"));
     } else if (activeRelay && hasBookmark) {
       const manny = pickIdleManny(mannies, claimed);
       if (!manny) {
@@ -1126,8 +1137,35 @@ export async function runExplorerRole(
         await c.installWaypointBookmark(manny.id, activeRelay.id, name);
         claimed.add(manny.id);
         await updateDroneRoleState(role.id, { wpCounter: counter + 1 });
+        await recordExplorerWaypointEvent({
+          explorerId: role.probeId,
+          explorerName: role.probeName,
+          sector: currentSector ?? { x: 0, y: 0, z: 0 },
+          event: {
+            key: `installed:${activeRelay.id}`,
+            type: "installed",
+            name,
+            relayId: String(activeRelay.id),
+            targetObjectId: String(activeRelay.id),
+            targetObjectName: activeRelay.name ?? null,
+          },
+        }).catch((err: any) => logger.warn({ label, err: err?.message }, "drone-role: could not journal waypoint installation"));
       } catch (err: any) {
         logger.warn({ label, err: err?.message }, "drone-role: WP installation failed — continuing");
+        await recordExplorerWaypointEvent({
+          explorerId: role.probeId,
+          explorerName: role.probeName,
+          sector: currentSector ?? { x: 0, y: 0, z: 0 },
+          event: {
+            key: `failed:${activeRelay.id}:${counter}`,
+            type: "failed",
+            name,
+            reason: err?.message ?? "installation failed",
+            relayId: String(activeRelay.id),
+            targetObjectId: String(activeRelay.id),
+            targetObjectName: activeRelay.name ?? null,
+          },
+        }).catch((journalErr: any) => logger.warn({ label, err: journalErr?.message }, "drone-role: could not journal waypoint failure"));
         // Increment anyway to avoid re-trying the same counter on the next tick.
         await updateDroneRoleState(role.id, { wpCounter: counter + 1 });
       }

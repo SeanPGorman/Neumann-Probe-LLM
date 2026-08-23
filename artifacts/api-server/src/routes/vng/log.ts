@@ -4,6 +4,7 @@ import {
   getSectors,
   updateContainerStatus,
   recordSector,
+  getExplorerJournal,
   addPendingAction,
   type PendingAction,
 } from "./file-store.js";
@@ -507,6 +508,78 @@ router.get("/sectors", async (_req, res) => {
   }
 });
 
+router.get("/explorer-journal", async (req, res) => {
+  try {
+    const rawExplorerId = req.query.explorerId ?? req.query.probeId;
+    const explorerId =
+      rawExplorerId == null || Array.isArray(rawExplorerId)
+        ? null
+        : Number(rawExplorerId);
+    if (explorerId != null && !Number.isInteger(explorerId)) {
+      res.status(400).json({ error: "explorerId must be an integer" });
+      return;
+    }
+
+    const parseCoordinate = (name: "x" | "y" | "z"): number | null => {
+      const raw = req.query[name];
+      if (raw == null || Array.isArray(raw)) return null;
+      const value = Number(raw);
+      if (!Number.isInteger(value)) throw new Error(`${name} must be an integer`);
+      return value;
+    };
+    let x: number | null;
+    let y: number | null;
+    let z: number | null;
+    try {
+      x = parseCoordinate("x");
+      y = parseCoordinate("y");
+      z = parseCoordinate("z");
+    } catch (err: any) {
+      res.status(400).json({ error: err.message });
+      return;
+    }
+
+    const rawEvent = req.query.event;
+    const event = typeof rawEvent === "string" ? rawEvent.toLowerCase() : null;
+    const validEvents = new Set(["scan", "resource", "intelligent-life", "life", "alert", "danger", "waypoint"]);
+    if (event && !validEvents.has(event)) {
+      res.status(400).json({ error: `event must be one of: ${[...validEvents].join(", ")}` });
+      return;
+    }
+
+    let entries = await getExplorerJournal();
+    entries = entries.filter((entry) =>
+      (explorerId == null || entry.explorerId === explorerId) &&
+      (x == null || entry.sectorX === x) &&
+      (y == null || entry.sectorY === y) &&
+      (z == null || entry.sectorZ === z) &&
+      (!event ||
+        (event === "scan" && entry.scanAvailable) ||
+        (event === "resource" && entry.resourceSummary.length > 0) ||
+        ((event === "intelligent-life" || event === "life") && entry.intelligentLife.length > 0) ||
+        (event === "alert" && entry.alerts.length > 0) ||
+        (event === "danger" && entry.dangerSignals.length > 0) ||
+        (event === "waypoint" && entry.waypointEvents.length > 0))
+    );
+    entries.sort(
+      (a, b) =>
+        new Date(b.lastVisitedAt).getTime() - new Date(a.lastVisitedAt).getTime() ||
+        b.id.localeCompare(a.id),
+    );
+
+    res.json({
+      entries,
+      meta: {
+        total: entries.length,
+        scanDataAvailable: entries.some((entry) => entry.scanAvailable),
+        unavailableScansAreOmitted: entries.every((entry) => entry.scanAvailable),
+      },
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Return all SCUT relay positions from every known network.
 // Discovers network IDs from locally-stored relay objects, then queries the
 // game's SCUT-network endpoint for authoritative relay/sector data.
@@ -574,7 +647,7 @@ router.post("/sectors/refresh", async (_req, res) => {
       z: gs.relativeCoordinates.z,
     }));
 
-    const localCoords = getSectors().map((s) => ({
+    const localCoords = (await getSectors()).map((s) => ({
       x: s.sectorX,
       y: s.sectorY,
       z: s.sectorZ,
