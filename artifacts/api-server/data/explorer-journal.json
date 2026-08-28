@@ -1,0 +1,3691 @@
+[
+  {
+    "id": "882:-2,1,-1",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -2,
+    "sectorY": 1,
+    "sectorZ": -1,
+    "firstVisitedAt": "2026-08-23T04:59:16.835Z",
+    "lastVisitedAt": "2026-08-23T04:59:16.835Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 27,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:32,26,18",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 32,
+    "sectorY": 26,
+    "sectorZ": 18,
+    "firstVisitedAt": "2026-08-23T05:05:46.811Z",
+    "lastVisitedAt": "2026-08-23T05:05:46.811Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 27,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-2,0,-2",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -2,
+    "sectorY": 0,
+    "sectorZ": -2,
+    "firstVisitedAt": "2026-08-23T05:39:46.919Z",
+    "lastVisitedAt": "2026-08-23T05:39:46.919Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 30,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:32,27,19",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 32,
+    "sectorY": 27,
+    "sectorZ": 19,
+    "firstVisitedAt": "2026-08-23T05:45:46.993Z",
+    "lastVisitedAt": "2026-08-23T05:45:46.993Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 0,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "3b3f31b6dbb22776c1b6",
+        "type": "solar_system",
+        "name": "System af4569",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 4 orbital body(ies).",
+        "mass": 322.310032,
+        "radius": 2.887852,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 3,
+        "orbitalBodyCount": 4,
+        "bookmarkTargets": [
+          {
+            "id": "614432717bc1f0bdd8a3",
+            "type": "star",
+            "name": null,
+            "mass": 0.147559,
+            "radius": 0.578785,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "dbd8374fc3a84cdef820",
+            "type": "planet",
+            "name": null,
+            "mass": 0.192986,
+            "radius": 0.316581,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.130958,
+            "intelligentLife": false
+          },
+          {
+            "id": "a6285353fc86ba4b9c8c",
+            "type": "planet",
+            "name": null,
+            "mass": 68.015634,
+            "radius": 9.954705,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "gas_giant",
+            "habitabilityScore": 0.003207,
+            "intelligentLife": false
+          },
+          {
+            "id": "c47543806268555aa120",
+            "type": "planet",
+            "name": null,
+            "mass": 253.951988,
+            "radius": 5.705675,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "gas_giant",
+            "habitabilityScore": 0.152877,
+            "intelligentLife": false
+          },
+          {
+            "id": "b7430dac9c2d6dd472d5",
+            "type": "asteroid",
+            "name": "Metal 13e3",
+            "mass": 0.001865,
+            "radius": 0.122134,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "b7430dac9c2d6dd472d5",
+            "type": "asteroid",
+            "name": "Metal 13e3",
+            "mass": 0.001865,
+            "massUnit": "earth_mass",
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 1865,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "3b3f31b6dbb22776c1b6",
+        "type": "solar_system",
+        "name": "System af4569",
+        "summary": "Stellar system with 1 star(s) and 4 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 3,
+        "orbitalBodyCount": 4,
+        "mass": 322.310032,
+        "massUnit": null,
+        "radius": 2.887852,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "614432717bc1f0bdd8a3",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.147559,
+            "massUnit": "solar_mass",
+            "radius": 0.578785,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "dbd8374fc3a84cdef820",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.192986,
+            "massUnit": "earth_mass",
+            "radius": 0.316581,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.130958,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "a6285353fc86ba4b9c8c",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 68.015634,
+            "massUnit": "earth_mass",
+            "radius": 9.954705,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.003207,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "c47543806268555aa120",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 253.951988,
+            "massUnit": "earth_mass",
+            "radius": 5.705675,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.152877,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "b7430dac9c2d6dd472d5",
+            "type": "asteroid",
+            "name": "Metal 13e3",
+            "category": null,
+            "mass": 0.001865,
+            "massUnit": "earth_mass",
+            "radius": 0.122134,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 1865,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "3b3f31b6dbb22776c1b6",
+        "objectName": "System af4569"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-3,-1,-2",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -3,
+    "sectorY": -1,
+    "sectorZ": -2,
+    "firstVisitedAt": "2026-08-23T06:19:55.850Z",
+    "lastVisitedAt": "2026-08-23T06:19:55.850Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 9,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:32,28,20",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 32,
+    "sectorY": 28,
+    "sectorZ": 20,
+    "firstVisitedAt": "2026-08-23T06:25:55.749Z",
+    "lastVisitedAt": "2026-08-23T08:51:00.525Z",
+    "visitCount": 291,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 8713,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "455",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "estimated": false,
+        "summary": "Inactive long-range SCUT communication relay.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "status": "off",
+        "isTransitBeacon": false,
+        "createdByProbeId": 761,
+        "createdByProbeName": "BravoDrone",
+        "createdAt": "2026-08-23T06:26:25+00:00",
+        "activatedAt": null,
+        "coverageRadiusSectors": 10,
+        "network": null,
+        "salvageable": true
+      }
+    ],
+    "objects": [
+      {
+        "id": "455",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "summary": "Inactive long-range SCUT communication relay.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "status": "off",
+        "createdByProbeId": 761,
+        "createdByProbeName": "BravoDrone",
+        "coverageRadiusSectors": 10,
+        "network": null,
+        "activatedAt": null
+      }
+    ],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "455",
+        "objectName": "Relais SCUT"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-3,-2,-3",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -3,
+    "sectorY": -2,
+    "sectorZ": -3,
+    "firstVisitedAt": "2026-08-23T06:59:56.635Z",
+    "lastVisitedAt": "2026-08-23T06:59:56.635Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 0,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "19072f1e836c4bcb3360",
+        "type": "solar_system",
+        "name": "System af22b6",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 3 orbital body(ies).",
+        "mass": 4.135365,
+        "radius": 9.867894,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 2,
+        "orbitalBodyCount": 3,
+        "bookmarkTargets": [
+          {
+            "id": "4f14935ae9e705b6a33f",
+            "type": "star",
+            "name": null,
+            "mass": 0.128648,
+            "radius": 0.351606,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "92506ca37728cfcfb7e0",
+            "type": "planet",
+            "name": null,
+            "mass": 3.890274,
+            "radius": 1.319929,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.786368,
+            "intelligentLife": false
+          },
+          {
+            "id": "66534ffcac5db2c67e16",
+            "type": "planet",
+            "name": null,
+            "mass": 0.100234,
+            "radius": 0.388288,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.089725,
+            "intelligentLife": false
+          },
+          {
+            "id": "7e3fb5d0d4368b0d14c9",
+            "type": "asteroid",
+            "name": "Ice Deut bf10",
+            "mass": 0.016209,
+            "radius": 0.049308,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "7e3fb5d0d4368b0d14c9",
+            "type": "asteroid",
+            "name": "Ice Deut bf10",
+            "mass": 0.016209,
+            "massUnit": "earth_mass",
+            "resources": [
+              "water_ice",
+              "deuterium_trace",
+              "volatiles"
+            ],
+            "resourceTypes": [
+              "deuterium",
+              "ice"
+            ],
+            "resourceComposition": {
+              "deuterium": 0.3333,
+              "metals": 0,
+              "ice": 0.6667,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 5402.4597,
+              "metals": 0,
+              "ice": 10806.5403,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "19072f1e836c4bcb3360",
+        "type": "solar_system",
+        "name": "System af22b6",
+        "summary": "Stellar system with 1 star(s) and 3 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 2,
+        "orbitalBodyCount": 3,
+        "mass": 4.135365,
+        "massUnit": null,
+        "radius": 9.867894,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "4f14935ae9e705b6a33f",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.128648,
+            "massUnit": "solar_mass",
+            "radius": 0.351606,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "92506ca37728cfcfb7e0",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.890274,
+            "massUnit": "earth_mass",
+            "radius": 1.319929,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.786368,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "66534ffcac5db2c67e16",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.100234,
+            "massUnit": "earth_mass",
+            "radius": 0.388288,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.089725,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "7e3fb5d0d4368b0d14c9",
+            "type": "asteroid",
+            "name": "Ice Deut bf10",
+            "category": null,
+            "mass": 0.016209,
+            "massUnit": "earth_mass",
+            "radius": 0.049308,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "water_ice",
+              "deuterium_trace",
+              "volatiles"
+            ],
+            "resourceTypes": [
+              "deuterium",
+              "ice"
+            ],
+            "resourceAmounts": {
+              "deuterium": 5402.4597,
+              "metals": 0,
+              "ice": 10806.5403,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "deuterium",
+      "ice"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "19072f1e836c4bcb3360",
+        "objectName": "System af22b6"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-4,-3,-3",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -4,
+    "sectorY": -3,
+    "sectorZ": -3,
+    "firstVisitedAt": "2026-08-23T07:39:58.409Z",
+    "lastVisitedAt": "2026-08-23T07:39:58.409Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "4548936437f78476fca0",
+        "type": "solar_system",
+        "name": "System ba685a",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 11 orbital body(ies).",
+        "mass": 38.239608,
+        "radius": 8.893509,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 9,
+        "orbitalBodyCount": 11,
+        "bookmarkTargets": [
+          {
+            "id": "335eef262363ce227c63",
+            "type": "star",
+            "name": null,
+            "mass": 0.351052,
+            "radius": 0.602471,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "a8770dc884ae33b021a1",
+            "type": "planet",
+            "name": null,
+            "mass": 1.826997,
+            "radius": 1.614348,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.095899,
+            "intelligentLife": false
+          },
+          {
+            "id": "b811b802e4821c5c811e",
+            "type": "planet",
+            "name": null,
+            "mass": 2.744437,
+            "radius": 0.461746,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.051715,
+            "intelligentLife": false
+          },
+          {
+            "id": "e2c91aab3a16cfb53a9d",
+            "type": "planet",
+            "name": null,
+            "mass": 5.859202,
+            "radius": 1.059202,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.108341,
+            "intelligentLife": false
+          },
+          {
+            "id": "58fa9b3a2645f80f042e",
+            "type": "planet",
+            "name": null,
+            "mass": 10.256498,
+            "radius": 4.069433,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ice_giant",
+            "habitabilityScore": 0.047034,
+            "intelligentLife": false
+          },
+          {
+            "id": "a4c9ab68436f3c5fab1b",
+            "type": "planet",
+            "name": null,
+            "mass": 3.354392,
+            "radius": 1.399444,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.13188,
+            "intelligentLife": false
+          },
+          {
+            "id": "d581edd35940e8888493",
+            "type": "planet",
+            "name": null,
+            "mass": 0.32736,
+            "radius": 1.524751,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.065745,
+            "intelligentLife": false
+          },
+          {
+            "id": "1015caf243b8d7ec32ff",
+            "type": "planet",
+            "name": null,
+            "mass": 0.736558,
+            "radius": 1.301437,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.037207,
+            "intelligentLife": false
+          },
+          {
+            "id": "3beccb47a8ac2c60a12e",
+            "type": "planet",
+            "name": null,
+            "mass": 9.674565,
+            "radius": 3.914513,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ice_giant",
+            "habitabilityScore": 0.057312,
+            "intelligentLife": false
+          },
+          {
+            "id": "e68923441a08a772634c",
+            "type": "planet",
+            "name": null,
+            "mass": 3.09656,
+            "radius": 0.917197,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ocean",
+            "habitabilityScore": 0.164233,
+            "intelligentLife": false
+          },
+          {
+            "id": "b8fc139c2abca6502bd6",
+            "type": "asteroid",
+            "name": "Carb Ice 8870",
+            "mass": 0.006151,
+            "radius": 0.052917,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          },
+          {
+            "id": "88dcd3592d2afe17d5c3",
+            "type": "asteroid",
+            "name": "Ice Deut c069",
+            "mass": 0.005836,
+            "radius": 0.003794,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "b8fc139c2abca6502bd6",
+            "type": "asteroid",
+            "name": "Carb Ice 8870",
+            "mass": 0.006151,
+            "massUnit": "earth_mass",
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 0.3333,
+              "carbon_compounds": 0.6667
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 2050.1283,
+              "carbon_compounds": 4100.8717
+            },
+            "motorized": false
+          },
+          {
+            "id": "88dcd3592d2afe17d5c3",
+            "type": "asteroid",
+            "name": "Ice Deut c069",
+            "mass": 0.005836,
+            "massUnit": "earth_mass",
+            "resources": [
+              "water_ice",
+              "deuterium_trace",
+              "volatiles"
+            ],
+            "resourceTypes": [
+              "deuterium",
+              "ice"
+            ],
+            "resourceComposition": {
+              "deuterium": 0.3333,
+              "metals": 0,
+              "ice": 0.6667,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 1945.1388,
+              "metals": 0,
+              "ice": 3890.8612,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "4548936437f78476fca0",
+        "type": "solar_system",
+        "name": "System ba685a",
+        "summary": "Stellar system with 1 star(s) and 11 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 9,
+        "orbitalBodyCount": 11,
+        "mass": 38.239608,
+        "massUnit": null,
+        "radius": 8.893509,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "335eef262363ce227c63",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.351052,
+            "massUnit": "solar_mass",
+            "radius": 0.602471,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "a8770dc884ae33b021a1",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.826997,
+            "massUnit": "earth_mass",
+            "radius": 1.614348,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.095899,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "b811b802e4821c5c811e",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 2.744437,
+            "massUnit": "earth_mass",
+            "radius": 0.461746,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.051715,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "e2c91aab3a16cfb53a9d",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 5.859202,
+            "massUnit": "earth_mass",
+            "radius": 1.059202,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.108341,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "58fa9b3a2645f80f042e",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 10.256498,
+            "massUnit": "earth_mass",
+            "radius": 4.069433,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.047034,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "a4c9ab68436f3c5fab1b",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.354392,
+            "massUnit": "earth_mass",
+            "radius": 1.399444,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.13188,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "d581edd35940e8888493",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.32736,
+            "massUnit": "earth_mass",
+            "radius": 1.524751,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.065745,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "1015caf243b8d7ec32ff",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.736558,
+            "massUnit": "earth_mass",
+            "radius": 1.301437,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.037207,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "3beccb47a8ac2c60a12e",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 9.674565,
+            "massUnit": "earth_mass",
+            "radius": 3.914513,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.057312,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "e68923441a08a772634c",
+            "type": "planet",
+            "name": null,
+            "category": "ocean",
+            "mass": 3.09656,
+            "massUnit": "earth_mass",
+            "radius": 0.917197,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.164233,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "b8fc139c2abca6502bd6",
+            "type": "asteroid",
+            "name": "Carb Ice 8870",
+            "category": null,
+            "mass": 0.006151,
+            "massUnit": "earth_mass",
+            "radius": 0.052917,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 2050.1283,
+              "carbon_compounds": 4100.8717
+            }
+          },
+          {
+            "id": "88dcd3592d2afe17d5c3",
+            "type": "asteroid",
+            "name": "Ice Deut c069",
+            "category": null,
+            "mass": 0.005836,
+            "massUnit": "earth_mass",
+            "radius": 0.003794,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "water_ice",
+              "deuterium_trace",
+              "volatiles"
+            ],
+            "resourceTypes": [
+              "deuterium",
+              "ice"
+            ],
+            "resourceAmounts": {
+              "deuterium": 1945.1388,
+              "metals": 0,
+              "ice": 3890.8612,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "ice",
+      "carbon_compounds",
+      "deuterium"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "4548936437f78476fca0",
+        "objectName": "System ba685a"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-4,-4,-4",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -4,
+    "sectorY": -4,
+    "sectorZ": -4,
+    "firstVisitedAt": "2026-08-23T08:20:00.020Z",
+    "lastVisitedAt": "2026-08-23T08:20:00.020Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-5,-5,-4",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -5,
+    "sectorY": -5,
+    "sectorZ": -4,
+    "firstVisitedAt": "2026-08-23T09:00:00.571Z",
+    "lastVisitedAt": "2026-08-23T13:51:15.851Z",
+    "visitCount": 380,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 17476,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "456",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "estimated": false,
+        "summary": "Inactive long-range SCUT communication relay.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "status": "off",
+        "isTransitBeacon": false,
+        "createdByProbeId": 882,
+        "createdByProbeName": "DeltaDrone",
+        "createdAt": "2026-08-23T09:00:30+00:00",
+        "activatedAt": null,
+        "coverageRadiusSectors": 10,
+        "network": null,
+        "salvageable": true
+      }
+    ],
+    "objects": [
+      {
+        "id": "456",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "summary": "Inactive long-range SCUT communication relay.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "status": "off",
+        "createdByProbeId": 882,
+        "createdByProbeName": "DeltaDrone",
+        "coverageRadiusSectors": 10,
+        "network": null,
+        "activatedAt": null
+      }
+    ],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "456",
+        "objectName": "Relais SCUT"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:32,29,19",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 32,
+    "sectorY": 29,
+    "sectorZ": 19,
+    "firstVisitedAt": "2026-08-23T09:31:30.893Z",
+    "lastVisitedAt": "2026-08-28T10:56:06.792Z",
+    "visitCount": 6305,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 297304,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "1f81cbfb34fdfcc305fa",
+        "type": "solar_system",
+        "name": "WP-113- SnoozyBob. This is 32.29.19 1 Metal. 0 Deut. 2 Ice. 2 Organics",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 14 orbital body(ies).",
+        "mass": 26.962613,
+        "radius": 10.951654,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 11,
+        "orbitalBodyCount": 14,
+        "bookmarkTargets": [
+          {
+            "id": "66046171a15c6a94ed30",
+            "type": "star",
+            "name": null,
+            "mass": 0.107259,
+            "radius": 0.620074,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "1bd0a409ac5ed69cc35a",
+            "type": "planet",
+            "name": null,
+            "mass": 0.113372,
+            "radius": 0.545865,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.11588,
+            "intelligentLife": false
+          },
+          {
+            "id": "c8c920ec790069ef500a",
+            "type": "planet",
+            "name": null,
+            "mass": 5.277228,
+            "radius": 1.559421,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.003883,
+            "intelligentLife": false
+          },
+          {
+            "id": "3f16171dbe95e86f3038",
+            "type": "planet",
+            "name": null,
+            "mass": 4.810948,
+            "radius": 0.903725,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.01123,
+            "intelligentLife": false
+          },
+          {
+            "id": "8dd06fb35a2d1685edd5",
+            "type": "planet",
+            "name": null,
+            "mass": 5.499332,
+            "radius": 1.508333,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.421412,
+            "intelligentLife": false
+          },
+          {
+            "id": "db22b66c9dde040878f2",
+            "type": "planet",
+            "name": null,
+            "mass": 0.235866,
+            "radius": 1.774196,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.154659,
+            "intelligentLife": false
+          },
+          {
+            "id": "ead6c12ee95282d7c692",
+            "type": "planet",
+            "name": null,
+            "mass": 2.450222,
+            "radius": 1.329955,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.057442,
+            "intelligentLife": false
+          },
+          {
+            "id": "abe993d00a5601a2fd04",
+            "type": "planet",
+            "name": null,
+            "mass": 1.531472,
+            "radius": 1.412679,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.011274,
+            "intelligentLife": false
+          },
+          {
+            "id": "18d1ce4f8a9c2e2cffd2",
+            "type": "planet",
+            "name": null,
+            "mass": 0.648839,
+            "radius": 1.05461,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.080092,
+            "intelligentLife": false
+          },
+          {
+            "id": "cba9c4cefc0fbb2439c5",
+            "type": "planet",
+            "name": null,
+            "mass": 1.506062,
+            "radius": 0.505112,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.024466,
+            "intelligentLife": false
+          },
+          {
+            "id": "3c4207010bf5b2eb3341",
+            "type": "planet",
+            "name": null,
+            "mass": 3.511077,
+            "radius": 1.274444,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.065753,
+            "intelligentLife": false
+          },
+          {
+            "id": "9d0c52f3536ca6926318",
+            "type": "planet",
+            "name": null,
+            "mass": 1.246607,
+            "radius": 1.074622,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.157997,
+            "intelligentLife": false
+          },
+          {
+            "id": "034240f83b1fc666b207",
+            "type": "asteroid",
+            "name": "Carb Ice 79cc",
+            "mass": 0.019639,
+            "radius": 0.043802,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          },
+          {
+            "id": "e9903607c96cd4d68853",
+            "type": "asteroid",
+            "name": "Metal ee86",
+            "mass": 0.002807,
+            "radius": 0.177979,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          },
+          {
+            "id": "208c7f502bbdd7b622aa",
+            "type": "asteroid",
+            "name": "Carb Ice 5fe1",
+            "mass": 0.001883,
+            "radius": 0.051229,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "034240f83b1fc666b207",
+            "type": "asteroid",
+            "name": "Carb Ice 79cc",
+            "mass": 0.019639,
+            "massUnit": "earth_mass",
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 0.3333,
+              "carbon_compounds": 0.6667
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 6545.6787,
+              "carbon_compounds": 13093.3213
+            },
+            "motorized": false
+          },
+          {
+            "id": "e9903607c96cd4d68853",
+            "type": "asteroid",
+            "name": "Metal ee86",
+            "mass": 0.002807,
+            "massUnit": "earth_mass",
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 2807,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          },
+          {
+            "id": "208c7f502bbdd7b622aa",
+            "type": "asteroid",
+            "name": "Carb Ice 5fe1",
+            "mass": 0.001883,
+            "massUnit": "earth_mass",
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 0.3333,
+              "carbon_compounds": 0.6667
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 627.6039,
+              "carbon_compounds": 1255.3961
+            },
+            "motorized": false
+          }
+        ],
+        "waypointBookmarks": [
+          {
+            "name": "WP-113- SnoozyBob. This is 32.29.19 1 Metal. 0 Deut. 2 Ice. 2 Organics",
+            "playerId": 51,
+            "playerName": "SnoozyBob",
+            "createdAt": "2026-08-23T14:12:24+00:00"
+          }
+        ]
+      },
+      {
+        "id": "459",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "estimated": false,
+        "summary": "Active long-range SCUT communication relay.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "status": "on",
+        "isTransitBeacon": true,
+        "createdByProbeId": 761,
+        "createdByProbeName": "BravoDrone",
+        "createdAt": "2026-08-23T12:19:51+00:00",
+        "activatedAt": "2026-08-23T12:25:16+00:00",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "1f81cbfb34fdfcc305fa",
+        "type": "solar_system",
+        "name": "WP-113- SnoozyBob. This is 32.29.19 1 Metal. 0 Deut. 2 Ice. 2 Organics",
+        "summary": "Stellar system with 1 star(s) and 14 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 11,
+        "orbitalBodyCount": 14,
+        "mass": 26.962613,
+        "massUnit": null,
+        "radius": 10.951654,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "66046171a15c6a94ed30",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.107259,
+            "massUnit": "solar_mass",
+            "radius": 0.620074,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "1bd0a409ac5ed69cc35a",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.113372,
+            "massUnit": "earth_mass",
+            "radius": 0.545865,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.11588,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "c8c920ec790069ef500a",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.277228,
+            "massUnit": "earth_mass",
+            "radius": 1.559421,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.003883,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "3f16171dbe95e86f3038",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 4.810948,
+            "massUnit": "earth_mass",
+            "radius": 0.903725,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.01123,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "8dd06fb35a2d1685edd5",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.499332,
+            "massUnit": "earth_mass",
+            "radius": 1.508333,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.421412,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "db22b66c9dde040878f2",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 0.235866,
+            "massUnit": "earth_mass",
+            "radius": 1.774196,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.154659,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "ead6c12ee95282d7c692",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 2.450222,
+            "massUnit": "earth_mass",
+            "radius": 1.329955,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.057442,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "abe993d00a5601a2fd04",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.531472,
+            "massUnit": "earth_mass",
+            "radius": 1.412679,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.011274,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "18d1ce4f8a9c2e2cffd2",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.648839,
+            "massUnit": "earth_mass",
+            "radius": 1.05461,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.080092,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "cba9c4cefc0fbb2439c5",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 1.506062,
+            "massUnit": "earth_mass",
+            "radius": 0.505112,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.024466,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "3c4207010bf5b2eb3341",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 3.511077,
+            "massUnit": "earth_mass",
+            "radius": 1.274444,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.065753,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "9d0c52f3536ca6926318",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 1.246607,
+            "massUnit": "earth_mass",
+            "radius": 1.074622,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.157997,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "034240f83b1fc666b207",
+            "type": "asteroid",
+            "name": "Carb Ice 79cc",
+            "category": null,
+            "mass": 0.019639,
+            "massUnit": "earth_mass",
+            "radius": 0.043802,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 6545.6787,
+              "carbon_compounds": 13093.3213
+            }
+          },
+          {
+            "id": "e9903607c96cd4d68853",
+            "type": "asteroid",
+            "name": "Metal ee86",
+            "category": null,
+            "mass": 0.002807,
+            "massUnit": "earth_mass",
+            "radius": 0.177979,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 2807,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          },
+          {
+            "id": "208c7f502bbdd7b622aa",
+            "type": "asteroid",
+            "name": "Carb Ice 5fe1",
+            "category": null,
+            "mass": 0.001883,
+            "massUnit": "earth_mass",
+            "radius": 0.051229,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 627.6039,
+              "carbon_compounds": 1255.3961
+            }
+          }
+        ],
+        "waypointBookmarks": [
+          {
+            "name": "WP-113- SnoozyBob. This is 32.29.19 1 Metal. 0 Deut. 2 Ice. 2 Organics",
+            "playerId": 51,
+            "playerName": "SnoozyBob",
+            "createdAt": "2026-08-23T14:12:24+00:00"
+          }
+        ]
+      },
+      {
+        "id": "459",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "summary": "Active long-range SCUT communication relay.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "status": "on",
+        "createdByProbeId": 761,
+        "createdByProbeName": "BravoDrone",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        },
+        "activatedAt": "2026-08-23T12:25:16+00:00"
+      }
+    ],
+    "resourceSummary": [
+      "ice",
+      "carbon_compounds",
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "1f81cbfb34fdfcc305fa",
+        "objectName": "WP-113- SnoozyBob. This is 32.29.19 1 Metal. 0 Deut. 2 Ice. 2 Organics"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "459",
+        "objectName": "Relais SCUT"
+      }
+    ],
+    "waypointEvents": [
+      {
+        "key": "failed:459:1",
+        "type": "failed",
+        "name": "WP-001- SnoozyB. This is 32.29.19 1 Metal. 0 Deut. 2 Ice. 2 Organics",
+        "reason": "VNG API error (404): Target object not found in the current sector.",
+        "relayId": "459",
+        "targetObjectId": "459",
+        "targetObjectName": "Relais SCUT",
+        "recordedAt": "2026-08-23T13:39:45.986Z"
+      }
+    ]
+  },
+  {
+    "id": "882:-5,-6,-5",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -5,
+    "sectorY": -6,
+    "sectorZ": -5,
+    "firstVisitedAt": "2026-08-23T14:31:16.566Z",
+    "lastVisitedAt": "2026-08-23T17:21:48.873Z",
+    "visitCount": 342,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 10233,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "2afe8b04557aa4d327b7",
+        "type": "solar_system",
+        "name": "System d0a8f4",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 10 orbital body(ies).",
+        "mass": 28.147689,
+        "radius": 11.951098,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 9,
+        "orbitalBodyCount": 10,
+        "bookmarkTargets": [
+          {
+            "id": "8f2fec09f5353a14fa29",
+            "type": "star",
+            "name": null,
+            "mass": 0.752009,
+            "radius": 0.864018,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "15cf4dc0563b8f7c9a6d",
+            "type": "planet",
+            "name": null,
+            "mass": 0.115146,
+            "radius": 0.498028,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.128299,
+            "intelligentLife": false
+          },
+          {
+            "id": "793f592f02c8dafacc0e",
+            "type": "planet",
+            "name": null,
+            "mass": 0.053608,
+            "radius": 0.247884,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.089014,
+            "intelligentLife": false
+          },
+          {
+            "id": "41b47a9c65f68e6db721",
+            "type": "planet",
+            "name": null,
+            "mass": 0.870473,
+            "radius": 1.711059,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ocean",
+            "habitabilityScore": 0.000031,
+            "intelligentLife": false
+          },
+          {
+            "id": "dcd7f6fddb0e930db5d0",
+            "type": "planet",
+            "name": null,
+            "mass": 4.280579,
+            "radius": 1.450542,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.055849,
+            "intelligentLife": false
+          },
+          {
+            "id": "e1b277903ae40ec4a839",
+            "type": "planet",
+            "name": null,
+            "mass": 1.701472,
+            "radius": 0.463845,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.018409,
+            "intelligentLife": false
+          },
+          {
+            "id": "f56383c651a4b9c6e32f",
+            "type": "planet",
+            "name": null,
+            "mass": 8.566029,
+            "radius": 3.706646,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ice_giant",
+            "habitabilityScore": 0.01518,
+            "intelligentLife": false
+          },
+          {
+            "id": "90a747f1d8769295530c",
+            "type": "planet",
+            "name": null,
+            "mass": 2.951163,
+            "radius": 1.608998,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.143178,
+            "intelligentLife": false
+          },
+          {
+            "id": "9d105d364d91eae0576c",
+            "type": "planet",
+            "name": null,
+            "mass": 5.688192,
+            "radius": 1.547499,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.01524,
+            "intelligentLife": false
+          },
+          {
+            "id": "14c27e3e3d5cfef8c827",
+            "type": "planet",
+            "name": null,
+            "mass": 3.161338,
+            "radius": 1.675249,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.067327,
+            "intelligentLife": false
+          },
+          {
+            "id": "4e95367e70d95346f16d",
+            "type": "asteroid",
+            "name": "Metal 4fa9",
+            "mass": 0.00768,
+            "radius": 0.096297,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "4e95367e70d95346f16d",
+            "type": "asteroid",
+            "name": "Metal 4fa9",
+            "mass": 0.00768,
+            "massUnit": "earth_mass",
+            "resources": [
+              "silicates",
+              "magnesium"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 7680,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "2afe8b04557aa4d327b7",
+        "type": "solar_system",
+        "name": "System d0a8f4",
+        "summary": "Stellar system with 1 star(s) and 10 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 9,
+        "orbitalBodyCount": 10,
+        "mass": 28.147689,
+        "massUnit": null,
+        "radius": 11.951098,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "8f2fec09f5353a14fa29",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.752009,
+            "massUnit": "solar_mass",
+            "radius": 0.864018,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "15cf4dc0563b8f7c9a6d",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.115146,
+            "massUnit": "earth_mass",
+            "radius": 0.498028,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.128299,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "793f592f02c8dafacc0e",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.053608,
+            "massUnit": "earth_mass",
+            "radius": 0.247884,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.089014,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "41b47a9c65f68e6db721",
+            "type": "planet",
+            "name": null,
+            "category": "ocean",
+            "mass": 0.870473,
+            "massUnit": "earth_mass",
+            "radius": 1.711059,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.000031,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "dcd7f6fddb0e930db5d0",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 4.280579,
+            "massUnit": "earth_mass",
+            "radius": 1.450542,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.055849,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "e1b277903ae40ec4a839",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 1.701472,
+            "massUnit": "earth_mass",
+            "radius": 0.463845,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.018409,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "f56383c651a4b9c6e32f",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 8.566029,
+            "massUnit": "earth_mass",
+            "radius": 3.706646,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.01518,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "90a747f1d8769295530c",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 2.951163,
+            "massUnit": "earth_mass",
+            "radius": 1.608998,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.143178,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "9d105d364d91eae0576c",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.688192,
+            "massUnit": "earth_mass",
+            "radius": 1.547499,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.01524,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "14c27e3e3d5cfef8c827",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 3.161338,
+            "massUnit": "earth_mass",
+            "radius": 1.675249,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.067327,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "4e95367e70d95346f16d",
+            "type": "asteroid",
+            "name": "Metal 4fa9",
+            "category": null,
+            "mass": 0.00768,
+            "massUnit": "earth_mass",
+            "radius": 0.096297,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "silicates",
+              "magnesium"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 7680,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "2afe8b04557aa4d327b7",
+        "objectName": "System d0a8f4"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-6,-6,-6",
+    "explorerId": 882,
+    "explorerName": "DeltaDrone",
+    "sectorX": -6,
+    "sectorY": -6,
+    "sectorZ": -6,
+    "firstVisitedAt": "2026-08-23T18:02:35.891Z",
+    "lastVisitedAt": "2026-08-23T19:52:38.474Z",
+    "visitCount": 221,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 6632,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "6c0ab1560b84bb2886a7",
+        "type": "solar_system",
+        "name": "WP-115- SnoozyBob. This is -6.-6.-6 0 Metal. 0 Deut. 1 Ice. 1 Organics",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "mass": 105.963979,
+        "radius": 11.432821,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 6,
+        "orbitalBodyCount": 7,
+        "bookmarkTargets": [
+          {
+            "id": "95f4b09e16ce8aa81f55",
+            "type": "star",
+            "name": null,
+            "mass": 0.147118,
+            "radius": 0.305755,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "2403866cb56075c0659c",
+            "type": "planet",
+            "name": null,
+            "mass": 3.216766,
+            "radius": 0.957096,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.084588,
+            "intelligentLife": false
+          },
+          {
+            "id": "48ddd7f7b205e90d42f6",
+            "type": "planet",
+            "name": null,
+            "mass": 3.869001,
+            "radius": 0.894057,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.169872,
+            "intelligentLife": false
+          },
+          {
+            "id": "1ceafe063df22ceabd6a",
+            "type": "planet",
+            "name": null,
+            "mass": 0.364079,
+            "radius": 0.864886,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.077462,
+            "intelligentLife": false
+          },
+          {
+            "id": "64714770e721f34fe7c2",
+            "type": "planet",
+            "name": null,
+            "mass": 2.394027,
+            "radius": 1.507047,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.010573,
+            "intelligentLife": false
+          },
+          {
+            "id": "47ba75ba0938ab58bde5",
+            "type": "planet",
+            "name": null,
+            "mass": 5.595156,
+            "radius": 1.292082,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.075068,
+            "intelligentLife": false
+          },
+          {
+            "id": "5d211a09368d61750613",
+            "type": "planet",
+            "name": null,
+            "mass": 90.37221,
+            "radius": 9.230766,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "gas_giant",
+            "habitabilityScore": 0.105075,
+            "intelligentLife": false
+          },
+          {
+            "id": "07f273bcb9040428ce61",
+            "type": "asteroid",
+            "name": "Carb Ice 747e",
+            "mass": 0.005622,
+            "radius": 0.081628,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "07f273bcb9040428ce61",
+            "type": "asteroid",
+            "name": "Carb Ice 747e",
+            "mass": 0.005622,
+            "massUnit": "earth_mass",
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 0.3333,
+              "carbon_compounds": 0.6667
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 1873.8126,
+              "carbon_compounds": 3748.1874
+            },
+            "motorized": false
+          }
+        ],
+        "waypointBookmarks": [
+          {
+            "name": "WP-115- SnoozyBob. This is -6.-6.-6 0 Metal. 0 Deut. 1 Ice. 1 Organics",
+            "playerId": 51,
+            "playerName": "SnoozyBob",
+            "createdAt": "2026-08-23T19:49:53+00:00"
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "6c0ab1560b84bb2886a7",
+        "type": "solar_system",
+        "name": "WP-115- SnoozyBob. This is -6.-6.-6 0 Metal. 0 Deut. 1 Ice. 1 Organics",
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 6,
+        "orbitalBodyCount": 7,
+        "mass": 105.963979,
+        "massUnit": null,
+        "radius": 11.432821,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "95f4b09e16ce8aa81f55",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.147118,
+            "massUnit": "solar_mass",
+            "radius": 0.305755,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "2403866cb56075c0659c",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.216766,
+            "massUnit": "earth_mass",
+            "radius": 0.957096,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.084588,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "48ddd7f7b205e90d42f6",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.869001,
+            "massUnit": "earth_mass",
+            "radius": 0.894057,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.169872,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "1ceafe063df22ceabd6a",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.364079,
+            "massUnit": "earth_mass",
+            "radius": 0.864886,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.077462,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "64714770e721f34fe7c2",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.394027,
+            "massUnit": "earth_mass",
+            "radius": 1.507047,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.010573,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "47ba75ba0938ab58bde5",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 5.595156,
+            "massUnit": "earth_mass",
+            "radius": 1.292082,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.075068,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "5d211a09368d61750613",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 90.37221,
+            "massUnit": "earth_mass",
+            "radius": 9.230766,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.105075,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "07f273bcb9040428ce61",
+            "type": "asteroid",
+            "name": "Carb Ice 747e",
+            "category": null,
+            "mass": 0.005622,
+            "massUnit": "earth_mass",
+            "radius": 0.081628,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 1873.8126,
+              "carbon_compounds": 3748.1874
+            }
+          }
+        ],
+        "waypointBookmarks": [
+          {
+            "name": "WP-115- SnoozyBob. This is -6.-6.-6 0 Metal. 0 Deut. 1 Ice. 1 Organics",
+            "playerId": 51,
+            "playerName": "SnoozyBob",
+            "createdAt": "2026-08-23T19:49:53+00:00"
+          }
+        ]
+      }
+    ],
+    "resourceSummary": [
+      "ice",
+      "carbon_compounds"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "6c0ab1560b84bb2886a7",
+        "objectName": "WP-115- SnoozyBob. This is -6.-6.-6 0 Metal. 0 Deut. 1 Ice. 1 Organics"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:23,23,8",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 23,
+    "sectorY": 23,
+    "sectorZ": 8,
+    "firstVisitedAt": "2026-08-23T20:42:39.158Z",
+    "lastVisitedAt": "2026-08-24T01:31:08.959Z",
+    "visitCount": 577,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 17329,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "ca3b4710008ff72266ed",
+        "type": "solar_system",
+        "name": "WP-086- SnoozyBob. This is 23.23.8 1 Metal. 0 Deut. 1 Ice. 1 Organics",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 14 orbital body(ies).",
+        "mass": 24.217884,
+        "radius": 10.109823,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 12,
+        "orbitalBodyCount": 14,
+        "bookmarkTargets": [
+          {
+            "id": "eaa52a34c196acfc2edd",
+            "type": "star",
+            "name": null,
+            "mass": 0.089513,
+            "radius": 0.416033,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "038421e037a8c7a0bdf2",
+            "type": "planet",
+            "name": null,
+            "mass": 0.056563,
+            "radius": 0.273378,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.159274,
+            "intelligentLife": false
+          },
+          {
+            "id": "95562569dc03da6a3398",
+            "type": "planet",
+            "name": null,
+            "mass": 2.280988,
+            "radius": 1.271072,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.108106,
+            "intelligentLife": false
+          },
+          {
+            "id": "6e0ee5b7daf1814f842b",
+            "type": "planet",
+            "name": null,
+            "mass": 0.138481,
+            "radius": 0.260539,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.148449,
+            "intelligentLife": false
+          },
+          {
+            "id": "34ff7774cbf7fffe0817",
+            "type": "planet",
+            "name": null,
+            "mass": 1.511564,
+            "radius": 0.943177,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.137432,
+            "intelligentLife": false
+          },
+          {
+            "id": "b2229a0bf4a47954c54e",
+            "type": "planet",
+            "name": null,
+            "mass": 0.010869,
+            "radius": 0.467528,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.084525,
+            "intelligentLife": false
+          },
+          {
+            "id": "48962342846134d7d6ce",
+            "type": "planet",
+            "name": null,
+            "mass": 5.949154,
+            "radius": 0.99699,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.041106,
+            "intelligentLife": false
+          },
+          {
+            "id": "cf2fcc94bd47702c7614",
+            "type": "planet",
+            "name": null,
+            "mass": 0.113689,
+            "radius": 0.403904,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.161966,
+            "intelligentLife": false
+          },
+          {
+            "id": "a9ddd71c3c190eac5ddb",
+            "type": "planet",
+            "name": null,
+            "mass": 0.142655,
+            "radius": 0.544065,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.056329,
+            "intelligentLife": false
+          },
+          {
+            "id": "24cce37b8258e96206c4",
+            "type": "planet",
+            "name": null,
+            "mass": 2.910935,
+            "radius": 0.467376,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.138325,
+            "intelligentLife": false
+          },
+          {
+            "id": "4591f97cf9d44ddfe3b0",
+            "type": "planet",
+            "name": null,
+            "mass": 3.19981,
+            "radius": 1.514578,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.017703,
+            "intelligentLife": false
+          },
+          {
+            "id": "247b812ce7606aed1742",
+            "type": "planet",
+            "name": null,
+            "mass": 3.383132,
+            "radius": 1.109116,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ocean",
+            "habitabilityScore": 0.154163,
+            "intelligentLife": false
+          },
+          {
+            "id": "d53a357a8e10b8b6337b",
+            "type": "planet",
+            "name": null,
+            "mass": 4.408111,
+            "radius": 0.784945,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.157293,
+            "intelligentLife": false
+          },
+          {
+            "id": "ab1635c2c796f7958b5e",
+            "type": "asteroid",
+            "name": "Metal 9bed",
+            "mass": 0.012722,
+            "radius": 0.178827,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          },
+          {
+            "id": "05476205866812ef89e5",
+            "type": "asteroid",
+            "name": "Carb Ice fb01",
+            "mass": 0.009698,
+            "radius": 0.037974,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "b2229a0bf4a47954c54e",
+            "type": "planet",
+            "name": null,
+            "mass": 0.010869,
+            "massUnit": "earth_mass",
+            "resources": [
+              "ice_trace",
+              "silicates",
+              "rare_metals_trace"
+            ],
+            "resourceTypes": [
+              "metals",
+              "ice"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0.6667,
+              "ice": 0.3333,
+              "carbon_compounds": 0
+            },
+            "category": "dwarf",
+            "habitabilityScore": 0.084525,
+            "intelligentLife": false
+          },
+          {
+            "id": "ab1635c2c796f7958b5e",
+            "type": "asteroid",
+            "name": "Metal 9bed",
+            "mass": 0.012722,
+            "massUnit": "earth_mass",
+            "resources": [
+              "rare_metals",
+              "platinum_group"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 12562.33,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          },
+          {
+            "id": "05476205866812ef89e5",
+            "type": "asteroid",
+            "name": "Carb Ice fb01",
+            "mass": 0.009698,
+            "massUnit": "earth_mass",
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 0.3327,
+              "carbon_compounds": 0.6673
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 3204.0971,
+              "carbon_compounds": 6427.1005
+            },
+            "motorized": false
+          }
+        ],
+        "waypointBookmarks": [
+          {
+            "name": "WP-086- SnoozyBob. This is 23.23.8 1 Metal. 0 Deut. 1 Ice. 1 Organics",
+            "playerId": 51,
+            "playerName": "SnoozyBob",
+            "createdAt": "2026-08-12T14:04:29+00:00"
+          }
+        ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_a203c204f3ddbf7e68be8709",
+        "type": "detached_container",
+        "name": "Container 31",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "05476205866812ef89e5",
+        "capacity": 1,
+        "capacityUnit": "earth_container_equivalent",
+        "salvageable": false
+      },
+      {
+        "id": "detached-container-container-itm_craft_87d0245c32e35eca62c61b7d",
+        "type": "detached_container",
+        "name": "Container 50",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "ab1635c2c796f7958b5e",
+        "capacity": 1,
+        "capacityUnit": "earth_container_equivalent",
+        "salvageable": false
+      },
+      {
+        "id": "311",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "estimated": false,
+        "summary": "Active long-range SCUT communication relay.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "status": "on",
+        "isTransitBeacon": true,
+        "createdByProbeId": 795,
+        "createdByProbeName": "FT-1",
+        "createdAt": "2026-08-14T16:23:40+00:00",
+        "activatedAt": "2026-08-14T16:30:46+00:00",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "ca3b4710008ff72266ed",
+        "type": "solar_system",
+        "name": "WP-086- SnoozyBob. This is 23.23.8 1 Metal. 0 Deut. 1 Ice. 1 Organics",
+        "summary": "Stellar system with 1 star(s) and 14 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 12,
+        "orbitalBodyCount": 14,
+        "mass": 24.217884,
+        "massUnit": null,
+        "radius": 10.109823,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "eaa52a34c196acfc2edd",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.089513,
+            "massUnit": "solar_mass",
+            "radius": 0.416033,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "038421e037a8c7a0bdf2",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.056563,
+            "massUnit": "earth_mass",
+            "radius": 0.273378,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.159274,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "95562569dc03da6a3398",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 2.280988,
+            "massUnit": "earth_mass",
+            "radius": 1.271072,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.108106,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "6e0ee5b7daf1814f842b",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.138481,
+            "massUnit": "earth_mass",
+            "radius": 0.260539,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.148449,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "34ff7774cbf7fffe0817",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.511564,
+            "massUnit": "earth_mass",
+            "radius": 0.943177,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.137432,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "b2229a0bf4a47954c54e",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.010869,
+            "massUnit": "earth_mass",
+            "radius": 0.467528,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.084525,
+            "intelligentLife": false,
+            "resources": [
+              "ice_trace",
+              "silicates",
+              "rare_metals_trace"
+            ],
+            "resourceTypes": [
+              "metals",
+              "ice"
+            ],
+            "resourceAmounts": null
+          },
+          {
+            "id": "48962342846134d7d6ce",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 5.949154,
+            "massUnit": "earth_mass",
+            "radius": 0.99699,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.041106,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "cf2fcc94bd47702c7614",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.113689,
+            "massUnit": "earth_mass",
+            "radius": 0.403904,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.161966,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "a9ddd71c3c190eac5ddb",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.142655,
+            "massUnit": "earth_mass",
+            "radius": 0.544065,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.056329,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "24cce37b8258e96206c4",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.910935,
+            "massUnit": "earth_mass",
+            "radius": 0.467376,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.138325,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "4591f97cf9d44ddfe3b0",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.19981,
+            "massUnit": "earth_mass",
+            "radius": 1.514578,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.017703,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "247b812ce7606aed1742",
+            "type": "planet",
+            "name": null,
+            "category": "ocean",
+            "mass": 3.383132,
+            "massUnit": "earth_mass",
+            "radius": 1.109116,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.154163,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "d53a357a8e10b8b6337b",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 4.408111,
+            "massUnit": "earth_mass",
+            "radius": 0.784945,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.157293,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "ab1635c2c796f7958b5e",
+            "type": "asteroid",
+            "name": "Metal 9bed",
+            "category": null,
+            "mass": 0.012722,
+            "massUnit": "earth_mass",
+            "radius": 0.178827,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "rare_metals",
+              "platinum_group"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 12562.33,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          },
+          {
+            "id": "05476205866812ef89e5",
+            "type": "asteroid",
+            "name": "Carb Ice fb01",
+            "category": null,
+            "mass": 0.009698,
+            "massUnit": "earth_mass",
+            "radius": 0.037974,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 3204.0971,
+              "carbon_compounds": 6427.1005
+            }
+          }
+        ],
+        "waypointBookmarks": [
+          {
+            "name": "WP-086- SnoozyBob. This is 23.23.8 1 Metal. 0 Deut. 1 Ice. 1 Organics",
+            "playerId": 51,
+            "playerName": "SnoozyBob",
+            "createdAt": "2026-08-12T14:04:29+00:00"
+          }
+        ]
+      },
+      {
+        "id": "detached-container-container-itm_craft_a203c204f3ddbf7e68be8709",
+        "type": "detached_container",
+        "name": "Container 31",
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "capacityUnit": "earth_container_equivalent",
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "05476205866812ef89e5",
+        "salvageable": false,
+        "userCreated": true
+      },
+      {
+        "id": "detached-container-container-itm_craft_87d0245c32e35eca62c61b7d",
+        "type": "detached_container",
+        "name": "Container 50",
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "capacityUnit": "earth_container_equivalent",
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "ab1635c2c796f7958b5e",
+        "salvageable": false,
+        "userCreated": true
+      },
+      {
+        "id": "311",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "summary": "Active long-range SCUT communication relay.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "status": "on",
+        "createdByProbeId": 795,
+        "createdByProbeName": "FT-1",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        },
+        "activatedAt": "2026-08-14T16:30:46+00:00"
+      }
+    ],
+    "resourceSummary": [
+      "metals",
+      "ice",
+      "carbon_compounds"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "ca3b4710008ff72266ed",
+        "objectName": "WP-086- SnoozyBob. This is 23.23.8 1 Metal. 0 Deut. 1 Ice. 1 Organics"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "detached-container-container-itm_craft_a203c204f3ddbf7e68be8709",
+        "objectName": "Container 31"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "detached-container-container-itm_craft_87d0245c32e35eca62c61b7d",
+        "objectName": "Container 50"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "311",
+        "objectName": "Relais SCUT"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:32,30,18",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 32,
+    "sectorY": 30,
+    "sectorZ": 18,
+    "firstVisitedAt": "2026-08-28T11:36:37.366Z",
+    "lastVisitedAt": "2026-08-28T23:40:51.812Z",
+    "visitCount": 1031,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 43463,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "eee515d762ce126d9035",
+        "type": "solar_system",
+        "name": "System 35df3f",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "mass": 315.835865,
+        "radius": 8.944509,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 5,
+        "orbitalBodyCount": 7,
+        "bookmarkTargets": [
+          {
+            "id": "01f292a9efded27241c2",
+            "type": "star",
+            "name": null,
+            "mass": 0.319369,
+            "radius": 0.618465,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "458263e03a602a94fd71",
+            "type": "planet",
+            "name": null,
+            "mass": 290.681299,
+            "radius": 5.454347,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "gas_giant",
+            "habitabilityScore": 0.101657,
+            "intelligentLife": false
+          },
+          {
+            "id": "8586aec2e7f6d38903c5",
+            "type": "planet",
+            "name": null,
+            "mass": 1.965813,
+            "radius": 1.072188,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.10075,
+            "intelligentLife": false
+          },
+          {
+            "id": "1de14f61b42375d93f0c",
+            "type": "planet",
+            "name": null,
+            "mass": 1.228141,
+            "radius": 1.264332,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.069189,
+            "intelligentLife": false
+          },
+          {
+            "id": "7b70fcb052d1667c878f",
+            "type": "planet",
+            "name": null,
+            "mass": 0.307434,
+            "radius": 0.66433,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.175021,
+            "intelligentLife": false
+          },
+          {
+            "id": "1392b257c84de0a59aad",
+            "type": "planet",
+            "name": null,
+            "mass": 21.313665,
+            "radius": 2.608787,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ice_giant",
+            "habitabilityScore": 0.145117,
+            "intelligentLife": false
+          },
+          {
+            "id": "72efa087f2115cd4b21f",
+            "type": "asteroid",
+            "name": "Carb Ice 4194",
+            "mass": 0.00891,
+            "radius": 0.11437,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          },
+          {
+            "id": "2ade59c9b8adbd975f2f",
+            "type": "asteroid",
+            "name": "Metal b49d",
+            "mass": 0.011234,
+            "radius": 0.071945,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "72efa087f2115cd4b21f",
+            "type": "asteroid",
+            "name": "Carb Ice 4194",
+            "mass": 0.00891,
+            "massUnit": "earth_mass",
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 0.3333,
+              "carbon_compounds": 0.6667
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 2969.703,
+              "carbon_compounds": 5940.297
+            },
+            "motorized": false
+          },
+          {
+            "id": "2ade59c9b8adbd975f2f",
+            "type": "asteroid",
+            "name": "Metal b49d",
+            "mass": 0.011234,
+            "massUnit": "earth_mass",
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 11234,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "eee515d762ce126d9035",
+        "type": "solar_system",
+        "name": "System 35df3f",
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 5,
+        "orbitalBodyCount": 7,
+        "mass": 315.835865,
+        "massUnit": null,
+        "radius": 8.944509,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "01f292a9efded27241c2",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.319369,
+            "massUnit": "solar_mass",
+            "radius": 0.618465,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "458263e03a602a94fd71",
+            "type": "planet",
+            "name": null,
+            "category": "gas_giant",
+            "mass": 290.681299,
+            "massUnit": "earth_mass",
+            "radius": 5.454347,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.101657,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "8586aec2e7f6d38903c5",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.965813,
+            "massUnit": "earth_mass",
+            "radius": 1.072188,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.10075,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "1de14f61b42375d93f0c",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.228141,
+            "massUnit": "earth_mass",
+            "radius": 1.264332,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.069189,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "7b70fcb052d1667c878f",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 0.307434,
+            "massUnit": "earth_mass",
+            "radius": 0.66433,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.175021,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "1392b257c84de0a59aad",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 21.313665,
+            "massUnit": "earth_mass",
+            "radius": 2.608787,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.145117,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "72efa087f2115cd4b21f",
+            "type": "asteroid",
+            "name": "Carb Ice 4194",
+            "category": null,
+            "mass": 0.00891,
+            "massUnit": "earth_mass",
+            "radius": 0.11437,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "carbon",
+              "organics",
+              "ice_trace"
+            ],
+            "resourceTypes": [
+              "ice",
+              "carbon_compounds"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 0,
+              "ice": 2969.703,
+              "carbon_compounds": 5940.297
+            }
+          },
+          {
+            "id": "2ade59c9b8adbd975f2f",
+            "type": "asteroid",
+            "name": "Metal b49d",
+            "category": null,
+            "mass": 0.011234,
+            "massUnit": "earth_mass",
+            "radius": 0.071945,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 11234,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "ice",
+      "carbon_compounds",
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "eee515d762ce126d9035",
+        "objectName": "System 35df3f"
+      }
+    ],
+    "waypointEvents": []
+  }
+]
