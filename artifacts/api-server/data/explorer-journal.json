@@ -3333,13 +3333,13 @@
     "sectorY": 30,
     "sectorZ": 18,
     "firstVisitedAt": "2026-08-28T11:36:37.366Z",
-    "lastVisitedAt": "2026-08-28T23:40:51.812Z",
-    "visitCount": 1031,
+    "lastVisitedAt": "2026-08-28T23:42:51.834Z",
+    "visitCount": 1035,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 43463,
+      "currentSectorResidenceSeconds": 43583,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -3506,6 +3506,21 @@
             "motorized": false
           }
         ]
+      },
+      {
+        "id": "detached-container-container-itm_841974742a8d91aebd0a9482",
+        "type": "detached_container",
+        "name": "Bravo Personal Space",
+        "estimated": false,
+        "summary": "Detached storage container detected.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "2ade59c9b8adbd975f2f",
+        "capacity": 1,
+        "capacityUnit": "earth_container_equivalent",
+        "salvageable": false
       }
     ],
     "objects": [
@@ -3668,6 +3683,20 @@
           }
         ],
         "waypointBookmarks": []
+      },
+      {
+        "id": "detached-container-container-itm_841974742a8d91aebd0a9482",
+        "type": "detached_container",
+        "name": "Bravo Personal Space",
+        "summary": "Detached storage container detected.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "capacity": 1,
+        "capacityUnit": "earth_container_equivalent",
+        "mode": "hidden_on_asteroid",
+        "targetObjectId": "2ade59c9b8adbd975f2f",
+        "salvageable": false,
+        "userCreated": true
       }
     ],
     "resourceSummary": [
@@ -3684,6 +3713,13 @@
         "message": "low",
         "objectId": "eee515d762ce126d9035",
         "objectName": "System 35df3f"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "detached-container-container-itm_841974742a8d91aebd0a9482",
+        "objectName": "Bravo Personal Space"
       }
     ],
     "waypointEvents": []
