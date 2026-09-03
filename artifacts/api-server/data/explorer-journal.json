@@ -6346,13 +6346,13 @@
     "sectorY": 31,
     "sectorZ": 17,
     "firstVisitedAt": "2026-09-03T03:40:29.892Z",
-    "lastVisitedAt": "2026-09-03T03:56:56.621Z",
-    "visitCount": 11,
+    "lastVisitedAt": "2026-09-03T13:43:14.242Z",
+    "visitCount": 196,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 1001,
+      "currentSectorResidenceSeconds": 36179,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -6433,6 +6433,110 @@
         "objectName": "Metal 8392"
       }
     ],
+    "waypointEvents": []
+  },
+  {
+    "id": "914:23,21,10",
+    "explorerId": 914,
+    "explorerName": "FoxtrotExplorer",
+    "sectorX": 23,
+    "sectorY": 21,
+    "sectorZ": 10,
+    "firstVisitedAt": "2026-09-03T04:34:39.101Z",
+    "lastVisitedAt": "2026-09-03T04:34:39.101Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 9,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "914:23,20,11",
+    "explorerId": 914,
+    "explorerName": "FoxtrotExplorer",
+    "sectorX": 23,
+    "sectorY": 20,
+    "sectorZ": 11,
+    "firstVisitedAt": "2026-09-03T12:49:43.928Z",
+    "lastVisitedAt": "2026-09-03T12:49:43.928Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 27305,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "914:23,19,12",
+    "explorerId": 914,
+    "explorerName": "FoxtrotExplorer",
+    "sectorX": 23,
+    "sectorY": 19,
+    "sectorZ": 12,
+    "firstVisitedAt": "2026-09-03T13:29:44.205Z",
+    "lastVisitedAt": "2026-09-03T13:29:44.205Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 0,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "914:23,18,13",
+    "explorerId": 914,
+    "explorerName": "FoxtrotExplorer",
+    "sectorX": 23,
+    "sectorY": 18,
+    "sectorZ": 13,
+    "firstVisitedAt": "2026-09-03T14:09:44.832Z",
+    "lastVisitedAt": "2026-09-03T14:09:44.832Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 0,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
     "waypointEvents": []
   }
 ]

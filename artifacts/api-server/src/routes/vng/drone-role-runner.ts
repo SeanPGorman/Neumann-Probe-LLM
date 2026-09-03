@@ -1375,6 +1375,15 @@ export const FACTORY_SUPPLY_ITEMS: { type: string; recipe: string; printer?: boo
   { type: "waypoint_bookmark", recipe: "waypoint_bookmark" }, // transit beacon
 ];
 
+/** Items the factory loads into the deployment/resupply container. */
+const DEPLOYMENT_CONTAINER_ITEMS = [
+  ...Array(15).fill("waypoint_bookmark"),
+  "scut_relay",
+  "scut_transit_beacon",
+  "integrated_circuit",
+  ...Array(5).fill("missile"),
+];
+
 export type FactoryDeps = {
   getDroneRoles: typeof getDroneRoles;
   updateDroneRoleState: typeof updateDroneRoleState;
@@ -1501,9 +1510,7 @@ async function runFactoryContainerWorkflow(
       detail?.inventory?.items ?? detail?.items ?? detail?.container?.inventory?.items ?? [];
     const deployedItems = detailItems(deploymentDetail);
     const deployedIds = new Set(deployedItems.map((i: any) => String(i.id)));
-    const need = [
-      ...Array(15).fill("waypoint_bookmark"), "scut_relay", "scut_transit_beacon", "integrated_circuit",
-    ];
+    const need = DEPLOYMENT_CONTAINER_ITEMS;
     const wantedCount = (type: string) => need.filter((x) => x === type).length;
     const deployedCount = (type: string) => deployedItems.filter((i: any) => i.type === type).length;
     // Some response variants annotate source items with their container;
