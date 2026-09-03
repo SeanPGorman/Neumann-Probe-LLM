@@ -6346,13 +6346,13 @@
     "sectorY": 31,
     "sectorZ": 17,
     "firstVisitedAt": "2026-09-03T03:40:29.892Z",
-    "lastVisitedAt": "2026-09-03T03:43:29.900Z",
-    "visitCount": 7,
+    "lastVisitedAt": "2026-09-03T03:44:59.878Z",
+    "visitCount": 10,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 195,
+      "currentSectorResidenceSeconds": 285,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
