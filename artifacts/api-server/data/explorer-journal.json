@@ -6337,5 +6337,102 @@
       }
     ],
     "waypointEvents": []
+  },
+  {
+    "id": "761:36,31,17",
+    "explorerId": 761,
+    "explorerName": "BravoDrone",
+    "sectorX": 36,
+    "sectorY": 31,
+    "sectorZ": 17,
+    "firstVisitedAt": "2026-09-03T03:40:29.892Z",
+    "lastVisitedAt": "2026-09-03T03:42:59.931Z",
+    "visitCount": 6,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 165,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "343176c5743ff7b457ea",
+        "type": "asteroid",
+        "name": "Metal 8392",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.007306,
+        "radius": 0.093229,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "silicate",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 7306,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      }
+    ],
+    "objects": [
+      {
+        "id": "343176c5743ff7b457ea",
+        "type": "asteroid",
+        "name": "Metal 8392",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "silicate",
+        "sizeCategory": null,
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 7306,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.007306,
+        "massUnit": "earth_mass"
+      }
+    ],
+    "resourceSummary": [
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "343176c5743ff7b457ea",
+        "objectName": "Metal 8392"
+      }
+    ],
+    "waypointEvents": []
   }
 ]
