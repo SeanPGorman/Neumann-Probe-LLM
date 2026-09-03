@@ -119,7 +119,9 @@ test("delivery e2e: dispatch → travel → detach additional_container for expl
   await runner.runDeliveryRole(
     roleNow, probeAtFactory, IDLE_MANNY, new Set(), makeClient(calls), false, "test",
   );
-  assert.ok(calls.some((c) => c.op === "move" && c.x === 5 && c.y === 5 && c.z === 5));
+  // Uncovered long trips advance one parity-safe hop; routing may select a
+  // relay instead when cached SCUT data is available.
+  assert.ok(calls.some((c) => c.op === "move"));
 
   // Tick 3 (arrived): phase flips to delivering.
   const probeAtExplorer = { ...probeAtFactory, sector: EXPLORER_SECTOR };
@@ -141,6 +143,15 @@ test("delivery e2e: dispatch → travel → detach additional_container for expl
   assert.ok(detach, "expected the container to be detached for the explorer");
   assert.equal(detach.containerId, "cont-1"); // the additional_container item
   assert.equal(detach.mode, "drifting");
+  reqNow = (await store.getDeliveryRequests())[0];
+  assert.equal(reqNow.status, "assigned", "detach start is not delivery completion");
+  // Completion is based on the next observed inventory, not an optimistic
+  // local update made in the detach tick.
+  await runner.runDeliveryRole(
+    (await store.getDroneRoles())[0],
+    { ...probeAtExplorer, inventory: { items: FULL_LOADOUT.filter((i) => i.id !== "cont-1") } },
+    IDLE_MANNY, new Set(), makeClient(calls), false, "test",
+  );
   reqNow = (await store.getDeliveryRequests())[0];
   assert.equal(reqNow.status, "completed");
   roleNow = (await store.getDroneRoles())[0];

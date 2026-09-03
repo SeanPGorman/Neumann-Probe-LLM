@@ -73,7 +73,9 @@ function atSector(
   target: { x: number; y: number; z: number },
 ): boolean {
   // VNG API returns coordinates at probe.sector.relative, not probe.sector directly.
-  const s = probe?.sector?.relative;
+  // Probe responses normally nest coordinates under `sector.relative`; a few
+  // endpoints/tests return the relative coordinates directly.
+  const s = probe?.sector?.relative ?? probe?.sector;
   return s != null && s.x === target.x && s.y === target.y && s.z === target.z;
 }
 
@@ -699,11 +701,7 @@ export async function runDeliveryRole(
   const phase = role.state.phase;
 
   if (phase === "waiting") {
-    // A delivery drone must have its supply loadout before it can accept a
-    // dispatch: always a container, and — when a Factory Drone serves this
-    // drone — the full supply loadout the factory is responsible for.
     const items: any[] = probe?.inventory?.items ?? [];
-    const hasContainer = items.some(isContainerItem);
     const allRoles = await getDroneRoles().catch(() => [] as DroneRole[]);
     const myFactory = allRoles.find(
       (r) =>
@@ -711,11 +709,11 @@ export async function runDeliveryRole(
         r.roleType === "factory" &&
         ((r.config as FactoryConfig).deliveryProbeIds ?? []).includes(role.probeId),
     );
-    if (myFactory && missingSupplies(probe).length > 0) {
-      logger.info({ label }, "drone-role: loadout incomplete — waiting for factory supply run");
-      // fall through only to attempt staged-container pickup below
-    }
-    if (!hasContainer) {
+    // Once recorded locally, the courier manifest is authoritative: factory
+    // cleanup must not strand a fully loaded courier.
+    const requiredManifest = role.state.outboundContainerIds ?? myFactory?.state.preparedContainerIds;
+    const onboardIds = new Set(items.filter(isContainerItem).map((i: any) => String(i.id)));
+    if (requiredManifest?.length === 3 && requiredManifest.some((id) => !onboardIds.has(id))) {
       if (isMoving) return;
       let sectorObjects: any[] = [];
       try {
@@ -724,15 +722,12 @@ export async function runDeliveryRole(
       } catch {
         return;
       }
-      // Prefer the specific container our factory staged for us (if any).
-      const stagedId = myFactory?.state.stagedContainerObjectId;
-      const drifting =
-        (stagedId != null
-          ? sectorObjects.find((o: any) => o.id === stagedId)
-          : undefined) ??
-        sectorObjects.find(
-          (o: any) => o.type === "storage_container" && o.mode === "drifting",
-        );
+      const wanted = requiredManifest.find((id) => !onboardIds.has(id));
+      const drifting = sectorObjects.find((o: any) =>
+        (o.type === "storage_container" || o.type === "detached_container") &&
+        o.mode === "drifting" &&
+        String(o.containerId ?? o.id).replace(/^detached-container-/, "") === wanted,
+      );
       if (drifting) {
         const manny = pickIdleManny(mannies, claimed);
         if (manny) {
@@ -744,14 +739,19 @@ export async function runDeliveryRole(
             logger.warn({ label, err: err?.message }, "drone-role: staged container recovery failed");
           }
         }
-      } else {
-        logger.info({ label }, "drone-role: no container loaded — waiting for factory to stage one");
       }
-      return; // never accept a dispatch while empty
+      return;
     }
-
-    // Factory-served drones also wait for the full supply loadout.
-    if (myFactory && missingSupplies(probe).length > 0) return;
+    // A factory courier dispatches only with the exact fresh three-container
+    // manifest. Standalone legacy couriers retain their original one-container
+    // behaviour for compatibility.
+    if (myFactory) {
+      if (requiredManifest?.length !== 3 || requiredManifest.some((id) => !onboardIds.has(id))) return;
+      if ((role.state.outboundContainerIds ?? []).join(",") !== requiredManifest.join(",")) {
+        await updateDroneRoleState(role.id, { outboundContainerIds: requiredManifest });
+        return;
+      }
+    } else if (!items.some(isContainerItem)) return;
 
     // Poll for a pending delivery request
     const request = await getPendingDeliveryRequest();
@@ -768,6 +768,9 @@ export async function runDeliveryRole(
       phase: "traveling_to_explorer",
       assignedExplorerId: request.explorerId,
       travelTarget: request.explorerSector,
+      // Compatibility for pre-factory roles. Factory couriers have already
+      // persisted their exact three-ID manifest before they can dispatch.
+      ...(!myFactory ? { outboundContainerIds: items.filter(isContainerItem).map((i: any) => String(i.id)) } : {}),
     });
     logger.info({ label, requestId: request.id, explorerSector: request.explorerSector }, "drone-role: delivery dispatched");
     return;
@@ -785,7 +788,7 @@ export async function runDeliveryRole(
       await updateDroneRoleState(role.id, { phase: "delivering" });
       return;
     }
-    const currentSectorD = probe?.sector?.relative ?? null;
+    const currentSectorD = probe?.sector?.relative ?? probe?.sector ?? null;
     if (!currentSectorD) return;
     const waypoint = await nextDeliveryWaypoint(currentSectorD, target, label);
     logger.info({ label, waypoint, finalTarget: target }, "drone-role: moving toward explorer sector");
@@ -799,11 +802,6 @@ export async function runDeliveryRole(
 
   if (phase === "delivering") {
     if (isMoving) return;
-    // Find a container in inventory to detach for the explorer.
-    // Also transfer deuterium if the explorer is present as a sector object.
-    const items: any[] = probe?.inventory?.items ?? [];
-    const container = items.find(isContainerItem);
-
     let sectorObjects: any[] = [];
     try {
       const resp = await c.getSector();
@@ -813,45 +811,14 @@ export async function runDeliveryRole(
     }
 
     const explorerId = role.state.assignedExplorerId;
-
-    // Transfer deuterium to explorer if present in sector
-    if (explorerId != null) {
-      const explorerObj = sectorObjects.find(
-        (o: any) => o.type === "probe" && o.probeId === explorerId,
-      );
-      const ourFuel = probe?.fuel?.deuterium ?? 0;
-      const transferable = Math.floor(ourFuel) - MIN_DEUTERIUM_RESERVE;
-      if (explorerObj && transferable > 0) {
-        const manny = pickIdleManny(mannies, claimed);
-        if (manny) {
-          logger.info({ label, amount: transferable }, "drone-role: transferring deuterium to explorer");
-          try {
-            await c.transferDeuteriumToProbe(manny.id, explorerId, transferable);
-            claimed.add(manny.id);
-          } catch (err: any) {
-            logger.warn({ label, err: err?.message }, "drone-role: deuterium transfer failed");
-          }
-        }
-      }
-    }
-
-    // Detach a container (drift it in sector for the explorer to recover)
-    if (container) {
-      const manny = pickIdleManny(mannies, claimed);
-      if (manny) {
-        logger.info({ label, containerId: container.id }, "drone-role: detaching delivery container");
-        try {
-          await c.detachContainer(manny.id, container.id, "drifting");
-          claimed.add(manny.id);
-        } catch (err: any) {
-          logger.warn({ label, err: err?.message }, "drone-role: detach container failed");
-        }
-      }
-    }
-
-    // Collect any drifting container left by the explorer (previous empty)
-    const drifting = sectorObjects.find(
-      (o: any) => o.type === "storage_container" && o.mode === "drifting",
+    const outbound = new Set(role.state.outboundContainerIds ?? []);
+    // Collection is deliberately before delivery.  A returned explorer
+    // container must never become an outbound container merely because it is
+    // now in our inventory.
+    const drifting = sectorObjects.find((o: any) =>
+      (o.type === "storage_container" || o.type === "detached_container") &&
+      o.mode === "drifting" &&
+      !outbound.has(String(o.containerId ?? o.id).replace(/^detached-container-/, "")),
     );
     if (drifting) {
       const manny = pickIdleManny(mannies, claimed);
@@ -864,9 +831,26 @@ export async function runDeliveryRole(
           logger.warn({ label, err: err?.message }, "drone-role: container recovery failed");
         }
       }
+      return; // exactly one asynchronous Manny action per tick
     }
 
-    // Mark the delivery request completed
+    const onboard = new Set(
+      (probe?.inventory?.items ?? []).filter(isContainerItem).map((i: any) => String(i.id)),
+    );
+    const remaining = [...outbound].filter((id) => onboard.has(id));
+    if (remaining.length > 0) {
+      const manny = pickIdleManny(mannies, claimed);
+      if (!manny) return;
+      const containerId = remaining[0];
+      await c.detachContainer(manny.id, containerId, "drifting");
+      claimed.add(manny.id);
+      return; // completion is observed on a later tick, never assumed locally
+    }
+
+    // The factory path always supplies exactly three IDs. An empty/unknown
+    // manifest is never a valid dispatch load (legacy standalone couriers may
+    // still use their explicitly persisted single-container manifest).
+    if (outbound.size === 0) return;
     const requests = await getDeliveryRequests();
     const req = requests.find(
       (r) =>
@@ -881,6 +865,7 @@ export async function runDeliveryRole(
       phase: "returning",
       assignedExplorerId: undefined,
       travelTarget: undefined,
+      outboundContainerIds: undefined,
     });
     return;
   }
@@ -905,7 +890,7 @@ export async function runDeliveryRole(
       await updateDroneRoleState(role.id, { phase: "waiting" });
       return;
     }
-    const currentSectorR = probe?.sector?.relative ?? null;
+    const currentSectorR = probe?.sector?.relative ?? probe?.sector ?? null;
     if (!currentSectorR) return;
     const waypointR = await nextDeliveryWaypoint(currentSectorR, factorySector, label);
     logger.info({ label, waypoint: waypointR, finalTarget: factorySector }, "drone-role: returning to factory");
@@ -1107,6 +1092,26 @@ export async function runExplorerRole(
       return;
     }
 
+    // A relay is not SCUT-transit capable merely because it is on.  Install the
+    // beacon before consuming/installing the waypoint bookmark. Persisting the
+    // relay ID makes this one action idempotent after a restart.
+    if (activeRelay && role.state.beaconRelayId !== String(activeRelay.id) &&
+      typeof (c as any).installScutTransitBeacon === "function") {
+      const beacon = (probe?.inventory?.items ?? []).find(
+        (i: any) => i.type === "scut_transit_beacon",
+      );
+      if (!beacon) {
+        logger.info({ label }, "drone-role: waiting for scut_transit_beacon");
+        return;
+      }
+      const manny = pickIdleManny(mannies, claimed);
+      if (!manny) return;
+      await c.installScutTransitBeacon(manny.id, Number(activeRelay.id));
+      claimed.add(manny.id);
+      await updateDroneRoleState(role.id, { beaconRelayId: String(activeRelay.id) });
+      return;
+    }
+
     // Install waypoint bookmark on the active relay.
     const items: any[] = probe?.inventory?.items ?? [];
     const hasBookmark = items.some((i: any) => i.type === "waypoint_bookmark");
@@ -1294,6 +1299,8 @@ export async function runExplorerRole(
   if (phase === "dropping_container") {
     if (isMoving) return;
     const items: any[] = probe?.inventory?.items ?? [];
+    // Only additional storage is detachable; the probe core is not represented
+    // as an inventory item and is therefore never selected here.
     const container = items.find(isContainerItem);
     if (!container) {
       logger.info({ label }, "drone-role: no container to drop — signaling delivery anyway");
@@ -1309,7 +1316,8 @@ export async function runExplorerRole(
     try {
       await c.detachContainer(manny.id, container.id, "drifting");
       claimed.add(manny.id);
-      await updateDroneRoleState(role.id, { phase: "waiting_for_delivery" });
+      // Detach one per tick.  The next observed inventory decides whether more
+      // returned containers remain; do not create a request prematurely.
     } catch (err: any) {
       // 404 means the container is already gone (dropped or collected); advance anyway.
       if (err instanceof VngApiError && err.status === 404) {
@@ -1355,14 +1363,9 @@ export async function runExplorerRole(
 
 // ── Factory Role ──────────────────────────────────────────────────────────────
 //
-// The VNG API has no operation that moves crafted items into a storage
-// container (probed: no store/load/move-item endpoints exist). The only way
-// supplies physically travel with a Delivery Drone is to exist in *its*
-// probe inventory. So the factory coordinates the supply run remotely:
-// it crafts each missing supply item directly aboard the docked Delivery
-// Drone using that drone's own Mannies/printer, and — when the drone lacks a
-// container the factory can't craft aboard it — stages one of its own
-// containers (drifting) for the drone to recover.
+// VNG v130 exposes storage-moves, so current factory roles prepare and load
+// physical containers aboard the factory. The compatibility implementation
+// below remains only for persisted roles/clients predating that API surface.
 
 /** Supply loadout a Delivery Drone ships with (1 of each). `printer: true`
  *  items are printer-only and must be built with the Atomic Printer. */
@@ -1392,6 +1395,182 @@ export function missingSupplies(dProbe: any): { type: string; recipe: string; pr
   return missing;
 }
 
+function storageContainers(response: any): any[] {
+  return response?.containers ?? response?.storageContainers ?? response?.data ?? [];
+}
+
+function containerFreeCapacity(container: any): number {
+  const capacity = Number(container?.capacity);
+  const used = Number(container?.usedCapacity ?? container?.used ?? 0);
+  return Number.isFinite(capacity) ? Math.max(0, capacity - (Number.isFinite(used) ? used : 0)) : Infinity;
+}
+
+/** New factory path. Every mutating branch issues one Manny action only; later
+ * ticks re-read API state rather than assuming an asynchronous action finished. */
+async function runFactoryContainerWorkflow(
+  role: DroneRole, probe: any, mannies: any[], claimed: Set<string>,
+  c: ReturnType<typeof clientFor>, label: string, deps: FactoryDeps,
+): Promise<boolean> {
+  // Retain the legacy path for callers/tests that provide an older client; the
+  // real v130 client always has this endpoint.
+  if (typeof (c as any).getStorageContainers !== "function") return false;
+  const phase = role.state.phase;
+  const cfg = role.config as FactoryConfig;
+  if (phase === "supplying" || phase === "handoff") {
+    // Migrate persisted pre-v130 direct-craft runs before they can issue
+    // another remote craft; their target identity is retained.
+    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers" });
+    return true;
+  }
+  if (!["idle", "preparing_delivery_containers", "loading_delivery_containers", "handoff_delivery_containers", "awaiting_delivery_pickup"].includes(phase)) return false;
+  const roles = await deps.getDroneRoles();
+  const deliveryId = role.state.servingDeliveryProbeId ??
+    cfg.deliveryProbeIds.find((id) => roles.some((r) => r.probeId === id && r.roleType === "delivery" && r.enabled && r.state.phase === "waiting"));
+  if (deliveryId == null) return true;
+  const dc = deps.clientFor(deliveryId);
+  const dProbe = (await dc.getProbe()).probe;
+  const deliverySector = dProbe?.sector?.relative ?? dProbe?.sector;
+  if (!deliverySector || !atSector(probe, deliverySector)) return true;
+  if (phase === "idle") {
+    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers", servingDeliveryProbeId: deliveryId });
+    return true;
+  }
+  if (phase === "awaiting_delivery_pickup") {
+    const ids = role.state.preparedContainerIds ?? [];
+    const onboard = new Set((dProbe?.inventory?.items ?? []).filter(isContainerItem).map((i: any) => String(i.id)));
+    if (ids.length === 3 && ids.every((id) => onboard.has(id))) {
+      const dRole = roles.find((r) => r.probeId === deliveryId && r.roleType === "delivery");
+      // Persist the courier's own manifest before dropping factory transient
+      // state, so it can dispatch even after factory cleanup.
+      if (dRole) await deps.updateDroneRoleState(dRole.id, { outboundContainerIds: ids });
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle", servingDeliveryProbeId: undefined, preparedContainerIds: undefined,
+        deliveryContainerManifest: undefined, stagedContainerObjectId: undefined,
+      });
+    }
+    return true;
+  }
+
+  const listed = storageContainers(await c.getStorageContainers());
+  const attached = listed.filter((x: any) => isContainerItem(x) || x.kind === "container" || x.type?.includes?.("container"));
+  if (phase === "preparing_delivery_containers") {
+    if (attached.length < 3) {
+      const manny = pickIdleManny(mannies, claimed);
+      if (!manny) return true;
+      await c.craftItem(manny.id, "additional_container");
+      claimed.add(manny.id);
+      return true;
+    }
+    const selected = attached.slice(0, 3);
+    const manifest = role.state.deliveryContainerManifest ?? {
+      resources: String(selected[0].id), deployment: String(selected[1].id), metals: String(selected[2].id),
+    };
+    // Renaming is a real API action, also one per tick.
+    const labels: Array<[keyof typeof manifest, string]> = [
+      ["resources", "delivery-resources"], ["deployment", "delivery-deployment"], ["metals", "delivery-metals"],
+    ];
+    const unlabelled = labels.find(([key, labelText]) => {
+      const id = manifest[key]; const found = selected.find((x: any) => String(x.id) === id);
+      return found && found.label !== labelText;
+    });
+    if (unlabelled) {
+      await c.renameStorageContainer(manifest[unlabelled[0]]!, unlabelled[1]);
+      return true;
+    }
+    await deps.updateDroneRoleState(role.id, {
+      phase: "loading_delivery_containers", deliveryContainerManifest: manifest,
+      preparedContainerIds: [manifest.resources!, manifest.deployment!, manifest.metals!],
+    });
+    return true;
+  }
+
+  const manifest = role.state.deliveryContainerManifest;
+  if (!manifest?.resources || !manifest.deployment || !manifest.metals) {
+    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers" }); return true;
+  }
+  if (phase === "loading_delivery_containers") {
+    const items = probe?.inventory?.items ?? [];
+    // The list endpoint is deliberately not used as proof of contents: v130
+    // exposes each container's own inventory on its GET endpoint.
+    const [deploymentDetail, resourcesDetail, metalsDetail] = await Promise.all([
+      c.getStorageContainer(manifest.deployment),
+      c.getStorageContainer(manifest.resources),
+      c.getStorageContainer(manifest.metals),
+    ]);
+    const detailItems = (detail: any) =>
+      detail?.inventory?.items ?? detail?.items ?? detail?.container?.inventory?.items ?? [];
+    const deployedItems = detailItems(deploymentDetail);
+    const deployedIds = new Set(deployedItems.map((i: any) => String(i.id)));
+    const need = [
+      ...Array(15).fill("waypoint_bookmark"), "scut_relay", "scut_transit_beacon", "integrated_circuit",
+    ];
+    const wantedCount = (type: string) => need.filter((x) => x === type).length;
+    const deployedCount = (type: string) => deployedItems.filter((i: any) => i.type === type).length;
+    // Some response variants annotate source items with their container;
+    // destination item IDs are still excluded in all variants.
+    const sourceItems = items.filter((i: any) =>
+      need.includes(i.type) && !deployedIds.has(String(i.id)) &&
+      String(i.containerId ?? i.location?.containerId ?? "") !== manifest.deployment,
+    );
+    const sourceCount = (type: string) => sourceItems.filter((i: any) => i.type === type).length;
+    const missing = [...new Set(need)].find((type) =>
+      deployedCount(type) + sourceCount(type) < wantedCount(type));
+    if (missing) {
+      if (missing === "integrated_circuit") await c.atomicPrinterCraft(missing);
+      else {
+        const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
+        await c.craftItem(manny.id, missing); claimed.add(manny.id);
+      }
+      return true;
+    }
+    const deploymentItem = sourceItems.find((i: any) => deployedCount(i.type) < wantedCount(i.type));
+    if (deploymentItem) {
+      const manny = pickIdleManny(mannies, claimed);
+      if (!manny) return true;
+      await c.storageMove({ actorMannyId: manny.id, kind: "item", itemIds: [deploymentItem.id], quantity: 1, toContainerId: manifest.deployment });
+      claimed.add(manny.id);
+      return true;
+    }
+    const core = listed.find((x: any) => x.kind !== "container" && !isContainerItem(x));
+    if (!core) return true; // documented list shape includes the probe core; do not invent an ID.
+    const resourceTarget = resourcesDetail?.container ?? resourcesDetail;
+    const metalsTarget = metalsDetail?.container ?? metalsDetail;
+    const stocks = probe?.inventory?.resourceStocks ?? [];
+    const inContainer = (detail: any, type: string) => Number(
+      (detail?.inventory?.resourceStocks ?? detail?.resourceStocks ?? detail?.container?.inventory?.resourceStocks ?? [])
+        .find((s: any) => s.type === type)?.amount ?? 0,
+    );
+    for (const [type, target, detail, desired] of [
+      ["metals", resourceTarget, resourcesDetail, .5],
+      ["ice", resourceTarget, resourcesDetail, .25],
+      ["carbon_compounds", resourceTarget, resourcesDetail, .25],
+      ["metals", metalsTarget, metalsDetail, Infinity],
+    ] as any[]) {
+      const stock = stocks.find((s: any) => s.type === type);
+      const missingAmount = Math.max(0, desired - inContainer(detail, type));
+      const amount = Math.min(Number(stock?.amount ?? 0), containerFreeCapacity(target), missingAmount);
+      if (amount > 0) {
+        const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
+        // Metals fill is deliberately min(source stock, destination free capacity),
+        // not a made-up quantity; earlier resource allocations have priority.
+        await c.storageMove({ actorMannyId: manny.id, kind: "resource", resourceType: type, amount, fromContainerId: core.id, toContainerId: target.id });
+        claimed.add(manny.id); return true;
+      }
+    }
+    await deps.updateDroneRoleState(role.id, { phase: "handoff_delivery_containers" }); return true;
+  }
+  // Handoff preserves the IDs in preparedContainerIds. The courier observes and
+  // recovers only these IDs before recording its outbound manifest.
+  const remaining = (role.state.preparedContainerIds ?? []).filter((id) =>
+    (probe?.inventory?.items ?? []).some((i: any) => String(i.id) === id));
+  if (remaining.length) {
+    const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
+    await c.detachContainer(manny.id, remaining[0], "drifting"); claimed.add(manny.id); return true;
+  }
+  await deps.updateDroneRoleState(role.id, { phase: "awaiting_delivery_pickup" });
+  return true;
+}
+
 export async function runFactoryRole(
   role: DroneRole,
   probe: any,
@@ -1402,6 +1581,7 @@ export async function runFactoryRole(
   label: string,
   deps: FactoryDeps = defaultFactoryDeps,
 ): Promise<void> {
+  if (await runFactoryContainerWorkflow(role, probe, mannies, claimed, c, label, deps)) return;
   const cfg = role.config as FactoryConfig;
   const phase = role.state.phase;
   const servedIds = cfg.deliveryProbeIds ?? [];

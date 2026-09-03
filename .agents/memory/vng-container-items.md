@@ -1,10 +1,10 @@
 ---
-name: VNG containers cannot hold crafted items
-description: What storage containers can and cannot carry in the Von Neumann game API
+name: VNG container storage moves
+description: Current container-loading and SCUT transit-beacon capabilities in the Von Neumann game API
 ---
 
-**Rule:** The VNG API has no endpoint to move inventory items into a storage container. Container contents are *resources only* (filled via `mine` with `targetContainerId`). Probed and confirmed 404 for store/load/move-item style endpoints.
+**Rule:** VNG API v130 supports moving resources, items, and Mannies between onboard containers through the storage-moves operation. Additional-container hull items themselves cannot be moved through that operation.
 
-**Why:** A "load the container with crafted items" design is impossible; supplies only travel with a probe if they exist in that probe's own inventory. The Factory role therefore crafts supply items directly aboard the target drone via `clientFor(droneId)` (remote craft/printer).
+**Why:** Earlier probing targeted guessed store/load paths and incorrectly concluded that crafted items could not be loaded. The live API schema now documents storage moves, container renaming/rules, and a separate SCUT transit-beacon installation operation.
 
-**How to apply:** Any feature that needs to hand crafted items to another probe must craft aboard the recipient (or accept the item stays put). Also: the live container item type is `additional_container` (recipe name too), not `storage_container`; `integrated_circuit` is printer-only (`atomicPrinterCraft`), and "transit beacon" = `waypoint_bookmark`.
+**How to apply:** Use the live OpenAPI schema rather than guessed paths. Load cargo from the probe core into named onboard containers with an idle Manny, then detach/recover the containers for handoff. The container item type is `additional_container`; `integrated_circuit` is printer-only. A `scut_transit_beacon` is a distinct crafted item installed on an active relay, not a waypoint bookmark.

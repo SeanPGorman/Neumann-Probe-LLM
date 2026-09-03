@@ -136,7 +136,7 @@ async function runMiningAutomation(
   c: ReturnType<typeof clientFor>,
   craftingReserve: number,
 ): Promise<void> {
-  const allAssignments = await getMiningAssignments().catch(() => []);
+  const allAssignments = await getMiningAssignments().catch(() => [] as MiningAssignment[]);
   const assignments = allAssignments.filter(
     (a) => a.enabled && (a.probeId ?? null) === (probeId ?? null)
   );

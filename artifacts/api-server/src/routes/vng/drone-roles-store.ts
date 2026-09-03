@@ -65,6 +65,14 @@ export type RoleState = {
   /** Refuel: eligible probe currently claimed for a transfer. */
   servingTargetProbeId?: number;
   servingTargetProbeName?: string;
+  /** Delivery: the three fresh factory containers which may be sent onward. */
+  outboundContainerIds?: string[];
+  /** Factory: stable IDs of the containers being prepared for the current courier. */
+  preparedContainerIds?: string[];
+  /** Factory: labels keyed by delivery cargo class, retained across ticks/restarts. */
+  deliveryContainerManifest?: { resources?: string; deployment?: string; metals?: string };
+  /** Explorer: relay for which the transit beacon action has been requested. */
+  beaconRelayId?: string;
 };
 
 export type DroneRole = {

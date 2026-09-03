@@ -234,6 +234,26 @@ test("installing_beacon: has bookmark + active relay → installs WP on the rela
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
+test("installing_beacon: installs SCUT transit beacon before consuming waypoint", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "installing_beacon");
+  const calls: any[] = [];
+  const client = makeClient(calls, [{ id: "42", type: "scut_relay", status: "on" }]);
+  client.installScutTransitBeacon = async (mannyId: string, relayId: number) => {
+    calls.push({ op: "beacon", mannyId, relayId });
+    return {};
+  };
+  await runner.runExplorerRole(
+    role,
+    probeWith([{ id: "beacon-1", type: "scut_transit_beacon" }, { id: "wp-1", type: "waypoint_bookmark" }]),
+    IDLE_MANNY, new Set(), client, false, "test",
+  );
+  assert.deepEqual(calls, [{ op: "beacon", mannyId: "m-1", relayId: 42 }]);
+  const state = (await store.getDroneRoles())[0].state;
+  assert.equal(state.beaconRelayId, "42");
+  assert.equal(state.phase, "installing_beacon");
+});
+
 test("installing_beacon: includes solar-system metal asteroids in the relay WP", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "installing_beacon");
@@ -346,7 +366,7 @@ test("installing_beacon: no idle manny → defers (stays in installing_beacon)",
 
 // ── dropping_container ────────────────────────────────────────────────────────
 
-test("dropping_container: has container → detaches it and advances to waiting_for_delivery", async () => {
+test("dropping_container: has container → detaches it and waits to observe an empty inventory", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "dropping_container");
   const calls: any[] = [];
@@ -363,7 +383,7 @@ test("dropping_container: has container → detaches it and advances to waiting_
   assert.ok(detach, "expected detachContainer to be called");
   assert.equal(detach.containerId, "cont-1");
   assert.equal(detach.mode, "drifting");
-  assert.equal((await store.getDroneRoles())[0].state.phase, "waiting_for_delivery");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
 test("dropping_container: no container → skips detach and advances to waiting_for_delivery", async () => {

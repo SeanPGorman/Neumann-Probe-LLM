@@ -43,6 +43,24 @@ const vngPost = (path: string, body: Record<string, unknown> = {}) =>
 const vngPatch = (path: string, body: Record<string, unknown>) =>
   vngFetch(path, { method: "PATCH", body: JSON.stringify(body) });
 
+/** Payload accepted by VNG v130's storage-moves endpoint. */
+export type StorageMoveRequest =
+  | {
+      actorMannyId: string;
+      kind: "resource";
+      resourceType: "metals" | "ice" | "carbon_compounds";
+      amount: number;
+      fromContainerId: string;
+      toContainerId: string;
+    }
+  | {
+      actorMannyId: string;
+      kind: "item";
+      itemIds: string[];
+      quantity: number;
+      toContainerId: string;
+    };
+
 /**
  * Normalize a client-supplied probe ID. `null` means the operator's main probe.
  *
@@ -70,6 +88,15 @@ export function clientFor(probeId?: number | null) {
     getMannies:     () => vngFetch(`${base}/mannies`),
     getSector:      () => vngFetch(`${base}/sector`),
     getProbeImprovements: () => vngFetch(`${base}/probe-improvements-available`),
+    getStorageContainers: () => vngFetch(`${base}/storage-containers`),
+    getStorageContainer: (containerId: string) =>
+      vngFetch(`${base}/storage-containers/${encodeURIComponent(containerId)}`),
+    renameStorageContainer: (containerId: string, label: string) =>
+      vngPatch(`${base}/storage-containers/${encodeURIComponent(containerId)}`, { label }),
+    updateStorageContainerRules: (containerId: string, rules: Record<string, unknown>) =>
+      vngPatch(`${base}/storage-containers/${encodeURIComponent(containerId)}/rules`, rules),
+    storageMove: (move: StorageMoveRequest) =>
+      vngPost(`${base}/storage-moves`, move),
 
     moveProbe:      (x: number, y: number, z: number) =>
       vngPost(`${base}/move`, { target: { x, y, z } }),
@@ -119,6 +146,8 @@ export function clientFor(probeId?: number | null) {
       mPost(mannyId, "drop-storage-container", { containerId, planetId }),
     turnOnRelay:    (mannyId: string, relayId: number, networkName?: string) =>
       mPost(mannyId, "turn-on-relay", { relayId, ...(networkName ? { networkName } : {}) }),
+    installScutTransitBeacon: (mannyId: string, relayId: number) =>
+      mPost(mannyId, "install-scut-transit-beacon", { relayId }),
     dropMannyCargo: (mannyId: string) =>
       mPost(mannyId, "drop-manny-cargo"),
   };
@@ -190,4 +219,6 @@ export const assembleProbe = (mannyId: string, containerIds: string[]) => main()
 export const improveProbe = (mannyId: string, improvement: string) => main().improveProbe(mannyId, improvement);
 export const installWaypointBookmark = (mannyId: string, objectId: string, name: string) => main().installWaypointBookmark(mannyId, objectId, name);
 export const turnOnRelay = (mannyId: string, relayId: number, networkName?: string) => main().turnOnRelay(mannyId, relayId, networkName);
+export const installScutTransitBeacon = (mannyId: string, relayId: number) =>
+  main().installScutTransitBeacon(mannyId, relayId);
 export const dropMannyCargo = (mannyId: string) => main().dropMannyCargo(mannyId);

@@ -334,3 +334,48 @@ test("handoff: keeps waiting while the container is still drifting", async () =>
   await runFactoryRole(role, factoryProbe(), [], new Set(), noopClient, false, "t", deps);
   assert.equal(statePatches.length, 0);
 });
+
+test("v130 loading moves only the exact missing resource delta", async () => {
+  const role = factoryRole({
+    phase: "loading_delivery_containers",
+    servingDeliveryProbeId: 200,
+    deliveryContainerManifest: { resources: "r", deployment: "d", metals: "m" },
+    preparedContainerIds: ["r", "d", "m"],
+  });
+  const moves: any[] = [];
+  const deployed = [
+    ...Array.from({ length: 15 }, (_, n) => ({ id: `wp-${n}`, type: "waypoint_bookmark" })),
+    { id: "relay", type: "scut_relay" }, { id: "beacon", type: "scut_transit_beacon" },
+    { id: "ic", type: "integrated_circuit" },
+  ];
+  const { deps } = makeDeps({ roles: [role, deliveryRole()], deliveryProbe: { sector: SECTOR, inventory: { items: [] } } });
+  const c = {
+    getStorageContainers: async () => ({ containers: [{ id: "core", kind: "probe" }, { id: "r", kind: "container" }, { id: "d", kind: "container" }, { id: "m", kind: "container" }] }),
+    getStorageContainer: async (id: string) => ({
+      id, kind: "container", capacity: 10, usedCapacity: 0,
+      inventory: id === "d" ? { items: deployed } : { resourceStocks: id === "r" ? [{ type: "metals", amount: .2 }] : [] },
+    }),
+    storageMove: async (move: any) => { moves.push(move); return {}; },
+  } as any;
+  await runFactoryRole(role, {
+    sector: SECTOR,
+    inventory: { items: [], resourceStocks: [{ type: "metals", amount: 5 }, { type: "ice", amount: 5 }, { type: "carbon_compounds", amount: 5 }] },
+  }, [{ id: "fm", currentTask: null }], new Set(), c, false, "t", deps);
+  assert.deepEqual(moves, [{
+    actorMannyId: "fm", kind: "resource", resourceType: "metals", amount: .3, fromContainerId: "core", toContainerId: "r",
+  }]);
+});
+
+test("v130 factory retains its manifest while awaiting courier pickup", async () => {
+  const role = factoryRole({
+    phase: "awaiting_delivery_pickup", servingDeliveryProbeId: 200,
+    preparedContainerIds: ["r", "d", "m"], deliveryContainerManifest: { resources: "r", deployment: "d", metals: "m" },
+  });
+  const { deps, statePatches } = makeDeps({
+    roles: [role, deliveryRole()],
+    deliveryProbe: { sector: SECTOR, inventory: { items: [{ id: "r", type: "additional_container" }] } },
+  });
+  const c = { getStorageContainers: async () => ({ containers: [] }) } as any;
+  await runFactoryRole(role, factoryProbe(), [], new Set(), c, false, "t", deps);
+  assert.equal(statePatches.length, 0, "do not clear manifest until all exact IDs are onboard");
+});
