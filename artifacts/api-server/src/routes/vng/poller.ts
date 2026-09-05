@@ -814,7 +814,9 @@ async function pollProbe(
   // Explorer scans are recorded from the same successful sector response that
   // drives role automation. Do not scan while the probe is in transit: the
   // sector endpoint may be unavailable or still describe the departure sector.
-  const explorerRole = (await getDroneRoles().catch(() => []))
+  const explorerRole = (await getDroneRoles().catch(
+    (): Awaited<ReturnType<typeof getDroneRoles>> => [],
+  ))
     .find((role) => role.enabled && role.probeId === probeId && role.roleType === "explorer");
   const movingStatuses = new Set(["preparing", "accelerating", "cruising", "decelerating", "moving"]);
   const isProbeMoving = movingStatuses.has(probe?.status) || movingStatuses.has(probe?.movement?.status);
@@ -1036,6 +1038,15 @@ async function pollProbe(
           craftingAttempts++;
           craftingInsufficientCount++;
         }
+      } else if (err instanceof VngApiError && err.status === 429) {
+        // Rate limiting is transient. Keep this row pending and stop issuing
+        // more actions for this probe during the current tick; otherwise every
+        // remaining row is immediately failed against the same exhausted token.
+        logger.warn(
+          { actionId: action.id, label },
+          "poller: VNG rate limit reached — keeping action pending and pausing this probe until next poll",
+        );
+        break;
       } else {
         logger.error({ actionId: action.id, err: msg, label }, "poller: action execution failed");
         await resolveQuietly(action.id, { status: "failed", error: msg });
