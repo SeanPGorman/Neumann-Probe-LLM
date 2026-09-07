@@ -67,6 +67,8 @@ export type RoleState = {
   servingTargetProbeName?: string;
   /** Delivery: the three fresh factory containers which may be sent onward. */
   outboundContainerIds?: string[];
+  /** Delivery/factory: explorer containers being returned to the factory. */
+  returnedContainerIds?: string[];
   /** Factory: stable IDs of the containers being prepared for the current courier. */
   preparedContainerIds?: string[];
   /** Factory: labels keyed by delivery cargo class, retained across ticks/restarts. */

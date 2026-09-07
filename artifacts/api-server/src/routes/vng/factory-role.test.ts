@@ -336,6 +336,46 @@ test("handoff: keeps waiting while the container is still drifting", async () =>
   assert.equal(statePatches.length, 0);
 });
 
+test("v130 preparation selects empty containers instead of repurposing loaded storage", async () => {
+  const role = factoryRole({
+    phase: "preparing_delivery_containers",
+    servingDeliveryProbeId: 200,
+  });
+  const renamed: any[] = [];
+  const { deps } = makeDeps({
+    roles: [role, deliveryRole()],
+    deliveryProbe: { sector: SECTOR, inventory: { items: [] } },
+  });
+  const c = {
+    getStorageContainers: async () => ({
+      containers: [
+        { id: "core", kind: "probe", usedCapacity: 0.8 },
+        { id: "loaded", kind: "container", label: "existing-cargo", usedCapacity: 1 },
+        { id: "empty-r", kind: "container", label: "Container 1", usedCapacity: 0 },
+        { id: "empty-d", kind: "container", label: "Container 2", usedCapacity: 0 },
+        { id: "empty-m", kind: "container", label: "Container 3", usedCapacity: 0 },
+      ],
+    }),
+    renameStorageContainer: async (id: string, label: string) => {
+      renamed.push({ id, label });
+      return {};
+    },
+  } as any;
+
+  await runFactoryRole(
+    role,
+    factoryProbe(),
+    [{ id: "fm", currentTask: null }],
+    new Set(),
+    c,
+    false,
+    "t",
+    deps,
+  );
+
+  assert.deepEqual(renamed, [{ id: "empty-r", label: "delivery-resources" }]);
+});
+
 test("v130 loading moves only the exact missing resource delta", async () => {
   const role = factoryRole({
     phase: "loading_delivery_containers",
@@ -372,6 +412,130 @@ test("v130 loading moves only the exact missing resource delta", async () => {
   }, [{ id: "fm", currentTask: null }], new Set(), c, false, "t", deps);
   assert.deepEqual(moves, [{
     actorMannyId: "fm", kind: "resource", resourceType: "metals", amount: .3, fromContainerId: "core", toContainerId: "r",
+  }]);
+});
+
+test("v130 loading waits for an active storage move before recalculating resources", async () => {
+  const role = factoryRole({
+    phase: "loading_delivery_containers",
+    servingDeliveryProbeId: 200,
+    deliveryContainerManifest: { resources: "r", deployment: "d", metals: "m" },
+    preparedContainerIds: ["r", "d", "m"],
+  });
+  const moves: any[] = [];
+  const deployed = [
+    ...Array.from({ length: 15 }, (_, n) => ({ id: `wp-${n}`, type: "waypoint_bookmark" })),
+    { id: "relay", type: "scut_relay" }, { id: "beacon", type: "scut_transit_beacon" },
+    { id: "ic", type: "integrated_circuit" },
+    ...Array.from({ length: 5 }, (_, n) => ({ id: `missile-${n}`, type: "missile" })),
+  ];
+  const { deps } = makeDeps({
+    roles: [role, deliveryRole()],
+    deliveryProbe: { sector: SECTOR, inventory: { items: [] } },
+  });
+  const c = {
+    getStorageContainers: async () => ({
+      containers: [
+        { id: "core", kind: "probe" },
+        { id: "r", kind: "container" },
+        { id: "d", kind: "container" },
+        { id: "m", kind: "container" },
+      ],
+    }),
+    getStorageContainer: async (id: string) => ({
+      id,
+      kind: "container",
+      capacity: 1,
+      usedCapacity: 0,
+      inventory: id === "d" ? { items: deployed } : { resourceStocks: [] },
+    }),
+    storageMove: async (move: any) => { moves.push(move); return {}; },
+  } as any;
+  await runFactoryRole(
+    role,
+    {
+      sector: SECTOR,
+      inventory: {
+        items: [],
+        resourceStocks: [{ type: "metals", amount: 5 }],
+      },
+    },
+    [{ id: "fm", currentTask: "moving_stockage" }],
+    new Set(),
+    c,
+    false,
+    "t",
+    deps,
+  );
+  assert.deepEqual(moves, []);
+});
+
+test("v130 loading uses the container that actually holds the resource", async () => {
+  const role = factoryRole({
+    phase: "loading_delivery_containers",
+    servingDeliveryProbeId: 200,
+    deliveryContainerManifest: { resources: "r", deployment: "d", metals: "m" },
+    preparedContainerIds: ["r", "d", "m"],
+  });
+  const moves: any[] = [];
+  const deployed = [
+    ...Array.from({ length: 15 }, (_, n) => ({ id: `wp-${n}`, type: "waypoint_bookmark" })),
+    { id: "relay", type: "scut_relay" }, { id: "beacon", type: "scut_transit_beacon" },
+    { id: "ic", type: "integrated_circuit" },
+    ...Array.from({ length: 5 }, (_, n) => ({ id: `missile-${n}`, type: "missile" })),
+  ];
+  const { deps } = makeDeps({
+    roles: [role, deliveryRole()],
+    deliveryProbe: { sector: SECTOR, inventory: { items: [] } },
+  });
+  const c = {
+    getStorageContainers: async () => ({
+      containers: [
+        { id: "core", kind: "probe" },
+        { id: "r", kind: "container" },
+        { id: "d", kind: "container" },
+        { id: "m", kind: "container" },
+      ],
+    }),
+    getStorageContainer: async (id: string) => ({
+      id,
+      kind: "container",
+      capacity: 1,
+      usedCapacity: 0,
+      inventory: id === "d" ? { items: deployed } : { resourceStocks: [] },
+    }),
+    storageMove: async (move: any) => { moves.push(move); return {}; },
+  } as any;
+  await runFactoryRole(
+    role,
+    {
+      sector: SECTOR,
+      inventory: {
+        items: [],
+        resourceStocks: [{
+          type: "metals",
+          amount: 0.34,
+          containers: [{
+            amount: 0.34,
+            container: { id: "itm-source-metals" },
+          }],
+        }],
+      },
+    },
+    [{ id: "fm", currentTask: null }],
+    new Set(),
+    c,
+    false,
+    "t",
+    deps,
+  );
+  assert.deepEqual(moves, [{
+    actorMannyId: "fm",
+    kind: "resource",
+    resourceType: "metals",
+    amount: 0.34,
+    fromContainerId: "container-itm-source-metals",
+    toContainerId: "r",
   }]);
 });
 

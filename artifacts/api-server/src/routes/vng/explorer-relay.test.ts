@@ -145,7 +145,7 @@ test("deploying_relay: sector has status:'on' relay → proceeds to installing_b
   assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
 });
 
-test("activating_relay: off relay + integrated_circuit → turns on relay then installs beacon", async () => {
+test("activating_relay: off relay + integrated_circuit → starts activation and waits for status:on", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "activating_relay");
   const calls: any[] = [];
@@ -160,7 +160,7 @@ test("activating_relay: off relay + integrated_circuit → turns on relay then i
     "test",
   );
   assert.deepEqual(calls, [{ op: "turnOnRelay", mannyId: "m-1", relayId: 42, networkName: "net" }]);
-  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "activating_relay");
 });
 
 test("activating_relay: relay now status:'on' → advances to installing_beacon without acting", async () => {
@@ -208,7 +208,7 @@ test("traveling: arrived (not moving) → returns to idle for the next coverage 
 // function fails open (returns true = covered), so this phase is exercised
 // directly with an already-active relay.
 
-test("installing_beacon: has bookmark + active relay → installs WP on the relay", async () => {
+test("installing_beacon: has bookmark + active relay → installs WP on a celestial target", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "installing_beacon");
   await store.updateDroneRoleState(role.id, { phase: "installing_beacon", wpCounter: 1 });
@@ -229,7 +229,7 @@ test("installing_beacon: has bookmark + active relay → installs WP on the rela
   );
   const wp = calls.find((c: any) => c.op === "installWP");
   assert.ok(wp, "expected installWaypointBookmark to be called");
-  assert.equal(wp.objectId, "relay-1");
+  assert.equal(wp.objectId, "ast-1");
   assert.ok(wp.name.startsWith("WP-001-"), `unexpected WP name: ${wp.name}`);
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
@@ -252,6 +252,33 @@ test("installing_beacon: installs SCUT transit beacon before consuming waypoint"
   const state = (await store.getDroneRoles())[0].state;
   assert.equal(state.beaconRelayId, "42");
   assert.equal(state.phase, "installing_beacon");
+});
+
+test("installing_beacon: waits for the transit beacon task to finish before installing WP", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "installing_beacon");
+  await store.updateDroneRoleState(role.id, {
+    phase: "installing_beacon",
+    wpCounter: 2,
+    beaconRelayId: "42",
+  });
+  const calls: any[] = [];
+  await runner.runExplorerRole(
+    (await store.getDroneRoles())[0],
+    probeWith([
+      { id: "beacon-1", type: "scut_transit_beacon" },
+      { id: "wb-1", type: "waypoint_bookmark" },
+    ]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, [{ id: "42", type: "scut_relay", status: "on", isTransitBeacon: false }]),
+    false,
+    "test",
+  );
+  assert.deepEqual(calls, []);
+  const state = (await store.getDroneRoles())[0].state;
+  assert.equal(state.phase, "installing_beacon");
+  assert.equal(state.wpCounter, 2);
 });
 
 test("installing_beacon: includes solar-system metal asteroids in the relay WP", async () => {
@@ -290,7 +317,7 @@ test("installing_beacon: includes solar-system metal asteroids in the relay WP",
 
   const wp = calls.find((c: any) => c.op === "installWP");
   assert.ok(wp, "expected installWaypointBookmark to be called");
-  assert.equal(wp.objectId, "relay-1");
+  assert.equal(wp.objectId, "deut-asteroid");
   assert.match(wp.name, /2 Metal\. 1 Deut\. 0 Ice\. 0 Organics/);
 });
 
@@ -386,6 +413,39 @@ test("dropping_container: has container → detaches it and waits to observe an 
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
+test("dropping_container: resolves the inventory item to the v130 storage-container ID", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "dropping_container");
+  const calls: any[] = [];
+  const client = makeClient(calls) as any;
+  client.getStorageContainers = async () => ({
+    containers: [
+      {
+        id: "container-itm_container_1",
+        kind: "container",
+        label: "Explorer cargo",
+      },
+    ],
+  });
+  await runner.runExplorerRole(
+    role,
+    probeWith([{ id: "itm_container_1", type: "additional_container" }]),
+    IDLE_MANNY,
+    new Set(),
+    client,
+    false,
+    "test",
+  );
+  assert.ok(
+    calls.some(
+      (call: any) =>
+        call.op === "detach" &&
+        call.containerId === "container-itm_container_1",
+    ),
+  );
+  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
+});
+
 test("dropping_container: no container → skips detach and advances to waiting_for_delivery", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "dropping_container");
@@ -393,6 +453,24 @@ test("dropping_container: no container → skips detach and advances to waiting_
   await runner.runExplorerRole(role, probeWith([]), IDLE_MANNY, new Set(), makeClient(calls), false, "test");
   assert.ok(!calls.find((c: any) => c.op === "detach"), "no detach when no container");
   assert.equal((await store.getDroneRoles())[0].state.phase, "waiting_for_delivery");
+});
+
+test("dropping_container: waits while a detach task is still running", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "dropping_container");
+  const detachingManny = [
+    { id: "m-1", currentTask: "detaching_storage_container", integrityPercent: 100 },
+  ];
+  await runner.runExplorerRole(
+    role,
+    probeWith([]),
+    detachingManny,
+    new Set(),
+    makeClient([]),
+    false,
+    "test",
+  );
+  assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 });
 
 test("dropping_container: no idle manny → stays in dropping_container", async () => {
@@ -459,10 +537,10 @@ test("waiting_for_delivery: request marked completed → resumes exploration (ba
 
 // ── full hop integration ──────────────────────────────────────────────────────
 // Walk the complete relay-required hop: deploying_relay (jettison) →
-// activating_relay (turnOn) → dropping_container (detach) →
-// waiting_for_delivery (request created).  Uses four ticks, one phase each.
+// activating_relay (turnOn, then observe status:on) → dropping_container
+// (detach) → waiting_for_delivery (request created).
 
-test("full relay hop: jettison → turn-on → drop → signal delivery in four ticks", async () => {
+test("full relay hop: jettison → turn-on → observe active → drop → signal delivery", async () => {
   const { runner, store } = await importFresh();
   const role = await seedExplorer(store, "deploying_relay");
   const calls: any[] = [];
@@ -493,7 +571,7 @@ test("full relay hop: jettison → turn-on → drop → signal delivery in four 
   );
   assert.equal((await store.getDroneRoles())[0].state.phase, "activating_relay");
 
-  // Tick 3 (activating_relay): turn on the relay → advance to installing_beacon
+  // Tick 3 (activating_relay): start the long-running relay activation.
   await runner.runExplorerRole(
     (await store.getDroneRoles())[0],
     probeWith([{ id: "ic-1", type: "integrated_circuit" }]),
@@ -504,25 +582,41 @@ test("full relay hop: jettison → turn-on → drop → signal delivery in four 
     "test",
   );
   assert.ok(calls.some((c: any) => c.op === "turnOnRelay"), "tick 3: turnOnRelay expected");
-  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
+  assert.equal((await store.getDroneRoles())[0].state.phase, "activating_relay");
 
-  // Tick 4 (installing_beacon): install the waypoint on the active relay.
+  // Tick 4: a later sector read observes status:on and advances safely.
+  const sectorWithOnRelay = [
+    { id: "55", type: "scut_relay", status: "on" },
+    { id: "star-55", type: "star" },
+  ];
   await runner.runExplorerRole(
     (await store.getDroneRoles())[0],
     probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
     IDLE_MANNY,
     new Set(),
-    makeClient(calls, [{ id: "55", type: "scut_relay", status: "on" }]),
+    makeClient(calls, sectorWithOnRelay),
+    false,
+    "test",
+  );
+  assert.equal((await store.getDroneRoles())[0].state.phase, "installing_beacon");
+
+  // Tick 5 (installing_beacon): install the waypoint on a celestial target.
+  await runner.runExplorerRole(
+    (await store.getDroneRoles())[0],
+    probeWith([{ id: "wb-1", type: "waypoint_bookmark" }]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, sectorWithOnRelay),
     false,
     "test",
   );
   assert.ok(
-    calls.some((c: any) => c.op === "installWP" && c.objectId === "55"),
-    "tick 4: waypoint installation on the relay expected",
+    calls.some((c: any) => c.op === "installWP" && c.objectId === "star-55"),
+    "tick 5: waypoint installation on the celestial target expected",
   );
   assert.equal((await store.getDroneRoles())[0].state.phase, "dropping_container");
 
-  // Tick 5 (dropping_container): no container → skip detach → waiting_for_delivery
+  // Tick 6 (dropping_container): no container → skip detach → waiting_for_delivery
   await runner.runExplorerRole(
     (await store.getDroneRoles())[0],
     probeWith([]),

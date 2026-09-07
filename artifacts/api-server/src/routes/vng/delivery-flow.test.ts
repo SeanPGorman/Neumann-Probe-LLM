@@ -56,8 +56,8 @@ function makeClient(calls: any[], sectorObjects: any[] = []) {
       calls.push({ op: "move", x, y, z });
       return {};
     },
-    detachContainer: async (mannyId: string, containerId: string, mode: string) => {
-      calls.push({ op: "detach", mannyId, containerId, mode });
+    detachContainer: async (mannyId: string, containerId: string, mode: string, objectId?: string) => {
+      calls.push({ op: "detach", mannyId, containerId, mode, objectId });
       return {};
     },
     recoverContainer: async (mannyId: string, objectId: string) => {
@@ -115,13 +115,14 @@ test("delivery e2e: dispatch → travel → detach additional_container for expl
   assert.equal(reqNow.status, "assigned");
   assert.equal(reqNow.assignedDeliveryProbeId, 200);
 
-  // Tick 2 (traveling, not yet arrived): issues a move toward the explorer.
+  // Tick 2 (traveling, not yet arrived): issues one direct move to the explorer.
   await runner.runDeliveryRole(
     roleNow, probeAtFactory, IDLE_MANNY, new Set(), makeClient(calls), false, "test",
   );
-  // Uncovered long trips advance one parity-safe hop; routing may select a
-  // relay instead when cached SCUT data is available.
-  assert.ok(calls.some((c) => c.op === "move"));
+  assert.deepEqual(
+    calls.find((c) => c.op === "move"),
+    { op: "move", ...EXPLORER_SECTOR },
+  );
 
   // Tick 3 (arrived): phase flips to delivering.
   const probeAtExplorer = { ...probeAtFactory, sector: EXPLORER_SECTOR };
@@ -141,8 +142,9 @@ test("delivery e2e: dispatch → travel → detach additional_container for expl
   );
   const detach = calls.find((c) => c.op === "detach");
   assert.ok(detach, "expected the container to be detached for the explorer");
-  assert.equal(detach.containerId, "cont-1"); // the additional_container item
-  assert.equal(detach.mode, "drifting");
+  assert.equal(detach.containerId, "container-cont-1"); // canonical v130 storage ID
+  assert.equal(detach.mode, "attach_to_probe");
+  assert.equal(detach.objectId, "300");
   reqNow = (await store.getDeliveryRequests())[0];
   assert.equal(reqNow.status, "assigned", "detach start is not delivery completion");
   // Completion is based on the next observed inventory, not an optimistic
@@ -153,9 +155,9 @@ test("delivery e2e: dispatch → travel → detach additional_container for expl
     IDLE_MANNY, new Set(), makeClient(calls), false, "test",
   );
   reqNow = (await store.getDeliveryRequests())[0];
-  assert.equal(reqNow.status, "completed");
+  assert.equal(reqNow.status, "assigned", "delivery is not complete until the explorer is refueled");
   roleNow = (await store.getDroneRoles())[0];
-  assert.equal(roleNow.state.phase, "returning");
+  assert.equal(roleNow.state.phase, "refueling_explorer");
 });
 
 test("delivery waiting: factory-served drone refuses dispatch until full loadout", async () => {

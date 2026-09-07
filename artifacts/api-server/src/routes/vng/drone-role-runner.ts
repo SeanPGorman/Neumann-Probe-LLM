@@ -47,6 +47,19 @@ export function isContainerItem(i: any): boolean {
   );
 }
 
+function canonicalContainerId(id: unknown): string {
+  const value = String(id ?? "");
+  return value.startsWith("container-") ? value : `container-${value}`;
+}
+
+function onboardContainerIds(items: any[]): Set<string> {
+  return new Set(
+    items
+      .filter(isContainerItem)
+      .map((item: any) => canonicalContainerId(item.id)),
+  );
+}
+
 /** SCUT relay sector objects report state as `status: "off" | "on"` (per the
  *  VNG OpenAPI spec); older code assumed a boolean `active`. Accept both. */
 export function isInactiveRelay(o: any): boolean {
@@ -273,8 +286,15 @@ export async function runDroneRoleAutomation(
   const claimed = new Set<string>();
   const isMoving = MOVING_STATUSES.has(probe?.status ?? "");
 
-  // Always repair regardless of phase or movement status.
-  await repairDamagedProbe(probe, mannies, claimed, c, label);
+  // A factory-served courier's onboard metals are mission cargo, not a repair
+  // reserve. Consuming them here can silently invalidate the exact manifest
+  // after pickup but before dispatch.
+  const preservesDeliveryCargo =
+    role.roleType === "delivery" &&
+    Number.isInteger(Number((role.config as DeliveryConfig).factoryProbeId));
+  if (!preservesDeliveryCargo) {
+    await repairDamagedProbe(probe, mannies, claimed, c, label);
+  }
 
   try {
     if (role.roleType === "refuel") {
@@ -288,7 +308,7 @@ export async function runDroneRoleAutomation(
     }
   } catch (err: any) {
     if (err instanceof VngApiError && err.status === 409) {
-      logger.info({ label }, "drone-role: manny busy (409), deferring");
+      logger.info({ label, err: err?.message }, "drone-role: conflict (409), deferring");
       return;
     }
     logger.error({ label, err: err?.message }, "drone-role: automation error");
@@ -712,7 +732,7 @@ export async function runDeliveryRole(
     // Once recorded locally, the courier manifest is authoritative: factory
     // cleanup must not strand a fully loaded courier.
     const requiredManifest = role.state.outboundContainerIds ?? myFactory?.state.preparedContainerIds;
-    const onboardIds = new Set(items.filter(isContainerItem).map((i: any) => String(i.id)));
+    const onboardIds = onboardContainerIds(items);
     if (requiredManifest?.length === 3 && requiredManifest.some((id) => !onboardIds.has(id))) {
       if (isMoving) return;
       let sectorObjects: any[] = [];
@@ -747,6 +767,85 @@ export async function runDeliveryRole(
     // behaviour for compatibility.
     if (myFactory) {
       if (requiredManifest?.length !== 3 || requiredManifest.some((id) => !onboardIds.has(id))) return;
+      const resourcesId = myFactory.state.deliveryContainerManifest?.resources;
+      const deploymentId = myFactory.state.deliveryContainerManifest?.deployment;
+      const metalsId = myFactory.state.deliveryContainerManifest?.metals;
+      if (!resourcesId || !deploymentId || !metalsId) return;
+      const [resourcesDetail, deploymentDetail, metalsDetail] = await Promise.all([
+        c.getStorageContainer(resourcesId),
+        c.getStorageContainer(deploymentId),
+        c.getStorageContainer(metalsId),
+      ]);
+      const resourceAmount = (detail: any, type: string) => Number(
+        (detail?.inventory?.resourceStocks ??
+          detail?.resourceStocks ??
+          detail?.container?.inventory?.resourceStocks ??
+          []).find((stock: any) => stock.type === type)?.amount ?? 0,
+      );
+      const resourcesValid =
+        resourceAmount(resourcesDetail, "metals") >= 0.5 &&
+        resourceAmount(resourcesDetail, "ice") >= 0.25 &&
+        resourceAmount(resourcesDetail, "carbon_compounds") >= 0.25;
+      const metalsTarget = metalsDetail?.container ?? metalsDetail;
+      const metalsValid =
+        resourceAmount(metalsDetail, "metals") > 0 &&
+        Number(metalsTarget?.freeCapacity ?? 0) <= 0.000001;
+      if (!resourcesValid || !metalsValid) {
+        logger.warn(
+          {
+            label,
+            resourcesValid,
+            metalsValid,
+            resourcesMetals: resourceAmount(resourcesDetail, "metals"),
+            resourcesIce: resourceAmount(resourcesDetail, "ice"),
+            resourcesCarbon: resourceAmount(resourcesDetail, "carbon_compounds"),
+            metalsAmount: resourceAmount(metalsDetail, "metals"),
+            metalsFreeCapacity: Number(metalsTarget?.freeCapacity ?? 0),
+          },
+          "drone-role: staged courier resource manifest is incomplete — holding dispatch",
+        );
+        return;
+      }
+      if (deploymentId) {
+        const detail = deploymentDetail;
+        const deployedItems =
+          detail?.inventory?.items ??
+          detail?.items ??
+          detail?.container?.inventory?.items ??
+          [];
+        const deployedIds = new Set(deployedItems.map((item: any) => String(item.id)));
+        const wantedCount = (type: string) =>
+          DEPLOYMENT_CONTAINER_ITEMS.filter((candidate) => candidate === type).length;
+        const deployedCount = (type: string) =>
+          deployedItems.filter((item: any) => item.type === type).length;
+        const missingType = [...new Set(DEPLOYMENT_CONTAINER_ITEMS)].find(
+          (type) => deployedCount(type) < wantedCount(type),
+        );
+        if (missingType) {
+          const sourceItem = items.find(
+            (item: any) =>
+              item.type === missingType &&
+              !deployedIds.has(String(item.id)) &&
+              String(item.containerId ?? item.location?.containerId ?? "") !== deploymentId,
+          );
+          if (!sourceItem) return;
+          const manny = pickIdleManny(mannies, claimed);
+          if (!manny) return;
+          await c.storageMove({
+            actorMannyId: manny.id,
+            kind: "item",
+            itemIds: [sourceItem.id],
+            quantity: 1,
+            toContainerId: deploymentId,
+          });
+          claimed.add(manny.id);
+          logger.info(
+            { label, itemType: missingType, containerId: deploymentId },
+            "drone-role: packing courier-supplied item into deployment container",
+          );
+          return;
+        }
+      }
       if ((role.state.outboundContainerIds ?? []).join(",") !== requiredManifest.join(",")) {
         await updateDroneRoleState(role.id, { outboundContainerIds: requiredManifest });
         return;
@@ -770,7 +869,11 @@ export async function runDeliveryRole(
       travelTarget: request.explorerSector,
       // Compatibility for pre-factory roles. Factory couriers have already
       // persisted their exact three-ID manifest before they can dispatch.
-      ...(!myFactory ? { outboundContainerIds: items.filter(isContainerItem).map((i: any) => String(i.id)) } : {}),
+      ...(!myFactory ? {
+        outboundContainerIds: items
+          .filter(isContainerItem)
+          .map((item: any) => canonicalContainerId(item.id)),
+      } : {}),
     });
     logger.info({ label, requestId: request.id, explorerSector: request.explorerSector }, "drone-role: delivery dispatched");
     return;
@@ -788,12 +891,9 @@ export async function runDeliveryRole(
       await updateDroneRoleState(role.id, { phase: "delivering" });
       return;
     }
-    const currentSectorD = probe?.sector?.relative ?? probe?.sector ?? null;
-    if (!currentSectorD) return;
-    const waypoint = await nextDeliveryWaypoint(currentSectorD, target, label);
-    logger.info({ label, waypoint, finalTarget: target }, "drone-role: moving toward explorer sector");
+    logger.info({ label, target }, "drone-role: moving directly to explorer sector");
     try {
-      await c.moveProbe(waypoint.x, waypoint.y, waypoint.z);
+      await c.moveProbe(target.x, target.y, target.z);
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: move to explorer failed");
     }
@@ -818,7 +918,11 @@ export async function runDeliveryRole(
     const drifting = sectorObjects.find((o: any) =>
       (o.type === "storage_container" || o.type === "detached_container") &&
       o.mode === "drifting" &&
-      !outbound.has(String(o.containerId ?? o.id).replace(/^detached-container-/, "")),
+      !outbound.has(
+        canonicalContainerId(
+          String(o.containerId ?? o.id).replace(/^detached-container-/, ""),
+        ),
+      ),
     );
     if (drifting) {
       const manny = pickIdleManny(mannies, claimed);
@@ -827,6 +931,15 @@ export async function runDeliveryRole(
         try {
           await c.recoverContainer(manny.id, drifting.id);
           claimed.add(manny.id);
+          const returnedId = canonicalContainerId(
+            String(drifting.containerId ?? drifting.id)
+              .replace(/^detached-container-/, ""),
+          );
+          await updateDroneRoleState(role.id, {
+            returnedContainerIds: [
+              ...new Set([...(role.state.returnedContainerIds ?? []), returnedId]),
+            ],
+          });
         } catch (err: any) {
           logger.warn({ label, err: err?.message }, "drone-role: container recovery failed");
         }
@@ -834,15 +947,14 @@ export async function runDeliveryRole(
       return; // exactly one asynchronous Manny action per tick
     }
 
-    const onboard = new Set(
-      (probe?.inventory?.items ?? []).filter(isContainerItem).map((i: any) => String(i.id)),
-    );
+    const onboard = onboardContainerIds(probe?.inventory?.items ?? []);
     const remaining = [...outbound].filter((id) => onboard.has(id));
     if (remaining.length > 0) {
+      if (explorerId == null) return;
       const manny = pickIdleManny(mannies, claimed);
       if (!manny) return;
       const containerId = remaining[0];
-      await c.detachContainer(manny.id, containerId, "drifting");
+      await c.detachContainer(manny.id, containerId, "attach_to_probe", String(explorerId));
       claimed.add(manny.id);
       return; // completion is observed on a later tick, never assumed locally
     }
@@ -851,16 +963,56 @@ export async function runDeliveryRole(
     // manifest is never a valid dispatch load (legacy standalone couriers may
     // still use their explicitly persisted single-container manifest).
     if (outbound.size === 0) return;
+    await updateDroneRoleState(role.id, {
+      phase: "refueling_explorer",
+    });
+    return;
+  }
+
+  if (phase === "refueling_explorer") {
+    if (isMoving) return;
+    const explorerId = role.state.assignedExplorerId;
+    if (explorerId == null) {
+      await updateDroneRoleState(role.id, { phase: "returning" });
+      return;
+    }
+    let explorerProbe: any;
+    try {
+      explorerProbe = (await clientFor(explorerId).getProbe()).probe;
+    } catch {
+      logger.warn({ label, explorerId }, "drone-role: could not fetch explorer fuel state");
+      return;
+    }
+    const explorerFuel = Number(explorerProbe?.fuel?.deuterium) || 0;
+    const explorerCapacity = fuelCapacity(explorerProbe);
+    const missingFuel = Math.max(0, explorerCapacity - explorerFuel);
+    if (missingFuel > 0) {
+      const manny = pickIdleManny(mannies, claimed);
+      if (!manny) return;
+      const transferable = Math.min(
+        missingFuel,
+        Math.max(0, (Number(probe?.fuel?.deuterium) || 0) - MIN_DEUTERIUM_RESERVE),
+      );
+      if (transferable <= 0) {
+        logger.warn({ label, explorerId }, "drone-role: insufficient courier fuel to refuel explorer");
+        return;
+      }
+      await c.transferDeuteriumToProbe(manny.id, explorerId, transferable);
+      claimed.add(manny.id);
+      logger.info(
+        { label, explorerId, amount: transferable, missingFuel },
+        "drone-role: refueling explorer before returning",
+      );
+      return;
+    }
+
     const requests = await getDeliveryRequests();
     const req = requests.find(
       (r) =>
         r.status === "assigned" &&
         r.assignedDeliveryProbeId === role.probeId,
     );
-    if (req) {
-      await updateDeliveryRequest(req.id, { status: "completed" });
-    }
-
+    if (req) await updateDeliveryRequest(req.id, { status: "completed" });
     await updateDroneRoleState(role.id, {
       phase: "returning",
       assignedExplorerId: undefined,
@@ -886,16 +1038,51 @@ export async function runDeliveryRole(
     if (!factorySector) return;
 
     if (atSector(probe, factorySector)) {
+      const returnedIds = role.state.returnedContainerIds ?? [];
+      const onboardIds = onboardContainerIds(probe?.inventory?.items ?? []);
+      const remainingReturned = returnedIds.filter((id) => onboardIds.has(id));
+      if (remainingReturned.length > 0) {
+        const manny = pickIdleManny(mannies, claimed);
+        if (!manny) return;
+        await c.detachContainer(
+          manny.id,
+          remainingReturned[0],
+          "attach_to_probe",
+          String(cfg.factoryProbeId),
+        );
+        claimed.add(manny.id);
+        logger.info(
+          { label, containerId: remainingReturned[0] },
+          "drone-role: returning explorer container to factory",
+        );
+        return;
+      }
+      if (returnedIds.length > 0) {
+        const roles = await getDroneRoles();
+        const factoryRole = roles.find(
+          (candidate) =>
+            candidate.enabled &&
+            candidate.roleType === "factory" &&
+            candidate.probeId === cfg.factoryProbeId,
+        );
+        if (factoryRole) {
+          await updateDroneRoleState(factoryRole.id, {
+            phase: "collecting_returned_containers",
+            servingDeliveryProbeId: role.probeId,
+            returnedContainerIds: returnedIds,
+          });
+        }
+      }
       logger.info({ label }, "drone-role: returned to factory — waiting for next dispatch");
-      await updateDroneRoleState(role.id, { phase: "waiting" });
+      await updateDroneRoleState(role.id, {
+        phase: "waiting",
+        returnedContainerIds: undefined,
+      });
       return;
     }
-    const currentSectorR = probe?.sector?.relative ?? probe?.sector ?? null;
-    if (!currentSectorR) return;
-    const waypointR = await nextDeliveryWaypoint(currentSectorR, factorySector, label);
-    logger.info({ label, waypoint: waypointR, finalTarget: factorySector }, "drone-role: returning to factory");
+    logger.info({ label, target: factorySector }, "drone-role: returning directly to factory");
     try {
-      await c.moveProbe(waypointR.x, waypointR.y, waypointR.z);
+      await c.moveProbe(factorySector.x, factorySector.y, factorySector.z);
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: return move failed");
     }
@@ -1010,6 +1197,31 @@ function hasExistingWaypoint(sectorObjects: any[]): boolean {
   return sectorObjects.some(containsWaypoint);
 }
 
+/** VNG waypoint bookmarks attach to celestial objects, never to SCUT relays. */
+function waypointTarget(sectorObjects: any[]): any | null {
+  const celestialTypes = new Set([
+    "star",
+    "planet",
+    "asteroid",
+    "gas_giant",
+    "moon",
+    "comet",
+  ]);
+  for (const object of sectorObjects) {
+    if (celestialTypes.has(object?.type)) return object;
+    if (object?.type === "solar_system") {
+      const targets: any[] = object.bookmarkTargets ?? object.bodies ?? [];
+      const star = targets.find((candidate: any) => candidate?.type === "star");
+      if (star) return star;
+      const target = targets.find((candidate: any) =>
+        celestialTypes.has(candidate?.type),
+      );
+      if (target) return target;
+    }
+  }
+  return null;
+}
+
 /** Build the standard WP bookmark name. */
 function buildWpName(
   counter: number,
@@ -1111,10 +1323,22 @@ export async function runExplorerRole(
       await updateDroneRoleState(role.id, { beaconRelayId: String(activeRelay.id) });
       return;
     }
+    if (
+      activeRelay &&
+      role.state.beaconRelayId === String(activeRelay.id) &&
+      activeRelay.isTransitBeacon !== true
+    ) {
+      logger.info(
+        { label, relayId: activeRelay.id },
+        "drone-role: transit beacon installation still in progress",
+      );
+      return;
+    }
 
     // Install waypoint bookmark on the active relay.
     const items: any[] = probe?.inventory?.items ?? [];
     const hasBookmark = items.some((i: any) => i.type === "waypoint_bookmark");
+    let waypointReady = false;
 
     if (hasExistingWaypoint(sectorObjects)) {
       logger.info({ label }, "drone-role: waypoint already exists — skipping WP installation");
@@ -1128,7 +1352,16 @@ export async function runExplorerRole(
           reason: "waypoint already exists in this sector",
         },
       }).catch((err: any) => logger.warn({ label, err: err?.message }, "drone-role: could not journal waypoint skip"));
+      waypointReady = true;
     } else if (activeRelay && hasBookmark) {
+      const target = waypointTarget(sectorObjects);
+      if (!target) {
+        logger.warn(
+          { label },
+          "drone-role: no celestial waypoint target in sector — deferring",
+        );
+        return;
+      }
       const manny = pickIdleManny(mannies, claimed);
       if (!manny) {
         logger.info({ label }, "drone-role: no idle manny for WP installation — deferring");
@@ -1137,11 +1370,12 @@ export async function runExplorerRole(
       const counter = role.state.wpCounter ?? (cfg.wpStartNumber ?? 1);
       const res = countSectorResources(sectorObjects);
       const name = buildWpName(counter, playerName, currentSector ?? { x: 0, y: 0, z: 0 }, res);
-      logger.info({ label, name, objectId: activeRelay.id }, "drone-role: installing waypoint bookmark on relay");
+      logger.info({ label, name, objectId: target.id }, "drone-role: installing waypoint bookmark on celestial target");
       try {
-        await c.installWaypointBookmark(manny.id, activeRelay.id, name);
+        await c.installWaypointBookmark(manny.id, target.id, name);
         claimed.add(manny.id);
         await updateDroneRoleState(role.id, { wpCounter: counter + 1 });
+        waypointReady = true;
         await recordExplorerWaypointEvent({
           explorerId: role.probeId,
           explorerName: role.probeName,
@@ -1151,35 +1385,36 @@ export async function runExplorerRole(
             type: "installed",
             name,
             relayId: String(activeRelay.id),
-            targetObjectId: String(activeRelay.id),
-            targetObjectName: activeRelay.name ?? null,
+            targetObjectId: String(target.id),
+            targetObjectName: target.name ?? null,
           },
         }).catch((err: any) => logger.warn({ label, err: err?.message }, "drone-role: could not journal waypoint installation"));
       } catch (err: any) {
-        logger.warn({ label, err: err?.message }, "drone-role: WP installation failed — continuing");
+        logger.warn({ label, err: err?.message }, "drone-role: WP installation failed — deferring");
         await recordExplorerWaypointEvent({
           explorerId: role.probeId,
           explorerName: role.probeName,
           sector: currentSector ?? { x: 0, y: 0, z: 0 },
           event: {
-            key: `failed:${activeRelay.id}:${counter}`,
+            key: `failed:${target.id}:${counter}`,
             type: "failed",
             name,
             reason: err?.message ?? "installation failed",
             relayId: String(activeRelay.id),
-            targetObjectId: String(activeRelay.id),
-            targetObjectName: activeRelay.name ?? null,
+            targetObjectId: String(target.id),
+            targetObjectName: target.name ?? null,
           },
         }).catch((journalErr: any) => logger.warn({ label, err: journalErr?.message }, "drone-role: could not journal waypoint failure"));
-        // Increment anyway to avoid re-trying the same counter on the next tick.
-        await updateDroneRoleState(role.id, { wpCounter: counter + 1 });
+        return;
       }
     } else if (!hasBookmark) {
       logger.warn({ label }, "drone-role: no waypoint_bookmark in inventory — waiting before delivery");
       return;
     }
 
-    await updateDroneRoleState(role.id, { phase: "dropping_container" });
+    if (waypointReady) {
+      await updateDroneRoleState(role.id, { phase: "dropping_container" });
+    }
     return;
   }
 
@@ -1287,8 +1522,8 @@ export async function runExplorerRole(
     try {
       await c.turnOnRelay(manny.id, relayId, cfg.scutNetworkName);
       claimed.add(manny.id);
-      // The relay must be active before the waypoint is installed on it.
-      await updateDroneRoleState(role.id, { phase: "installing_beacon" });
+      // Activation is a long-running Manny task. Stay here until a later
+      // sector read reports the relay as active.
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: relay activation failed");
     }
@@ -1301,28 +1536,52 @@ export async function runExplorerRole(
     const items: any[] = probe?.inventory?.items ?? [];
     // Only additional storage is detachable; the probe core is not represented
     // as an inventory item and is therefore never selected here.
-    const container = items.find(isContainerItem);
-    if (!container) {
+    const inventoryContainer = items.find(isContainerItem);
+    if (!inventoryContainer) {
+      if (mannies.some((manny: any) => manny.currentTask === "detaching_storage_container")) {
+        logger.info({ label }, "drone-role: waiting for container detachment to finish");
+        return;
+      }
       logger.info({ label }, "drone-role: no container to drop — signaling delivery anyway");
       await updateDroneRoleState(role.id, { phase: "waiting_for_delivery" });
       return;
+    }
+    let containerId = String(inventoryContainer.id);
+    try {
+      const listed = storageContainers(await c.getStorageContainers());
+      const attached = listed.filter(
+        (candidate: any) =>
+          candidate.kind === "container" ||
+          isContainerItem(candidate) ||
+          candidate.type?.includes?.("container"),
+      );
+      const expectedId = `container-${containerId}`;
+      const exact = attached.find(
+        (candidate: any) =>
+          String(candidate.id) === expectedId ||
+          String(candidate.id).endsWith(containerId),
+      );
+      if (exact) containerId = String(exact.id);
+    } catch {
+      // A failed container listing leaves the action retryable with the
+      // inventory ID rather than advancing optimistically.
     }
     const manny = pickIdleManny(mannies, claimed);
     if (!manny) {
       logger.info({ label }, "drone-role: no idle manny for container drop");
       return;
     }
-    logger.info({ label, containerId: container.id }, "drone-role: dropping container");
+    logger.info({ label, containerId }, "drone-role: dropping container");
     try {
-      await c.detachContainer(manny.id, container.id, "drifting");
+      await c.detachContainer(manny.id, containerId, "drifting");
       claimed.add(manny.id);
       // Detach one per tick.  The next observed inventory decides whether more
       // returned containers remain; do not create a request prematurely.
     } catch (err: any) {
-      // 404 means the container is already gone (dropped or collected); advance anyway.
+      // A stale ID or delayed detach can produce 404. Let the next observed
+      // inventory decide whether the container is actually gone.
       if (err instanceof VngApiError && err.status === 404) {
-        logger.info({ label, containerId: container.id }, "drone-role: container not found on drop — treating as already dropped");
-        await updateDroneRoleState(role.id, { phase: "waiting_for_delivery" });
+        logger.info({ label, containerId }, "drone-role: container not found on drop — deferring");
       } else {
         logger.warn({ label, err: err?.message }, "drone-role: drop container failed");
       }
@@ -1431,7 +1690,7 @@ async function runFactoryContainerWorkflow(
     await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers" });
     return true;
   }
-  if (!["idle", "preparing_delivery_containers", "loading_delivery_containers", "handoff_delivery_containers", "awaiting_delivery_pickup"].includes(phase)) return false;
+  if (!["idle", "collecting_returned_containers", "preparing_delivery_containers", "loading_delivery_containers", "handoff_delivery_containers", "awaiting_delivery_pickup"].includes(phase)) return false;
   const roles = await deps.getDroneRoles();
   const deliveryId = role.state.servingDeliveryProbeId ??
     cfg.deliveryProbeIds.find((id) => roles.some((r) => r.probeId === id && r.roleType === "delivery" && r.enabled && r.state.phase === "waiting"));
@@ -1462,16 +1721,48 @@ async function runFactoryContainerWorkflow(
 
   const listed = storageContainers(await c.getStorageContainers());
   const attached = listed.filter((x: any) => isContainerItem(x) || x.kind === "container" || x.type?.includes?.("container"));
+  if (phase === "collecting_returned_containers") {
+    const returnedIds = role.state.returnedContainerIds ?? [];
+    const attachedIds = new Set(attached.map((container: any) => String(container.id)));
+    const remaining = returnedIds.filter((id) => !attachedIds.has(id));
+    if (remaining.length === 0) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "idle",
+        servingDeliveryProbeId: undefined,
+        returnedContainerIds: undefined,
+      });
+      return true;
+    }
+    const sectorObjects = (await c.getSector()).sector?.objects ?? [];
+    const returned = sectorObjects.find((object: any) =>
+      (object.type === "storage_container" || object.type === "detached_container") &&
+      object.mode === "drifting" &&
+      String(object.containerId ?? object.id).replace(/^detached-container-/, "") === remaining[0]
+    );
+    if (!returned) return true;
+    const manny = pickIdleManny(mannies, claimed);
+    if (!manny) return true;
+    await c.recoverContainer(manny.id, returned.id);
+    claimed.add(manny.id);
+    return true;
+  }
   if (phase === "preparing_delivery_containers") {
-    if (attached.length < 3) {
+    const existingManifest = role.state.deliveryContainerManifest;
+    const selected = existingManifest?.resources && existingManifest.deployment && existingManifest.metals
+      ? [existingManifest.resources, existingManifest.deployment, existingManifest.metals]
+          .map((id) => attached.find((container: any) => String(container.id) === id))
+          .filter(Boolean)
+      : attached
+          .filter((container: any) => Number(container.usedCapacity ?? container.used ?? 0) <= 0)
+          .slice(0, 3);
+    if (selected.length < 3) {
       const manny = pickIdleManny(mannies, claimed);
       if (!manny) return true;
       await c.craftItem(manny.id, "additional_container");
       claimed.add(manny.id);
       return true;
     }
-    const selected = attached.slice(0, 3);
-    const manifest = role.state.deliveryContainerManifest ?? {
+    const manifest = existingManifest ?? {
       resources: String(selected[0].id), deployment: String(selected[1].id), metals: String(selected[2].id),
     };
     // Renaming is a real API action, also one per tick.
@@ -1520,8 +1811,11 @@ async function runFactoryContainerWorkflow(
       String(i.containerId ?? i.location?.containerId ?? "") !== manifest.deployment,
     );
     const sourceCount = (type: string) => sourceItems.filter((i: any) => i.type === type).length;
+    const deliveryItems = dProbe?.inventory?.items ?? [];
+    const deliveryCount = (type: string) =>
+      deliveryItems.filter((item: any) => item.type === type).length;
     const missing = [...new Set(need)].find((type) =>
-      deployedCount(type) + sourceCount(type) < wantedCount(type));
+      deployedCount(type) + sourceCount(type) + deliveryCount(type) < wantedCount(type));
     if (missing) {
       if (missing === "integrated_circuit") await c.atomicPrinterCraft(missing);
       else {
@@ -1536,6 +1830,12 @@ async function runFactoryContainerWorkflow(
       if (!manny) return true;
       await c.storageMove({ actorMannyId: manny.id, kind: "item", itemIds: [deploymentItem.id], quantity: 1, toContainerId: manifest.deployment });
       claimed.add(manny.id);
+      return true;
+    }
+    // Resource moves remain invisible in container contents until the Manny
+    // task completes. Recalculating from stale details would reserve the same
+    // amount again and VNG rejects it with "requested amount is not available."
+    if (mannies.some((manny: any) => manny.currentTask === "moving_stockage")) {
       return true;
     }
     const core = listed.find((x: any) => x.kind !== "container" && !isContainerItem(x));
@@ -1555,21 +1855,50 @@ async function runFactoryContainerWorkflow(
     ] as any[]) {
       const stock = stocks.find((s: any) => s.type === type);
       const missingAmount = Math.max(0, desired - inContainer(detail, type));
-      const amount = Math.min(Number(stock?.amount ?? 0), containerFreeCapacity(target), missingAmount);
+      if (missingAmount <= 0) continue;
+      const allocated = (stock?.containers ?? []).map((entry: any) => ({
+        id: canonicalContainerId(entry?.container?.id),
+        amount: Number(entry?.amount ?? 0),
+      }));
+      const allocatedTotal = allocated.reduce(
+        (sum: number, source: any) => sum + source.amount,
+        0,
+      );
+      const sources = [
+        ...allocated,
+        {
+          id: String(core.id),
+          amount: Math.max(0, Number(stock?.amount ?? 0) - allocatedTotal),
+        },
+      ];
+      const targetId = canonicalContainerId(target.id);
+      const source = sources.find(
+        (candidate: any) =>
+          candidate.amount > 0.000_001 &&
+          canonicalContainerId(candidate.id) !== targetId,
+      );
+      const amount = Math.min(
+        Number(source?.amount ?? 0),
+        containerFreeCapacity(target),
+        missingAmount,
+      );
       if (amount > 0) {
         const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
         // Metals fill is deliberately min(source stock, destination free capacity),
         // not a made-up quantity; earlier resource allocations have priority.
-        await c.storageMove({ actorMannyId: manny.id, kind: "resource", resourceType: type, amount, fromContainerId: core.id, toContainerId: target.id });
+        await c.storageMove({ actorMannyId: manny.id, kind: "resource", resourceType: type, amount, fromContainerId: source.id, toContainerId: target.id });
         claimed.add(manny.id); return true;
       }
+      // The finite 50/25/25 resource manifest is mandatory. Wait for stock
+      // rather than handing off an incomplete container.
+      if (Number.isFinite(desired)) return true;
     }
     await deps.updateDroneRoleState(role.id, { phase: "handoff_delivery_containers" }); return true;
   }
   // Handoff preserves the IDs in preparedContainerIds. The courier observes and
   // recovers only these IDs before recording its outbound manifest.
   const remaining = (role.state.preparedContainerIds ?? []).filter((id) =>
-    (probe?.inventory?.items ?? []).some((i: any) => String(i.id) === id));
+    onboardContainerIds(probe?.inventory?.items ?? []).has(id));
   if (remaining.length) {
     const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
     await c.detachContainer(manny.id, remaining[0], "drifting"); claimed.add(manny.id); return true;

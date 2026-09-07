@@ -127,10 +127,15 @@ export function clientFor(probeId?: number | null) {
       mPost(mannyId, "recover-storage-container", { objectId }),
     dropContainerOnAsteroid: (mannyId: string, containerId: string, objectId: string) =>
       mPost(mannyId, "drop-storage-container", { containerId, objectId }),
-    detachContainer: (mannyId: string, containerId: string, mode: "drifting" | "hidden_on_asteroid" = "drifting", asteroidObjectId?: string) =>
+    detachContainer: (
+      mannyId: string,
+      containerId: string,
+      mode: "drifting" | "hidden_on_asteroid" | "attach_to_probe" = "drifting",
+      objectId?: string,
+    ) =>
       mPost(mannyId, "detach-storage-container", {
         containerId, mode,
-        ...(mode === "hidden_on_asteroid" && asteroidObjectId ? { objectId: asteroidObjectId } : {}),
+        ...(mode !== "drifting" && objectId ? { objectId } : {}),
       }),
     refillDeuteriumTank: (mannyId: string) =>
       mPost(mannyId, "refill-deuterium-tank"),
@@ -210,9 +215,9 @@ export const dropContainerOnPlanet = (mannyId: string, containerId: string, plan
 export const detachContainer = (
   mannyId: string,
   containerId: string,
-  mode: "drifting" | "hidden_on_asteroid" = "drifting",
-  asteroidObjectId?: string
-) => main().detachContainer(mannyId, containerId, mode, asteroidObjectId);
+  mode: "drifting" | "hidden_on_asteroid" | "attach_to_probe" = "drifting",
+  objectId?: string
+) => main().detachContainer(mannyId, containerId, mode, objectId);
 export const refillDeuteriumTank = (mannyId: string) => main().refillDeuteriumTank(mannyId);
 export const transferDeuteriumToProbe = (mannyId: string, targetProbeId: number, amount: number) => main().transferDeuteriumToProbe(mannyId, targetProbeId, amount);
 export const assembleProbe = (mannyId: string, containerIds: string[]) => main().assembleProbe(mannyId, containerIds);

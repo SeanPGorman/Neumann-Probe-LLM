@@ -1,6 +1,6 @@
 - [API routing — /api vs /api-server](api-routing.md) — client fetches must use `/api/vng/...` not `/api-server/api/vng/...`
 - [Mining targets live inside solar_system bodies](mining-targets.md) — sector has no standalone asteroids; mineable bodies are in solar_system.bodies after mapSectorObjects()
-- [Waypoint bookmarks on SCUT relays](waypoint-solar-system-targets.md) — count mapped solar-system resources but install only on an activated relay; skip sectors with an existing waypoint
+- [Relay beacons and celestial waypoints](waypoint-solar-system-targets.md) — install transit beacons on active relays and waypoint bookmarks on celestial targets
 - [Mining planet filter](mining-planet-filter.md) — planets appear in minableTargets but hidden_on_asteroid mode rejects them; filter to asteroid type only in poller
 - [VNG SCUT relay deployment](vng-relay-deployment.md) — jettison a scut_relay item to deploy it as an inactive sector relay; API spec lives at /openapi.yaml
 - [VNG container storage moves](vng-container-items.md) — API v130 moves resources/items between onboard containers; transit beacons are distinct from waypoint bookmarks
@@ -10,3 +10,4 @@
 - [VNG fuel field — raw vs state](vng-fuel-field.md) — runner uses probe.fuel.deuterium (nested, absolute units); state route exposes fuelDeuterium (flat); never mix them
 - [Refuel role persistence](refuel-role-persistence.md) — verify the active role store before debugging refueling; a merge can remove runtime assignments
 - [Explorer journal durability](explorer-journal-durability.md) — merge raw discoveries cumulatively and retain waypoint activity even when scan capture is unavailable
+- [Protect delivery cargo from repairs](delivery-cargo-repair-protection.md) — factory-served couriers must never consume staged metals for automatic hull repair
