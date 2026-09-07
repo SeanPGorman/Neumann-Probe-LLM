@@ -1000,7 +1000,7 @@ async function pollProbe(
       // `probe` makes `undefined !== "moving"` true and the action fires blind —
       // e.g. a queued move sent while the probe is already in transit.
       if (!probe) continue;
-      if (probe.movement?.status === "moving") continue;
+      if (isProbeMoving) continue;
       if (action.action?.type === "move_probe" && probeMoveClaimed) {
         logger.info(
           { actionId: action.id, label },

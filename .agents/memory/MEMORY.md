@@ -11,3 +11,4 @@
 - [Refuel role persistence](refuel-role-persistence.md) — verify the active role store before debugging refueling; a merge can remove runtime assignments
 - [Explorer journal durability](explorer-journal-durability.md) — merge raw discoveries cumulatively and retain waypoint activity even when scan capture is unavailable
 - [Protect delivery cargo from repairs](delivery-cargo-repair-protection.md) — factory-served couriers must never consume staged metals for automatic hull repair
+- [Probe-idle movement phases](probe-idle-movement-phases.md) — queued travel must wait through every movement phase, not only `moving`
