@@ -9828,13 +9828,13 @@
     "sectorY": 18,
     "sectorZ": 18,
     "firstVisitedAt": "2026-09-06T04:44:58.843Z",
-    "lastVisitedAt": "2026-09-07T20:50:46.976Z",
-    "visitCount": 4050,
+    "lastVisitedAt": "2026-09-07T21:16:47.212Z",
+    "visitCount": 4102,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 144367,
+      "currentSectorResidenceSeconds": 145927,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -10292,13 +10292,13 @@
     "sectorY": 36,
     "sectorZ": 20,
     "firstVisitedAt": "2026-09-07T17:06:20.630Z",
-    "lastVisitedAt": "2026-09-07T20:50:46.990Z",
-    "visitCount": 433,
+    "lastVisitedAt": "2026-09-07T21:16:47.224Z",
+    "visitCount": 485,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 13476,
+      "currentSectorResidenceSeconds": 15036,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
