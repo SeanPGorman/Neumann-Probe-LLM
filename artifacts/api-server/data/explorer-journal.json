@@ -10292,13 +10292,13 @@
     "sectorY": 36,
     "sectorZ": 20,
     "firstVisitedAt": "2026-09-07T17:06:20.630Z",
-    "lastVisitedAt": "2026-09-08T13:16:14.002Z",
-    "visitCount": 1120,
+    "lastVisitedAt": "2026-09-08T13:27:44.468Z",
+    "visitCount": 1143,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 72603,
+      "currentSectorResidenceSeconds": 73293,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -11074,13 +11074,13 @@
     "sectorY": 20,
     "sectorZ": 17,
     "firstVisitedAt": "2026-09-08T13:09:14.375Z",
-    "lastVisitedAt": "2026-09-08T13:16:13.989Z",
-    "visitCount": 15,
+    "lastVisitedAt": "2026-09-08T14:59:45.017Z",
+    "visitCount": 222,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 37172,
+      "currentSectorResidenceSeconds": 43383,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -11278,6 +11278,58 @@
         "objectName": "System b4d38c"
       }
     ],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:42,37,21",
+    "explorerId": 761,
+    "explorerName": "BravoExplorer",
+    "sectorX": 42,
+    "sectorY": 37,
+    "sectorZ": 21,
+    "firstVisitedAt": "2026-09-08T14:08:14.840Z",
+    "lastVisitedAt": "2026-09-08T14:08:14.840Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 30,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:42,38,22",
+    "explorerId": 761,
+    "explorerName": "BravoExplorer",
+    "sectorX": 42,
+    "sectorY": 38,
+    "sectorZ": 22,
+    "firstVisitedAt": "2026-09-08T14:48:15.084Z",
+    "lastVisitedAt": "2026-09-08T14:48:15.084Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 0,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
     "waypointEvents": []
   }
 ]
