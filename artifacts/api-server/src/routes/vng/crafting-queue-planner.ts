@@ -49,6 +49,14 @@ export function planCraftQueue({
   const recipeById = new Map(recipes.map((recipe) => [recipe.id, recipe]));
   const target = recipeById.get(recipeId);
   if (!target) throw new Error(`Recipe not found: ${recipeId}`);
+  const printerOnlyRecipeIds = new Set(
+    recipes
+      .filter((recipe) => {
+        const machines = recipe.craftableBy ?? [];
+        return machines.includes("atomic_3d_printer") && !machines.includes("manny");
+      })
+      .map((recipe) => recipe.id),
+  );
 
   const virtualInventory = new Map(
     Object.entries(inventoryItems).map(([type, count]) => [type, count]),
@@ -64,7 +72,10 @@ export function planCraftQueue({
     visiting.add(id);
     const recipe = recipeById.get(id);
     const itemDependencies = (recipe?.ingredients ?? []).filter(
-      (ingredient) => ingredient.kind === "item" && recipeById.has(ingredient.type),
+      (ingredient) =>
+        ingredient.kind === "item" &&
+        recipeById.has(ingredient.type) &&
+        !printerOnlyRecipeIds.has(ingredient.type),
     );
     const result = itemDependencies.length
       ? Math.max(...itemDependencies.map((ingredient) => depth(ingredient.type, visiting) + 1))
@@ -81,7 +92,14 @@ export function planCraftQueue({
     for (let itemIndex = 1; itemIndex <= count; itemIndex++) {
       const directItemRequirements = mergeRequirements(
         (recipe.ingredients ?? [])
-          .filter((ingredient) => ingredient.kind === "item")
+          // Printer-only recipes are queued when directly requested, but are
+          // deliberately outside dependency expansion for Manny-built items.
+          // The final VNG build order remains authoritative for their presence.
+          .filter(
+            (ingredient) =>
+              ingredient.kind === "item" &&
+              !printerOnlyRecipeIds.has(ingredient.type),
+          )
           .map((ingredient) => ({
             type: ingredient.type,
             quantity: ingredient.quantity,

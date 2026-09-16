@@ -15,7 +15,8 @@ import {
 } from "./file-store.js";
 import { mapSectorObjects } from "./sector-map.js";
 
-const POLL_INTERVAL_MS = 60 * 60 * 1_000;
+const CORE_POLL_INTERVAL_MS = 30_000;
+const ROLE_POLL_INTERVAL_MS = 15 * 60 * 1_000;
 let started = false;
 
 // Probes where every crafting attempt last tick returned "insufficient resources".
@@ -774,7 +775,8 @@ async function runMiningCycle(
 /** Poll all pending actions for one probe. */
 async function pollProbe(
   probeId: number | null,
-  actions: PendingAction[]
+  actions: PendingAction[],
+  runRoles: boolean,
 ): Promise<void> {
   const c = clientFor(probeId);
   const label = probeId != null ? `probe ${probeId}` : "main probe";
@@ -814,10 +816,16 @@ async function pollProbe(
   // Explorer scans are recorded from the same successful sector response that
   // drives role automation. Do not scan while the probe is in transit: the
   // sector endpoint may be unavailable or still describe the departure sector.
-  const explorerRole = (await getDroneRoles().catch(
-    (): Awaited<ReturnType<typeof getDroneRoles>> => [],
-  ))
-    .find((role) => role.enabled && role.probeId === probeId && role.roleType === "explorer");
+  const explorerRole = runRoles
+    ? (await getDroneRoles().catch(
+        (): Awaited<ReturnType<typeof getDroneRoles>> => [],
+      )).find(
+        (role) =>
+          role.enabled &&
+          role.probeId === probeId &&
+          role.roleType === "explorer",
+      )
+    : undefined;
   const movingStatuses = new Set(["preparing", "accelerating", "cruising", "decelerating", "moving"]);
   const isProbeMoving = movingStatuses.has(probe?.status) || movingStatuses.has(probe?.movement?.status);
   const currentSector = probe?.sector?.relative ?? probe?.sector;
@@ -919,11 +927,13 @@ async function pollProbe(
   );
 
   // Drone role automation (refuel / delivery / explorer)
-  await runDroneRoleAutomation(probeId, probe, mannies, c, () => {
-    probeMoveClaimed = true;
-  }).catch((err) =>
-    logger.error({ err: err?.message, probeId }, "poller: drone role automation error")
-  );
+  if (runRoles) {
+    await runDroneRoleAutomation(probeId, probe, mannies, c, () => {
+      probeMoveClaimed = true;
+    }).catch((err) =>
+      logger.error({ err: err?.message, probeId }, "poller: drone role automation error")
+    );
+  }
 
   // A successful craft reserves its direct item ingredients immediately, even
   // though the probe snapshot will not reflect consumption until the next poll.
@@ -1120,7 +1130,7 @@ async function pollProbe(
   }
 }
 
-async function poll(): Promise<void> {
+async function poll(runRoles: boolean): Promise<void> {
   return withVngReadCache(async () => {
   const [pending, miningAssignments] = await Promise.all([
     getPendingActions(),
@@ -1131,6 +1141,7 @@ async function poll(): Promise<void> {
   const byProbe = new Map<string, { probeId: number | null; actions: PendingAction[] }>();
 
   for (const action of pending) {
+    if (action.action.type === "move_probe" && !runRoles) continue;
     const key = action.probeId != null ? String(action.probeId) : "main";
     if (!byProbe.has(key)) byProbe.set(key, { probeId: action.probeId ?? null, actions: [] });
     byProbe.get(key)!.actions.push(action);
@@ -1144,11 +1155,13 @@ async function poll(): Promise<void> {
   }
 
   // Also include probes with active drone roles
-  const droneRoles = await getDroneRoles().catch(() => [] as Awaited<ReturnType<typeof getDroneRoles>>);
-  for (const role of droneRoles) {
-    if (!role.enabled) continue;
-    const key = String(role.probeId);
-    if (!byProbe.has(key)) byProbe.set(key, { probeId: role.probeId, actions: [] });
+  if (runRoles) {
+    const droneRoles = await getDroneRoles().catch(() => [] as Awaited<ReturnType<typeof getDroneRoles>>);
+    for (const role of droneRoles) {
+      if (!role.enabled) continue;
+      const key = String(role.probeId);
+      if (!byProbe.has(key)) byProbe.set(key, { probeId: role.probeId, actions: [] });
+    }
   }
 
   if (byProbe.size === 0) return;
@@ -1156,7 +1169,7 @@ async function poll(): Promise<void> {
   // Poll all probes in parallel
   await Promise.all(
     [...byProbe.values()].map(({ probeId, actions }) =>
-      pollProbe(probeId, actions).catch((err) =>
+      pollProbe(probeId, actions, runRoles).catch((err) =>
         logger.error({ err, probeId }, "poller: unexpected error for probe")
       )
     )
@@ -1167,23 +1180,33 @@ async function poll(): Promise<void> {
 export function startPoller(): void {
   if (started) return;
   started = true;
-  logger.info({ intervalMs: POLL_INTERVAL_MS }, "poller: started");
+  logger.info(
+    {
+      coreIntervalMs: CORE_POLL_INTERVAL_MS,
+      roleIntervalMs: ROLE_POLL_INTERVAL_MS,
+    },
+    "poller: started",
+  );
   // Reentrancy guard: a tick that runs long — executeAction makes real game
   // calls, and one slow probe holds up its whole group — must not overlap the
   // next one. Two overlapping ticks read the same pending rows (a row is only
   // marked "triggered" after its action lands) and fire them twice. A skipped
   // tick simply retries in POLL_INTERVAL_MS.
   let ticking = false;
+  let lastRolePollAt = 0;
   setInterval(() => {
     if (ticking) {
       logger.info("poller: previous tick still running — skipping this one");
       return;
     }
     ticking = true;
-    poll()
+    const now = Date.now();
+    const runRoles = now - lastRolePollAt >= ROLE_POLL_INTERVAL_MS;
+    if (runRoles) lastRolePollAt = now;
+    poll(runRoles)
       .catch((err) => logger.error({ err }, "poller: unexpected error"))
       .finally(() => {
         ticking = false;
       });
-  }, POLL_INTERVAL_MS);
+  }, CORE_POLL_INTERVAL_MS);
 }

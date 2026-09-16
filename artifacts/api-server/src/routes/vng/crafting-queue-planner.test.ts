@@ -83,7 +83,7 @@ test("uses stocked components for the earliest unit before crafting missing part
   );
 });
 
-test("schedules printer-only dependencies instead of letting their parent fail early", () => {
+test("ignores printer-only dependencies when planning a Manny-built item", () => {
   const printerRecipes: CraftingRecipe[] = [
     {
       id: "circuit",
@@ -107,7 +107,27 @@ test("schedules printer-only dependencies instead of letting their parent fail e
   });
 
   assert.deepEqual(plan.map((action) => [action.recipeId, action.machine]), [
-    ["circuit", "atomic_3d_printer"],
     ["relay", "manny"],
+  ]);
+  assert.deepEqual(plan[0].requireItemsWithQty, []);
+});
+
+test("still queues a printer-only item when it is directly requested", () => {
+  const plan = planCraftQueue({
+    recipes: [
+      {
+        id: "integrated_circuit",
+        name: "Integrated circuit",
+        craftableBy: ["atomic_3d_printer"],
+        ingredients: [],
+      },
+    ],
+    inventoryItems: {},
+    recipeId: "integrated_circuit",
+    quantity: 1,
+  });
+
+  assert.deepEqual(plan.map((action) => [action.recipeId, action.machine]), [
+    ["integrated_circuit", "atomic_3d_printer"],
   ]);
 });
