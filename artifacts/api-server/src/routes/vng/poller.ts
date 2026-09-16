@@ -1,5 +1,5 @@
 import { logger } from "../../lib/logger.js";
-import { clientFor, VngApiError } from "./client.js";
+import { clientFor, VngApiError, withVngReadCache } from "./client.js";
 import { runDroneRoleAutomation } from "./drone-role-runner.js";
 import { getDroneRoles } from "./drone-roles-store.js";
 import {
@@ -15,7 +15,7 @@ import {
 } from "./file-store.js";
 import { mapSectorObjects } from "./sector-map.js";
 
-const POLL_INTERVAL_MS = 30_000;
+const POLL_INTERVAL_MS = 60 * 60 * 1_000;
 let started = false;
 
 // Probes where every crafting attempt last tick returned "insufficient resources".
@@ -919,7 +919,9 @@ async function pollProbe(
   );
 
   // Drone role automation (refuel / delivery / explorer)
-  await runDroneRoleAutomation(probeId, probe, mannies, c).catch((err) =>
+  await runDroneRoleAutomation(probeId, probe, mannies, c, () => {
+    probeMoveClaimed = true;
+  }).catch((err) =>
     logger.error({ err: err?.message, probeId }, "poller: drone role automation error")
   );
 
@@ -935,6 +937,16 @@ async function pollProbe(
 
   for (const action of actions) {
     let selectedMannyId: string | null = null;
+
+    // Movement safety belongs to the action, not its condition. Legacy or
+    // externally scheduled rows may pair move_probe with manny_idle; they must
+    // still never move an active probe or issue a second move in this poll.
+    if (
+      action.action.type === "move_probe" &&
+      (isProbeMoving || probeMoveClaimed)
+    ) {
+      continue;
+    }
 
     // ── manny_idle ──────────────────────────────────────────────────────────
     if (action.condition.type === "manny_idle") {
@@ -1044,12 +1056,15 @@ async function pollProbe(
       action.action.type === "craft_item" || action.action.type === "atomic_printer_craft";
 
     try {
+      // A failed or timed-out response is still uncertain because VNG may have
+      // accepted the command. Claim movement before sending so no later row can
+      // issue another move from this same probe snapshot.
+      if (action.action.type === "move_probe") probeMoveClaimed = true;
       await executeAction(action, selectedMannyId, c);
       await resolveQuietly(action.id, { status: "triggered" });
       logger.info({ actionId: action.id, label }, "poller: action triggered successfully");
 
       if (selectedMannyId) claimedMannies.add(selectedMannyId);
-      if (action.action.type === "move_probe") probeMoveClaimed = true;
       if (
         action.action.type === "craft_item" ||
         action.action.type === "atomic_printer_craft"
@@ -1106,6 +1121,7 @@ async function pollProbe(
 }
 
 async function poll(): Promise<void> {
+  return withVngReadCache(async () => {
   const [pending, miningAssignments] = await Promise.all([
     getPendingActions(),
     getMiningAssignments().catch(() => [] as Awaited<ReturnType<typeof getMiningAssignments>>),
@@ -1145,6 +1161,7 @@ async function poll(): Promise<void> {
       )
     )
   );
+  });
 }
 
 export function startPoller(): void {

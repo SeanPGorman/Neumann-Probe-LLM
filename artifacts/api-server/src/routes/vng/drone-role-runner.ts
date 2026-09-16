@@ -30,7 +30,13 @@ import type {
   FactoryConfig,
 } from "./drone-roles-store.js";
 
-const MOVING_STATUSES = new Set(["accelerating", "cruising", "decelerating"]);
+const MOVING_STATUSES = new Set([
+  "preparing",
+  "accelerating",
+  "cruising",
+  "decelerating",
+  "moving",
+]);
 const MIN_DEUTERIUM_RESERVE = 5; // always keep this much before transferring
 /** An idle refueler returns to its source at or below this share of its own tank. */
 const REFUELER_RETURN_THRESHOLD_PERCENT = 20;
@@ -276,6 +282,7 @@ export async function runDroneRoleAutomation(
   probe: any,
   mannies: any[],
   c: ReturnType<typeof clientFor>,
+  onMoveIssued?: () => void,
 ): Promise<void> {
   if (probeId == null) return;
 
@@ -284,7 +291,16 @@ export async function runDroneRoleAutomation(
 
   const label = `drone-role ${role.roleType} (probe ${probeId})`;
   const claimed = new Set<string>();
-  const isMoving = MOVING_STATUSES.has(probe?.status ?? "");
+  const isMoving =
+    MOVING_STATUSES.has(probe?.status ?? "") ||
+    MOVING_STATUSES.has(probe?.movement?.status ?? "");
+  const roleClient = {
+    ...c,
+    moveProbe: async (x: number, y: number, z: number) => {
+      onMoveIssued?.();
+      return c.moveProbe(x, y, z);
+    },
+  };
 
   // A factory-served courier's onboard metals are mission cargo, not a repair
   // reserve. Consuming them here can silently invalidate the exact manifest
@@ -293,18 +309,18 @@ export async function runDroneRoleAutomation(
     role.roleType === "delivery" &&
     Number.isInteger(Number((role.config as DeliveryConfig).factoryProbeId));
   if (!preservesDeliveryCargo) {
-    await repairDamagedProbe(probe, mannies, claimed, c, label);
+    await repairDamagedProbe(probe, mannies, claimed, roleClient, label);
   }
 
   try {
     if (role.roleType === "refuel") {
-      await runRefuelRole(role, probe, mannies, claimed, c, isMoving, label);
+      await runRefuelRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "delivery") {
-      await runDeliveryRole(role, probe, mannies, claimed, c, isMoving, label);
+      await runDeliveryRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "explorer") {
-      await runExplorerRole(role, probe, mannies, claimed, c, isMoving, label);
+      await runExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "factory") {
-      await runFactoryRole(role, probe, mannies, claimed, c, isMoving, label);
+      await runFactoryRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     }
   } catch (err: any) {
     if (err instanceof VngApiError && err.status === 409) {

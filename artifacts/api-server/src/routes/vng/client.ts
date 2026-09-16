@@ -1,4 +1,8 @@
+import { AsyncLocalStorage } from "node:async_hooks";
+import { ReadThroughCache } from "./read-through-cache.js";
+
 const BASE = "https://neumann-probe.net";
+const pollReadCache = new AsyncLocalStorage<ReadThroughCache>();
 
 /** Structured error thrown by every VNG API call. Callers can inspect `.status`
  *  directly instead of parsing the message string. */
@@ -35,6 +39,17 @@ async function vngFetch(path: string, init: RequestInit = {}): Promise<any> {
     throw new VngApiError(res.status, msg);
   }
   return body;
+}
+
+const vngGet = (path: string) => {
+  const cache = pollReadCache.getStore();
+  return cache ? cache.get(path, () => vngFetch(path)) : vngFetch(path);
+};
+
+/** Share identical reads only inside one automation poll. UI/API requests never
+ * seed this cache, and every poll starts from a fresh snapshot. */
+export function withVngReadCache<T>(run: () => Promise<T>): Promise<T> {
+  return pollReadCache.run(new ReadThroughCache(Number.MAX_SAFE_INTEGER), run);
 }
 
 const vngPost = (path: string, body: Record<string, unknown> = {}) =>
@@ -84,13 +99,13 @@ export function clientFor(probeId?: number | null) {
     vngPost(`${base}/mannies/${encodeURIComponent(mannyId)}/${suffix}`, body);
 
   return {
-    getProbe:       () => vngFetch(base),
-    getMannies:     () => vngFetch(`${base}/mannies`),
-    getSector:      () => vngFetch(`${base}/sector`),
-    getProbeImprovements: () => vngFetch(`${base}/probe-improvements-available`),
-    getStorageContainers: () => vngFetch(`${base}/storage-containers`),
+    getProbe:       () => vngGet(base),
+    getMannies:     () => vngGet(`${base}/mannies`),
+    getSector:      () => vngGet(`${base}/sector`),
+    getProbeImprovements: () => vngGet(`${base}/probe-improvements-available`),
+    getStorageContainers: () => vngGet(`${base}/storage-containers`),
     getStorageContainer: (containerId: string) =>
-      vngFetch(`${base}/storage-containers/${encodeURIComponent(containerId)}`),
+      vngGet(`${base}/storage-containers/${encodeURIComponent(containerId)}`),
     renameStorageContainer: (containerId: string, label: string) =>
       vngPatch(`${base}/storage-containers/${encodeURIComponent(containerId)}`, { label }),
     updateStorageContainerRules: (containerId: string, rules: Record<string, unknown>) =>
@@ -171,13 +186,13 @@ export const getManniesById = (id: number) => clientFor(id).getMannies();
 export const getSectorById  = (id: number) => clientFor(id).getSector();
 
 // Global (not probe-scoped) endpoints
-export const getCraftingRecipes  = () => vngFetch("/api/crafting-recipes");
-export const getVisitedSectors   = () => vngFetch("/api/probe/visited-sectors");
+export const getCraftingRecipes  = () => vngGet("/api/crafting-recipes");
+export const getVisitedSectors   = () => vngGet("/api/probe/visited-sectors");
 export const getVisitedSectorsByProbe = (probeId: number) =>
-  vngFetch(`/api/probe/${probeId}/visited-sectors`);
-export const getProbeList        = () => vngFetch("/api/probes");
-export const getScutNetwork      = (networkId: number) => vngFetch(`/api/probe/scut-network/${networkId}`);
-export const getScutNetworksRaw  = () => vngFetch("/api/probe/scut-networks");
+  vngGet(`/api/probe/${probeId}/visited-sectors`);
+export const getProbeList        = () => vngGet("/api/probes");
+export const getScutNetwork      = (networkId: number) => vngGet(`/api/probe/scut-network/${networkId}`);
+export const getScutNetworksRaw  = () => vngGet("/api/probe/scut-networks");
 export const getProbeImprovements = () => main().getProbeImprovements();
 export const getMissions         = () => vngFetch("/api/probe/missions");
 export const scanSector = (x: number, y: number, z: number) =>
