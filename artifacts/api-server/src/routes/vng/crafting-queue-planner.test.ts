@@ -53,11 +53,8 @@ test("plans each requested unit as a complete dependency chain", () => {
   assert.ok(plan.filter((action) => action.unitIndex === 1).every(
     (action) => action.requireInventoryWithQty.length === 0,
   ));
-  assert.ok(plan.filter((action) => action.unitIndex === 2).every(
-    (action) =>
-      action.requireInventoryWithQty.length === 1 &&
-      action.requireInventoryWithQty[0].type === "manny" &&
-      action.requireInventoryWithQty[0].quantity === 1,
+  assert.ok(plan.every(
+    (action) => action.requireInventoryWithQty.length === 0,
   ));
 });
 

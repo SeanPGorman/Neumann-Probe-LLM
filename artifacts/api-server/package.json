@@ -8,7 +8,7 @@
     "build": "node ./build.mjs",
     "start": "node --enable-source-maps --env-file-if-exists=.env ./dist/index.mjs",
     "typecheck": "tsc -p tsconfig.json --noEmit",
-    "test": "tsx --test src/routes/vng/mining-dedup.test.ts src/routes/vng/factory-role.test.ts src/routes/vng/delivery-flow.test.ts src/routes/vng/explorer-relay.test.ts src/routes/vng/refuel-role.test.ts src/routes/vng/explorer-journal.test.ts src/routes/vng/crafting-queue-planner.test.ts src/routes/vng/read-through-cache.test.ts src/routes/vng/rate-limit-throttler.test.ts"
+    "test": "tsx --test src/routes/vng/mining-dedup.test.ts src/routes/vng/factory-role.test.ts src/routes/vng/delivery-flow.test.ts src/routes/vng/explorer-relay.test.ts src/routes/vng/refuel-role.test.ts src/routes/vng/explorer-journal.test.ts src/routes/vng/crafting-queue-planner.test.ts src/routes/vng/craft-queue-priority.test.ts src/routes/vng/read-through-cache.test.ts src/routes/vng/rate-limit-throttler.test.ts"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.29.0",

@@ -14,6 +14,10 @@ import {
   type MiningAssignment,
 } from "./file-store.js";
 import { mapSectorObjects } from "./sector-map.js";
+import {
+  getPriorityCraftPlan,
+  isCraftingAction,
+} from "./craft-queue-priority.js";
 
 const CORE_POLL_INTERVAL_MS = 30_000;
 const ROLE_POLL_INTERVAL_MS = 15 * 60 * 1_000;
@@ -189,7 +193,7 @@ async function runMiningAutomation(
   for (const assignment of assignments) {
     try {
       if (assignment.assignmentMode === "drift") {
-        await runDriftCycle(assignment, probe, mannies, claimedMannies, c);
+        await runDriftCycle(assignment, probe, mannies, claimedMannies, c, craftingReserve);
       } else {
         await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
       }
@@ -245,6 +249,22 @@ async function runMiningAutomation(
   }
 }
 
+function miningCandidates(
+  mannies: any[],
+  claimedMannies: Set<string>,
+  craftingReserve: number,
+  candidates: any[] = mannies,
+): any[] {
+  const available = mannies.filter(
+    (m: any) => !m.currentTask && !claimedMannies.has(m.id as string),
+  );
+  const claimableCount = Math.max(0, available.length - craftingReserve);
+  const candidateIds = new Set(candidates.map((m: any) => m.id as string));
+  return available
+    .filter((m: any) => candidateIds.has(m.id as string))
+    .slice(0, claimableCount);
+}
+
 // ── Drift cycle ───────────────────────────────────────────────────────────────
 // "drift" assignments: one manny detaches the container in "drifting" mode so
 // it floats in sector for other probes' mannies to pick up.  If the container
@@ -256,6 +276,7 @@ async function runDriftCycle(
   mannies: any[],
   claimedMannies: Set<string>,
   c: ReturnType<typeof clientFor>,
+  craftingReserve: number,
 ): Promise<void> {
   const label = `drift assignment ${assignment.id} (${assignment.material})`;
   const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
@@ -279,8 +300,10 @@ async function runDriftCycle(
       );
       return;
     }
-    const manny = mannies.find(
-      (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+    const [manny] = miningCandidates(
+      mannies,
+      claimedMannies,
+      craftingReserve,
     );
     if (!manny) {
       logger.info({ label }, "drift: no idle manny available — deferring");
@@ -383,8 +406,10 @@ async function runMiningCycle(
         if (busyMiningIds.length === 0) {
           // No miners working — go straight to recovery rather than waiting in mining state.
           logger.info({ label }, "mining: container deployed but no active miners — dispatching recovery");
-          const recoverer = mannies.find(
-            (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+          const [recoverer] = miningCandidates(
+            mannies,
+            claimedMannies,
+            craftingReserve,
           );
           if (!recoverer) {
             logger.info({ label }, "mining: no idle manny for recovery, deferring");
@@ -434,11 +459,12 @@ async function runMiningCycle(
     // Claim N idle mannies (unclaimed, no currentTask).
     // Respect the crafting reserve: leave at least `craftingReserve` mannies
     // free for the scheduled-task queue so mining never fully starves crafting.
-    const available = mannies.filter(
-      (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+    const available = miningCandidates(
+      mannies,
+      claimedMannies,
+      craftingReserve,
     );
-    const claimable = Math.max(0, available.length - craftingReserve);
-    if (claimable === 0) {
+    if (available.length === 0) {
       logger.info(
         { label, have: available.length, reserved: craftingReserve },
         "mining: no mannies available after crafting reserve, deferring"
@@ -446,7 +472,7 @@ async function runMiningCycle(
       return;
     }
     // mannyCount is the maximum — use however many are claimable up to that cap.
-    const selected = available.slice(0, Math.min(claimable, assignment.mannyCount));
+    const selected = available.slice(0, assignment.mannyCount);
     for (const m of selected) claimedMannies.add(m.id as string);
 
     const capacity: number = container.capacity ?? 1;
@@ -593,8 +619,10 @@ async function runMiningCycle(
       } else {
         // All tracked mannies are idle and container is missing — lost in transit.
         logger.info({ label }, "mining: container lost in transit — dispatching recovery");
-        const recoverer = mannies.find(
-          (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+        const [recoverer] = miningCandidates(
+          mannies,
+          claimedMannies,
+          craftingReserve,
         );
         if (recoverer) {
           claimedMannies.add(recoverer.id as string);
@@ -620,16 +648,22 @@ async function runMiningCycle(
         "mining: container full in sector — skipping mine re-dispatch, proceeding to recovery"
       );
     }
-    if (!containerFull && pendingDispatch.length > 0 && effectiveAsteroidId) {
-      const trackedTotal = stillActive.length + pendingDispatch.length;
+    const pendingToDispatch = miningCandidates(
+      mannies,
+      claimedMannies,
+      craftingReserve,
+      pendingDispatch,
+    );
+    if (!containerFull && pendingToDispatch.length > 0 && effectiveAsteroidId) {
+      const trackedTotal = stillActive.length + pendingToDispatch.length;
       const amounts = distributeAmounts(cap, trackedTotal);
       // IMPORTANT: snapshot length before the loop — stillActive.push() inside the
       // loop would otherwise shift the index for every subsequent iteration, causing
       // later mannies to read undefined from amounts[] and send targetAmount:undefined.
       const baseIdx = stillActive.length;
       let step3AnySucceeded = false;
-      for (let i = 0; i < pendingDispatch.length; i++) {
-        const m = pendingDispatch[i];
+      for (let i = 0; i < pendingToDispatch.length; i++) {
+        const m = pendingToDispatch[i];
         const amount = amounts[baseIdx + i];
         try {
           await c.mineResources(
@@ -672,12 +706,13 @@ async function runMiningCycle(
     // Skip entirely if the container is full — fall through to recovery.
     const stillNeeded = assignment.mannyCount - miningIds.length;
     if (!containerFull && stillNeeded > 0 && effectiveAsteroidId && containerInSector) {
-      const extraAvailable = mannies.filter(
-        (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+      const extraAvailable = miningCandidates(
+        mannies,
+        claimedMannies,
+        craftingReserve,
       );
-      const extraClaimable = Math.max(0, extraAvailable.length - craftingReserve);
-      if (extraClaimable > 0) {
-        const toAdd = extraAvailable.slice(0, Math.min(stillNeeded, extraClaimable));
+      if (extraAvailable.length > 0) {
+        const toAdd = extraAvailable.slice(0, stillNeeded);
         // Each fill-slot manny gets a base 0.05-aligned amount.
         // (Existing miners already have dispatched amounts we cannot change.)
         const totalAfter = miningIds.length + toAdd.length;
@@ -735,8 +770,10 @@ async function runMiningCycle(
     }
 
     // Find an idle manny to do the recovery
-    const recoverer = mannies.find(
-      (m: any) => !m.currentTask && !claimedMannies.has(m.id as string)
+    const [recoverer] = miningCandidates(
+      mannies,
+      claimedMannies,
+      craftingReserve,
     );
     if (!recoverer) {
       logger.info({ label }, "mining: no idle manny for recovery, deferring");
@@ -886,25 +923,12 @@ async function pollProbe(
   // satisfied by current inventory.  If every pending craft is blocked on
   // missing sub-items, the reserve is 0 and mining uses all idle mannies.
   const inventoryItems: any[] = probe?.inventory?.items ?? [];
-  const invItemCount: Record<string, number> = {};
-  for (const item of inventoryItems) {
-    const t: string = item.type ?? item.id;
-    invItemCount[t] = (invItemCount[t] ?? 0) + 1;
-  }
-
-  function craftActionReady(a: PendingAction): boolean {
-    if (a.action.type !== "craft_item" && a.action.type !== "atomic_printer_craft") return false;
-    const reqs = (a.condition as any).requireItemsWithQty as Array<{ type: string; quantity: number }> | undefined;
-    if (!reqs || reqs.length === 0) return true; // no item prereqs — ready immediately
-    return reqs.every((r) => (invItemCount[r.type] ?? 0) >= r.quantity);
-  }
-
-  const hasReadyCrafting = actions.some(craftActionReady);
+  const priorityCraftPlan = getPriorityCraftPlan(actions, inventoryItems);
+  const hasReadyCrafting = priorityCraftPlan.readyActionIds.size > 0;
   const probeKey = probeId != null ? String(probeId) : "main";
-  const craftingBlockedLastTick = craftingMaterialsBlocked.has(probeKey);
 
-  const craftingReserve = hasReadyCrafting && !craftingBlockedLastTick
-    ? Math.ceil(mannies.length * 0.25)
+  const craftingReserve = hasReadyCrafting
+    ? Math.min(mannies.length, priorityCraftPlan.readyMannyCount)
     : 0;
   if (craftingReserve > 0) {
     logger.info(
@@ -949,6 +973,10 @@ async function pollProbe(
   for (const action of actions) {
     let selectedMannyId: string | null = null;
 
+    if (isCraftingAction(action) && hasReadyCrafting) {
+      if (!priorityCraftPlan.readyActionIds.has(action.id)) continue;
+    }
+
     if (
       action.action.type === "atomic_printer_craft" &&
       atomicPrinterClaimed
@@ -987,7 +1015,11 @@ async function pollProbe(
         }
       }
 
-      if (cond.requireInventoryWithQty && cond.requireInventoryWithQty.length > 0) {
+      if (
+        cond.requireInventoryWithQty &&
+        cond.requireInventoryWithQty.length > 0 &&
+        !priorityCraftPlan.readyActionIds.has(action.id)
+      ) {
         const allSatisfied = cond.requireInventoryWithQty.every(
           ({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) >= quantity
         );
@@ -1050,7 +1082,11 @@ async function pollProbe(
         );
         if (!allSatisfied) continue;
       }
-      if (cond.requireInventoryWithQty && cond.requireInventoryWithQty.length > 0) {
+      if (
+        cond.requireInventoryWithQty &&
+        cond.requireInventoryWithQty.length > 0 &&
+        !priorityCraftPlan.readyActionIds.has(action.id)
+      ) {
         const allSatisfied = cond.requireInventoryWithQty.every(
           ({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) >= quantity
         );
@@ -1070,7 +1106,7 @@ async function pollProbe(
       "poller: condition met — executing action"
     );
 
-    const isCraftingAction =
+    const craftingAction =
       action.action.type === "craft_item" || action.action.type === "atomic_printer_craft";
 
     try {
@@ -1099,7 +1135,7 @@ async function pollProbe(
           );
         }
       }
-      if (isCraftingAction) craftingAttempts++;  // succeeded — not insufficient
+      if (craftingAction) craftingAttempts++;  // succeeded — not insufficient
     } catch (err: any) {
       const msg = err?.message ?? String(err);
       // 422 "Insufficient resources" — keep pending and retry next cycle
@@ -1108,7 +1144,7 @@ async function pollProbe(
           { actionId: action.id, label },
           "poller: insufficient resources — keeping pending, will retry next poll"
         );
-        if (isCraftingAction) {
+        if (craftingAction) {
           craftingAttempts++;
           craftingInsufficientCount++;
         }

@@ -61,7 +61,6 @@ export function planCraftQueue({
   const virtualInventory = new Map(
     Object.entries(inventoryItems).map(([type, count]) => [type, count]),
   );
-  const initialTargetCount = virtualInventory.get(recipeId) ?? 0;
   const actions: PlannedCraftAction[] = [];
   const depthMemo = new Map<string, number>();
 
@@ -138,10 +137,7 @@ export function planCraftQueue({
         itemCount: count,
         depth: depth(id),
         requireItemsWithQty: directItemRequirements,
-        requireInventoryWithQty:
-          unitIndex > 1
-            ? [{ type: recipeId, quantity: initialTargetCount + unitIndex - 1 }]
-            : [],
+        requireInventoryWithQty: [],
       });
     }
   }

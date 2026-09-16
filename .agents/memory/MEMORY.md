@@ -13,5 +13,5 @@
 - [Protect delivery cargo from repairs](delivery-cargo-repair-protection.md) — factory-served couriers must never consume staged metals for automatic hull repair
 - [Probe-idle movement phases](probe-idle-movement-phases.md) — queued travel must wait through every movement phase, not only `moving`
 - [Mining assignment migration](mining-assignment-migration.md) — freeze idle work, transfer containers first, then persist ownership; never disturb active cycles
-- [Unit-sequential crafting](unit-sequential-crafting.md) — complete one requested output's dependency chain before unlocking the next; parallelize only ready parts
+- [Priority crafting](unit-sequential-crafting.md) — the earliest ready order may use all available Mannys in parallel; later work cannot steal its workers or ingredients
 - [Craft retry call budget](craft-retry-call-budget.md) — failed craft attempts must claim their worker for the tick; enforce a token-wide rolling request ceiling

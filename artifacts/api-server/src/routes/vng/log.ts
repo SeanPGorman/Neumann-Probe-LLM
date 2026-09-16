@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { randomUUID } from "node:crypto";
 import {
   getContainers,
   getSectors,
@@ -321,6 +322,7 @@ router.post("/crafting-queue", async (req, res) => {
     });
 
     const scheduled: PendingAction[] = [];
+    const craftOrderId = randomUUID();
     for (const action of plan) {
       const machineName = action.machine === "atomic_3d_printer" ? "atomic printer" : "Manny";
       const partSuffix =
@@ -340,6 +342,7 @@ router.post("/crafting-queue", async (req, res) => {
       const entry = await addPendingAction({
         description,
         probeId,
+        craftOrderId,
         condition:
           action.machine === "atomic_3d_printer"
             ? { type: "probe_idle", ...commonCondition }

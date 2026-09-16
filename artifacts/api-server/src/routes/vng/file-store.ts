@@ -143,6 +143,8 @@ export type PendingAction = {
   createdAt: string;
   /** Which probe's Mannies/resources to use. null/absent = main probe (SnoozyBob). */
   probeId?: number | null;
+  /** Groups all dependency and unit rows created by one crafting request. */
+  craftOrderId?: string;
   condition: PendingCondition;
   action: PendingActionPayload;
   status: "pending" | "triggered" | "failed";
