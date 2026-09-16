@@ -8,6 +8,7 @@ import {
   addPendingAction,
   type PendingAction,
 } from "./file-store.js";
+import { planCraftQueue } from "./crafting-queue-planner.js";
 import { getProbe, getSector, scanSector, getVisitedSectors, clientFor, getCraftingRecipes, getScutNetwork, parseProbeId } from "./client.js";
 import { mapSectorObjects, sectorResourceSummary } from "./sector-map.js";
 
@@ -305,121 +306,69 @@ router.post("/crafting-queue", async (req, res) => {
 
     const recipes: any[] = recipesResp.recipes ?? [];
     const recipeById = new Map<string, any>(recipes.map((r: any) => [r.id, r]));
+    const targetRecipe = recipeById.get(recipeId);
 
-    if (!recipeById.has(recipeId)) {
+    if (!targetRecipe) {
       res.status(404).json({ error: `Recipe not found: ${recipeId}` });
       return;
     }
 
-    // Items that are ONLY craftable by the Atomic Printer (not by a Manny).
-    // We never schedule these — they are treated like raw resources that must
-    // already be present in inventory (or will be produced independently by the
-    // printer).  The parent craft is still gated on them via requireItemsWithQty.
-    const printerOnlyIds = new Set<string>(
-      recipes
-        .filter((r: any) => {
-          const cb: string[] = r.craftableBy ?? [];
-          return cb.includes("atomic_3d_printer") && !cb.includes("manny");
-        })
-        .map((r: any) => r.id as string)
-    );
+    const plan = planCraftQueue({
+      recipes,
+      inventoryItems: itemCountByType,
+      recipeId,
+      quantity,
+    });
 
-    // ── Step 1: Compute total raw need for the full dependency tree ───────────
-    // Do NOT recurse into printer-only sub-items — treat them as leaves.
-    const totalNeeds = new Map<string, number>();
-    function collectNeeds(id: string, qty: number): void {
-      const r = recipeById.get(id);
-      if (!r) return;
-      totalNeeds.set(id, (totalNeeds.get(id) ?? 0) + qty);
-      for (const ing of r.ingredients ?? []) {
-        if (ing.kind === "item" && !printerOnlyIds.has(ing.type as string)) {
-          collectNeeds(ing.type, (ing.quantity as number) * qty);
-        }
-      }
-    }
-    collectNeeds(recipeId, quantity);
-
-    // ── Step 2: Work orders — top-level always crafted; sub-items use inventory ─
-    // Printer-only items are never scheduled as work orders.
-    const workOrders = new Map<string, number>();
-    workOrders.set(recipeId, quantity); // always produce what was requested
-    for (const [id, needed] of totalNeeds) {
-      if (id === recipeId) continue;
-      if (printerOnlyIds.has(id)) continue; // printer handles these — skip
-      const inStock = itemCountByType[id] ?? 0;
-      const toCraft = Math.max(0, needed - inStock);
-      if (toCraft > 0) workOrders.set(id, toCraft);
-    }
-
-    // ── Step 3: Topological depth (leaves = 0, complex items = higher) ────────
-    const depthMemo = new Map<string, number>();
-    function itemDepth(id: string): number {
-      if (depthMemo.has(id)) return depthMemo.get(id)!;
-      const r = recipeById.get(id);
-      if (!r) { depthMemo.set(id, 0); return 0; }
-      const itemDeps = (r.ingredients ?? []).filter((i: any) => i.kind === "item");
-      const d = itemDeps.length === 0
-        ? 0
-        : Math.max(...itemDeps.map((i: any) => itemDepth(i.type as string) + 1));
-      depthMemo.set(id, d);
-      return d;
-    }
-    for (const id of workOrders.keys()) itemDepth(id);
-
-    // Sort leaves-first so leaf tasks appear first in the queue file
-    const sorted = [...workOrders.entries()].sort(
-      (a, b) => itemDepth(a[0]) - itemDepth(b[0])
-    );
-
-    // ── Step 4: requireItemsWithQty = direct item deps the poller must wait for ─
-    // Only includes items that are scheduled as work orders (Manny-crafted).
-    // Printer-only ingredients are intentionally excluded — the parent craft fires
-    // as soon as all Manny-crafted sub-items are ready, regardless of whether
-    // printer items are in stock.
-    function requireItemsFor(id: string): Array<{ type: string; quantity: number }> {
-      const r = recipeById.get(id);
-      if (!r) return [];
-      const seen = new Map<string, number>();
-      for (const i of r.ingredients ?? []) {
-        if (i.kind === "item" && workOrders.has(i.type as string)) {
-          seen.set(i.type as string, (seen.get(i.type as string) ?? 0) + (i.quantity as number));
-        }
-      }
-      return [...seen.entries()].map(([type, quantity]) => ({ type, quantity }));
-    }
-
-    // ── Step 5: Schedule tasks ────────────────────────────────────────────────
     const scheduled: PendingAction[] = [];
-    for (const [id, qty] of sorted) {
-      const r = recipeById.get(id)!;
-      const craftableBy: string[] = r.craftableBy ?? [];
-      const byPrinter = craftableBy.includes("atomic_3d_printer") && !craftableBy.includes("manny");
-      const reqs = requireItemsFor(id);
-      const machineName = byPrinter ? "atomic printer" : "Manny";
+    for (const action of plan) {
+      const machineName = action.machine === "atomic_3d_printer" ? "atomic printer" : "Manny";
+      const partSuffix =
+        action.itemCount > 1 ? ` · ${action.itemIndex}/${action.itemCount}` : "";
+      const description =
+        `[craft queue] ${targetRecipe.name as string} ${action.unitIndex}/${action.unitCount}` +
+        (action.recipeId === recipeId ? "" : ` · ${action.recipeName}${partSuffix}`) +
+        ` via ${machineName}`;
+      const commonCondition = {
+        ...(action.requireItemsWithQty.length
+          ? { requireItemsWithQty: action.requireItemsWithQty }
+          : {}),
+        ...(action.requireInventoryWithQty.length
+          ? { requireInventoryWithQty: action.requireInventoryWithQty }
+          : {}),
+      };
+      const entry = await addPendingAction({
+        description,
+        probeId,
+        condition:
+          action.machine === "atomic_3d_printer"
+            ? { type: "probe_idle", ...commonCondition }
+            : { type: "manny_idle", ...commonCondition },
+        action:
+          action.machine === "atomic_3d_printer"
+            ? { type: "atomic_printer_craft", recipe: action.recipeId }
+            : { type: "craft_item", recipe: action.recipeId },
+      });
+      scheduled.push(entry);
+    }
 
-      for (let i = 0; i < qty; i++) {
-        const entry = await addPendingAction({
-          description: `[craft queue] ${r.name as string} (${i + 1}/${qty}) via ${machineName}`,
-          probeId: probeId,
-          condition: byPrinter
-            ? { type: "probe_idle" }
-            : { type: "manny_idle", ...(reqs.length ? { requireItemsWithQty: reqs } : {}) },
-          action: byPrinter
-            ? { type: "atomic_printer_craft", recipe: id }
-            : { type: "craft_item", recipe: id },
-        });
-        scheduled.push(entry);
-      }
+    const breakdownByRecipe = new Map<string, { id: string; name: string; quantity: number; depth: number }>();
+    for (const action of plan) {
+      const existing = breakdownByRecipe.get(action.recipeId);
+      if (existing) existing.quantity += 1;
+      else breakdownByRecipe.set(action.recipeId, {
+        id: action.recipeId,
+        name: action.recipeName,
+        quantity: 1,
+        depth: action.depth,
+      });
     }
 
     res.json({
       queued: scheduled.length,
-      breakdown: sorted.map(([id, qty]) => ({
-        id,
-        name: (recipeById.get(id)?.name as string) ?? id,
-        quantity: qty,
-        depth: itemDepth(id),
-      })),
+      outputQuantity: quantity,
+      strategy: "unit-sequential",
+      breakdown: [...breakdownByRecipe.values()],
     });
   } catch (err: any) {
     res.status(500).json({ error: err.message });

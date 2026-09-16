@@ -110,8 +110,16 @@ export type ConditionMannyIdle = {
   requireItems?: string[];
   /** Wait until each item type is present in inventory in at least the given quantity */
   requireItemsWithQty?: Array<{ type: string; quantity: number }>;
+  /** Non-consuming inventory gate, used to hold later requested units behind earlier outputs. */
+  requireInventoryWithQty?: Array<{ type: string; quantity: number }>;
 };
-export type ConditionProbeIdle = { type: "probe_idle" };
+export type ConditionProbeIdle = {
+  type: "probe_idle";
+  /** Consumable direct item ingredients required before the printer can start. */
+  requireItemsWithQty?: Array<{ type: string; quantity: number }>;
+  /** Non-consuming inventory gate, used to hold later requested units behind earlier outputs. */
+  requireInventoryWithQty?: Array<{ type: string; quantity: number }>;
+};
 export type PendingCondition = ConditionMannyIdle | ConditionProbeIdle;
 
 export type ActionMoveProbe       = { type: "move_probe"; x: number; y: number; z: number };

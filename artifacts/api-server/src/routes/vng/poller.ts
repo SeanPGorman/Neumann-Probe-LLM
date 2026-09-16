@@ -923,6 +923,16 @@ async function pollProbe(
     logger.error({ err: err?.message, probeId }, "poller: drone role automation error")
   );
 
+  // A successful craft reserves its direct item ingredients immediately, even
+  // though the probe snapshot will not reflect consumption until the next poll.
+  // Keeping a mutable count prevents multiple queued crafts in one cycle from
+  // claiming the same stock.
+  const availableItemCountByType = new Map<string, number>();
+  for (const item of probe?.inventory?.items ?? []) {
+    const type = item.type as string;
+    availableItemCountByType.set(type, (availableItemCountByType.get(type) ?? 0) + 1);
+  }
+
   for (const action of actions) {
     let selectedMannyId: string | null = null;
 
@@ -932,24 +942,26 @@ async function pollProbe(
 
       // requireItemsWithQty guard — quantity-aware (preferred)
       if (cond.requireItemsWithQty && cond.requireItemsWithQty.length > 0) {
-        const itemCountByType = new Map<string, number>();
-        for (const i of probe?.inventory?.items ?? []) {
-          const t = i.type as string;
-          itemCountByType.set(t, (itemCountByType.get(t) ?? 0) + 1);
-        }
         const allSatisfied = cond.requireItemsWithQty.every(
-          ({ type, quantity }) => (itemCountByType.get(type) ?? 0) >= quantity
+          ({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) >= quantity
         );
         if (!allSatisfied) {
           const missing = cond.requireItemsWithQty
-            .filter(({ type, quantity }) => (itemCountByType.get(type) ?? 0) < quantity)
-            .map(({ type, quantity }) => `${type}×${quantity}(have ${itemCountByType.get(type) ?? 0})`);
+            .filter(({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) < quantity)
+            .map(({ type, quantity }) => `${type}×${quantity}(have ${availableItemCountByType.get(type) ?? 0})`);
           logger.info(
             { actionId: action.id, missing, label },
             "poller: required items not yet in inventory — waiting"
           );
           continue;
         }
+      }
+
+      if (cond.requireInventoryWithQty && cond.requireInventoryWithQty.length > 0) {
+        const allSatisfied = cond.requireInventoryWithQty.every(
+          ({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) >= quantity
+        );
+        if (!allSatisfied) continue;
       }
 
       // requireItems guard — legacy type-only check (backward compat)
@@ -1001,6 +1013,19 @@ async function pollProbe(
       // e.g. a queued move sent while the probe is already in transit.
       if (!probe) continue;
       if (isProbeMoving) continue;
+      const cond = action.condition;
+      if (cond.requireItemsWithQty && cond.requireItemsWithQty.length > 0) {
+        const allSatisfied = cond.requireItemsWithQty.every(
+          ({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) >= quantity
+        );
+        if (!allSatisfied) continue;
+      }
+      if (cond.requireInventoryWithQty && cond.requireInventoryWithQty.length > 0) {
+        const allSatisfied = cond.requireInventoryWithQty.every(
+          ({ type, quantity }) => (availableItemCountByType.get(type) ?? 0) >= quantity
+        );
+        if (!allSatisfied) continue;
+      }
       if (action.action?.type === "move_probe" && probeMoveClaimed) {
         logger.info(
           { actionId: action.id, label },
@@ -1025,6 +1050,17 @@ async function pollProbe(
 
       if (selectedMannyId) claimedMannies.add(selectedMannyId);
       if (action.action.type === "move_probe") probeMoveClaimed = true;
+      if (
+        action.action.type === "craft_item" ||
+        action.action.type === "atomic_printer_craft"
+      ) {
+        for (const requirement of action.condition.requireItemsWithQty ?? []) {
+          availableItemCountByType.set(
+            requirement.type,
+            Math.max(0, (availableItemCountByType.get(requirement.type) ?? 0) - requirement.quantity),
+          );
+        }
+      }
       if (isCraftingAction) craftingAttempts++;  // succeeded — not insufficient
     } catch (err: any) {
       const msg = err?.message ?? String(err);
