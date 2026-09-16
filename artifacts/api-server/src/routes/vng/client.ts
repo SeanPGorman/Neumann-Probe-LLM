@@ -1,8 +1,10 @@
 import { AsyncLocalStorage } from "node:async_hooks";
 import { ReadThroughCache } from "./read-through-cache.js";
+import { RateLimitThrottler } from "./rate-limit-throttler.js";
 
 const BASE = "https://neumann-probe.net";
 const pollReadCache = new AsyncLocalStorage<ReadThroughCache>();
+const rateLimitThrottler = new RateLimitThrottler();
 
 /** Structured error thrown by every VNG API call. Callers can inspect `.status`
  *  directly instead of parsing the message string. */
@@ -26,10 +28,51 @@ function headers() {
 }
 
 async function vngFetch(path: string, init: RequestInit = {}): Promise<any> {
-  const res = await fetch(`${BASE}${path}`, {
-    ...init,
-    headers: { ...headers(), ...((init.headers as Record<string, string>) ?? {}) },
-  });
+  while (true) {
+    const waitMs = rateLimitThrottler.reserve();
+    if (waitMs <= 0) break;
+    await new Promise((resolve) => setTimeout(resolve, waitMs));
+  }
+  let res: Response;
+  try {
+    res = await fetch(`${BASE}${path}`, {
+      ...init,
+      headers: { ...headers(), ...((init.headers as Record<string, string>) ?? {}) },
+    });
+  } catch (error) {
+    rateLimitThrottler.releaseWithoutHeaders();
+    throw error;
+  }
+  const limit = Number(res.headers.get("x-ratelimit-limit"));
+  const remaining = Number(res.headers.get("x-ratelimit-remaining"));
+  const resetSeconds = Number(res.headers.get("x-ratelimit-reset"));
+  let observedHeaders = false;
+  if (
+    res.headers.get("x-ratelimit-limit") != null &&
+    res.headers.get("x-ratelimit-remaining") != null &&
+    res.headers.get("x-ratelimit-reset") != null &&
+    Number.isFinite(limit) &&
+    Number.isFinite(remaining) &&
+    Number.isFinite(resetSeconds)
+  ) {
+    observedHeaders = rateLimitThrottler.observe({
+      limit,
+      remaining,
+      resetAtMs: resetSeconds * 1_000,
+    });
+  }
+  if (res.status === 429 && !observedHeaders) {
+      const retryAfterHeader = res.headers.get("retry-after");
+      const retryAfterSeconds =
+        retryAfterHeader != null ? Number(retryAfterHeader) : Number.NaN;
+      rateLimitThrottler.penalize(
+        Number.isFinite(retryAfterSeconds) && retryAfterSeconds > 0
+          ? retryAfterSeconds * 1_000
+          : 60_000,
+      );
+  } else if (!observedHeaders) {
+    rateLimitThrottler.releaseWithoutHeaders();
+  }
   const body = await res.json();
   if (!res.ok) {
     const msg =

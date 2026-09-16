@@ -855,6 +855,7 @@ async function pollProbe(
 
   const claimedMannies = new Set<string>();
   let probeMoveClaimed = false;
+  let atomicPrinterClaimed = false;
 
   // Pre-claim mannies tracked by an active mining/drift assignment, but ONLY
   // when they have an active task in VNG right now.  Idle tracked mannies are
@@ -947,6 +948,13 @@ async function pollProbe(
 
   for (const action of actions) {
     let selectedMannyId: string | null = null;
+
+    if (
+      action.action.type === "atomic_printer_craft" &&
+      atomicPrinterClaimed
+    ) {
+      continue;
+    }
 
     // Movement safety belongs to the action, not its condition. Legacy or
     // externally scheduled rows may pair move_probe with manny_idle; they must
@@ -1070,11 +1078,16 @@ async function pollProbe(
       // accepted the command. Claim movement before sending so no later row can
       // issue another move from this same probe snapshot.
       if (action.action.type === "move_probe") probeMoveClaimed = true;
+      // Busy and failed responses are both uncertain enough that this worker
+      // must not be reused for another queued row in the same snapshot.
+      if (selectedMannyId) claimedMannies.add(selectedMannyId);
+      if (action.action.type === "atomic_printer_craft") {
+        atomicPrinterClaimed = true;
+      }
       await executeAction(action, selectedMannyId, c);
       await resolveQuietly(action.id, { status: "triggered" });
       logger.info({ actionId: action.id, label }, "poller: action triggered successfully");
 
-      if (selectedMannyId) claimedMannies.add(selectedMannyId);
       if (
         action.action.type === "craft_item" ||
         action.action.type === "atomic_printer_craft"

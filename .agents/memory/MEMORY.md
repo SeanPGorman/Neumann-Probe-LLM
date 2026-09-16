@@ -14,3 +14,4 @@
 - [Probe-idle movement phases](probe-idle-movement-phases.md) — queued travel must wait through every movement phase, not only `moving`
 - [Mining assignment migration](mining-assignment-migration.md) — freeze idle work, transfer containers first, then persist ownership; never disturb active cycles
 - [Unit-sequential crafting](unit-sequential-crafting.md) — complete one requested output's dependency chain before unlocking the next; parallelize only ready parts
+- [Craft retry call budget](craft-retry-call-budget.md) — failed craft attempts must claim their worker for the tick; enforce a token-wide rolling request ceiling

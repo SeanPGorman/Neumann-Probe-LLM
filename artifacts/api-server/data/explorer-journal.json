@@ -11074,13 +11074,13 @@
     "sectorY": 20,
     "sectorZ": 17,
     "firstVisitedAt": "2026-09-08T13:09:14.375Z",
-    "lastVisitedAt": "2026-09-16T19:35:57.109Z",
-    "visitCount": 2757,
+    "lastVisitedAt": "2026-09-16T20:02:36.717Z",
+    "visitCount": 2760,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 751155,
+      "currentSectorResidenceSeconds": 752755,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -12786,13 +12786,13 @@
     "sectorY": 43,
     "sectorZ": 27,
     "firstVisitedAt": "2026-09-08T18:08:47.215Z",
-    "lastVisitedAt": "2026-09-16T19:35:57.297Z",
-    "visitCount": 2154,
+    "lastVisitedAt": "2026-09-16T20:02:36.772Z",
+    "visitCount": 2156,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 696430,
+      "currentSectorResidenceSeconds": 698030,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -12842,6 +12842,451 @@
         "source": "danger level",
         "message": "low",
         "objectId": "625",
+        "objectName": "Relais SCUT"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-17,-15,-10",
+    "explorerId": 882,
+    "explorerName": "DeltaExplorer",
+    "sectorX": -17,
+    "sectorY": -15,
+    "sectorZ": -10,
+    "firstVisitedAt": "2026-09-16T20:02:36.710Z",
+    "lastVisitedAt": "2026-09-16T20:02:36.710Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 699922,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "733903ba4a42466f495f",
+        "type": "solar_system",
+        "name": "System 616d88",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "mass": 17.625353,
+        "radius": 11.404546,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 5,
+        "orbitalBodyCount": 7,
+        "bookmarkTargets": [
+          {
+            "id": "e3cc29206660aca2d7d4",
+            "type": "star",
+            "name": null,
+            "mass": 0.326212,
+            "radius": 0.268798,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "cdef703f3e9666353854",
+            "type": "planet",
+            "name": null,
+            "mass": 0.17346,
+            "radius": 0.163619,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.107981,
+            "intelligentLife": false
+          },
+          {
+            "id": "8520b2f56346555f0f95",
+            "type": "planet",
+            "name": null,
+            "mass": 2.535893,
+            "radius": 1.22828,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.0308,
+            "intelligentLife": false
+          },
+          {
+            "id": "b9cd5a1e24e179a1dbe2",
+            "type": "planet",
+            "name": "Monde habite du secteur relatif -17:-15:-10",
+            "mass": 5.254829,
+            "radius": 0.764016,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.514786,
+            "intelligentLife": true
+          },
+          {
+            "id": "9cf3d8d7e7286cf736b3",
+            "type": "planet",
+            "name": null,
+            "mass": 5.924906,
+            "radius": 1.04853,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.06304,
+            "intelligentLife": false
+          },
+          {
+            "id": "be769d07d0b8ed3f62bb",
+            "type": "planet",
+            "name": null,
+            "mass": 3.374873,
+            "radius": 0.851363,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.056412,
+            "intelligentLife": false
+          },
+          {
+            "id": "532eb70c646e32b2fd7a",
+            "type": "asteroid",
+            "name": "Metal 9931",
+            "mass": 0.018975,
+            "radius": 0.098548,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          },
+          {
+            "id": "1487fde46a22121b9b91",
+            "type": "asteroid",
+            "name": "Metal 4b0e",
+            "mass": 0.016205,
+            "radius": 0.105191,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "532eb70c646e32b2fd7a",
+            "type": "asteroid",
+            "name": "Metal 9931",
+            "mass": 0.018975,
+            "massUnit": "earth_mass",
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 18975,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          },
+          {
+            "id": "1487fde46a22121b9b91",
+            "type": "asteroid",
+            "name": "Metal 4b0e",
+            "mass": 0.016205,
+            "massUnit": "earth_mass",
+            "resources": [
+              "silicates",
+              "magnesium"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 16205,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      },
+      {
+        "id": "deuterium-refuel-station-b9cd5a1e24e179a1dbe2",
+        "type": "deuterium_refuel_station",
+        "name": "Deuterium refuel station",
+        "estimated": false,
+        "summary": "Deuterium refuel station detected in orbit.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "planetId": "b9cd5a1e24e179a1dbe2",
+        "planetName": "Monde habite",
+        "resourceTypes": [
+          "deuterium"
+        ],
+        "createdAt": "2026-09-16T18:26:39+00:00"
+      },
+      {
+        "id": "587",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "estimated": false,
+        "summary": "Active long-range SCUT communication relay.",
+        "mass": 0,
+        "radius": 0,
+        "dangerLevel": "low",
+        "status": "on",
+        "isTransitBeacon": true,
+        "createdByProbeId": 882,
+        "createdByProbeName": "DeltaExplorer",
+        "createdAt": "2026-09-03T14:15:44+00:00",
+        "activatedAt": "2026-09-03T14:20:57+00:00",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        }
+      }
+    ],
+    "objects": [
+      {
+        "id": "733903ba4a42466f495f",
+        "type": "solar_system",
+        "name": "System 616d88",
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 5,
+        "orbitalBodyCount": 7,
+        "mass": 17.625353,
+        "massUnit": null,
+        "radius": 11.404546,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "e3cc29206660aca2d7d4",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.326212,
+            "massUnit": "solar_mass",
+            "radius": 0.268798,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "cdef703f3e9666353854",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.17346,
+            "massUnit": "earth_mass",
+            "radius": 0.163619,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.107981,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "8520b2f56346555f0f95",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.535893,
+            "massUnit": "earth_mass",
+            "radius": 1.22828,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.0308,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "b9cd5a1e24e179a1dbe2",
+            "type": "planet",
+            "name": "Monde habite du secteur relatif -17:-15:-10",
+            "category": "rocky",
+            "mass": 5.254829,
+            "massUnit": "earth_mass",
+            "radius": 0.764016,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.514786,
+            "intelligentLife": true,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "9cf3d8d7e7286cf736b3",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.924906,
+            "massUnit": "earth_mass",
+            "radius": 1.04853,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.06304,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "be769d07d0b8ed3f62bb",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.374873,
+            "massUnit": "earth_mass",
+            "radius": 0.851363,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.056412,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "532eb70c646e32b2fd7a",
+            "type": "asteroid",
+            "name": "Metal 9931",
+            "category": null,
+            "mass": 0.018975,
+            "massUnit": "earth_mass",
+            "radius": 0.098548,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 18975,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          },
+          {
+            "id": "1487fde46a22121b9b91",
+            "type": "asteroid",
+            "name": "Metal 4b0e",
+            "category": null,
+            "mass": 0.016205,
+            "massUnit": "earth_mass",
+            "radius": 0.105191,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "silicates",
+              "magnesium"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 16205,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      },
+      {
+        "id": "deuterium-refuel-station-b9cd5a1e24e179a1dbe2",
+        "type": "deuterium_refuel_station",
+        "name": "Deuterium refuel station",
+        "summary": "Deuterium refuel station detected in orbit.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "deuterium"
+        ],
+        "planetId": "b9cd5a1e24e179a1dbe2",
+        "planetName": "Monde habite"
+      },
+      {
+        "id": "587",
+        "type": "scut_relay",
+        "name": "Relais SCUT",
+        "summary": "Active long-range SCUT communication relay.",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "status": "on",
+        "createdByProbeId": 882,
+        "createdByProbeName": "DeltaExplorer",
+        "coverageRadiusSectors": 10,
+        "network": {
+          "id": 33,
+          "name": "SnoozyNet"
+        },
+        "activatedAt": "2026-09-03T14:20:57+00:00"
+      }
+    ],
+    "resourceSummary": [
+      "metals",
+      "deuterium"
+    ],
+    "intelligentLife": [
+      {
+        "id": "b9cd5a1e24e179a1dbe2",
+        "name": "Monde habite du secteur relatif -17:-15:-10",
+        "type": "planet",
+        "finding": true
+      }
+    ],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "733903ba4a42466f495f",
+        "objectName": "System 616d88"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "deuterium-refuel-station-b9cd5a1e24e179a1dbe2",
+        "objectName": "Deuterium refuel station"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "587",
         "objectName": "Relais SCUT"
       }
     ],
