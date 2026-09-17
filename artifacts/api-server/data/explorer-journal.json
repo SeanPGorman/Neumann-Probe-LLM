@@ -11074,13 +11074,13 @@
     "sectorY": 20,
     "sectorZ": 17,
     "firstVisitedAt": "2026-09-08T13:09:14.375Z",
-    "lastVisitedAt": "2026-09-16T20:22:34.454Z",
-    "visitCount": 2762,
+    "lastVisitedAt": "2026-09-17T02:42:03.350Z",
+    "visitCount": 2788,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 753952,
+      "currentSectorResidenceSeconds": 776721,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -12786,13 +12786,13 @@
     "sectorY": 43,
     "sectorZ": 27,
     "firstVisitedAt": "2026-09-08T18:08:47.215Z",
-    "lastVisitedAt": "2026-09-16T20:22:34.513Z",
-    "visitCount": 2158,
+    "lastVisitedAt": "2026-09-17T02:42:03.362Z",
+    "visitCount": 2184,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 699227,
+      "currentSectorResidenceSeconds": 721996,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -13290,6 +13290,32 @@
         "objectName": "Relais SCUT"
       }
     ],
+    "waypointEvents": []
+  },
+  {
+    "id": "882:-17,-16,-11",
+    "explorerId": 882,
+    "explorerName": "DeltaExplorer",
+    "sectorX": -17,
+    "sectorY": -16,
+    "sectorZ": -11,
+    "firstVisitedAt": "2026-09-16T20:52:36.604Z",
+    "lastVisitedAt": "2026-09-16T21:07:36.973Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1499,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
     "waypointEvents": []
   }
 ]
