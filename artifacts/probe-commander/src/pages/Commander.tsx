@@ -128,13 +128,59 @@ function ScanReadinessBar({ scan }: { scan: { currentSectorResidenceSeconds: num
 
 type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean; sector?: { x: number; y: number; z: number }; isMoving?: boolean; fuelDeuterium?: number };
 
+function ProbeHeaderSwitch({
+  probeList,
+  selectedProbeId,
+  onSelectProbe,
+}: {
+  probeList: ProbeEntry[];
+  selectedProbeId: number | null;
+  onSelectProbe: (id: number | null) => void;
+}) {
+  const defaultId = probeList.find(p => p.isDefault)?.id ?? probeList[0]?.id ?? null;
+  const currentId = selectedProbeId ?? defaultId;
+
+  return (
+    <div className="flex min-w-0 items-center gap-2 text-xs tracking-[0.22em] text-muted-foreground">
+      <span className="shrink-0">VON NEUMANN /</span>
+      {probeList.length > 1 ? (
+        <div className="relative min-w-0">
+          <select
+            value={currentId ?? ""}
+            onChange={e => {
+              const id = Number(e.target.value);
+              onSelectProbe(id === defaultId ? null : id);
+            }}
+            className="max-w-full cursor-pointer appearance-none bg-transparent pr-5 font-bold tracking-[0.18em] text-primary outline-none glow-green"
+            title="Switch probe"
+            aria-label="Active probe"
+            data-testid="select-active-probe"
+          >
+            {probeList.map(p => (
+              <option
+                key={p.id}
+                value={p.id}
+                style={{ background: "hsl(222 20% 8%)", color: "hsl(150 80% 55%)" }}
+              >
+                {p.name.toUpperCase()}
+              </option>
+            ))}
+          </select>
+          <span className="pointer-events-none absolute right-0 top-1/2 -translate-y-1/2 text-primary">▾</span>
+        </div>
+      ) : (
+        <span className="truncate font-bold tracking-[0.18em] text-primary glow-green">
+          {(probeList[0]?.name ?? "PROBE").toUpperCase()}
+        </span>
+      )}
+    </div>
+  );
+}
+
 function TelemetryPanel({
-  state, error, probeList = [], selectedProbeId = null, onSelectProbe = () => {},
+  state, error,
 }: {
   state: any; error: Error | null;
-  probeList?: ProbeEntry[];
-  selectedProbeId?: number | null;
-  onSelectProbe?: (id: number | null) => void;
 }) {
   if (error) return <ApiError error={error} />;
   if (!state) {
@@ -142,8 +188,6 @@ function TelemetryPanel({
   }
   const { probe, mannies, stowedMannies, sectorObjects, inventory, scan } = state;
   const sector = probe.sector ?? probe.movement?.target ?? probe.movement?.origin ?? { x: 0, y: 0, z: 0 };
-  const defaultId = probeList.find(p => p.isDefault)?.id ?? probeList[0]?.id ?? null;
-  const currentId = selectedProbeId ?? defaultId;
   return (
     <div className="space-y-4">
       <div className="flex items-center justify-between">
@@ -151,29 +195,9 @@ function TelemetryPanel({
         <span className="text-xs text-primary glow-green">{probe.status?.toUpperCase()}</span>
       </div>
       <div>
-        {probeList.length > 1 ? (
-          <div className="relative flex items-center gap-1">
-            <select
-              value={currentId ?? ""}
-              onChange={e => {
-                const id = Number(e.target.value);
-                onSelectProbe(id === defaultId ? null : id);
-              }}
-              className="text-lg font-bold tracking-wider bg-transparent border-none outline-none cursor-pointer text-primary glow-green flex-1 pr-4"
-              style={{ WebkitAppearance: "none", appearance: "none" }}
-              title="Switch probe"
-            >
-              {probeList.map(p => (
-                <option key={p.id} value={p.id} style={{ background: "hsl(222 20% 8%)", color: "hsl(150 80% 55%)" }}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-            <span className="text-primary text-xs pointer-events-none shrink-0 -ml-4">▾</span>
-          </div>
-        ) : (
-          <div className="text-lg font-bold glow-green tracking-wider">{probe.name}</div>
-        )}
+        <div className="text-lg font-bold glow-green tracking-wider" data-testid="text-active-probe-name">
+          {probe.name}
+        </div>
         <div className="text-xs text-muted-foreground mt-0.5">
           {probe.status === "accelerating" || probe.status === "cruising" || probe.status === "decelerating"
             ? `→ [${sector.x},${sector.y},${sector.z}]`
@@ -2074,9 +2098,11 @@ export default function Commander() {
 
   const leftContent = (
     <>
-      <div className="text-xs text-muted-foreground tracking-[0.3em] glow-green">
-        VON NEUMANN PROBE
-      </div>
+      <ProbeHeaderSwitch
+        probeList={probeList}
+        selectedProbeId={selectedProbeId}
+        onSelectProbe={setSelectedProbeId}
+      />
       {/* Tab bar */}
       <div className="flex border border-border rounded overflow-hidden">
         {TABS.map(tab => (
@@ -2098,9 +2124,6 @@ export default function Commander() {
           <TelemetryPanel
             state={state}
             error={stateError as Error | null}
-            probeList={probeList}
-            selectedProbeId={selectedProbeId}
-            onSelectProbe={setSelectedProbeId}
           />
         )}
         {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} probeId={selectedProbeId} />}
