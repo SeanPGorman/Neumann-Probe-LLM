@@ -36,6 +36,14 @@ export function craftOrderKey(action: PendingAction): string {
     : `legacy-action:${action.id}`;
 }
 
+export function getCraftingReserve(
+  totalMannies: number,
+  readyMannyCount: number,
+): number {
+  const miningFirstCap = Math.floor(Math.max(0, totalMannies) * 0.25);
+  return Math.min(miningFirstCap, Math.max(0, readyMannyCount));
+}
+
 export function getPriorityCraftPlan(
   actions: PendingAction[],
   inventoryItems: Array<{ type?: string; id?: string }>,

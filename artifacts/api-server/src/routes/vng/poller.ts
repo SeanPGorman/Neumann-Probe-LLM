@@ -15,6 +15,7 @@ import {
 } from "./file-store.js";
 import { mapSectorObjects } from "./sector-map.js";
 import {
+  getCraftingReserve,
   getPriorityCraftPlan,
   isCraftingAction,
 } from "./craft-queue-priority.js";
@@ -927,13 +928,16 @@ async function pollProbe(
   const hasReadyCrafting = priorityCraftPlan.readyActionIds.size > 0;
   const probeKey = probeId != null ? String(probeId) : "main";
 
+  // Mining raw materials takes precedence. Keep only a small slice of the
+  // workforce available for the earliest ready craft order so crafting cannot
+  // starve the mining pipeline.
   const craftingReserve = hasReadyCrafting
-    ? Math.min(mannies.length, priorityCraftPlan.readyMannyCount)
+    ? getCraftingReserve(mannies.length, priorityCraftPlan.readyMannyCount)
     : 0;
   if (craftingReserve > 0) {
     logger.info(
       { craftingReserve, totalMannies: mannies.length },
-      "poller: reserving mannies for crafting queue (ready actions exist)"
+      "poller: reserving small Manny slice for crafting (mining has priority)"
     );
   } else if (actions.some((a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft")) {
     logger.info(

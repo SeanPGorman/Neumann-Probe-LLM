@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import {
   craftOrderKey,
+  getCraftingReserve,
   getPriorityCraftPlan,
 } from "./craft-queue-priority.js";
 import type { PendingAction } from "./file-store.js";
@@ -28,6 +29,13 @@ function craft(
     action: { type: "craft_item", recipe },
   };
 }
+
+test("caps crafting reserve at 25 percent so mining keeps priority", () => {
+  assert.equal(getCraftingReserve(13, 13), 3);
+  assert.equal(getCraftingReserve(41, 41), 10);
+  assert.equal(getCraftingReserve(13, 2), 2);
+  assert.equal(getCraftingReserve(13, 0), 0);
+});
 
 test("allows multiple units in the earliest order to run when stock supports them", () => {
   const actions = [
