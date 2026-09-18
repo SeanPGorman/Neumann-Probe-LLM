@@ -17310,13 +17310,13 @@
     "sectorY": 33,
     "sectorZ": 18,
     "firstVisitedAt": "2026-09-18T04:42:16.448Z",
-    "lastVisitedAt": "2026-09-18T17:27:18.175Z",
-    "visitCount": 52,
+    "lastVisitedAt": "2026-09-18T18:12:19.690Z",
+    "visitCount": 55,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 46201,
+      "currentSectorResidenceSeconds": 48902,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -17947,13 +17947,13 @@
     "sectorY": 44,
     "sectorZ": 27,
     "firstVisitedAt": "2026-09-18T17:12:18.753Z",
-    "lastVisitedAt": "2026-09-18T17:27:18.413Z",
-    "visitCount": 2,
+    "lastVisitedAt": "2026-09-18T18:12:19.708Z",
+    "visitCount": 5,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 1531,
+      "currentSectorResidenceSeconds": 4232,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -18318,6 +18318,32 @@
         "objectName": "System 2c73e9"
       }
     ],
+    "waypointEvents": []
+  },
+  {
+    "id": "914:34,14,28",
+    "explorerId": 914,
+    "explorerName": "FoxtrotExplorer",
+    "sectorX": 34,
+    "sectorY": 14,
+    "sectorZ": 28,
+    "firstVisitedAt": "2026-09-18T18:12:19.699Z",
+    "lastVisitedAt": "2026-09-18T18:12:19.699Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 300,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
     "waypointEvents": []
   }
 ]
