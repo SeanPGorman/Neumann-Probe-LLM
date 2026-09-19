@@ -199,8 +199,16 @@ async function nextDeliveryWaypoint(
   for (const netId of Array.from(networkIds)) {
     let net: any;
     try { net = await getScutNetwork(netId); } catch { continue; }
-    for (const relay of net?.relays ?? []) {
-      if (relay.status !== "on") continue;
+    const activeRelays = (net?.relays ?? []).filter((relay: any) => relay.status === "on");
+    const sourceRelay = activeRelays.find((relay: any) => {
+      const sector = relay.sector?.relative;
+      return sector?.x === from.x && sector?.y === from.y && sector?.z === from.z;
+    });
+    // Long-range SCUT travel is valid only when this move starts at an active
+    // relay. Merely knowing about a useful destination relay does not make the
+    // uncovered jump from the courier's current sector safe.
+    if (!sourceRelay) continue;
+    for (const relay of activeRelays) {
       const rs = relay.sector?.relative;
       if (!rs) continue;
       const progress = totalDist - chebyshevDist(rs, to);

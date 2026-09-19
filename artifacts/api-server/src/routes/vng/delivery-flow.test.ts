@@ -40,7 +40,7 @@ async function importFresh() {
 }
 
 const FACTORY_SECTOR = { x: 0, y: 0, z: 0 };
-const EXPLORER_SECTOR = { x: 5, y: 5, z: 5 };
+const EXPLORER_SECTOR = { x: 5, y: 5, z: 4 };
 
 const FULL_LOADOUT = [
   { id: "cont-1", type: "additional_container" },
@@ -73,7 +73,7 @@ function makeClient(calls: any[], sectorObjects: any[] = []) {
 
 const IDLE_MANNY = [{ id: "m-1", currentTask: null, integrityPercent: 100 }];
 
-test("delivery e2e: dispatch → travel → detach additional_container for explorer", async () => {
+test("delivery e2e: dispatch → safe short-hop travel → detach additional_container for explorer", async () => {
   const { runner, store } = await importFresh();
 
   // Seed: delivery role in waiting phase + a pending explorer request.
@@ -115,13 +115,14 @@ test("delivery e2e: dispatch → travel → detach additional_container for expl
   assert.equal(reqNow.status, "assigned");
   assert.equal(reqNow.assignedDeliveryProbeId, 200);
 
-  // Tick 2 (traveling, not yet arrived): issues one direct move to the explorer.
+  // Tick 2 (traveling, not yet arrived): without a source relay, takes one
+  // parity-safe short hop instead of jumping directly to the explorer.
   await runner.runDeliveryRole(
     roleNow, probeAtFactory, IDLE_MANNY, new Set(), makeClient(calls), false, "test",
   );
   assert.deepEqual(
     calls.find((c) => c.op === "move"),
-    { op: "move", ...EXPLORER_SECTOR },
+    { op: "move", x: 1, y: 1, z: 0 },
   );
 
   // Tick 3 (arrived): phase flips to delivering.
