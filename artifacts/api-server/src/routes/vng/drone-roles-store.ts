@@ -75,6 +75,8 @@ export type RoleState = {
   deliveryContainerManifest?: { resources?: string; deployment?: string; metals?: string };
   /** Explorer: relay for which the transit beacon action has been requested. */
   beaconRelayId?: string;
+  /** Delivery: one-time emergency supply order currently being executed. */
+  emergencySupplyOrderId?: number;
 };
 
 export type DroneRole = {
@@ -98,10 +100,22 @@ export type DeliveryRequest = {
   createdAt: string;
 };
 
+export type EmergencySupplyOrder = {
+  id: number;
+  deliveryProbeId: number;
+  deliveryProbeName?: string;
+  targetProbeId: number;
+  targetProbeName?: string;
+  targetRoleType: "explorer" | "refuel";
+  status: "pending" | "assigned";
+  createdAt: string;
+};
+
 // ── Internal file I/O ─────────────────────────────────────────────────────────
 
 const ROLES_FILE            = "drone-roles.json";
 const DELIVERY_REQUESTS_FILE = "delivery-requests.json";
+const EMERGENCY_SUPPLY_ORDERS_FILE = "emergency-supply-orders.json";
 
 let writeChain: Promise<unknown> = Promise.resolve();
 
@@ -279,6 +293,78 @@ export async function deleteDeliveryRequest(id: number): Promise<boolean> {
     if (idx === -1) return false;
     rows.splice(idx, 1);
     await writeJson(DELIVERY_REQUESTS_FILE, rows);
+    return true;
+  });
+}
+
+// ── Emergency Supply Orders ───────────────────────────────────────────────────
+
+export async function getEmergencySupplyOrders(): Promise<EmergencySupplyOrder[]> {
+  return readJson<EmergencySupplyOrder[]>(EMERGENCY_SUPPLY_ORDERS_FILE, []);
+}
+
+export async function addEmergencySupplyOrder(
+  entry: Omit<EmergencySupplyOrder, "id" | "createdAt" | "status">,
+): Promise<EmergencySupplyOrder> {
+  return withLock(async () => {
+    const rows = await readJson<EmergencySupplyOrder[]>(EMERGENCY_SUPPLY_ORDERS_FILE, []);
+    if (rows.some((order) => order.deliveryProbeId === entry.deliveryProbeId)) {
+      throw new Error("This delivery drone already has an emergency supply order");
+    }
+    if (rows.some((order) => order.targetProbeId === entry.targetProbeId)) {
+      throw new Error("This target already has an emergency supply order");
+    }
+    const order: EmergencySupplyOrder = {
+      ...entry,
+      id: rows.length > 0 ? Math.max(...rows.map((row) => row.id)) + 1 : 1,
+      status: "pending",
+      createdAt: new Date().toISOString(),
+    };
+    rows.push(order);
+    await writeJson(EMERGENCY_SUPPLY_ORDERS_FILE, rows);
+    return order;
+  });
+}
+
+export async function claimEmergencySupplyOrder(
+  orderId: number,
+  deliveryRoleId: number,
+  targetSector: { x: number; y: number; z: number },
+): Promise<boolean> {
+  return withLock(async () => {
+    const [orders, roles] = await Promise.all([
+      readJson<EmergencySupplyOrder[]>(EMERGENCY_SUPPLY_ORDERS_FILE, []),
+      readJson<DroneRole[]>(ROLES_FILE, []),
+    ]);
+    const orderIndex = orders.findIndex((order) => order.id === orderId && order.status === "pending");
+    const roleIndex = roles.findIndex(
+      (role) => role.id === deliveryRoleId && role.enabled && role.roleType === "delivery" && role.state.phase === "waiting",
+    );
+    if (orderIndex === -1 || roleIndex === -1) return false;
+    if (orders[orderIndex].deliveryProbeId !== roles[roleIndex].probeId) return false;
+
+    orders[orderIndex] = { ...orders[orderIndex], status: "assigned" };
+    roles[roleIndex].state = {
+      ...roles[roleIndex].state,
+      phase: "traveling_to_explorer",
+      assignedExplorerId: orders[orderIndex].targetProbeId,
+      travelTarget: targetSector,
+      emergencySupplyOrderId: orderId,
+      lastUpdated: new Date().toISOString(),
+    };
+    await writeJson(EMERGENCY_SUPPLY_ORDERS_FILE, orders);
+    await writeJson(ROLES_FILE, roles);
+    return true;
+  });
+}
+
+export async function deleteEmergencySupplyOrder(id: number): Promise<boolean> {
+  return withLock(async () => {
+    const rows = await readJson<EmergencySupplyOrder[]>(EMERGENCY_SUPPLY_ORDERS_FILE, []);
+    const index = rows.findIndex((row) => row.id === id);
+    if (index === -1) return false;
+    rows.splice(index, 1);
+    await writeJson(EMERGENCY_SUPPLY_ORDERS_FILE, rows);
     return true;
   });
 }

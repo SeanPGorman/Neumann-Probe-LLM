@@ -24,6 +24,9 @@ import {
   deleteDroneRole,
   getDeliveryRequests,
   deleteDeliveryRequest,
+  getEmergencySupplyOrders,
+  addEmergencySupplyOrder,
+  deleteEmergencySupplyOrder,
 } from "./drone-roles-store.js";
 import { afterTool } from "./after-tool.js";
 import {
@@ -302,6 +305,76 @@ router.delete("/drone-roles/delivery-requests/:id", async (req, res) => {
     const deleted = await deleteDeliveryRequest(id);
     if (!deleted) {
       res.status(404).json({ error: "Delivery request not found" });
+      return;
+    }
+    res.json({ ok: true });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.get("/drone-roles/emergency-supply-orders", async (_req, res) => {
+  try {
+    res.json({ orders: await getEmergencySupplyOrders() });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post("/drone-roles/emergency-supply-orders", async (req, res) => {
+  try {
+    const deliveryProbeId = Number(req.body?.deliveryProbeId);
+    const targetProbeId = Number(req.body?.targetProbeId);
+    if (!Number.isInteger(deliveryProbeId) || !Number.isInteger(targetProbeId)) {
+      res.status(400).json({ error: "deliveryProbeId and targetProbeId are required" });
+      return;
+    }
+    const roles = await getDroneRoles();
+    const deliveryRole = roles.find(
+      (role) => role.enabled && role.roleType === "delivery" && role.probeId === deliveryProbeId,
+    );
+    const targetRole = roles.find(
+      (role) =>
+        role.enabled &&
+        (role.roleType === "explorer" || role.roleType === "refuel") &&
+        role.probeId === targetProbeId,
+    );
+    if (!deliveryRole) {
+      res.status(409).json({ error: "The selected supply drone does not have an active Delivery role" });
+      return;
+    }
+    if (deliveryRole.state.phase !== "waiting") {
+      res.status(409).json({ error: "The selected supply drone is already busy" });
+      return;
+    }
+    if (!targetRole) {
+      res.status(409).json({ error: "The selected target is not an active Explorer or Refuel drone" });
+      return;
+    }
+    const order = await addEmergencySupplyOrder({
+      deliveryProbeId,
+      deliveryProbeName: deliveryRole.probeName,
+      targetProbeId,
+      targetProbeName: targetRole.probeName,
+      targetRoleType: targetRole.roleType as "explorer" | "refuel",
+    });
+    res.status(201).json({ order });
+  } catch (err: any) {
+    const conflict = /already has an emergency supply order/.test(err?.message ?? "");
+    res.status(conflict ? 409 : 500).json({ error: err.message });
+  }
+});
+
+router.delete("/drone-roles/emergency-supply-orders/:id", async (req, res) => {
+  try {
+    const id = Number(req.params.id);
+    if (!Number.isInteger(id)) {
+      res.status(400).json({ error: "Invalid emergency supply order id" });
+      return;
+    }
+    const deleted = await deleteEmergencySupplyOrder(id);
+    if (!deleted) {
+      res.status(404).json({ error: "Emergency supply order not found" });
       return;
     }
     res.json({ ok: true });

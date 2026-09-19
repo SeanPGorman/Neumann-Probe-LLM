@@ -196,6 +196,53 @@ test("delivery waiting: factory-served drone refuses dispatch until full loadout
   assert.equal(roleNow.state.phase, "waiting");
 });
 
+test("emergency supply order is claimed durably and can be deleted after return", async () => {
+  const { store } = await importFresh();
+  const deliveryRole = await store.addDroneRole({
+    probeId: 200,
+    probeName: "DeliveryDrone",
+    roleType: "delivery",
+    enabled: true,
+    config: { factoryProbeId: 100 },
+  });
+  await store.addDroneRole({
+    probeId: 300,
+    probeName: "EmergencyTarget",
+    roleType: "refuel",
+    enabled: true,
+    config: {
+      sourceSector: FACTORY_SECTOR,
+      targetProbeId: 400,
+    },
+  });
+
+  const order = await store.addEmergencySupplyOrder({
+    deliveryProbeId: 200,
+    deliveryProbeName: "DeliveryDrone",
+    targetProbeId: 300,
+    targetProbeName: "EmergencyTarget",
+    targetRoleType: "refuel",
+  });
+  assert.equal(order.status, "pending");
+
+  const claimed = await store.claimEmergencySupplyOrder(
+    order.id,
+    deliveryRole.id,
+    EXPLORER_SECTOR,
+  );
+  assert.equal(claimed, true);
+  const claimedOrder = (await store.getEmergencySupplyOrders())[0];
+  assert.equal(claimedOrder.status, "assigned");
+  const claimedRole = (await store.getDroneRoles()).find((role: any) => role.id === deliveryRole.id)!;
+  assert.equal(claimedRole.state.phase, "traveling_to_explorer");
+  assert.equal(claimedRole.state.assignedExplorerId, 300);
+  assert.equal(claimedRole.state.emergencySupplyOrderId, order.id);
+  assert.deepEqual(claimedRole.state.travelTarget, EXPLORER_SECTOR);
+
+  assert.equal(await store.deleteEmergencySupplyOrder(order.id), true);
+  assert.deepEqual(await store.getEmergencySupplyOrders(), []);
+});
+
 test("delivery waiting: non-factory-served drone dispatches with just a container", async () => {
   const { runner, store } = await importFresh();
 

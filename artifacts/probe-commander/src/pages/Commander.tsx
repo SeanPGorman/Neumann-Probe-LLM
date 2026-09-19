@@ -1104,6 +1104,17 @@ type DroneRole = {
   state: { phase: string; lastError?: string; lastUpdated?: string; travelTarget?: { x: number; y: number; z: number } };
 };
 
+type EmergencySupplyOrder = {
+  id: number;
+  deliveryProbeId: number;
+  deliveryProbeName?: string;
+  targetProbeId: number;
+  targetProbeName?: string;
+  targetRoleType: "explorer" | "refuel";
+  status: "pending" | "assigned";
+  createdAt: string;
+};
+
 const ROLE_LABELS: Record<DroneRoleType, string> = {
   refuel:   "REFUEL DRONE",
   delivery: "DELIVERY DRONE",
@@ -1178,6 +1189,24 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   const roles = probeId != null ? allRoles.filter((r) => r.probeId === probeId) : allRoles;
   const role = roles.find((r) => r.enabled) ?? roles[0] ?? null;
 
+  const { data: emergencyData } = useQuery({
+    queryKey: ["emergency-supply-orders"],
+    queryFn: () => fetchJson(`${BASE}/api/vng/drone-roles/emergency-supply-orders`),
+    refetchInterval: 5000,
+    staleTime: 3000,
+  });
+  const emergencyOrders: EmergencySupplyOrder[] = emergencyData?.orders ?? [];
+  const activeEmergencyOrder = probeId == null
+    ? null
+    : emergencyOrders.find((order) => order.deliveryProbeId === probeId) ?? null;
+  const emergencyTargetIds = new Set(emergencyOrders.map((order) => order.targetProbeId));
+  const emergencyTargets = allRoles.filter(
+    (candidate) =>
+      candidate.enabled &&
+      (candidate.roleType === "explorer" || candidate.roleType === "refuel") &&
+      !emergencyTargetIds.has(candidate.probeId),
+  );
+
   const [showForm, setShowForm] = useState(false);
   const [editing, setEditing] = useState(false);
   const [roleType, setRoleType] = useState<DroneRoleType>("explorer");
@@ -1205,6 +1234,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
 
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
+  const [emergencyError, setEmergencyError] = useState<string | null>(null);
+  const [dispatchingTargetId, setDispatchingTargetId] = useState<number | null>(null);
 
   const resetForm = () => {
     setSrcX(""); setSrcY(""); setSrcZ("");
@@ -1304,6 +1335,24 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       body: JSON.stringify({ enabled: !r.enabled }),
     });
     await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
+  };
+
+  const dispatchEmergencySupply = async (target: DroneRole) => {
+    if (probeId == null || activeEmergencyOrder) return;
+    setDispatchingTargetId(target.probeId);
+    setEmergencyError(null);
+    try {
+      await fetchJson(`${BASE}/api/vng/drone-roles/emergency-supply-orders`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ deliveryProbeId: probeId, targetProbeId: target.probeId }),
+      });
+      await queryClient.invalidateQueries({ queryKey: ["emergency-supply-orders"] });
+    } catch (err: any) {
+      setEmergencyError(err.message);
+    } finally {
+      setDispatchingTargetId(null);
+    }
   };
 
   if (isLoading) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING…</div>;
@@ -1493,6 +1542,72 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
         </div>
       ) : (
         <div className="text-xs text-muted-foreground/50 italic">No role assigned to this vessel.</div>
+      )}
+
+      {role?.roleType === "delivery" && role.enabled && (
+        <div className="border border-destructive/40 bg-destructive/5 rounded p-3 space-y-2">
+          <div>
+            <div className="text-[10px] font-mono tracking-widest text-destructive">EMERGENCY SUPPLY</div>
+            <div className="text-[10px] text-muted-foreground mt-1">
+              Dispatch this delivery drone for one full resupply, then return it to its factory.
+            </div>
+          </div>
+
+          {activeEmergencyOrder ? (
+            <div className="border border-destructive/30 rounded px-2 py-2">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-xs text-foreground">
+                  {activeEmergencyOrder.targetProbeName
+                    ?? probeList.find((probe) => probe.id === activeEmergencyOrder.targetProbeId)?.name
+                    ?? `probe ${activeEmergencyOrder.targetProbeId}`}
+                </span>
+                <span className="text-[9px] font-mono uppercase text-yellow-400">
+                  {activeEmergencyOrder.status}
+                </span>
+              </div>
+              <div className="text-[9px] text-muted-foreground mt-1">
+                {activeEmergencyOrder.targetRoleType.toUpperCase()} · one-time order removes itself after the drone returns
+              </div>
+            </div>
+          ) : role.state.phase !== "waiting" ? (
+            <div className="text-[10px] text-muted-foreground/70 italic">
+              This delivery drone is busy. Emergency targets become available when it returns to waiting.
+            </div>
+          ) : emergencyTargets.length > 0 ? (
+            <div className="space-y-1">
+              {emergencyTargets.map((target) => {
+                const probe = probeList.find((candidate) => candidate.id === target.probeId);
+                return (
+                  <button
+                    key={target.id}
+                    type="button"
+                    onClick={() => dispatchEmergencySupply(target)}
+                    disabled={dispatchingTargetId != null}
+                    className="w-full flex items-center justify-between gap-2 border border-border rounded px-2 py-2 text-left hover:border-destructive/60 hover:bg-destructive/10 transition-colors disabled:opacity-50"
+                  >
+                    <span className="min-w-0">
+                      <span className="block text-xs text-foreground truncate">
+                        {probe?.name ?? target.probeName ?? `probe ${target.probeId}`}
+                      </span>
+                      <span className="block text-[9px] text-muted-foreground font-mono">
+                        {target.roleType.toUpperCase()}
+                        {probe?.sector ? ` · [${probe.sector.x}, ${probe.sector.y}, ${probe.sector.z}]` : ""}
+                      </span>
+                    </span>
+                    <span className="shrink-0 text-[9px] font-mono text-destructive">
+                      {dispatchingTargetId === target.probeId ? "DISPATCHING…" : "DISPATCH"}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+          ) : (
+            <div className="text-[10px] text-muted-foreground/60 italic">
+              No available Explorer or Refuel drones.
+            </div>
+          )}
+          {emergencyError && <div className="text-[10px] text-destructive">{emergencyError}</div>}
+        </div>
       )}
 
       {/* Add / Edit form */}

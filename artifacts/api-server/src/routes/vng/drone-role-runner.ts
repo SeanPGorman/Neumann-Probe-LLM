@@ -21,6 +21,9 @@ import {
   addDeliveryRequest,
   updateDeliveryRequest,
   getDeliveryRequests,
+  getEmergencySupplyOrders,
+  claimEmergencySupplyOrder,
+  deleteEmergencySupplyOrder,
 } from "./drone-roles-store.js";
 import type {
   DroneRole,
@@ -868,6 +871,32 @@ export async function runDeliveryRole(
       }
     } else if (!items.some(isContainerItem)) return;
 
+    // Emergency orders have priority over routine explorer requests. They use
+    // the same complete three-container delivery and refuel workflow.
+    const emergencyOrders = await getEmergencySupplyOrders();
+    const emergencyOrder = emergencyOrders.find(
+      (order) => order.deliveryProbeId === role.probeId && order.status === "pending",
+    );
+    if (emergencyOrder) {
+      let targetProbe: any;
+      try {
+        targetProbe = (await clientFor(emergencyOrder.targetProbeId).getProbe()).probe;
+      } catch {
+        logger.warn({ label, orderId: emergencyOrder.id }, "drone-role: could not fetch emergency target");
+        return;
+      }
+      const targetSector = targetProbe?.sector?.relative ?? targetProbe?.sector;
+      if (!targetSector || targetProbe?.isMoving) return;
+      const claimedOrder = await claimEmergencySupplyOrder(emergencyOrder.id, role.id, targetSector);
+      if (claimedOrder) {
+        logger.info(
+          { label, orderId: emergencyOrder.id, targetProbeId: emergencyOrder.targetProbeId, targetSector },
+          "drone-role: emergency supply dispatched",
+        );
+      }
+      return;
+    }
+
     // Poll for a pending delivery request
     const request = await getPendingDeliveryRequest();
     if (!request) {
@@ -897,7 +926,21 @@ export async function runDeliveryRole(
 
   if (phase === "traveling_to_explorer") {
     if (isMoving) return;
-    const target = role.state.travelTarget;
+    let target = role.state.travelTarget;
+    if (role.state.emergencySupplyOrderId != null && role.state.assignedExplorerId != null) {
+      try {
+        const targetProbe = (await clientFor(role.state.assignedExplorerId).getProbe()).probe;
+        const liveTarget = targetProbe?.sector?.relative ?? targetProbe?.sector;
+        if (liveTarget && !targetProbe?.isMoving && (
+          !target || liveTarget.x !== target.x || liveTarget.y !== target.y || liveTarget.z !== target.z
+        )) {
+          target = liveTarget;
+          await updateDroneRoleState(role.id, { travelTarget: liveTarget });
+        }
+      } catch {
+        logger.warn({ label }, "drone-role: could not refresh emergency target location");
+      }
+    }
     if (!target) {
       await updateDroneRoleState(role.id, { phase: "waiting" });
       return;
@@ -1022,13 +1065,15 @@ export async function runDeliveryRole(
       return;
     }
 
-    const requests = await getDeliveryRequests();
-    const req = requests.find(
-      (r) =>
-        r.status === "assigned" &&
-        r.assignedDeliveryProbeId === role.probeId,
-    );
-    if (req) await updateDeliveryRequest(req.id, { status: "completed" });
+    if (role.state.emergencySupplyOrderId == null) {
+      const requests = await getDeliveryRequests();
+      const req = requests.find(
+        (r) =>
+          r.status === "assigned" &&
+          r.assignedDeliveryProbeId === role.probeId,
+      );
+      if (req) await updateDeliveryRequest(req.id, { status: "completed" });
+    }
     await updateDroneRoleState(role.id, {
       phase: "returning",
       assignedExplorerId: undefined,
@@ -1090,9 +1135,13 @@ export async function runDeliveryRole(
         }
       }
       logger.info({ label }, "drone-role: returned to factory — waiting for next dispatch");
+      if (role.state.emergencySupplyOrderId != null) {
+        await deleteEmergencySupplyOrder(role.state.emergencySupplyOrderId);
+      }
       await updateDroneRoleState(role.id, {
         phase: "waiting",
         returnedContainerIds: undefined,
+        emergencySupplyOrderId: undefined,
       });
       return;
     }
