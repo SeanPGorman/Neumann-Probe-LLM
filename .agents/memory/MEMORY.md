@@ -15,3 +15,4 @@
 - [Mining assignment migration](mining-assignment-migration.md) — freeze idle work, transfer containers first, then persist ownership; never disturb active cycles
 - [Mining-first crafting reserve](unit-sequential-crafting.md) — mining keeps at least 75% of Mannys; earliest ready crafting may reserve at most 25%
 - [Craft retry call budget](craft-retry-call-budget.md) — failed craft attempts must claim their worker for the tick; enforce a token-wide rolling request ceiling
+- [Emergency courier loadout recovery](emergency-courier-loadout-recovery.md) — reconcile cargo by live onboard contents; factory container IDs become stale after handoff

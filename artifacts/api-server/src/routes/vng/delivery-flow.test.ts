@@ -243,6 +243,46 @@ test("emergency supply order is claimed durably and can be deleted after return"
   assert.deepEqual(await store.getEmergencySupplyOrders(), []);
 });
 
+test("emergency manifest discovery accepts equivalent onboard containers and 0.49 metals", async () => {
+  const { runner } = await importFresh();
+  const resourcesId = "container-itm_resources";
+  const deploymentId = "container-itm_deployment";
+  const metalsId = "container-itm_replacement_metals";
+  const details: Record<string, any> = {
+    [resourcesId]: {
+      inventory: {
+        resourceStocks: [
+          { type: "metals", amount: 0.49 },
+          { type: "ice", amount: 0.25 },
+          { type: "carbon_compounds", amount: 0.25 },
+        ],
+      },
+    },
+    [deploymentId]: {
+      inventory: { items: [{ type: "waypoint_bookmark" }] },
+    },
+    [metalsId]: {
+      inventory: { resourceStocks: [{ type: "metals", amount: 1 }] },
+    },
+  };
+  const client = {
+    getStorageContainers: async () => ({
+      containers: [
+        { id: resourcesId, kind: "container", label: "delivery-resources" },
+        { id: deploymentId, kind: "container", label: "delivery-deployment" },
+        { id: metalsId, kind: "container", label: "Container 55" },
+      ],
+    }),
+    getStorageContainer: async (id: string) => details[id],
+  } as any;
+
+  assert.deepEqual(await runner.discoverCourierManifest(client), {
+    resources: resourcesId,
+    deployment: deploymentId,
+    metals: metalsId,
+  });
+});
+
 test("delivery waiting: non-factory-served drone dispatches with just a container", async () => {
   const { runner, store } = await importFresh();
 

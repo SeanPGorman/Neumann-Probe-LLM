@@ -742,15 +742,36 @@ export async function runDeliveryRole(
   if (phase === "waiting") {
     const items: any[] = probe?.inventory?.items ?? [];
     const allRoles = await getDroneRoles().catch(() => [] as DroneRole[]);
+    const emergencyOrders = await getEmergencySupplyOrders();
+    const emergencyOrder = emergencyOrders.find(
+      (order) => order.deliveryProbeId === role.probeId && order.status === "pending",
+    );
     const myFactory = allRoles.find(
       (r) =>
         r.enabled &&
         r.roleType === "factory" &&
         ((r.config as FactoryConfig).deliveryProbeIds ?? []).includes(role.probeId),
     );
+    let discoveredManifest: { resources: string; deployment: string; metals: string } | null = null;
+    if (emergencyOrder && myFactory) {
+      try {
+        discoveredManifest = await discoverCourierManifest(c);
+      } catch (err: any) {
+        logger.warn(
+          { label, err: err?.message },
+          "drone-role: could not inspect courier containers for emergency dispatch",
+        );
+      }
+    }
     // Once recorded locally, the courier manifest is authoritative: factory
     // cleanup must not strand a fully loaded courier.
-    const requiredManifest = role.state.outboundContainerIds ?? myFactory?.state.preparedContainerIds;
+    const discoveredIds = discoveredManifest
+      ? [discoveredManifest.resources, discoveredManifest.deployment, discoveredManifest.metals]
+      : undefined;
+    const requiredManifest =
+      role.state.outboundContainerIds ??
+      discoveredIds ??
+      myFactory?.state.preparedContainerIds;
     const onboardIds = onboardContainerIds(items);
     if (requiredManifest?.length === 3 && requiredManifest.some((id) => !onboardIds.has(id))) {
       if (isMoving) return;
@@ -786,9 +807,12 @@ export async function runDeliveryRole(
     // behaviour for compatibility.
     if (myFactory) {
       if (requiredManifest?.length !== 3 || requiredManifest.some((id) => !onboardIds.has(id))) return;
-      const resourcesId = myFactory.state.deliveryContainerManifest?.resources;
-      const deploymentId = myFactory.state.deliveryContainerManifest?.deployment;
-      const metalsId = myFactory.state.deliveryContainerManifest?.metals;
+      const resourcesId =
+        discoveredManifest?.resources ?? myFactory.state.deliveryContainerManifest?.resources;
+      const deploymentId =
+        discoveredManifest?.deployment ?? myFactory.state.deliveryContainerManifest?.deployment;
+      const metalsId =
+        discoveredManifest?.metals ?? myFactory.state.deliveryContainerManifest?.metals;
       if (!resourcesId || !deploymentId || !metalsId) return;
       const [resourcesDetail, deploymentDetail, metalsDetail] = await Promise.all([
         c.getStorageContainer(resourcesId),
@@ -802,7 +826,7 @@ export async function runDeliveryRole(
           []).find((stock: any) => stock.type === type)?.amount ?? 0,
       );
       const resourcesValid =
-        resourceAmount(resourcesDetail, "metals") >= 0.5 &&
+        resourceAmount(resourcesDetail, "metals") >= 0.49 &&
         resourceAmount(resourcesDetail, "ice") >= 0.25 &&
         resourceAmount(resourcesDetail, "carbon_compounds") >= 0.25;
       const metalsTarget = metalsDetail?.container ?? metalsDetail;
@@ -847,7 +871,28 @@ export async function runDeliveryRole(
               !deployedIds.has(String(item.id)) &&
               String(item.containerId ?? item.location?.containerId ?? "") !== deploymentId,
           );
-          if (!sourceItem) return;
+          if (!sourceItem) {
+            // An emergency order must not remain permanently blocked when the
+            // factory handed off an incomplete container. Finish the normal
+            // manifest aboard the courier, one asynchronous action per tick.
+            if (!emergencyOrder) return;
+            if (missingType === "integrated_circuit") {
+              const printer = items.find((item: any) => item.type === "atomic_3d_printer");
+              if (printer?.currentTask) return;
+              await c.atomicPrinterCraft(missingType);
+            } else {
+              if (mannies.some((manny: any) => manny.currentTask)) return;
+              const manny = pickIdleManny(mannies, claimed);
+              if (!manny) return;
+              await c.craftItem(manny.id, missingType);
+              claimed.add(manny.id);
+            }
+            logger.info(
+              { label, itemType: missingType },
+              "drone-role: crafting missing emergency supply item aboard courier",
+            );
+            return;
+          }
           const manny = pickIdleManny(mannies, claimed);
           if (!manny) return;
           await c.storageMove({
@@ -873,10 +918,6 @@ export async function runDeliveryRole(
 
     // Emergency orders have priority over routine explorer requests. They use
     // the same complete three-container delivery and refuel workflow.
-    const emergencyOrders = await getEmergencySupplyOrders();
-    const emergencyOrder = emergencyOrders.find(
-      (order) => order.deliveryProbeId === role.probeId && order.status === "pending",
-    );
     if (emergencyOrder) {
       let targetProbe: any;
       try {
@@ -1153,6 +1194,64 @@ export async function runDeliveryRole(
     }
     return;
   }
+}
+
+/**
+ * Find the three semantic containers that make up a courier loadout. Emergency
+ * orders use this to recover when the factory's persisted IDs are stale or the
+ * operator transferred an equivalent loadout manually.
+ */
+export async function discoverCourierManifest(
+  c: ReturnType<typeof clientFor>,
+): Promise<{ resources: string; deployment: string; metals: string } | null> {
+  if (
+    typeof (c as any).getStorageContainers !== "function" ||
+    typeof (c as any).getStorageContainer !== "function"
+  ) {
+    return null;
+  }
+  const listed = storageContainers(await c.getStorageContainers())
+    .filter((container: any) =>
+      isContainerItem(container) ||
+      container.kind === "container" ||
+      container.type?.includes?.("container"));
+  const details = await Promise.all(
+    listed.map(async (container: any) => {
+      const id = canonicalContainerId(container.id);
+      const response = await c.getStorageContainer(id);
+      const inventory =
+        response?.inventory ??
+        response?.container?.inventory ??
+        response?.data?.inventory ??
+        {};
+      return { id, label: container.label, inventory };
+    }),
+  );
+  const resourceAmount = (detail: any, type: string) => Number(
+    (detail.inventory?.resourceStocks ?? [])
+      .find((stock: any) => stock.type === type)?.amount ?? 0,
+  );
+  const resources = details.find((detail) =>
+    detail.label === "delivery-resources" || (
+      resourceAmount(detail, "metals") >= 0.49 &&
+      resourceAmount(detail, "ice") >= 0.25 &&
+      resourceAmount(detail, "carbon_compounds") >= 0.25
+    ),
+  );
+  const deployment = details.find((detail) =>
+    detail.id !== resources?.id && (
+      detail.label === "delivery-deployment" ||
+      (detail.inventory?.items ?? []).some((item: any) =>
+        DEPLOYMENT_CONTAINER_ITEMS.includes(item.type))
+    ),
+  );
+  const metals = details.find((detail) =>
+    detail.id !== resources?.id &&
+    detail.id !== deployment?.id &&
+    (detail.label === "delivery-metals" || resourceAmount(detail, "metals") > 0),
+  );
+  if (!resources || !deployment || !metals) return null;
+  return { resources: resources.id, deployment: deployment.id, metals: metals.id };
 }
 
 // ── Explorer Role ─────────────────────────────────────────────────────────────
@@ -1786,6 +1885,44 @@ async function runFactoryContainerWorkflow(
 
   const listed = storageContainers(await c.getStorageContainers());
   const attached = listed.filter((x: any) => isContainerItem(x) || x.kind === "container" || x.type?.includes?.("container"));
+  if (
+    ["loading_delivery_containers", "handoff_delivery_containers"].includes(phase) &&
+    role.state.preparedContainerIds?.length
+  ) {
+    const attachedIds = new Set(attached.map((container: any) => canonicalContainerId(container.id)));
+    const expectedIds = role.state.preparedContainerIds.map(canonicalContainerId);
+    if (expectedIds.some((id) => !attachedIds.has(id))) {
+      const deliveryOnboard = onboardContainerIds(dProbe?.inventory?.items ?? []);
+      if (expectedIds.every((id) => deliveryOnboard.has(id))) {
+        const dRole = roles.find((candidate) =>
+          candidate.probeId === deliveryId && candidate.roleType === "delivery");
+        if (dRole) {
+          await deps.updateDroneRoleState(dRole.id, { outboundContainerIds: expectedIds });
+        }
+        await deps.updateDroneRoleState(role.id, {
+          phase: "idle",
+          servingDeliveryProbeId: undefined,
+          preparedContainerIds: undefined,
+          deliveryContainerManifest: undefined,
+          stagedContainerObjectId: undefined,
+          lastError: undefined,
+        });
+      } else {
+        logger.warn(
+          { label, expectedIds },
+          "drone-role: factory manifest containers moved or disappeared — rebuilding courier loadout",
+        );
+        await deps.updateDroneRoleState(role.id, {
+          phase: "preparing_delivery_containers",
+          preparedContainerIds: undefined,
+          deliveryContainerManifest: undefined,
+          stagedContainerObjectId: undefined,
+          lastError: undefined,
+        });
+      }
+      return true;
+    }
+  }
   if (phase === "collecting_returned_containers") {
     const returnedIds = role.state.returnedContainerIds ?? [];
     const attachedIds = new Set(attached.map((container: any) => String(container.id)));
