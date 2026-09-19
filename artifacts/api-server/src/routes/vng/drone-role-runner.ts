@@ -991,9 +991,20 @@ export async function runDeliveryRole(
       await updateDroneRoleState(role.id, { phase: "delivering" });
       return;
     }
-    logger.info({ label, target }, "drone-role: moving directly to explorer sector");
+    const currentSector = probe?.sector?.relative ?? probe?.sector;
+    if (!currentSector) {
+      logger.warn({ label }, "drone-role: current sector unavailable — waiting before travel");
+      return;
+    }
+    const waypoint = await nextDeliveryWaypoint(currentSector, target, label);
+    logger.info(
+      { label, target, waypoint },
+      waypoint.x === target.x && waypoint.y === target.y && waypoint.z === target.z
+        ? "drone-role: moving directly to explorer sector"
+        : "drone-role: moving to delivery waypoint",
+    );
     try {
-      await c.moveProbe(target.x, target.y, target.z);
+      await c.moveProbe(waypoint.x, waypoint.y, waypoint.z);
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: move to explorer failed");
     }
