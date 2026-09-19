@@ -17310,13 +17310,13 @@
     "sectorY": 33,
     "sectorZ": 18,
     "firstVisitedAt": "2026-09-18T04:42:16.448Z",
-    "lastVisitedAt": "2026-09-19T19:40:52.727Z",
-    "visitCount": 158,
+    "lastVisitedAt": "2026-09-19T20:10:52.759Z",
+    "visitCount": 160,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 140615,
+      "currentSectorResidenceSeconds": 142415,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -18822,6 +18822,555 @@
         "message": "low",
         "objectId": "327541d9a8ec123cec34",
         "objectName": "System 85e6f0"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:43,44,29",
+    "explorerId": 761,
+    "explorerName": "BravoExplorer",
+    "sectorX": 43,
+    "sectorY": 44,
+    "sectorZ": 29,
+    "firstVisitedAt": "2026-09-19T20:10:52.768Z",
+    "lastVisitedAt": "2026-09-19T20:10:52.768Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 100,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "1e53fd1c14cac20fdafa",
+        "type": "solar_system",
+        "name": "System 347cbc",
+        "estimated": false,
+        "summary": "Stellar system with 2 star(s) and 4 orbital body(ies).",
+        "mass": 4.745809,
+        "radius": 9.222154,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 2,
+        "planetCount": 3,
+        "orbitalBodyCount": 4,
+        "bookmarkTargets": [
+          {
+            "id": "fd86c0934eb4d3733f0e",
+            "type": "star",
+            "name": null,
+            "mass": 0.35388,
+            "radius": 0.381295,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "e2a0f088d489eea8ee36",
+            "type": "star",
+            "name": null,
+            "mass": 0.227179,
+            "radius": 0.25017,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "b58b037a27ee6a4b306a",
+            "type": "planet",
+            "name": null,
+            "mass": 1.686781,
+            "radius": 1.07918,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.108697,
+            "intelligentLife": false
+          },
+          {
+            "id": "72a1182125cfccdaff89",
+            "type": "planet",
+            "name": null,
+            "mass": 0.02753,
+            "radius": 0.313584,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.026233,
+            "intelligentLife": false
+          },
+          {
+            "id": "e49875f6643ccb69ce0a",
+            "type": "planet",
+            "name": null,
+            "mass": 2.435189,
+            "radius": 1.403627,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.069508,
+            "intelligentLife": false
+          },
+          {
+            "id": "61ebbb1e18b65b2f2b69",
+            "type": "asteroid",
+            "name": "Metal e2e5",
+            "mass": 0.01525,
+            "radius": 0.116326,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "61ebbb1e18b65b2f2b69",
+            "type": "asteroid",
+            "name": "Metal e2e5",
+            "mass": 0.01525,
+            "massUnit": "earth_mass",
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 15250,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "1e53fd1c14cac20fdafa",
+        "type": "solar_system",
+        "name": "System 347cbc",
+        "summary": "Stellar system with 2 star(s) and 4 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 2,
+        "planetCount": 3,
+        "orbitalBodyCount": 4,
+        "mass": 4.745809,
+        "massUnit": null,
+        "radius": 9.222154,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "fd86c0934eb4d3733f0e",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.35388,
+            "massUnit": "solar_mass",
+            "radius": 0.381295,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "e2a0f088d489eea8ee36",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.227179,
+            "massUnit": "solar_mass",
+            "radius": 0.25017,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "b58b037a27ee6a4b306a",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 1.686781,
+            "massUnit": "earth_mass",
+            "radius": 1.07918,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.108697,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "72a1182125cfccdaff89",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.02753,
+            "massUnit": "earth_mass",
+            "radius": 0.313584,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.026233,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "e49875f6643ccb69ce0a",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.435189,
+            "massUnit": "earth_mass",
+            "radius": 1.403627,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.069508,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "61ebbb1e18b65b2f2b69",
+            "type": "asteroid",
+            "name": "Metal e2e5",
+            "category": null,
+            "mass": 0.01525,
+            "massUnit": "earth_mass",
+            "radius": 0.116326,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "iron",
+              "nickel"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 15250,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "1e53fd1c14cac20fdafa",
+        "objectName": "System 347cbc"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "914:33,15,30",
+    "explorerId": 914,
+    "explorerName": "FoxtrotExplorer",
+    "sectorX": 33,
+    "sectorY": 15,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-19T20:10:52.775Z",
+    "lastVisitedAt": "2026-09-19T20:10:52.775Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 163,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "16d08b615c86ae3d4ca0",
+        "type": "solar_system",
+        "name": "System cae966",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "mass": 23.46199,
+        "radius": 7.124892,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 7,
+        "orbitalBodyCount": 7,
+        "bookmarkTargets": [
+          {
+            "id": "7efa16d87e2dc4ba96ca",
+            "type": "star",
+            "name": null,
+            "mass": 0.317361,
+            "radius": 0.63083,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "4b8ae76a25a7ff70764b",
+            "type": "planet",
+            "name": null,
+            "mass": 5.761609,
+            "radius": 0.498247,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.111502,
+            "intelligentLife": false
+          },
+          {
+            "id": "316055b15cc057499ef1",
+            "type": "planet",
+            "name": null,
+            "mass": 0.080252,
+            "radius": 0.418721,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.083475,
+            "intelligentLife": false
+          },
+          {
+            "id": "d32c91c224cb9b122bd9",
+            "type": "planet",
+            "name": null,
+            "mass": 3.40315,
+            "radius": 0.610559,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.075075,
+            "intelligentLife": false
+          },
+          {
+            "id": "106f057abb0fa04f7ebc",
+            "type": "planet",
+            "name": null,
+            "mass": 5.416005,
+            "radius": 1.12472,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.091746,
+            "intelligentLife": false
+          },
+          {
+            "id": "624354e2dfe66f423c27",
+            "type": "planet",
+            "name": null,
+            "mass": 5.082359,
+            "radius": 1.746399,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.01655,
+            "intelligentLife": false
+          },
+          {
+            "id": "21b0d97e872a80487c21",
+            "type": "planet",
+            "name": null,
+            "mass": 1.172424,
+            "radius": 1.363642,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.117939,
+            "intelligentLife": false
+          },
+          {
+            "id": "a6bbeee17eeaec68ab75",
+            "type": "planet",
+            "name": null,
+            "mass": 2.22883,
+            "radius": 0.708038,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.14735,
+            "intelligentLife": false
+          }
+        ],
+        "minableTargets": []
+      }
+    ],
+    "objects": [
+      {
+        "id": "16d08b615c86ae3d4ca0",
+        "type": "solar_system",
+        "name": "System cae966",
+        "summary": "Stellar system with 1 star(s) and 7 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 7,
+        "orbitalBodyCount": 7,
+        "mass": 23.46199,
+        "massUnit": null,
+        "radius": 7.124892,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "7efa16d87e2dc4ba96ca",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.317361,
+            "massUnit": "solar_mass",
+            "radius": 0.63083,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "4b8ae76a25a7ff70764b",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 5.761609,
+            "massUnit": "earth_mass",
+            "radius": 0.498247,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.111502,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "316055b15cc057499ef1",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.080252,
+            "massUnit": "earth_mass",
+            "radius": 0.418721,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.083475,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "d32c91c224cb9b122bd9",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.40315,
+            "massUnit": "earth_mass",
+            "radius": 0.610559,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.075075,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "106f057abb0fa04f7ebc",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 5.416005,
+            "massUnit": "earth_mass",
+            "radius": 1.12472,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.091746,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "624354e2dfe66f423c27",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 5.082359,
+            "massUnit": "earth_mass",
+            "radius": 1.746399,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.01655,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "21b0d97e872a80487c21",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 1.172424,
+            "massUnit": "earth_mass",
+            "radius": 1.363642,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.117939,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "a6bbeee17eeaec68ab75",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.22883,
+            "massUnit": "earth_mass",
+            "radius": 0.708038,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.14735,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "16d08b615c86ae3d4ca0",
+        "objectName": "System cae966"
       }
     ],
     "waypointEvents": []
