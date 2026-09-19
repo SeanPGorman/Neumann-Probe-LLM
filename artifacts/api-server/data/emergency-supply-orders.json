@@ -1,0 +1,12 @@
+[
+  {
+    "deliveryProbeId": 823,
+    "deliveryProbeName": "CharlieDelivers-FT1",
+    "targetProbeId": 716,
+    "targetProbeName": "AlphaExplorer",
+    "targetRoleType": "explorer",
+    "id": 1,
+    "status": "pending",
+    "createdAt": "2026-09-19T16:31:47.522Z"
+  }
+]
