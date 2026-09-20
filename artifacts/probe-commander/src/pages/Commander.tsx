@@ -178,9 +178,12 @@ function ProbeHeaderSwitch({
 }
 
 function TelemetryPanel({
-  state, error,
+  state, error, showMannies = true, showSector = true,
 }: {
-  state: any; error: Error | null;
+  state: any;
+  error: Error | null;
+  showMannies?: boolean;
+  showSector?: boolean;
 }) {
   if (error) return <ApiError error={error} />;
   if (!state) {
@@ -222,7 +225,7 @@ function TelemetryPanel({
           <span className="text-muted-foreground">{(inventory?.usedCapacity ?? 0).toFixed(2)}/{inventory?.capacity ?? 0} ECE</span>
         </div>
       </div>
-      {(mannies?.length > 0 || stowedMannies?.length > 0) && (
+      {showMannies && (mannies?.length > 0 || stowedMannies?.length > 0) && (
         <div>
           <div className="text-xs text-muted-foreground tracking-widest mb-2">
             MANNIES ({mannies?.length ?? 0} active{stowedMannies?.length > 0 ? `, ${stowedMannies.length} stowed` : ""})
@@ -241,7 +244,7 @@ function TelemetryPanel({
           </div>
         </div>
       )}
-      {sectorObjects?.length > 0 && (
+      {showSector && sectorObjects?.length > 0 && (
         <div>
           <div className="text-xs text-muted-foreground tracking-widest mb-2">SECTOR ({sectorObjects.length})</div>
           <div className="space-y-1 max-h-48 overflow-y-auto">
@@ -255,6 +258,40 @@ function TelemetryPanel({
               </div>
             ))}
           </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function MannyStatusPanel({ state, error }: { state: any; error: Error | null }) {
+  if (error) return <ApiError error={error} />;
+  if (!state) return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING MANNIES…</div>;
+
+  const mannies = state.mannies ?? [];
+  const stowedMannies = state.stowedMannies ?? [];
+  return (
+    <div className="space-y-2">
+      <div className="flex items-center justify-between">
+        <span className="text-xs text-muted-foreground tracking-widest">MANNY STATUS</span>
+        <span className="text-[10px] text-muted-foreground">
+          {mannies.filter((m: any) => !m.currentTask).length} IDLE / {mannies.length} ACTIVE
+        </span>
+      </div>
+      {mannies.length === 0 && stowedMannies.length === 0 ? (
+        <div className="text-xs text-muted-foreground/50 italic">No Mannies onboard.</div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-1.5">
+          {mannies.map((m: any) => <MannyRow key={m.id} manny={m} />)}
+          {stowedMannies.map((m: any) => (
+            <div key={m.itemId} className="flex items-start gap-2 text-xs opacity-50">
+              <span className="text-muted-foreground mt-0.5">◇</span>
+              <div className="flex-1 min-w-0">
+                <div className="text-foreground font-medium truncate">{m.name}</div>
+                <div className="text-muted-foreground text-[10px]">STOWED — say "deploy {m.name}" to activate</div>
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -1146,6 +1183,96 @@ const PHASE_COLOR: Record<string, string> = {
   supplying:             "text-blue-400",
   handoff:               "text-purple-400",
 };
+
+function SummaryPanel({
+  probeList,
+  onSelectProbe,
+  onOpenProbe,
+}: {
+  probeList: ProbeEntry[];
+  onSelectProbe: (id: number | null) => void;
+  onOpenProbe: () => void;
+}) {
+  const { data, isLoading, error } = useQuery({
+    queryKey: ["drone-roles"],
+    queryFn: () => fetchJson(`${BASE}/api/vng/drone-roles`),
+    refetchInterval: 15000,
+    staleTime: 10000,
+    placeholderData: (prev: any) => prev,
+  });
+
+  const roles: DroneRole[] = data?.roles ?? [];
+  const roleByProbe = new Map<number, DroneRole>();
+  for (const role of roles) {
+    if (!roleByProbe.has(role.probeId) || role.enabled) roleByProbe.set(role.probeId, role);
+  }
+
+  if (error) return <ApiError error={error as Error} />;
+  if (isLoading && probeList.length === 0) {
+    return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING SUMMARY…</div>;
+  }
+
+  return (
+    <div className="space-y-4">
+      <div className="flex items-center justify-between">
+        <div>
+          <div className="text-xs text-muted-foreground tracking-widest">FLEET SUMMARY</div>
+          <div className="text-[10px] text-muted-foreground/60 mt-1">
+            {probeList.length} PROBE{probeList.length === 1 ? "" : "S"} · LIVE ROLE STATUS
+          </div>
+        </div>
+        <span className="text-[10px] text-primary glow-green">AUTO-REFRESH 15s</span>
+      </div>
+
+      <div className="border border-border rounded overflow-hidden">
+        <div className="grid grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1.1fr)] gap-2 border-b border-border/60 bg-card/60 px-3 py-2 text-[9px] tracking-widest text-muted-foreground">
+          <span>PROBE</span>
+          <span>ROLE</span>
+          <span>LOCATION</span>
+          <span>ROLE STATUS</span>
+        </div>
+        <div className="divide-y divide-border/40">
+          {probeList.map((probe) => {
+            const role = roleByProbe.get(probe.id);
+            const location = probe.sector ?? { x: 0, y: 0, z: 0 };
+            const locationLabel = `[${location.x},${location.y},${location.z}]`;
+            const phase = role?.state?.phase?.replace(/_/g, " ") ?? "unassigned";
+            return (
+              <button
+                key={probe.id}
+                type="button"
+                onClick={() => {
+                  onSelectProbe(probe.isDefault ? null : probe.id);
+                  onOpenProbe();
+                }}
+                className="grid w-full grid-cols-[minmax(0,1.15fr)_minmax(0,1fr)_minmax(0,1.2fr)_minmax(0,1.1fr)] gap-2 px-3 py-2.5 text-left text-[10px] transition-colors hover:bg-primary/5 focus-visible:outline-none focus-visible:bg-primary/10"
+                title={`Open ${probe.name}`}
+              >
+                <span className="min-w-0 truncate text-foreground font-medium">
+                  {probe.name}
+                  {probe.isDefault && <span className="ml-1 text-[8px] text-primary/70">MAIN</span>}
+                </span>
+                <span className="min-w-0 truncate text-muted-foreground">
+                  {role ? `${ROLE_ICONS[role.roleType]} ${ROLE_LABELS[role.roleType]}` : "—"}
+                  {role && !role.enabled && <span className="ml-1 text-[8px]">PAUSED</span>}
+                </span>
+                <span className={`min-w-0 truncate font-mono ${probe.isMoving ? "text-yellow-400" : "text-muted-foreground"}`}>
+                  {probe.isMoving ? "→ " : ""}{locationLabel}
+                </span>
+                <span className={`min-w-0 truncate uppercase ${role ? (PHASE_COLOR[role.state.phase] ?? "text-foreground") : "text-muted-foreground/60"}`}>
+                  {phase}
+                </span>
+              </button>
+            );
+          })}
+          {probeList.length === 0 && (
+            <div className="px-3 py-4 text-xs text-muted-foreground/50 italic">No probes found.</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 function SectorInput({
   label, value, onChange,
