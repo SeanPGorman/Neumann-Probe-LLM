@@ -26,7 +26,7 @@ import {
   deleteDeliveryRequest,
   getEmergencySupplyOrders,
   addEmergencySupplyOrder,
-  deleteEmergencySupplyOrder,
+  cancelEmergencySupplyOrder,
 } from "./drone-roles-store.js";
 import { afterTool } from "./after-tool.js";
 import {
@@ -372,12 +372,12 @@ router.delete("/drone-roles/emergency-supply-orders/:id", async (req, res) => {
       res.status(400).json({ error: "Invalid emergency supply order id" });
       return;
     }
-    const deleted = await deleteEmergencySupplyOrder(id);
-    if (!deleted) {
+    const cancelled = await cancelEmergencySupplyOrder(id);
+    if (!cancelled) {
       res.status(404).json({ error: "Emergency supply order not found" });
       return;
     }
-    res.json({ ok: true });
+    res.json({ ok: true, cancelled: true });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

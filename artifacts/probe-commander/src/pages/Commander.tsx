@@ -1236,6 +1236,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   const [saveError, setSaveError] = useState<string | null>(null);
   const [emergencyError, setEmergencyError] = useState<string | null>(null);
   const [dispatchingTargetId, setDispatchingTargetId] = useState<number | null>(null);
+  const [killingEmergencyOrder, setKillingEmergencyOrder] = useState(false);
 
   const resetForm = () => {
     setSrcX(""); setSrcY(""); setSrcZ("");
@@ -1352,6 +1353,30 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       setEmergencyError(err.message);
     } finally {
       setDispatchingTargetId(null);
+    }
+  };
+
+  const killEmergencySupply = async (order: EmergencySupplyOrder) => {
+    const targetName = order.targetProbeName
+      ?? probeList.find((probe) => probe.id === order.targetProbeId)?.name
+      ?? `probe ${order.targetProbeId}`;
+    if (!confirm(
+      `Kill the Emergency Supply order to ${targetName}? The delivery drone will return to its factory after any current movement finishes.`,
+    )) return;
+    setKillingEmergencyOrder(true);
+    setEmergencyError(null);
+    try {
+      await fetchJson(`${BASE}/api/vng/drone-roles/emergency-supply-orders/${order.id}`, {
+        method: "DELETE",
+      });
+      await Promise.all([
+        queryClient.invalidateQueries({ queryKey: ["emergency-supply-orders"] }),
+        queryClient.invalidateQueries({ queryKey: ["drone-roles"] }),
+      ]);
+    } catch (err: any) {
+      setEmergencyError(err.message);
+    } finally {
+      setKillingEmergencyOrder(false);
     }
   };
 
@@ -1568,6 +1593,14 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               <div className="text-[9px] text-muted-foreground mt-1">
                 {activeEmergencyOrder.targetRoleType.toUpperCase()} · one-time order removes itself after the drone returns
               </div>
+              <button
+                type="button"
+                onClick={() => killEmergencySupply(activeEmergencyOrder)}
+                disabled={killingEmergencyOrder}
+                className="mt-2 w-full rounded border border-destructive/50 px-2 py-1.5 text-[9px] font-mono tracking-wider text-destructive hover:bg-destructive/10 disabled:opacity-50"
+              >
+                {killingEmergencyOrder ? "KILLING ORDER…" : "KILL ORDER"}
+              </button>
             </div>
           ) : role.state.phase !== "waiting" ? (
             <div className="text-[10px] text-muted-foreground/70 italic">

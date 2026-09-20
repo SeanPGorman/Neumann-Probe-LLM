@@ -368,3 +368,42 @@ export async function deleteEmergencySupplyOrder(id: number): Promise<boolean> {
     return true;
   });
 }
+
+/**
+ * Cancel an emergency order and stop its assigned courier from continuing the
+ * delivery. An in-flight move cannot be interrupted, so the courier enters the
+ * normal returning phase and heads back to its factory after that move ends.
+ */
+export async function cancelEmergencySupplyOrder(id: number): Promise<boolean> {
+  return withLock(async () => {
+    const [orders, roles] = await Promise.all([
+      readJson<EmergencySupplyOrder[]>(EMERGENCY_SUPPLY_ORDERS_FILE, []),
+      readJson<DroneRole[]>(ROLES_FILE, []),
+    ]);
+    const orderIndex = orders.findIndex((order) => order.id === id);
+    if (orderIndex === -1) return false;
+
+    orders.splice(orderIndex, 1);
+    const roleIndex = roles.findIndex(
+      (role) =>
+        role.enabled &&
+        role.roleType === "delivery" &&
+        role.state.emergencySupplyOrderId === id,
+    );
+    if (roleIndex !== -1) {
+      roles[roleIndex].state = {
+        ...roles[roleIndex].state,
+        phase: "returning",
+        assignedExplorerId: undefined,
+        travelTarget: undefined,
+        emergencySupplyOrderId: undefined,
+        outboundContainerIds: undefined,
+        lastUpdated: new Date().toISOString(),
+      };
+    }
+
+    await writeJson(EMERGENCY_SUPPLY_ORDERS_FILE, orders);
+    if (roleIndex !== -1) await writeJson(ROLES_FILE, roles);
+    return true;
+  });
+}

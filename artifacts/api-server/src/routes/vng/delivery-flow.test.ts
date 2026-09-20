@@ -244,6 +244,36 @@ test("emergency supply order is claimed durably and can be deleted after return"
   assert.deepEqual(await store.getEmergencySupplyOrders(), []);
 });
 
+test("cancelling an assigned emergency order sends its courier back to the factory", async () => {
+  const { store } = await importFresh();
+  const deliveryRole = await store.addDroneRole({
+    probeId: 200,
+    probeName: "DeliveryDrone",
+    roleType: "delivery",
+    enabled: true,
+    config: { factoryProbeId: 100 },
+  });
+  const order = await store.addEmergencySupplyOrder({
+    deliveryProbeId: 200,
+    deliveryProbeName: "DeliveryDrone",
+    targetProbeId: 300,
+    targetProbeName: "EmergencyTarget",
+    targetRoleType: "explorer",
+  });
+  assert.equal(
+    await store.claimEmergencySupplyOrder(order.id, deliveryRole.id, EXPLORER_SECTOR),
+    true,
+  );
+
+  assert.equal(await store.cancelEmergencySupplyOrder(order.id), true);
+  assert.deepEqual(await store.getEmergencySupplyOrders(), []);
+  const cancelledRole = (await store.getDroneRoles())[0];
+  assert.equal(cancelledRole.state.phase, "returning");
+  assert.equal(cancelledRole.state.assignedExplorerId, undefined);
+  assert.equal(cancelledRole.state.travelTarget, undefined);
+  assert.equal(cancelledRole.state.emergencySupplyOrderId, undefined);
+});
+
 test("emergency manifest discovery accepts equivalent onboard containers and 0.49 metals", async () => {
   const { runner } = await importFresh();
   const resourcesId = "container-itm_resources";

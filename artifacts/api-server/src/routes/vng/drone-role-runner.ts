@@ -1205,9 +1205,22 @@ export async function runDeliveryRole(
       });
       return;
     }
-    logger.info({ label, target: factorySector }, "drone-role: returning directly to factory");
+    const currentSector = probe?.sector?.relative ?? probe?.sector;
+    if (!currentSector) {
+      logger.warn({ label }, "drone-role: current sector unavailable — waiting before factory return");
+      return;
+    }
+    const waypoint = await nextDeliveryWaypoint(currentSector, factorySector, label);
+    logger.info(
+      { label, target: factorySector, waypoint },
+      waypoint.x === factorySector.x &&
+        waypoint.y === factorySector.y &&
+        waypoint.z === factorySector.z
+        ? "drone-role: returning directly to factory"
+        : "drone-role: returning via delivery waypoint",
+    );
     try {
-      await c.moveProbe(factorySector.x, factorySector.y, factorySector.z);
+      await c.moveProbe(waypoint.x, waypoint.y, waypoint.z);
     } catch (err: any) {
       logger.warn({ label, err: err?.message }, "drone-role: return move failed");
     }
