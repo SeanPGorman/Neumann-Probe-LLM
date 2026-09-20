@@ -172,7 +172,11 @@ function chebyshevDist(
  * This keeps delivery drones either within short communication range OR hopping
  * through the SCUT network — never making uncovered long-range jumps.
  */
-async function nextDeliveryWaypoint(
+export function scutNetworkRelays(response: any): any[] {
+  return response?.network?.relays ?? response?.relays ?? [];
+}
+
+export async function nextDeliveryWaypoint(
   from: { x: number; y: number; z: number },
   to: { x: number; y: number; z: number },
   label: string,
@@ -199,7 +203,9 @@ async function nextDeliveryWaypoint(
   for (const netId of Array.from(networkIds)) {
     let net: any;
     try { net = await getScutNetwork(netId); } catch { continue; }
-    const activeRelays = (net?.relays ?? []).filter((relay: any) => relay.status === "on");
+    const activeRelays = scutNetworkRelays(net).filter(
+      (relay: any) => relay.status === "on" && relay.isTransitBeacon === true,
+    );
     const sourceRelay = activeRelays.find((relay: any) => {
       const sector = relay.sector?.relative;
       return sector?.x === from.x && sector?.y === from.y && sector?.z === from.z;

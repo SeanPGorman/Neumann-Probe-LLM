@@ -314,6 +314,19 @@ test("emergency manifest discovery accepts equivalent onboard containers and 0.4
   });
 });
 
+test("SCUT network relay extraction accepts the live nested response shape", async () => {
+  const { runner } = await importFresh();
+  const relays = [{ id: 311 }, { id: 736 }];
+  assert.deepEqual(
+    runner.scutNetworkRelays({ network: { relays } }),
+    relays,
+  );
+  assert.deepEqual(
+    runner.scutNetworkRelays({ relays }),
+    relays,
+  );
+});
+
 test("delivery waiting: non-factory-served drone dispatches with just a container", async () => {
   const { runner, store } = await importFresh();
 
