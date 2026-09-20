@@ -19383,13 +19383,13 @@
     "sectorY": 43,
     "sectorZ": 30,
     "firstVisitedAt": "2026-09-19T21:22:56.938Z",
-    "lastVisitedAt": "2026-09-20T16:08:57.634Z",
-    "visitCount": 74,
+    "lastVisitedAt": "2026-09-20T16:23:58.724Z",
+    "visitCount": 75,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 67749,
+      "currentSectorResidenceSeconds": 68650,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -20067,13 +20067,13 @@
     "sectorY": 16,
     "sectorZ": 31,
     "firstVisitedAt": "2026-09-20T01:57:35.159Z",
-    "lastVisitedAt": "2026-09-20T16:08:57.731Z",
-    "visitCount": 55,
+    "lastVisitedAt": "2026-09-20T16:23:58.737Z",
+    "visitCount": 56,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 51429,
+      "currentSectorResidenceSeconds": 52330,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -20905,6 +20905,32 @@
     "confidence": 1,
     "scan": {
       "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "716:22,35,19",
+    "explorerId": 716,
+    "explorerName": "AlphaExplorer",
+    "sectorX": 22,
+    "sectorY": 35,
+    "sectorZ": 19,
+    "firstVisitedAt": "2026-09-20T16:23:58.809Z",
+    "lastVisitedAt": "2026-09-20T16:23:58.809Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 801,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },

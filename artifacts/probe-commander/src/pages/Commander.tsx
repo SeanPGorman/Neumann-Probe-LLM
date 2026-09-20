@@ -31,7 +31,7 @@ type ChatMessage =
   | { role: "user"; content: string }
   | { role: "assistant"; events: SseEvent[] };
 
-type SideTab = "telemetry" | "roles" | "containers" | "scout" | "globe" | "scheduled" | "mining" | "journal";
+type SideTab = "summary" | "telemetry" | "containers" | "scout" | "globe" | "scheduled" | "mining" | "journal";
 
 function toolLabel(tool: string): string {
   const labels: Record<string, string> = {
@@ -1186,10 +1186,12 @@ const PHASE_COLOR: Record<string, string> = {
 
 function SummaryPanel({
   probeList,
+  probeListLoading,
   onSelectProbe,
   onOpenProbe,
 }: {
   probeList: ProbeEntry[];
+  probeListLoading: boolean;
   onSelectProbe: (id: number | null) => void;
   onOpenProbe: () => void;
 }) {
@@ -1208,7 +1210,7 @@ function SummaryPanel({
   }
 
   if (error) return <ApiError error={error as Error} />;
-  if (isLoading && probeList.length === 0) {
+  if ((isLoading || probeListLoading) && probeList.length === 0) {
     return <div className="text-xs text-muted-foreground italic animate-pulse">LOADING SUMMARY…</div>;
   }
 
@@ -2198,7 +2200,7 @@ export default function Commander() {
   }]);
   const [isRunning, setIsRunning] = useState(false);
   const [liveEvents, setLiveEvents] = useState<SseEvent[]>([]);
-  const [sideTab, setSideTab] = useState<SideTab>("telemetry");
+  const [sideTab, setSideTab] = useState<SideTab>("summary");
   const [logRefetch, setLogRefetch] = useState(0);
   const [scoutTarget, setScoutTarget] = useState<{ x: number; y: number; z: number } | null>(null);
   const [selectedProbeId, setSelectedProbeId] = useState<number | null>(null);
@@ -2228,7 +2230,7 @@ export default function Commander() {
   }, []);
   const bottomRef = useRef<HTMLDivElement>(null);
 
-  const { data: probeListData } = useQuery({
+  const { data: probeListData, isLoading: probeListLoading } = useQuery({
     queryKey: ["probe-list"],
     queryFn: () => fetchJson(`${BASE}/api/vng/probes`),
     refetchInterval: 60000,
@@ -2361,8 +2363,8 @@ export default function Commander() {
   }, [state]);
 
   const TABS: { id: SideTab; label: string }[] = [
+    { id: "summary",   label: "SUMMARY" },
     { id: "telemetry", label: "PROBE" },
-    { id: "roles",     label: "ROLES" },
     { id: "containers", label: "CNTRS" },
     { id: "mining",    label: "MINE" },
     { id: "scheduled", label: "SCHED" },
@@ -2395,19 +2397,41 @@ export default function Commander() {
       {/* min-h-0 + overflow-y-auto: react-resizable-panels forces overflow:hidden
           on the panel, so tab content must scroll here, inside the panel. */}
       <div className="border border-border border-glow rounded p-4 flex-1 min-h-0 overflow-y-auto scanlines">
-        {sideTab === "telemetry" && (
-          <TelemetryPanel
-            state={state}
-            error={stateError as Error | null}
+        {sideTab === "summary" && (
+          <SummaryPanel
+            probeList={probeList}
+            probeListLoading={probeListLoading}
+            onSelectProbe={setSelectedProbeId}
+            onOpenProbe={() => setSideTab("telemetry")}
           />
+        )}
+        {sideTab === "telemetry" && (
+          <div className="space-y-5">
+            <section>
+              <TelemetryPanel
+                state={state}
+                error={stateError as Error | null}
+                showMannies={false}
+                showSector={false}
+              />
+            </section>
+            <div className="border-t border-border/40" />
+            <section>
+              <RolesPanel
+                probeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
+                probeList={probeList}
+              />
+            </section>
+            <div className="border-t border-border/40" />
+            <section>
+              <MannyStatusPanel
+                state={state}
+                error={stateError as Error | null}
+              />
+            </section>
+          </div>
         )}
         {sideTab === "containers" && <ContainersPanel refetchSignal={logRefetch} probeId={selectedProbeId} />}
-        {sideTab === "roles" && (
-          <RolesPanel
-            probeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null}
-            probeList={probeList}
-          />
-        )}
         {sideTab === "scout" && <ScoutPanel initialTarget={scoutTarget} />}
         {sideTab === "journal" && (
           <ExplorerJournalPanel
