@@ -861,7 +861,7 @@ async function pollProbe(
         (role) =>
           role.enabled &&
           role.probeId === probeId &&
-          role.roleType === "explorer",
+          (role.roleType === "explorer" || role.roleType === "ball_explorer"),
       )
     : undefined;
   const movingStatuses = new Set(["preparing", "accelerating", "cruising", "decelerating", "moving"]);

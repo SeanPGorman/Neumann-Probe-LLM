@@ -4,7 +4,7 @@ import { DATA_DIR } from "./file-store.js";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type DroneRoleType = "refuel" | "delivery" | "explorer" | "factory";
+export type DroneRoleType = "refuel" | "delivery" | "explorer" | "ball_explorer" | "factory";
 
 export type RefuelConfig = {
   /** Sector where deuterium is sourced (e.g. a planet with a refuel station). */
@@ -31,6 +31,12 @@ export type ExplorerConfig = {
   playerName?: string;
   /** Starting WP counter override (defaults to 1). */
   wpStartNumber?: number;
+};
+
+export type BallExplorerConfig = {
+  /** Factory probe where this drone waits for its required loadout. */
+  factoryProbeId: number;
+  factoryProbeName?: string;
 };
 
 export type FactoryConfig = {
@@ -75,6 +81,12 @@ export type RoleState = {
   deliveryContainerManifest?: { resources?: string; deployment?: string; metals?: string };
   /** Explorer: relay for which the transit beacon action has been requested. */
   beaconRelayId?: string;
+  /** Ball Explorer: sector selected from the unvisited SCUT-covered set. */
+  ballDestination?: { x: number; y: number; z: number };
+  /** Ball Explorer: operator-visible reason automation stopped. */
+  stopReason?: string;
+  /** Ball Explorer: compact description of the anomaly that stopped the role. */
+  anomalySummary?: string;
   /** Delivery: one-time emergency supply order currently being executed. */
   emergencySupplyOrderId?: number;
 };
@@ -86,7 +98,7 @@ export type DroneRole = {
   roleType: DroneRoleType;
   enabled: boolean;
   createdAt: string;
-  config: RefuelConfig | DeliveryConfig | ExplorerConfig | FactoryConfig;
+  config: RefuelConfig | DeliveryConfig | ExplorerConfig | BallExplorerConfig | FactoryConfig;
   state: RoleState;
 };
 

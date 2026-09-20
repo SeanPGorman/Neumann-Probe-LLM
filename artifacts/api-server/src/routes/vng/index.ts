@@ -226,6 +226,14 @@ router.delete("/scheduled/:id", async (req, res) => {
 
 // ── Drone Roles ───────────────────────────────────────────────────────────────
 
+const DRONE_ROLE_TYPES = new Set([
+  "refuel",
+  "delivery",
+  "explorer",
+  "ball_explorer",
+  "factory",
+]);
+
 router.get("/drone-roles", async (req, res) => {
   try {
     const rawProbeId = req.query.probeId;
@@ -250,6 +258,17 @@ router.post("/drone-roles", async (req, res) => {
       res.status(400).json({ error: "probeId, roleType, and config are required" });
       return;
     }
+    if (!DRONE_ROLE_TYPES.has(roleType)) {
+      res.status(400).json({ error: `Unsupported drone role: ${roleType}` });
+      return;
+    }
+    if (
+      roleType === "ball_explorer" &&
+      (!Number.isInteger(Number(config.factoryProbeId)) || Number(config.factoryProbeId) <= 0)
+    ) {
+      res.status(400).json({ error: "Ball Explorer requires a valid factory probe" });
+      return;
+    }
     // Prevent duplicate roles for the same probe
     const existing = await getDroneRoles();
     if (existing.some((r) => r.probeId === probeId && r.enabled)) {
@@ -267,6 +286,17 @@ router.put("/drone-roles/:id", async (req, res) => {
   try {
     const id = parseInt(req.params.id, 10);
     const patch = req.body;
+    if (patch.roleType != null && !DRONE_ROLE_TYPES.has(patch.roleType)) {
+      res.status(400).json({ error: `Unsupported drone role: ${patch.roleType}` });
+      return;
+    }
+    if (
+      patch.roleType === "ball_explorer" &&
+      (!Number.isInteger(Number(patch.config?.factoryProbeId)) || Number(patch.config.factoryProbeId) <= 0)
+    ) {
+      res.status(400).json({ error: "Ball Explorer requires a valid factory probe" });
+      return;
+    }
     const updated = await updateDroneRole(id, patch);
     if (!updated) res.status(404).json({ error: "Role not found" });
     else res.json({ role: updated });

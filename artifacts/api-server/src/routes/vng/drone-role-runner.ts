@@ -30,6 +30,7 @@ import type {
   RefuelConfig,
   DeliveryConfig,
   ExplorerConfig,
+  BallExplorerConfig,
   FactoryConfig,
 } from "./drone-roles-store.js";
 
@@ -323,8 +324,8 @@ export async function runDroneRoleAutomation(
   // reserve. Consuming them here can silently invalidate the exact manifest
   // after pickup but before dispatch.
   const preservesDeliveryCargo =
-    role.roleType === "delivery" &&
-    Number.isInteger(Number((role.config as DeliveryConfig).factoryProbeId));
+    (role.roleType === "delivery" || role.roleType === "ball_explorer") &&
+    Number.isInteger(Number((role.config as DeliveryConfig | BallExplorerConfig).factoryProbeId));
   if (!preservesDeliveryCargo) {
     await repairDamagedProbe(probe, mannies, claimed, roleClient, label);
   }
@@ -336,6 +337,8 @@ export async function runDroneRoleAutomation(
       await runDeliveryRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "explorer") {
       await runExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
+    } else if (role.roleType === "ball_explorer") {
+      await runBallExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "factory") {
       await runFactoryRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     }
@@ -385,6 +388,7 @@ function refuelerTankIsFull(probe: any): boolean {
 
 const REFUEL_SERVICE_ROLE_TYPES = new Set<DroneRole["roleType"]>([
   "explorer",
+  "ball_explorer",
   "delivery",
   "factory",
 ]);
@@ -1820,6 +1824,344 @@ export async function runExplorerRole(
     }
     return;
   }
+}
+
+// ── Ball Explorer Role ────────────────────────────────────────────────────────
+
+const BALL_EXPLORER_MISSILES = 20;
+const BALL_EXPLORER_PHASES_STOPPED = new Set(["anomaly_detected", "complete"]);
+
+type SectorCoord = { x: number; y: number; z: number };
+
+export type BallExplorerDeps = {
+  getSectors: typeof getSectors;
+  getScutNetwork: typeof getScutNetwork;
+  updateDroneRoleState: typeof updateDroneRoleState;
+  clientFor: typeof clientFor;
+  random: () => number;
+};
+
+const defaultBallExplorerDeps: BallExplorerDeps = {
+  getSectors,
+  getScutNetwork,
+  updateDroneRoleState,
+  clientFor,
+  random: Math.random,
+};
+
+function validSector(coord: SectorCoord): boolean {
+  return Number.isInteger(coord.x) && Number.isInteger(coord.y) &&
+    Number.isInteger(coord.z) && (coord.x + coord.y + coord.z) % 2 === 0;
+}
+
+function ballNeighbors(coord: SectorCoord): SectorCoord[] {
+  const axes = ["x", "y", "z"] as const;
+  const result: SectorCoord[] = [];
+  for (let first = 0; first < axes.length; first++) {
+    for (let second = first + 1; second < axes.length; second++) {
+      for (const firstStep of [-1, 1]) {
+        for (const secondStep of [-1, 1]) {
+          result.push({
+            ...coord,
+            [axes[first]]: coord[axes[first]] + firstStep,
+            [axes[second]]: coord[axes[second]] + secondStep,
+          });
+        }
+      }
+    }
+  }
+  return result;
+}
+
+async function ballScutCoverage(
+  deps: BallExplorerDeps,
+): Promise<Map<string, SectorCoord>> {
+  const known = await deps.getSectors();
+  const networkIds = new Set<number>();
+  for (const sector of known) {
+    for (const object of sector.objects as any[]) {
+      const id = Number(object?.network?.id);
+      if (object?.type === "scut_relay" && Number.isInteger(id)) networkIds.add(id);
+    }
+  }
+
+  const covered = new Map<string, SectorCoord>();
+  const networks = await Promise.allSettled(
+    [...networkIds].map((id) => deps.getScutNetwork(id)),
+  );
+  for (const result of networks) {
+    if (result.status !== "fulfilled") continue;
+    for (const relay of scutNetworkRelays(result.value)) {
+      if (relay?.status !== "on") continue;
+      const center = relay?.sector?.relative;
+      if (!center) continue;
+      const radius = Math.max(0, Number(relay.coverageRadiusSectors ?? SCUT_RADIUS));
+      const ceil = Math.ceil(radius);
+      for (let x = center.x - ceil; x <= center.x + ceil; x++) {
+        for (let y = center.y - ceil; y <= center.y + ceil; y++) {
+          for (let z = center.z - ceil; z <= center.z + ceil; z++) {
+            const coord = { x, y, z };
+            if (!validSector(coord)) continue;
+            const distance = Math.sqrt(
+              (x - center.x) ** 2 + (y - center.y) ** 2 + (z - center.z) ** 2,
+            );
+            if (distance <= radius) covered.set(sectorKey(coord), coord);
+          }
+        }
+      }
+    }
+  }
+  return covered;
+}
+
+/** Find every SCUT-covered sector reachable without leaving coverage. */
+export function ballReachableSectors(
+  current: SectorCoord,
+  covered: Map<string, SectorCoord>,
+): { sectors: SectorCoord[]; previous: Map<string, string> } {
+  const startKey = sectorKey(current);
+  if (!covered.has(startKey)) return { sectors: [], previous: new Map() };
+  const queue: SectorCoord[] = [current];
+  const seen = new Set([startKey]);
+  const previous = new Map<string, string>();
+  for (let index = 0; index < queue.length; index++) {
+    const here = queue[index];
+    const hereKey = sectorKey(here);
+    for (const next of ballNeighbors(here)) {
+      const key = sectorKey(next);
+      if (!covered.has(key) || seen.has(key)) continue;
+      seen.add(key);
+      previous.set(key, hereKey);
+      queue.push(covered.get(key)!);
+    }
+  }
+  return { sectors: queue, previous };
+}
+
+function firstBallStep(
+  current: SectorCoord,
+  destination: SectorCoord,
+  covered: Map<string, SectorCoord>,
+): SectorCoord | null {
+  const { previous } = ballReachableSectors(current, covered);
+  const startKey = sectorKey(current);
+  let cursor = sectorKey(destination);
+  if (cursor === startKey) return current;
+  if (!previous.has(cursor)) return null;
+  let parent = previous.get(cursor)!;
+  while (parent !== startKey) {
+    cursor = parent;
+    parent = previous.get(cursor)!;
+  }
+  return covered.get(cursor) ?? null;
+}
+
+/** Detect discoveries that require operator review rather than routine logging. */
+export function describeBallAnomaly(objects: any[]): string | null {
+  const findings: string[] = [];
+  const visit = (value: any) => {
+    if (!value || typeof value !== "object") return;
+    const name = String(value.name ?? value.type ?? value.id ?? "unknown object");
+    if (value.intelligentLife != null && value.intelligentLife !== false) {
+      findings.push(`intelligent life at ${name}`);
+    }
+    if (value.anomaly != null || value.anomalous === true ||
+        String(value.type ?? "").toLowerCase().includes("anomal")) {
+      findings.push(`anomaly at ${name}`);
+    }
+    if (value.dangerLevel != null && !["none", "low", "0"].includes(String(value.dangerLevel).toLowerCase())) {
+      findings.push(`danger ${value.dangerLevel} at ${name}`);
+    }
+    for (const field of ["alerts", "alert", "warnings", "warning", "dangerSignals"]) {
+      const signal = value[field];
+      if (signal == null || signal === false || (Array.isArray(signal) && signal.length === 0)) continue;
+      findings.push(`${field.replace(/([A-Z])/g, " $1").toLowerCase()} at ${name}`);
+    }
+    for (const child of Object.values(value)) {
+      if (child === value) continue;
+      if (Array.isArray(child)) child.forEach(visit);
+      else if (child && typeof child === "object") visit(child);
+    }
+  };
+  objects.forEach(visit);
+  return findings.length > 0 ? [...new Set(findings)].slice(0, 3).join("; ") : null;
+}
+
+async function ballLoadoutStatus(
+  probe: any,
+  c: ReturnType<typeof clientFor>,
+): Promise<{ ready: boolean; missileCount: number; fullMetalsContainer: boolean }> {
+  const missileIds = new Set(
+    (probe?.inventory?.items ?? [])
+      .filter((item: any) => item.type === "missile")
+      .map((item: any) => String(item.id)),
+  );
+  let fullMetalsContainer = false;
+  if (
+    typeof (c as any).getStorageContainers === "function" &&
+    typeof (c as any).getStorageContainer === "function"
+  ) {
+    const listed = storageContainers(await c.getStorageContainers());
+    for (const container of listed.filter((entry: any) =>
+      isContainerItem(entry) || entry.kind === "container" || entry.type?.includes?.("container"))) {
+      const detail = await c.getStorageContainer(canonicalContainerId(container.id));
+      const inventory = detail?.inventory ?? detail?.container?.inventory ?? detail?.data?.inventory ?? {};
+      for (const item of inventory.items ?? []) {
+        if (item.type === "missile") missileIds.add(String(item.id));
+      }
+      const target = detail?.container ?? detail;
+      const capacity = Number(target?.capacity ?? container?.capacity);
+      const used = Number(target?.usedCapacity ?? target?.used ?? container?.usedCapacity ?? 0);
+      const stocks = inventory.resourceStocks ?? target?.resourceStocks ?? [];
+      const metals = Number(stocks.find((stock: any) => stock.type === "metals")?.amount ?? 0);
+      const otherResources = stocks.some(
+        (stock: any) => stock.type !== "metals" && Number(stock.amount) > 0.000_001,
+      );
+      if (
+        Number.isFinite(capacity) && capacity > 0 &&
+        used >= capacity - 0.000_001 &&
+        metals >= capacity - 0.000_001 &&
+        !otherResources
+      ) {
+        fullMetalsContainer = true;
+      }
+    }
+  }
+  return {
+    ready: missileIds.size >= BALL_EXPLORER_MISSILES && fullMetalsContainer,
+    missileCount: missileIds.size,
+    fullMetalsContainer,
+  };
+}
+
+async function ballFactorySector(
+  config: BallExplorerConfig,
+  deps: BallExplorerDeps,
+): Promise<SectorCoord | null> {
+  const response = await deps.clientFor(config.factoryProbeId).getProbe();
+  return response?.probe?.sector?.relative ?? response?.probe?.sector ?? null;
+}
+
+export async function runBallExplorerRole(
+  role: DroneRole,
+  probe: any,
+  _mannies: any[],
+  _claimed: Set<string>,
+  c: ReturnType<typeof clientFor>,
+  isMoving: boolean,
+  label: string,
+  deps: BallExplorerDeps = defaultBallExplorerDeps,
+): Promise<void> {
+  const cfg = role.config as BallExplorerConfig;
+  const current = probe?.sector?.relative ?? probe?.sector;
+  if (!current || isMoving || BALL_EXPLORER_PHASES_STOPPED.has(role.state.phase)) return;
+
+  const loadout = await ballLoadoutStatus(probe, c);
+  if (!loadout.ready) {
+    const factory = await ballFactorySector(cfg, deps).catch(() => null);
+    const status = `${loadout.missileCount}/${BALL_EXPLORER_MISSILES} missiles; metals container ${loadout.fullMetalsContainer ? "ready" : "missing/not full"}`;
+    if (!factory) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "waiting_for_loadout",
+        lastError: `Factory location unavailable. Required loadout: ${status}`,
+      });
+      return;
+    }
+    if (atSector(probe, factory)) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "waiting_for_loadout",
+        travelTarget: undefined,
+        lastError: `Waiting at factory for required loadout: ${status}`,
+      });
+      return;
+    }
+    const covered = await ballScutCoverage(deps);
+    const step = firstBallStep(current, factory, covered);
+    if (!step || reachedTarget(step, current)) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "waiting_for_loadout",
+        lastError: `Factory is not reachable without leaving SCUT coverage. Required loadout: ${status}`,
+      });
+      return;
+    }
+    await c.moveProbe(step.x, step.y, step.z);
+    await deps.updateDroneRoleState(role.id, {
+      phase: "returning_for_loadout",
+      travelTarget: factory,
+      lastError: undefined,
+    });
+    return;
+  }
+
+  if (role.state.phase === "traveling" || role.state.phase === "returning_for_loadout" ||
+      role.state.phase === "waiting_for_loadout" || role.state.phase === "idle") {
+    await deps.updateDroneRoleState(role.id, {
+      phase: "scanning",
+      travelTarget: undefined,
+      lastError: undefined,
+    });
+    return;
+  }
+  if (role.state.phase !== "scanning") return;
+
+  const response = await c.getSector();
+  const sector = response?.sector;
+  const scanQuality = Number(sector?.scan?.scanQuality);
+  if (Number.isFinite(scanQuality) && scanQuality < 1) return;
+  const anomaly = describeBallAnomaly(sector?.objects ?? []);
+  if (anomaly) {
+    logger.warn({ label, sector: current, anomaly }, "drone-role: Ball Explorer found anomaly — paused");
+    await deps.updateDroneRoleState(role.id, {
+      phase: "anomaly_detected",
+      stopReason: "Anomaly found; operator review required",
+      anomalySummary: anomaly,
+      ballDestination: undefined,
+      travelTarget: undefined,
+      lastError: undefined,
+    });
+    return;
+  }
+
+  const [visited, covered] = await Promise.all([deps.getSectors(), ballScutCoverage(deps)]);
+  const visitedKeys = new Set(visited.map((entry) =>
+    sectorKey({ x: entry.sectorX, y: entry.sectorY, z: entry.sectorZ })));
+  const reachable = ballReachableSectors(current, covered).sectors;
+  const unvisited = reachable.filter((coord) => !visitedKeys.has(sectorKey(coord)));
+  if (unvisited.length === 0) {
+    logger.info({ label }, "drone-role: Ball Explorer exhausted unvisited SCUT space — paused");
+    await deps.updateDroneRoleState(role.id, {
+      phase: "complete",
+      stopReason: "No unvisited SCUT-reachable sectors remain",
+      ballDestination: undefined,
+      travelTarget: undefined,
+      lastError: undefined,
+    });
+    return;
+  }
+
+  let destination = role.state.ballDestination;
+  if (!destination || visitedKeys.has(sectorKey(destination)) || !covered.has(sectorKey(destination))) {
+    destination = unvisited[Math.min(
+      unvisited.length - 1,
+      Math.floor(deps.random() * unvisited.length),
+    )];
+  }
+  const step = firstBallStep(current, destination, covered);
+  if (!step || reachedTarget(step, current)) {
+    await deps.updateDroneRoleState(role.id, {
+      phase: "scanning",
+      ballDestination: undefined,
+      lastError: "Selected SCUT destination became unreachable; selecting another route",
+    });
+    return;
+  }
+  await c.moveProbe(step.x, step.y, step.z);
+  await deps.updateDroneRoleState(role.id, {
+    phase: "traveling",
+    ballDestination: destination,
+    travelTarget: step,
+    lastError: undefined,
+  });
 }
 
 // ── Factory Role ──────────────────────────────────────────────────────────────

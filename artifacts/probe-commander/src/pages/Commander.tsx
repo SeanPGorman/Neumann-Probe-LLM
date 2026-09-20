@@ -1129,7 +1129,7 @@ function ScheduledPanel({
 
 // ── Drone Roles Panel ──────────────────────────────────────────────────────────
 
-type DroneRoleType = "refuel" | "delivery" | "explorer" | "factory";
+type DroneRoleType = "refuel" | "delivery" | "explorer" | "ball_explorer" | "factory";
 type DroneRole = {
   id: number;
   probeId: number;
@@ -1156,12 +1156,14 @@ const ROLE_LABELS: Record<DroneRoleType, string> = {
   refuel:   "REFUEL DRONE",
   delivery: "DELIVERY DRONE",
   explorer: "EXPLORER DRONE",
+  ball_explorer: "BALL EXPLORER",
   factory:  "FACTORY DRONE",
 };
 const ROLE_ICONS: Record<DroneRoleType, string> = {
   refuel:   "⛽",
   delivery: "📦",
   explorer: "🔭",
+  ball_explorer: "⚪",
   factory:  "🏭",
 };
 const PHASE_COLOR: Record<string, string> = {
@@ -1182,6 +1184,11 @@ const PHASE_COLOR: Record<string, string> = {
   waiting_for_delivery:  "text-purple-400",
   supplying:             "text-blue-400",
   handoff:               "text-purple-400",
+  scanning:              "text-cyan-400",
+  returning_for_loadout: "text-yellow-400",
+  waiting_for_loadout:   "text-purple-400",
+  anomaly_detected:      "text-red-400",
+  complete:              "text-primary",
 };
 
 function SummaryPanel({
@@ -1385,7 +1392,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       setSrcX(String(cfg.sourceSector?.x ?? "")); setSrcY(String(cfg.sourceSector?.y ?? "")); setSrcZ(String(cfg.sourceSector?.z ?? ""));
       setTargetProbeId(String(cfg.targetProbeId ?? ""));
       setMinFuel(String(cfg.minFuelThreshold ?? 80));
-    } else if (r.roleType === "delivery") {
+    } else if (r.roleType === "delivery" || r.roleType === "ball_explorer") {
       setFactoryProbeId(String((r.config as any).factoryProbeId ?? ""));
     } else if (r.roleType === "explorer") {
       const cfg = r.config as any;
@@ -1406,7 +1413,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       targetProbeName: probeList.find((p) => p.id === parseInt(targetProbeId))?.name,
       minFuelThreshold: parseInt(minFuel),
     };
-    if (roleType === "delivery") return {
+    if (roleType === "delivery" || roleType === "ball_explorer") return {
       factoryProbeId: parseInt(factoryProbeId),
       factoryProbeName: probeList.find((p) => p.id === parseInt(factoryProbeId))?.name,
     };
@@ -1426,6 +1433,10 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
 
   const handleSave = async () => {
     if (!probeId) return;
+    if ((roleType === "delivery" || roleType === "ball_explorer") && !factoryProbeId) {
+      setSaveError("Select a factory probe.");
+      return;
+    }
     setSaving(true); setSaveError(null);
     try {
       const config = buildConfig();
@@ -1463,6 +1474,25 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ enabled: !r.enabled }),
+    });
+    await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
+  };
+
+  const resumeBallExplorer = async (r: DroneRole) => {
+    await fetchJson(`${BASE}/api/vng/drone-roles/${r.id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        state: {
+          ...r.state,
+          phase: "scanning",
+          stopReason: undefined,
+          anomalySummary: undefined,
+          ballDestination: undefined,
+          travelTarget: undefined,
+          lastError: undefined,
+        },
+      }),
     });
     await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
   };
@@ -1635,6 +1665,46 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               );
             })()}
 
+            {role.roleType === "ball_explorer" && (() => {
+              const cfg = role.config as any;
+              const factory = probeList.find((p) => p.id === cfg.factoryProbeId);
+              const stopped = role.state.phase === "anomaly_detected" || role.state.phase === "complete";
+              return (
+                <>
+                  <div className="text-[10px] text-muted-foreground">
+                    Factory anchor: <span className="text-foreground">
+                      {factory?.name ?? cfg.factoryProbeName ?? `probe ${cfg.factoryProbeId}`}
+                    </span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Required loadout: <span className="text-foreground">20 missiles + one full metals container</span>
+                  </div>
+                  <div className="text-[10px] text-muted-foreground">
+                    Route: <span className="text-foreground">random unvisited sectors, SCUT coverage only</span>
+                  </div>
+                  {(role.state as any).anomalySummary && (
+                    <div className="text-[10px] text-red-400">
+                      Anomaly: {(role.state as any).anomalySummary}
+                    </div>
+                  )}
+                  {(role.state as any).stopReason && (
+                    <div className="text-[10px] text-muted-foreground">
+                      Stopped: <span className="text-foreground">{(role.state as any).stopReason}</span>
+                    </div>
+                  )}
+                  {stopped && (
+                    <button
+                      type="button"
+                      onClick={() => resumeBallExplorer(role)}
+                      className="mt-1 w-full rounded border border-primary/50 px-2 py-1.5 text-[9px] font-mono tracking-wider text-primary hover:bg-primary/10"
+                    >
+                      ACKNOWLEDGE & RESUME EXPLORATION
+                    </button>
+                  )}
+                </>
+              );
+            })()}
+
             {role.roleType === "factory" && (() => {
               const cfg = role.config as any;
               const ids: number[] = cfg.deliveryProbeIds ?? [];
@@ -1790,8 +1860,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
 
           {/* Role type selector — only when adding */}
           {!editing && (
-            <div className="flex gap-1">
-              {(["refuel", "delivery", "explorer", "factory"] as DroneRoleType[]).map((rt) => (
+            <div className="grid grid-cols-2 sm:grid-cols-5 gap-1">
+              {(["refuel", "delivery", "explorer", "ball_explorer", "factory"] as DroneRoleType[]).map((rt) => (
                 <button
                   key={rt}
                   onClick={() => setRoleType(rt)}
@@ -1801,7 +1871,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                       : "border-border text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  {ROLE_ICONS[rt]} {rt.toUpperCase()}
+                  {ROLE_ICONS[rt]} {rt === "ball_explorer" ? "BALL" : rt.toUpperCase()}
                 </button>
               ))}
             </div>
@@ -1861,6 +1931,28 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               </div>
               <div className="text-[10px] text-muted-foreground/60 italic">
                 This drone waits at the factory. When an Explorer signals it needs resupply, the drone will travel to the Explorer's sector, transfer deuterium, drop a full container, and collect the empty one.
+              </div>
+            </div>
+          )}
+
+          {/* Ball Explorer config */}
+          {roleType === "ball_explorer" && (
+            <div className="space-y-2">
+              <div>
+                <div className="text-[10px] text-muted-foreground mb-1">FACTORY ANCHOR</div>
+                <select
+                  value={factoryProbeId}
+                  onChange={(e) => setFactoryProbeId(e.target.value)}
+                  className="w-full bg-background border border-border rounded px-2 py-1 text-xs"
+                >
+                  <option value="">— select factory probe —</option>
+                  {probeList.filter((p) => p.id !== probeId).map((p) => (
+                    <option key={p.id} value={p.id}>{p.name} ({p.id})</option>
+                  ))}
+                </select>
+              </div>
+              <div className="text-[10px] text-muted-foreground/60 italic">
+                Requires 20 missiles and one full metals container before departure. It scans random unvisited sectors reachable entirely inside active SCUT coverage, then pauses for operator review on anomalies or when coverage is exhausted.
               </div>
             </div>
           )}
