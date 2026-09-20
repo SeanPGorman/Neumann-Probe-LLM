@@ -2544,7 +2544,7 @@ export default function Commander() {
           </>
         )}
         {sideTab === "mining" && (
-          <MiningPanel probeId={selectedProbeId} />
+          <MiningPanel probeId={selectedProbeId ?? probeListData?.defaultProbeId ?? null} />
         )}
         {sideTab === "globe" && (
           <GlobeMap
