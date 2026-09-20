@@ -2060,35 +2060,13 @@ export async function runBallExplorerRole(
   if (!loadout.ready) {
     const factory = await ballFactorySector(cfg, deps).catch(() => null);
     const status = `${loadout.missileCount}/${BALL_EXPLORER_MISSILES} missiles; metals container ${loadout.fullMetalsContainer ? "ready" : "missing/not full"}`;
-    if (!factory) {
-      await deps.updateDroneRoleState(role.id, {
-        phase: "waiting_for_loadout",
-        lastError: `Factory location unavailable. Required loadout: ${status}`,
-      });
-      return;
-    }
-    if (atSector(probe, factory)) {
-      await deps.updateDroneRoleState(role.id, {
-        phase: "waiting_for_loadout",
-        travelTarget: undefined,
-        lastError: `Waiting at factory for required loadout: ${status}`,
-      });
-      return;
-    }
-    const covered = await ballScutCoverage(deps);
-    const step = firstBallStep(current, factory, covered);
-    if (!step || reachedTarget(step, current)) {
-      await deps.updateDroneRoleState(role.id, {
-        phase: "waiting_for_loadout",
-        lastError: `Factory is not reachable without leaving SCUT coverage. Required loadout: ${status}`,
-      });
-      return;
-    }
-    await c.moveProbe(step.x, step.y, step.z);
     await deps.updateDroneRoleState(role.id, {
-      phase: "returning_for_loadout",
-      travelTarget: factory,
-      lastError: undefined,
+      phase: "waiting_for_loadout",
+      travelTarget: undefined,
+      ballDestination: undefined,
+      lastError: factory && atSector(probe, factory)
+        ? `Waiting at factory for required loadout: ${status}`
+        : `Movement blocked until loadout is complete: ${status}. The drone is not at its assigned factory.`,
     });
     return;
   }

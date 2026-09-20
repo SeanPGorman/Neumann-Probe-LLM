@@ -60,7 +60,11 @@ function client(objects: any[] = []) {
   };
 }
 
-function deps(radius: number, statePatches: any[]): BallExplorerDeps {
+function deps(
+  radius: number,
+  statePatches: any[],
+  factorySector = CURRENT,
+): BallExplorerDeps {
   return {
     getSectors: async () => [{
       id: 1,
@@ -86,7 +90,7 @@ function deps(radius: number, statePatches: any[]): BallExplorerDeps {
       statePatches.push(patch);
     },
     clientFor: (() => ({
-      getProbe: async () => ({ probe: { sector: { relative: CURRENT } } }),
+      getProbe: async () => ({ probe: { sector: { relative: factorySector } } }),
     })) as any,
     random: () => 0,
   };
@@ -155,6 +159,27 @@ test("Ball Explorer cannot leave its factory without the required loadout", asyn
   assert.equal(moves.length, 0);
   assert.equal(patches.at(-1)?.phase, "waiting_for_loadout");
   assert.match(patches.at(-1)?.lastError ?? "", /19\/20 missiles/);
+});
+
+test("Ball Explorer never moves toward its factory while under-supplied", async () => {
+  const patches: any[] = [];
+  const { api, moves } = client();
+  const underSupplied = loadedProbe();
+  underSupplied.inventory.items = [];
+  await runBallExplorerRole(
+    role({ phase: "returning_for_loadout", travelTarget: { x: 5, y: 5, z: 0 } }),
+    underSupplied,
+    [],
+    new Set(),
+    api,
+    false,
+    "test",
+    deps(8, patches, { x: 5, y: 5, z: 0 }),
+  );
+  assert.equal(moves.length, 0);
+  assert.equal(patches.at(-1)?.phase, "waiting_for_loadout");
+  assert.equal(patches.at(-1)?.travelTarget, undefined);
+  assert.match(patches.at(-1)?.lastError ?? "", /Movement blocked/);
 });
 
 test("Ball Explorer pauses when every reachable SCUT sector is visited", async () => {

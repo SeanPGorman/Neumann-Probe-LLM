@@ -1952,7 +1952,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                 </select>
               </div>
               <div className="text-[10px] text-muted-foreground/60 italic">
-                Requires 20 missiles and one full metals container before departure. It scans random unvisited sectors reachable entirely inside active SCUT coverage, then pauses for operator review on anomalies or when coverage is exhausted.
+                Requires 20 missiles and one full metals container before any movement. An under-supplied drone remains where it is, even when it is away from the selected factory. Once loaded, it scans random unvisited sectors reachable entirely inside active SCUT coverage.
               </div>
             </div>
           )}
