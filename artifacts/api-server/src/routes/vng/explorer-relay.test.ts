@@ -118,13 +118,51 @@ test("deploying_relay: scut_relay in inventory → jettisons it to deploy", asyn
     probeWith([{ id: "itm-relay-1", type: "scut_relay" }]),
     IDLE_MANNY,
     new Set(),
-    makeClient(calls),
+    makeClient(calls, [{ id: "star-1", type: "star" }]),
     false,
     "test",
   );
   assert.deepEqual(calls, [{ op: "jettison", inventoryId: "itm-relay-1" }]);
   // Phase advances only after the relay object is observed in the sector.
   assert.equal((await store.getDroneRoles())[0].state.phase, "deploying_relay");
+});
+
+test("deploying_relay: scut_relay in inventory waits when sector has no sun", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "deploying_relay");
+  const calls: any[] = [];
+  await runner.runExplorerRole(
+    role,
+    probeWith([{ id: "itm-relay-1", type: "scut_relay" }]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, [{ id: "asteroid-1", type: "asteroid" }]),
+    false,
+    "test",
+  );
+  assert.deepEqual(calls, []);
+  assert.equal((await store.getDroneRoles())[0].state.phase, "deploying_relay");
+});
+
+test("deploying_relay: recognizes a sun nested inside a solar system", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "deploying_relay");
+  const calls: any[] = [];
+  const sector = [{
+    id: "system-1",
+    type: "solar_system",
+    bodies: [{ id: "star-1", type: "star" }],
+  }];
+  await runner.runExplorerRole(
+    role,
+    probeWith([{ id: "itm-relay-1", type: "scut_relay" }]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, sector),
+    false,
+    "test",
+  );
+  assert.deepEqual(calls, [{ op: "jettison", inventoryId: "itm-relay-1" }]);
 });
 
 test("deploying_relay: sector has status:'off' relay → advances to activating_relay", async () => {
@@ -551,7 +589,7 @@ test("full relay hop: jettison → turn-on → observe active → drop → signa
     probeWith([{ id: "itm-relay-1", type: "scut_relay" }]),
     IDLE_MANNY,
     new Set(),
-    makeClient(calls, []),
+    makeClient(calls, [{ id: "star-55", type: "star" }]),
     false,
     "test",
   );

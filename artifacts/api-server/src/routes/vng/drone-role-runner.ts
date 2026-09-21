@@ -1428,6 +1428,19 @@ function waypointTarget(sectorObjects: any[]): any | null {
   return null;
 }
 
+/** SCUT relays may only be deployed in sectors containing a star. */
+function sectorHasSun(sectorObjects: any[]): boolean {
+  return sectorObjects.some((object: any) => {
+    if (object?.type === "star") return true;
+    if (object?.type !== "solar_system") return false;
+    const targets: any[] = [
+      ...(object.bookmarkTargets ?? []),
+      ...(object.bodies ?? []),
+    ];
+    return targets.some((candidate: any) => candidate?.type === "star");
+  });
+}
+
 /** Build the standard WP bookmark name. */
 function buildWpName(
   counter: number,
@@ -1657,6 +1670,13 @@ export async function runExplorerRole(
     const items: any[] = probe?.inventory?.items ?? [];
     const relayItem = items.find((i: any) => i.type === "scut_relay");
     if (relayItem) {
+      if (!sectorHasSun(sectorObjects)) {
+        logger.warn(
+          { label },
+          "drone-role: cannot deploy scut_relay — current sector has no sun",
+        );
+        return;
+      }
       logger.info({ label, itemId: relayItem.id }, "drone-role: deploying scut_relay from inventory (jettison)");
       try {
         await c.jettisonItem(relayItem.id);

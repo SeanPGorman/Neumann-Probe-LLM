@@ -2,7 +2,7 @@
 - [Mining targets live inside solar_system bodies](mining-targets.md) — sector has no standalone asteroids; mineable bodies are in solar_system.bodies after mapSectorObjects()
 - [Relay beacons and celestial waypoints](waypoint-solar-system-targets.md) — install transit beacons on active relays and waypoint bookmarks on celestial targets
 - [Mining planet filter](mining-planet-filter.md) — planets appear in minableTargets but hidden_on_asteroid mode rejects them; filter to asteroid type only in poller
-- [VNG SCUT relay deployment](vng-relay-deployment.md) — jettison a scut_relay item to deploy it as an inactive sector relay; API spec lives at /openapi.yaml
+- [VNG SCUT relay deployment](vng-relay-deployment.md) — jettison deploys an inactive relay, but only in a sector containing a sun/star
 - [VNG container storage moves](vng-container-items.md) — API v130 moves resources/items between onboard containers; transit beacons are distinct from waypoint bookmarks
 - [VNG probe sector coordinates](vng-probe-sector-shape.md) — coords at probe.sector.relative.{x,y,z}; sectors must have x+y+z even; step exactly 2 axes per hop
 - [VNG SCUT coverage check](vng-scut-endpoint.md) — /api/probe/scut-networks is 404; use getSectors()+getScutNetwork(id) aggregation instead
