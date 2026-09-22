@@ -1,12 +1,1 @@
-[
-  {
-    "deliveryProbeId": 823,
-    "deliveryProbeName": "CharlieDelivers-FT1",
-    "targetProbeId": 914,
-    "targetProbeName": "FoxtrotExplorer",
-    "targetRoleType": "explorer",
-    "id": 1,
-    "status": "assigned",
-    "createdAt": "2026-09-20T15:45:54.608Z"
-  }
-]
+[]
