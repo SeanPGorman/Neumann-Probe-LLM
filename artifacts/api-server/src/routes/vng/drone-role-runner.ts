@@ -244,6 +244,7 @@ async function repairDamagedProbe(
   claimed: Set<string>,
   c: ReturnType<typeof clientFor>,
   label: string,
+  includeStorageMetals = false,
 ): Promise<void> {
   const integrity = Number(probe?.systems?.integrityPercent);
   if (!Number.isFinite(integrity) || integrity >= 99) return;
@@ -251,12 +252,38 @@ async function repairDamagedProbe(
   const manny = pickIdleManny(mannies, claimed);
   if (!manny) return;
 
-  const metalsAvailable = (probe?.inventory?.resourceStocks ?? [])
+  let metalsAvailable = (probe?.inventory?.resourceStocks ?? [])
     .filter((stock: any) => String(stock?.type ?? "").toLowerCase() === "metals")
     .reduce((total: number, stock: any) => {
       const amount = Number(stock?.amount);
       return Number.isFinite(amount) && amount > 0 ? total + amount : total;
     }, 0);
+  if (
+    includeStorageMetals &&
+    typeof (c as any).getStorageContainers === "function" &&
+    typeof (c as any).getStorageContainer === "function"
+  ) {
+    try {
+      const listed = storageContainers(await c.getStorageContainers());
+      for (const container of listed.filter((entry: any) =>
+        isContainerItem(entry) ||
+        entry.kind === "container" ||
+        entry.type?.includes?.("container"),
+      )) {
+        const detail = await c.getStorageContainer(canonicalContainerId(container.id));
+        const inventory = detail?.inventory ?? detail?.container?.inventory ?? detail?.data?.inventory ?? {};
+        const target = detail?.container ?? detail;
+        metalsAvailable += (inventory.resourceStocks ?? target?.resourceStocks ?? [])
+          .filter((stock: any) => String(stock?.type ?? "").toLowerCase() === "metals")
+          .reduce((total: number, stock: any) => {
+            const amount = Number(stock?.amount);
+            return Number.isFinite(amount) && amount > 0 ? total + amount : total;
+          }, 0);
+      }
+    } catch (err: any) {
+      logger.warn({ label, err: err?.message }, "drone-role: could not inspect Ball Explorer repair metals");
+    }
+  }
   const missingIntegrity = Math.max(0, 100 - integrity);
   const metalsPerIntegrityPoint = 0.01;
   const affordableIntegrity = Math.floor(
@@ -324,10 +351,17 @@ export async function runDroneRoleAutomation(
   // reserve. Consuming them here can silently invalidate the exact manifest
   // after pickup but before dispatch.
   const preservesDeliveryCargo =
-    (role.roleType === "delivery" || role.roleType === "ball_explorer") &&
+    role.roleType === "delivery" &&
     Number.isInteger(Number((role.config as DeliveryConfig | BallExplorerConfig).factoryProbeId));
   if (!preservesDeliveryCargo) {
-    await repairDamagedProbe(probe, mannies, claimed, roleClient, label);
+    await repairDamagedProbe(
+      probe,
+      mannies,
+      claimed,
+      roleClient,
+      label,
+      role.roleType === "ball_explorer",
+    );
   }
 
   try {
@@ -1859,6 +1893,7 @@ export type BallExplorerDeps = {
   updateDroneRoleState: typeof updateDroneRoleState;
   clientFor: typeof clientFor;
   random: () => number;
+  nextDeliveryWaypoint?: typeof nextDeliveryWaypoint;
 };
 
 const defaultBallExplorerDeps: BallExplorerDeps = {
@@ -1867,6 +1902,7 @@ const defaultBallExplorerDeps: BallExplorerDeps = {
   updateDroneRoleState,
   clientFor,
   random: Math.random,
+  nextDeliveryWaypoint,
 };
 
 function validSector(coord: SectorCoord): boolean {
@@ -2010,7 +2046,12 @@ export function describeBallAnomaly(objects: any[]): string | null {
 async function ballLoadoutStatus(
   probe: any,
   c: ReturnType<typeof clientFor>,
-): Promise<{ ready: boolean; missileCount: number; fullMetalsContainer: boolean }> {
+): Promise<{
+  ready: boolean;
+  missileCount: number;
+  fullMetalsContainer: boolean;
+  metalsAmount: number;
+}> {
   const missileIds = new Set(
     (probe?.inventory?.items ?? [])
       .filter((item: any) => item.type === "missile")
@@ -2047,10 +2088,33 @@ async function ballLoadoutStatus(
       }
     }
   }
+  let metalsAmount = 0;
+  if (
+    typeof (c as any).getStorageContainers === "function" &&
+    typeof (c as any).getStorageContainer === "function"
+  ) {
+    const listed = storageContainers(await c.getStorageContainers());
+    for (const container of listed.filter((entry: any) =>
+      isContainerItem(entry) ||
+      entry.kind === "container" ||
+      entry.type?.includes?.("container"),
+    )) {
+      const detail = await c.getStorageContainer(canonicalContainerId(container.id));
+      const inventory = detail?.inventory ?? detail?.container?.inventory ?? detail?.data?.inventory ?? {};
+      const target = detail?.container ?? detail;
+      metalsAmount += (inventory.resourceStocks ?? target?.resourceStocks ?? [])
+        .filter((stock: any) => String(stock?.type ?? "").toLowerCase() === "metals")
+        .reduce((total: number, stock: any) => {
+          const amount = Number(stock?.amount);
+          return Number.isFinite(amount) && amount > 0 ? total + amount : total;
+        }, 0);
+    }
+  }
   return {
     ready: missileIds.size >= BALL_EXPLORER_MISSILES && fullMetalsContainer,
     missileCount: missileIds.size,
     fullMetalsContainer,
+    metalsAmount,
   };
 }
 
@@ -2060,6 +2124,51 @@ async function ballFactorySector(
 ): Promise<SectorCoord | null> {
   const response = await deps.clientFor(config.factoryProbeId).getProbe();
   return response?.probe?.sector?.relative ?? response?.probe?.sector ?? null;
+}
+
+async function ballBeaconSectors(deps: BallExplorerDeps): Promise<SectorCoord[]> {
+  const known = await deps.getSectors();
+  const networkIds = new Set<number>();
+  for (const sector of known) {
+    for (const object of sector.objects as any[]) {
+      const id = Number(object?.network?.id);
+      if (object?.type === "scut_relay" && Number.isInteger(id)) networkIds.add(id);
+    }
+  }
+  const beacons: SectorCoord[] = [];
+  const networks = await Promise.allSettled(
+    [...networkIds].map((id) => deps.getScutNetwork(id)),
+  );
+  for (const result of networks) {
+    if (result.status !== "fulfilled") continue;
+    for (const relay of scutNetworkRelays(result.value)) {
+      if (relay?.status !== "on" || relay?.isTransitBeacon !== true) continue;
+      const sector = relay?.sector?.relative;
+      if (sector) beacons.push({ x: sector.x, y: sector.y, z: sector.z });
+    }
+  }
+  return beacons;
+}
+
+async function ballReturnStep(
+  current: SectorCoord,
+  factory: SectorCoord,
+  deps: BallExplorerDeps,
+  label: string,
+): Promise<SectorCoord | null> {
+  const beacons = await ballBeaconSectors(deps);
+  if (beacons.length === 0) return null;
+  const beacon = [...beacons].sort(
+    (a, b) => chebyshevDist(current, a) - chebyshevDist(current, b),
+  )[0];
+  if (reachedTarget(current, beacon)) {
+    return (deps.nextDeliveryWaypoint ?? nextDeliveryWaypoint)(current, factory, label);
+  }
+  const covered = await ballScutCoverage(deps);
+  const step = firstBallStep(current, beacon, covered);
+  if (step && !reachedTarget(step, current)) return step;
+  if (chebyshevDist(current, beacon) <= 2) return beacon;
+  return null;
 }
 
 export async function runBallExplorerRole(
@@ -2077,18 +2186,52 @@ export async function runBallExplorerRole(
   if (!current || isMoving || BALL_EXPLORER_PHASES_STOPPED.has(role.state.phase)) return;
 
   const loadout = await ballLoadoutStatus(probe, c);
-  if (!loadout.ready) {
-    const factory = await ballFactorySector(cfg, deps).catch(() => null);
-    const status = `${loadout.missileCount}/${BALL_EXPLORER_MISSILES} missiles; metals container ${loadout.fullMetalsContainer ? "ready" : "missing/not full"}`;
-    await deps.updateDroneRoleState(role.id, {
-      phase: "waiting_for_loadout",
-      travelTarget: undefined,
-      ballDestination: undefined,
-      lastError: factory && atSector(probe, factory)
-        ? `Waiting at factory for required loadout: ${status}`
-        : `Movement blocked until loadout is complete: ${status}. The drone is not at its assigned factory.`,
-    });
+  const factory = await ballFactorySector(cfg, deps).catch(() => null);
+  const atFactory = Boolean(factory && atSector(probe, factory));
+
+  // Metals are a repair reserve, not a permanent movement requirement. Once
+  // away from the factory, a partially depleted reserve is still useful.
+  // When the reserve is empty, return through a nearby beaconed SCUT relay.
+  if (loadout.metalsAmount <= 0 && !atFactory) {
+    if (factory) {
+      const step = await ballReturnStep(current, factory, deps, label);
+      if (step && !reachedTarget(step, current)) {
+        try {
+          await c.moveProbe(step.x, step.y, step.z);
+          await deps.updateDroneRoleState(role.id, {
+            phase: "returning_for_loadout",
+            travelTarget: step,
+            ballDestination: undefined,
+            lastError: undefined,
+          });
+        } catch (err: any) {
+          logger.warn({ label, err: err?.message }, "drone-role: Ball Explorer return move failed");
+        }
+      } else {
+        await deps.updateDroneRoleState(role.id, {
+          phase: "returning_for_loadout",
+          travelTarget: undefined,
+          ballDestination: undefined,
+          lastError: "Metals reserve empty; waiting for a nearby beaconed SCUT relay",
+        });
+      }
+    }
     return;
+  }
+
+  if (!loadout.ready) {
+    const status = `${loadout.missileCount}/${BALL_EXPLORER_MISSILES} missiles; metals container ${loadout.fullMetalsContainer ? "ready" : "missing/not full"}`;
+    if (atFactory || loadout.missileCount < BALL_EXPLORER_MISSILES) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "waiting_for_loadout",
+        travelTarget: undefined,
+        ballDestination: undefined,
+        lastError: atFactory
+          ? `Waiting at factory for required loadout: ${status}`
+          : `Movement blocked until loadout is complete: ${status}. The drone is not at its assigned factory.`,
+      });
+      return;
+    }
   }
 
   if (role.state.phase === "traveling" || role.state.phase === "returning_for_loadout" ||

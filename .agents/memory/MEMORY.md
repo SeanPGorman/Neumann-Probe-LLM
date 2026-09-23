@@ -17,3 +17,4 @@
 - [Craft retry call budget](craft-retry-call-budget.md) — failed craft attempts must claim their worker for the tick; enforce a token-wide rolling request ceiling
 - [Emergency courier loadout recovery](emergency-courier-loadout-recovery.md) — reconcile cargo by live onboard contents; factory container IDs become stale after handoff
 - [Delivery jump safety](delivery-jump-safety.md) — delivery moves are ≤2 sectors unless both endpoints are active relays on the same SCUT network
+- [Ball Explorer repair reserve](ball-explorer-repair-reserve.md) — partial metals reserve supports repairs; empty reserve returns through a beaconed SCUT to factory

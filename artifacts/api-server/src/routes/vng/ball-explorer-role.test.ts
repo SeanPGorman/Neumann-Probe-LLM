@@ -93,6 +93,7 @@ function deps(
       getProbe: async () => ({ probe: { sector: { relative: factorySector } } }),
     })) as any,
     random: () => 0,
+    nextDeliveryWaypoint: async () => ({ x: 2, y: 2, z: 0 }),
   };
 }
 
@@ -180,6 +181,59 @@ test("Ball Explorer never moves toward its factory while under-supplied", async 
   assert.equal(patches.at(-1)?.phase, "waiting_for_loadout");
   assert.equal(patches.at(-1)?.travelTarget, undefined);
   assert.match(patches.at(-1)?.lastError ?? "", /Movement blocked/);
+});
+
+test("Ball Explorer keeps exploring with a partially depleted repair reserve", async () => {
+  const patches: any[] = [];
+  const partial = client();
+  partial.api.getStorageContainer = async () => ({
+    container: { id: "container-metal", capacity: 1, usedCapacity: 0.25 },
+    inventory: { resourceStocks: [{ type: "metals", amount: 0.25 }] },
+  });
+  await runBallExplorerRole(
+    role(),
+    loadedProbe(),
+    [],
+    new Set(),
+    partial.api,
+    false,
+    "test",
+    deps(2, patches, { x: 5, y: 5, z: 0 }),
+  );
+  assert.equal(partial.moves.length, 1);
+  assert.equal(patches.at(-1)?.phase, "traveling");
+});
+
+test("Ball Explorer returns toward a beaconed SCUT when its metals reserve is empty", async () => {
+  const patches: any[] = [];
+  const empty = client();
+  empty.api.getStorageContainer = async () => ({
+    container: { id: "container-metal", capacity: 1, usedCapacity: 0 },
+    inventory: { resourceStocks: [] },
+  });
+  const returnDeps = deps(2, patches, { x: 2, y: 2, z: 0 });
+  returnDeps.getScutNetwork = async () => ({
+    network: {
+      relays: [{
+        status: "on",
+        isTransitBeacon: true,
+        coverageRadiusSectors: 2,
+        sector: { relative: CURRENT },
+      }],
+    },
+  });
+  await runBallExplorerRole(
+    role({ phase: "scanning" }),
+    loadedProbe(),
+    [],
+    new Set(),
+    empty.api,
+    false,
+    "test",
+    returnDeps,
+  );
+  assert.deepEqual(empty.moves, [{ x: 2, y: 2, z: 0 }]);
+  assert.equal(patches.at(-1)?.phase, "returning_for_loadout");
 });
 
 test("Ball Explorer pauses when every reachable SCUT sector is visited", async () => {
