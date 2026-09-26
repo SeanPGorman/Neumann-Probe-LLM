@@ -1,12 +1,12 @@
 [
   {
     "deliveryProbeId": 919,
-    "deliveryProbeName": "GolfDelivers",
-    "targetProbeId": 761,
+    "deliveryProbeName": "HotelDelivers-FT1",
+    "targetProbeId": 716,
     "targetProbeName": "BravoExplorer",
     "targetRoleType": "explorer",
     "id": 1,
     "status": "pending",
-    "createdAt": "2026-09-23T17:52:31.142Z"
+    "createdAt": "2026-09-25T14:28:46.341Z"
   }
 ]

@@ -19383,13 +19383,13 @@
     "sectorY": 43,
     "sectorZ": 30,
     "firstVisitedAt": "2026-09-19T21:22:56.938Z",
-    "lastVisitedAt": "2026-09-25T12:48:13.111Z",
-    "visitCount": 492,
+    "lastVisitedAt": "2026-09-25T13:03:15.102Z",
+    "visitCount": 493,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 487705,
+      "currentSectorResidenceSeconds": 488607,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -27606,13 +27606,13 @@
     "sectorY": 16,
     "sectorZ": 38,
     "firstVisitedAt": "2026-09-22T08:57:59.689Z",
-    "lastVisitedAt": "2026-09-25T12:48:12.840Z",
-    "visitCount": 254,
+    "lastVisitedAt": "2026-09-26T15:01:01.011Z",
+    "visitCount": 330,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 273313,
+      "currentSectorResidenceSeconds": 367682,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -31986,13 +31986,13 @@
     "sectorY": -20,
     "sectorZ": -17,
     "firstVisitedAt": "2026-09-24T00:02:53.527Z",
-    "lastVisitedAt": "2026-09-25T12:48:12.945Z",
-    "visitCount": 128,
+    "lastVisitedAt": "2026-09-26T15:01:00.938Z",
+    "visitCount": 204,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 132619,
+      "currentSectorResidenceSeconds": 226987,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -32646,13 +32646,13 @@
     "sectorY": 42,
     "sectorZ": 23,
     "firstVisitedAt": "2026-09-24T16:03:01.398Z",
-    "lastVisitedAt": "2026-09-25T12:48:12.804Z",
-    "visitCount": 73,
+    "lastVisitedAt": "2026-09-26T15:01:00.998Z",
+    "visitCount": 149,
     "scanAvailable": true,
     "knowledgeLevel": "detailed",
     "confidence": 1,
     "scan": {
-      "currentSectorResidenceSeconds": 75530,
+      "currentSectorResidenceSeconds": 169899,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
@@ -35437,6 +35437,2672 @@
     "confidence": 1,
     "scan": {
       "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:9,21,8",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 9,
+    "sectorY": 21,
+    "sectorZ": 8,
+    "firstVisitedAt": "2026-09-25T13:03:15.135Z",
+    "lastVisitedAt": "2026-09-25T13:18:14.765Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:-1,2,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": -1,
+    "sectorY": 2,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T13:18:14.889Z",
+    "lastVisitedAt": "2026-09-25T13:33:13.801Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:44,44,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 44,
+    "sectorY": 44,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T13:48:14.868Z",
+    "lastVisitedAt": "2026-09-25T14:03:14.489Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:9,20,7",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 9,
+    "sectorY": 20,
+    "sectorZ": 7,
+    "firstVisitedAt": "2026-09-25T14:03:14.450Z",
+    "lastVisitedAt": "2026-09-25T14:18:12.746Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1195,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:0,3,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 0,
+    "sectorY": 3,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T14:18:12.825Z",
+    "lastVisitedAt": "2026-09-25T14:33:20.633Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1205,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:45,45,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 45,
+    "sectorY": 45,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T14:48:13.488Z",
+    "lastVisitedAt": "2026-09-25T15:03:14.650Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:9,19,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 9,
+    "sectorY": 19,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T15:03:14.700Z",
+    "lastVisitedAt": "2026-09-25T16:03:15.228Z",
+    "visitCount": 5,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 3901,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "0766f95269162996355e",
+        "type": "dust_cloud",
+        "name": null,
+        "estimated": false,
+        "summary": "Diffuse dust cloud with sensor interference.",
+        "mass": 0.159561,
+        "radius": 2.200421,
+        "dangerLevel": "moderate",
+        "massUnit": "solar_mass",
+        "radiusUnit": "astronomical_unit"
+      }
+    ],
+    "objects": [
+      {
+        "id": "0766f95269162996355e",
+        "type": "dust_cloud",
+        "name": null,
+        "summary": "Diffuse dust cloud with sensor interference.",
+        "dangerLevel": "moderate",
+        "resourceTypes": []
+      }
+    ],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "moderate",
+        "objectId": "0766f95269162996355e",
+        "objectName": null
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:1,4,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 1,
+    "sectorY": 4,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T15:18:13.577Z",
+    "lastVisitedAt": "2026-09-25T15:33:14.699Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1190,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:46,46,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 46,
+    "sectorY": 46,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T15:48:14.302Z",
+    "lastVisitedAt": "2026-09-25T16:03:15.242Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:2,5,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 2,
+    "sectorY": 5,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T16:18:14.423Z",
+    "lastVisitedAt": "2026-09-25T16:33:13.875Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1197,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:10,18,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 10,
+    "sectorY": 18,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T16:48:14.716Z",
+    "lastVisitedAt": "2026-09-25T16:48:14.716Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 300,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "52d20358cc56546f6815",
+        "type": "solar_system",
+        "name": "System 59005c",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 4 orbital body(ies).",
+        "mass": 8.918779,
+        "radius": 7.335415,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 3,
+        "orbitalBodyCount": 4,
+        "bookmarkTargets": [
+          {
+            "id": "bc943216b67f4ac9b3bb",
+            "type": "star",
+            "name": null,
+            "mass": 0.213287,
+            "radius": 0.202015,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "8e05938733cb12862511",
+            "type": "planet",
+            "name": null,
+            "mass": 4.749846,
+            "radius": 0.945965,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.102159,
+            "intelligentLife": false
+          },
+          {
+            "id": "95024b43b199d413c9c0",
+            "type": "planet",
+            "name": null,
+            "mass": 3.898828,
+            "radius": 1.31168,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.16625,
+            "intelligentLife": false
+          },
+          {
+            "id": "2faac31d742c753d6946",
+            "type": "planet",
+            "name": null,
+            "mass": 0.046557,
+            "radius": 0.408432,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "dwarf",
+            "habitabilityScore": 0.003345,
+            "intelligentLife": false
+          },
+          {
+            "id": "3801525d9fc8e0a66712",
+            "type": "asteroid",
+            "name": "Metal d3ec",
+            "mass": 0.010261,
+            "radius": 0.057555,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "3801525d9fc8e0a66712",
+            "type": "asteroid",
+            "name": "Metal d3ec",
+            "mass": 0.010261,
+            "massUnit": "earth_mass",
+            "resources": [
+              "silicates",
+              "magnesium"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceComposition": {
+              "deuterium": 0,
+              "metals": 1,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 10261,
+              "ice": 0,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "52d20358cc56546f6815",
+        "type": "solar_system",
+        "name": "System 59005c",
+        "summary": "Stellar system with 1 star(s) and 4 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 3,
+        "orbitalBodyCount": 4,
+        "mass": 8.918779,
+        "massUnit": null,
+        "radius": 7.335415,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "bc943216b67f4ac9b3bb",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.213287,
+            "massUnit": "solar_mass",
+            "radius": 0.202015,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "8e05938733cb12862511",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 4.749846,
+            "massUnit": "earth_mass",
+            "radius": 0.945965,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.102159,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "95024b43b199d413c9c0",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 3.898828,
+            "massUnit": "earth_mass",
+            "radius": 1.31168,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.16625,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "2faac31d742c753d6946",
+            "type": "planet",
+            "name": null,
+            "category": "dwarf",
+            "mass": 0.046557,
+            "massUnit": "earth_mass",
+            "radius": 0.408432,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.003345,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "3801525d9fc8e0a66712",
+            "type": "asteroid",
+            "name": "Metal d3ec",
+            "category": null,
+            "mass": 0.010261,
+            "massUnit": "earth_mass",
+            "radius": 0.057555,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "silicates",
+              "magnesium"
+            ],
+            "resourceTypes": [
+              "metals"
+            ],
+            "resourceAmounts": {
+              "deuterium": 0,
+              "metals": 10261,
+              "ice": 0,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "52d20358cc56546f6815",
+        "objectName": "System 59005c"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:47,47,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 47,
+    "sectorY": 47,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T16:48:14.741Z",
+    "lastVisitedAt": "2026-09-25T17:03:14.056Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:3,6,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 3,
+    "sectorY": 6,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T17:18:16.210Z",
+    "lastVisitedAt": "2026-09-25T17:33:14.925Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:11,19,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 11,
+    "sectorY": 19,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T17:33:14.945Z",
+    "lastVisitedAt": "2026-09-25T17:48:14.500Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:48,48,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 48,
+    "sectorY": 48,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T17:48:14.478Z",
+    "lastVisitedAt": "2026-09-25T18:03:14.925Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:4,7,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 4,
+    "sectorY": 7,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T18:18:15.146Z",
+    "lastVisitedAt": "2026-09-25T18:33:15.345Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:12,20,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 12,
+    "sectorY": 20,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T18:33:15.283Z",
+    "lastVisitedAt": "2026-09-25T18:48:15.938Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:49,49,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 49,
+    "sectorY": 49,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T18:48:15.978Z",
+    "lastVisitedAt": "2026-09-25T19:03:17.759Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1202,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "44f21bfae3aa248b2379",
+        "type": "black_hole",
+        "name": null,
+        "estimated": false,
+        "summary": "Dangerous compact object detected.",
+        "mass": 26.783451,
+        "radius": 79.011182,
+        "dangerLevel": "extreme",
+        "massUnit": "solar_mass",
+        "radiusUnit": "kilometer",
+        "noReturnCountdown": {
+          "trapAt": "2026-09-25T20:23:57+00:00",
+          "secondsRemaining": 4841,
+          "delaySeconds": 6043
+        }
+      },
+      {
+        "id": "b3fb57dc5df1a0ced581",
+        "type": "asteroid",
+        "name": "Metal f018",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.000024,
+        "radius": 0.006187,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "iron",
+          "nickel"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "iron",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 24,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      },
+      {
+        "id": "e24c749a8f77e270afbc",
+        "type": "asteroid",
+        "name": "Carb Ice 06f1",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.001361,
+        "radius": 0.188917,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "carbon",
+          "organics",
+          "ice_trace"
+        ],
+        "resourceTypes": [
+          "ice",
+          "carbon_compounds"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 0.3333,
+          "carbon_compounds": 0.6667
+        },
+        "mannyMineable": true,
+        "composition": "carbonaceous",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 453.6213,
+          "carbon_compounds": 907.3787
+        },
+        "motorized": false
+      },
+      {
+        "id": "f3d53421b875975ad4f0",
+        "type": "asteroid",
+        "name": "Metal 2978",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.019558,
+        "radius": 0.095805,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "silicate",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 19558,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      },
+      {
+        "id": "081fc0199fa6398ef942",
+        "type": "asteroid",
+        "name": "Carb Ice 5edb",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.001007,
+        "radius": 0.080326,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "carbon",
+          "organics",
+          "ice_trace"
+        ],
+        "resourceTypes": [
+          "ice",
+          "carbon_compounds"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 0.3333,
+          "carbon_compounds": 0.6667
+        },
+        "mannyMineable": true,
+        "composition": "carbonaceous",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 335.6331,
+          "carbon_compounds": 671.3669
+        },
+        "motorized": false
+      },
+      {
+        "id": "3c53507bc12c3880ab43",
+        "type": "asteroid",
+        "name": "Metal a9cd",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.016105,
+        "radius": 0.177604,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "silicate",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 16105,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      }
+    ],
+    "objects": [
+      {
+        "id": "44f21bfae3aa248b2379",
+        "type": "black_hole",
+        "name": null,
+        "summary": "Dangerous compact object detected.",
+        "dangerLevel": "extreme",
+        "resourceTypes": []
+      },
+      {
+        "id": "b3fb57dc5df1a0ced581",
+        "type": "asteroid",
+        "name": "Metal f018",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "iron",
+        "sizeCategory": null,
+        "resources": [
+          "iron",
+          "nickel"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 24,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.000024,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "e24c749a8f77e270afbc",
+        "type": "asteroid",
+        "name": "Carb Ice 06f1",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "ice",
+          "carbon_compounds"
+        ],
+        "composition": "carbonaceous",
+        "sizeCategory": null,
+        "resources": [
+          "carbon",
+          "organics",
+          "ice_trace"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 453.6213,
+          "carbon_compounds": 907.3787
+        },
+        "mannyMineable": true,
+        "mass": 0.001361,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "f3d53421b875975ad4f0",
+        "type": "asteroid",
+        "name": "Metal 2978",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "silicate",
+        "sizeCategory": null,
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 19558,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.019558,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "081fc0199fa6398ef942",
+        "type": "asteroid",
+        "name": "Carb Ice 5edb",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "ice",
+          "carbon_compounds"
+        ],
+        "composition": "carbonaceous",
+        "sizeCategory": null,
+        "resources": [
+          "carbon",
+          "organics",
+          "ice_trace"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 335.6331,
+          "carbon_compounds": 671.3669
+        },
+        "mannyMineable": true,
+        "mass": 0.001007,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "3c53507bc12c3880ab43",
+        "type": "asteroid",
+        "name": "Metal a9cd",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "silicate",
+        "sizeCategory": null,
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 16105,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.016105,
+        "massUnit": "earth_mass"
+      }
+    ],
+    "resourceSummary": [
+      "metals",
+      "ice",
+      "carbon_compounds"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "extreme",
+        "objectId": "44f21bfae3aa248b2379",
+        "objectName": null
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "b3fb57dc5df1a0ced581",
+        "objectName": "Metal f018"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "e24c749a8f77e270afbc",
+        "objectName": "Carb Ice 06f1"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "f3d53421b875975ad4f0",
+        "objectName": "Metal 2978"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "081fc0199fa6398ef942",
+        "objectName": "Carb Ice 5edb"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "3c53507bc12c3880ab43",
+        "objectName": "Metal a9cd"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:5,8,-9",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 5,
+    "sectorY": 8,
+    "sectorZ": -9,
+    "firstVisitedAt": "2026-09-25T19:18:15.853Z",
+    "lastVisitedAt": "2026-09-25T19:33:16.728Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:13,21,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 13,
+    "sectorY": 21,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T19:33:16.680Z",
+    "lastVisitedAt": "2026-09-25T19:48:15.443Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "761:50,50,30",
+    "explorerId": 761,
+    "explorerName": "CharlieExplorer",
+    "sectorX": 50,
+    "sectorY": 50,
+    "sectorZ": 30,
+    "firstVisitedAt": "2026-09-25T19:48:15.430Z",
+    "lastVisitedAt": "2026-09-26T15:01:00.953Z",
+    "visitCount": 49,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 69463,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:6,8,-8",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 6,
+    "sectorY": 8,
+    "sectorZ": -8,
+    "firstVisitedAt": "2026-09-25T20:18:18.602Z",
+    "lastVisitedAt": "2026-09-25T20:33:20.294Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1202,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:14,22,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 14,
+    "sectorY": 22,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T20:33:18.574Z",
+    "lastVisitedAt": "2026-09-25T20:48:18.577Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:7,8,-7",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 7,
+    "sectorY": 8,
+    "sectorZ": -7,
+    "firstVisitedAt": "2026-09-25T21:18:19.954Z",
+    "lastVisitedAt": "2026-09-25T21:33:20.405Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:15,23,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 15,
+    "sectorY": 23,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T21:33:20.276Z",
+    "lastVisitedAt": "2026-09-25T21:48:18.585Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:8,8,-6",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 8,
+    "sectorY": 8,
+    "sectorZ": -6,
+    "firstVisitedAt": "2026-09-25T22:18:20.321Z",
+    "lastVisitedAt": "2026-09-25T22:33:20.093Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:16,24,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 16,
+    "sectorY": 24,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T22:33:20.491Z",
+    "lastVisitedAt": "2026-09-25T22:48:19.552Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:9,8,-5",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 9,
+    "sectorY": 8,
+    "sectorZ": -5,
+    "firstVisitedAt": "2026-09-25T23:18:20.676Z",
+    "lastVisitedAt": "2026-09-25T23:33:20.346Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:17,25,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 17,
+    "sectorY": 25,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-25T23:33:20.429Z",
+    "lastVisitedAt": "2026-09-25T23:48:19.699Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:10,8,-4",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 10,
+    "sectorY": 8,
+    "sectorZ": -4,
+    "firstVisitedAt": "2026-09-26T00:18:20.910Z",
+    "lastVisitedAt": "2026-09-26T00:33:20.857Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:18,26,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 18,
+    "sectorY": 26,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T00:33:20.479Z",
+    "lastVisitedAt": "2026-09-26T00:48:20.570Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "9f488bd2f89b3d52c8e6",
+        "type": "asteroid",
+        "name": "Metal 284d",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.011688,
+        "radius": 0.121232,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "iron",
+          "nickel"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "iron",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 11688,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      }
+    ],
+    "objects": [
+      {
+        "id": "9f488bd2f89b3d52c8e6",
+        "type": "asteroid",
+        "name": "Metal 284d",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "iron",
+        "sizeCategory": null,
+        "resources": [
+          "iron",
+          "nickel"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 11688,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.011688,
+        "massUnit": "earth_mass"
+      }
+    ],
+    "resourceSummary": [
+      "metals"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "9f488bd2f89b3d52c8e6",
+        "objectName": "Metal 284d"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:11,8,-3",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 11,
+    "sectorY": 8,
+    "sectorZ": -3,
+    "firstVisitedAt": "2026-09-26T01:18:21.824Z",
+    "lastVisitedAt": "2026-09-26T01:33:22.317Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:19,27,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 19,
+    "sectorY": 27,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T01:33:22.239Z",
+    "lastVisitedAt": "2026-09-26T01:48:22.005Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:12,8,-2",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 12,
+    "sectorY": 8,
+    "sectorZ": -2,
+    "firstVisitedAt": "2026-09-26T02:18:21.126Z",
+    "lastVisitedAt": "2026-09-26T02:33:22.020Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "654cd49322ce705952f9",
+        "type": "asteroid",
+        "name": "Metal 8392",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.011965,
+        "radius": 0.064824,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "silicate",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 11965,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      },
+      {
+        "id": "f18400079f40688e15e4",
+        "type": "asteroid",
+        "name": "Metal 8927",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.017731,
+        "radius": 0.04188,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "silicate",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 17731,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      },
+      {
+        "id": "ccd8eb5c34dbf1fadb14",
+        "type": "asteroid",
+        "name": "Carb Ice ba7f",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.018689,
+        "radius": 0.153694,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "carbon",
+          "organics",
+          "ice_trace"
+        ],
+        "resourceTypes": [
+          "ice",
+          "carbon_compounds"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 0.3333,
+          "carbon_compounds": 0.6667
+        },
+        "mannyMineable": true,
+        "composition": "carbonaceous",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 6229.0437,
+          "carbon_compounds": 12459.9563
+        },
+        "motorized": false
+      },
+      {
+        "id": "440fe420e62d0989c354",
+        "type": "asteroid",
+        "name": "Metal 1bbb",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.001203,
+        "radius": 0.021825,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "silicate",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 1203,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      },
+      {
+        "id": "be18519434e3e653a22d",
+        "type": "asteroid",
+        "name": "Metal 037b",
+        "estimated": false,
+        "summary": "Wandering asteroid body.",
+        "mass": 0.006599,
+        "radius": 0.052687,
+        "dangerLevel": "low",
+        "massUnit": "earth_mass",
+        "radiusUnit": "earth_radius",
+        "resources": [
+          "iron",
+          "nickel"
+        ],
+        "resourceTypes": [
+          "metals"
+        ],
+        "resourceComposition": {
+          "deuterium": 0,
+          "metals": 1,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "composition": "iron",
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 6599,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "motorized": false
+      }
+    ],
+    "objects": [
+      {
+        "id": "654cd49322ce705952f9",
+        "type": "asteroid",
+        "name": "Metal 8392",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "silicate",
+        "sizeCategory": null,
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 11965,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.011965,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "f18400079f40688e15e4",
+        "type": "asteroid",
+        "name": "Metal 8927",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "silicate",
+        "sizeCategory": null,
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 17731,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.017731,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "ccd8eb5c34dbf1fadb14",
+        "type": "asteroid",
+        "name": "Carb Ice ba7f",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "ice",
+          "carbon_compounds"
+        ],
+        "composition": "carbonaceous",
+        "sizeCategory": null,
+        "resources": [
+          "carbon",
+          "organics",
+          "ice_trace"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 0,
+          "ice": 6229.0437,
+          "carbon_compounds": 12459.9563
+        },
+        "mannyMineable": true,
+        "mass": 0.018689,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "440fe420e62d0989c354",
+        "type": "asteroid",
+        "name": "Metal 1bbb",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "silicate",
+        "sizeCategory": null,
+        "resources": [
+          "silicates",
+          "magnesium"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 1203,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.001203,
+        "massUnit": "earth_mass"
+      },
+      {
+        "id": "be18519434e3e653a22d",
+        "type": "asteroid",
+        "name": "Metal 037b",
+        "summary": "Wandering asteroid body.",
+        "dangerLevel": "low",
+        "resourceTypes": [
+          "metals"
+        ],
+        "composition": "iron",
+        "sizeCategory": null,
+        "resources": [
+          "iron",
+          "nickel"
+        ],
+        "resourceAmounts": {
+          "deuterium": 0,
+          "metals": 6599,
+          "ice": 0,
+          "carbon_compounds": 0
+        },
+        "mannyMineable": true,
+        "mass": 0.006599,
+        "massUnit": "earth_mass"
+      }
+    ],
+    "resourceSummary": [
+      "metals",
+      "ice",
+      "carbon_compounds"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "654cd49322ce705952f9",
+        "objectName": "Metal 8392"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "f18400079f40688e15e4",
+        "objectName": "Metal 8927"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "ccd8eb5c34dbf1fadb14",
+        "objectName": "Carb Ice ba7f"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "440fe420e62d0989c354",
+        "objectName": "Metal 1bbb"
+      },
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "be18519434e3e653a22d",
+        "objectName": "Metal 037b"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:20,28,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 20,
+    "sectorY": 28,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T02:33:22.521Z",
+    "lastVisitedAt": "2026-09-26T02:48:20.229Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1197,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:13,8,-1",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 13,
+    "sectorY": 8,
+    "sectorZ": -1,
+    "firstVisitedAt": "2026-09-26T03:18:21.342Z",
+    "lastVisitedAt": "2026-09-26T03:33:20.923Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1197,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:21,29,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 21,
+    "sectorY": 29,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T03:33:20.866Z",
+    "lastVisitedAt": "2026-09-26T03:48:20.771Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:14,8,0",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 14,
+    "sectorY": 8,
+    "sectorZ": 0,
+    "firstVisitedAt": "2026-09-26T04:18:21.759Z",
+    "lastVisitedAt": "2026-09-26T04:33:21.705Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:22,30,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 22,
+    "sectorY": 30,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T04:33:21.517Z",
+    "lastVisitedAt": "2026-09-26T04:48:23.074Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1201,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:15,8,1",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 15,
+    "sectorY": 8,
+    "sectorZ": 1,
+    "firstVisitedAt": "2026-09-26T05:18:23.413Z",
+    "lastVisitedAt": "2026-09-26T05:33:22.445Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1199,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:23,31,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 23,
+    "sectorY": 31,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T05:33:22.511Z",
+    "lastVisitedAt": "2026-09-26T05:48:21.726Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1197,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:16,8,2",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 16,
+    "sectorY": 8,
+    "sectorZ": 2,
+    "firstVisitedAt": "2026-09-26T06:18:23.420Z",
+    "lastVisitedAt": "2026-09-26T06:33:23.640Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:24,32,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 24,
+    "sectorY": 32,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T06:33:23.621Z",
+    "lastVisitedAt": "2026-09-26T06:48:24.111Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1200,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [
+      {
+        "id": "50f1744b47164f326c76",
+        "type": "solar_system",
+        "name": "System be9564",
+        "estimated": false,
+        "summary": "Stellar system with 1 star(s) and 12 orbital body(ies).",
+        "mass": 55.306099,
+        "radius": 11.12267,
+        "dangerLevel": "low",
+        "radiusUnit": "astronomical_unit",
+        "starCount": 1,
+        "planetCount": 11,
+        "orbitalBodyCount": 12,
+        "bookmarkTargets": [
+          {
+            "id": "8d16227c930074a24f71",
+            "type": "star",
+            "name": null,
+            "mass": 0.270822,
+            "radius": 0.3719,
+            "massUnit": "solar_mass",
+            "radiusUnit": "solar_radius"
+          },
+          {
+            "id": "09783a667d976f548120",
+            "type": "planet",
+            "name": null,
+            "mass": 5.852366,
+            "radius": 0.871313,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.016333,
+            "intelligentLife": false
+          },
+          {
+            "id": "1be8502ff06cab04d3cc",
+            "type": "planet",
+            "name": null,
+            "mass": 5.890785,
+            "radius": 1.41841,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.063932,
+            "intelligentLife": false
+          },
+          {
+            "id": "f78912970a2e837fcecc",
+            "type": "planet",
+            "name": null,
+            "mass": 2.73031,
+            "radius": 1.48674,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.146092,
+            "intelligentLife": false
+          },
+          {
+            "id": "41e8cc45a76023c172dd",
+            "type": "planet",
+            "name": null,
+            "mass": 0.377244,
+            "radius": 0.499962,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.037123,
+            "intelligentLife": false
+          },
+          {
+            "id": "34ff87fcd1c18e416034",
+            "type": "planet",
+            "name": null,
+            "mass": 3.601655,
+            "radius": 0.832004,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ocean",
+            "habitabilityScore": 0.169384,
+            "intelligentLife": false
+          },
+          {
+            "id": "83cfdd3f12d860d348c3",
+            "type": "planet",
+            "name": null,
+            "mass": 2.402262,
+            "radius": 1.242992,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.083621,
+            "intelligentLife": false
+          },
+          {
+            "id": "237ee2e59920c10eff2c",
+            "type": "planet",
+            "name": null,
+            "mass": 5.698271,
+            "radius": 1.059895,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "frozen",
+            "habitabilityScore": 0.158516,
+            "intelligentLife": false
+          },
+          {
+            "id": "5d02bdedf2ffe5d581f9",
+            "type": "planet",
+            "name": null,
+            "mass": 3.119325,
+            "radius": 1.012374,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "rocky",
+            "habitabilityScore": 0.146774,
+            "intelligentLife": false
+          },
+          {
+            "id": "80efbfc7bc8dce80bd49",
+            "type": "planet",
+            "name": null,
+            "mass": 0.978147,
+            "radius": 1.112181,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.090831,
+            "intelligentLife": false
+          },
+          {
+            "id": "ffa3790af06749643fa3",
+            "type": "planet",
+            "name": null,
+            "mass": 19.878286,
+            "radius": 4.274624,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "ice_giant",
+            "habitabilityScore": 0.026439,
+            "intelligentLife": false
+          },
+          {
+            "id": "d17ac91f814b72e1e79f",
+            "type": "planet",
+            "name": null,
+            "mass": 4.487278,
+            "radius": 0.860688,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "category": "lava",
+            "habitabilityScore": 0.102481,
+            "intelligentLife": false
+          },
+          {
+            "id": "6307fc440b696c32e0d4",
+            "type": "asteroid",
+            "name": "Ice Deut ef3e",
+            "mass": 0.019348,
+            "radius": 0.016562,
+            "massUnit": "earth_mass",
+            "radiusUnit": "earth_radius",
+            "motorized": false
+          }
+        ],
+        "minableTargets": [
+          {
+            "id": "6307fc440b696c32e0d4",
+            "type": "asteroid",
+            "name": "Ice Deut ef3e",
+            "mass": 0.019348,
+            "massUnit": "earth_mass",
+            "resources": [
+              "water_ice",
+              "deuterium_trace",
+              "volatiles"
+            ],
+            "resourceTypes": [
+              "deuterium",
+              "ice"
+            ],
+            "resourceComposition": {
+              "deuterium": 0.3333,
+              "metals": 0,
+              "ice": 0.6667,
+              "carbon_compounds": 0
+            },
+            "resourceAmounts": {
+              "deuterium": 6448.6884,
+              "metals": 0,
+              "ice": 12899.3116,
+              "carbon_compounds": 0
+            },
+            "motorized": false
+          }
+        ]
+      }
+    ],
+    "objects": [
+      {
+        "id": "50f1744b47164f326c76",
+        "type": "solar_system",
+        "name": "System be9564",
+        "summary": "Stellar system with 1 star(s) and 12 orbital body(ies).",
+        "dangerLevel": "low",
+        "resourceTypes": [],
+        "starCount": 1,
+        "planetCount": 11,
+        "orbitalBodyCount": 12,
+        "mass": 55.306099,
+        "massUnit": null,
+        "radius": 11.12267,
+        "radiusUnit": "astronomical_unit",
+        "bodies": [
+          {
+            "id": "8d16227c930074a24f71",
+            "type": "star",
+            "name": null,
+            "category": null,
+            "mass": 0.270822,
+            "massUnit": "solar_mass",
+            "radius": 0.3719,
+            "radiusUnit": "solar_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "09783a667d976f548120",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.852366,
+            "massUnit": "earth_mass",
+            "radius": 0.871313,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.016333,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "1be8502ff06cab04d3cc",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 5.890785,
+            "massUnit": "earth_mass",
+            "radius": 1.41841,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.063932,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "f78912970a2e837fcecc",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 2.73031,
+            "massUnit": "earth_mass",
+            "radius": 1.48674,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.146092,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "41e8cc45a76023c172dd",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 0.377244,
+            "massUnit": "earth_mass",
+            "radius": 0.499962,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.037123,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "34ff87fcd1c18e416034",
+            "type": "planet",
+            "name": null,
+            "category": "ocean",
+            "mass": 3.601655,
+            "massUnit": "earth_mass",
+            "radius": 0.832004,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.169384,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "83cfdd3f12d860d348c3",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 2.402262,
+            "massUnit": "earth_mass",
+            "radius": 1.242992,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.083621,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "237ee2e59920c10eff2c",
+            "type": "planet",
+            "name": null,
+            "category": "frozen",
+            "mass": 5.698271,
+            "massUnit": "earth_mass",
+            "radius": 1.059895,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.158516,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "5d02bdedf2ffe5d581f9",
+            "type": "planet",
+            "name": null,
+            "category": "rocky",
+            "mass": 3.119325,
+            "massUnit": "earth_mass",
+            "radius": 1.012374,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.146774,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "80efbfc7bc8dce80bd49",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 0.978147,
+            "massUnit": "earth_mass",
+            "radius": 1.112181,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.090831,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "ffa3790af06749643fa3",
+            "type": "planet",
+            "name": null,
+            "category": "ice_giant",
+            "mass": 19.878286,
+            "massUnit": "earth_mass",
+            "radius": 4.274624,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.026439,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "d17ac91f814b72e1e79f",
+            "type": "planet",
+            "name": null,
+            "category": "lava",
+            "mass": 4.487278,
+            "massUnit": "earth_mass",
+            "radius": 0.860688,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": 0.102481,
+            "intelligentLife": false,
+            "resources": null,
+            "resourceTypes": null,
+            "resourceAmounts": null
+          },
+          {
+            "id": "6307fc440b696c32e0d4",
+            "type": "asteroid",
+            "name": "Ice Deut ef3e",
+            "category": null,
+            "mass": 0.019348,
+            "massUnit": "earth_mass",
+            "radius": 0.016562,
+            "radiusUnit": "earth_radius",
+            "habitabilityScore": null,
+            "intelligentLife": null,
+            "resources": [
+              "water_ice",
+              "deuterium_trace",
+              "volatiles"
+            ],
+            "resourceTypes": [
+              "deuterium",
+              "ice"
+            ],
+            "resourceAmounts": {
+              "deuterium": 6448.6884,
+              "metals": 0,
+              "ice": 12899.3116,
+              "carbon_compounds": 0
+            }
+          }
+        ],
+        "waypointBookmarks": []
+      }
+    ],
+    "resourceSummary": [
+      "deuterium",
+      "ice"
+    ],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [
+      {
+        "level": null,
+        "source": "danger level",
+        "message": "low",
+        "objectId": "50f1744b47164f326c76",
+        "objectName": "System be9564"
+      }
+    ],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:17,8,3",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 17,
+    "sectorY": 8,
+    "sectorZ": 3,
+    "firstVisitedAt": "2026-09-26T07:18:23.880Z",
+    "lastVisitedAt": "2026-09-26T07:33:22.623Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 1198,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "971:25,33,6",
+    "explorerId": 971,
+    "explorerName": "IndigoBall-FT1",
+    "sectorX": 25,
+    "sectorY": 33,
+    "sectorZ": 6,
+    "firstVisitedAt": "2026-09-26T07:33:22.606Z",
+    "lastVisitedAt": "2026-09-26T15:01:00.923Z",
+    "visitCount": 2,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 27156,
+      "requiredResidenceSeconds": 0,
+      "scanQuality": 1
+    },
+    "rawObjects": [],
+    "objects": [],
+    "resourceSummary": [],
+    "intelligentLife": [],
+    "alerts": [],
+    "dangerSignals": [],
+    "waypointEvents": []
+  },
+  {
+    "id": "652:18,8,4",
+    "explorerId": 652,
+    "explorerName": "AlphaBall-FT2",
+    "sectorX": 18,
+    "sectorY": 8,
+    "sectorZ": 4,
+    "firstVisitedAt": "2026-09-26T15:01:01.023Z",
+    "lastVisitedAt": "2026-09-26T15:01:01.023Z",
+    "visitCount": 1,
+    "scanAvailable": true,
+    "knowledgeLevel": "detailed",
+    "confidence": 1,
+    "scan": {
+      "currentSectorResidenceSeconds": 24457,
       "requiredResidenceSeconds": 0,
       "scanQuality": 1
     },
