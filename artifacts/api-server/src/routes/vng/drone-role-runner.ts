@@ -1321,11 +1321,19 @@ export async function discoverCourierManifest(
         DEPLOYMENT_CONTAINER_ITEMS.includes(item.type))
     ),
   );
-  const metals = details.find((detail) =>
+  const metalsCandidates = details.filter((detail) =>
     detail.id !== resources?.id &&
     detail.id !== deployment?.id &&
     (detail.label === "delivery-metals" || resourceAmount(detail, "metals") > 0),
   );
+  // Prefer the semantic label. A courier may also carry a partially used
+  // generic container; selecting that first makes a complete loadout look
+  // incomplete and silently blocks emergency dispatch.
+  const metals =
+    metalsCandidates.find((detail) => detail.label === "delivery-metals") ??
+    metalsCandidates.sort(
+      (a, b) => resourceAmount(b, "metals") - resourceAmount(a, "metals"),
+    )[0];
   if (!resources || !deployment || !metals) return null;
   return { resources: resources.id, deployment: deployment.id, metals: metals.id };
 }

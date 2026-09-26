@@ -38,6 +38,7 @@ import {
   SAFE_ONLY,
 } from "./tool-policy.js";
 import { mapSectorObjects } from "./sector-map.js";
+import { requestRolePoll } from "./poller.js";
 
 // Fail fast if the tool classification drifted from the tool list.
 assertPolicyCoversTools();
@@ -473,13 +474,18 @@ router.post("/drone-roles/emergency-supply-orders", async (req, res) => {
       res.status(409).json({ error: "The selected target is not an active Explorer or Refuel drone" });
       return;
     }
+    const [deliveryProbeResponse, targetProbeResponse] = await Promise.all([
+      client.clientFor(deliveryProbeId).getProbe().catch(() => null),
+      client.clientFor(targetProbeId).getProbe().catch(() => null),
+    ]);
     const order = await addEmergencySupplyOrder({
       deliveryProbeId,
-      deliveryProbeName: deliveryRole.probeName,
+      deliveryProbeName: deliveryProbeResponse?.probe?.name ?? deliveryRole.probeName,
       targetProbeId,
-      targetProbeName: targetRole.probeName,
+      targetProbeName: targetProbeResponse?.probe?.name ?? targetRole.probeName,
       targetRoleType: targetRole.roleType as "explorer" | "refuel",
     });
+    requestRolePoll();
     res.status(201).json({ order });
   } catch (err: any) {
     const conflict = /already has an emergency supply order/.test(err?.message ?? "");

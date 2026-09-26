@@ -1584,8 +1584,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   };
 
   const killEmergencySupply = async (order: EmergencySupplyOrder) => {
-    const targetName = order.targetProbeName
-      ?? probeList.find((probe) => probe.id === order.targetProbeId)?.name
+    const targetName = probeList.find((probe) => probe.id === order.targetProbeId)?.name
+      ?? order.targetProbeName
       ?? `probe ${order.targetProbeId}`;
     if (!confirm(
       `Kill the Emergency Supply order to ${targetName}? The delivery drone will return to its factory after any current movement finishes.`,
@@ -1888,8 +1888,8 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             <div className="border border-destructive/30 rounded px-2 py-2">
               <div className="flex items-center justify-between gap-2">
                 <span className="text-xs text-foreground">
-                  {activeEmergencyOrder.targetProbeName
-                    ?? probeList.find((probe) => probe.id === activeEmergencyOrder.targetProbeId)?.name
+                  {probeList.find((probe) => probe.id === activeEmergencyOrder.targetProbeId)?.name
+                    ?? activeEmergencyOrder.targetProbeName
                     ?? `probe ${activeEmergencyOrder.targetProbeId}`}
                 </span>
                 <span className="text-[9px] font-mono uppercase text-yellow-400">

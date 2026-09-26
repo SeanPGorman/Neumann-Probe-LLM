@@ -23,6 +23,7 @@ import {
 const CORE_POLL_INTERVAL_MS = 30_000;
 const ROLE_POLL_INTERVAL_MS = 15 * 60 * 1_000;
 let started = false;
+let rolePollRequested = false;
 
 // Probes where every crafting attempt last tick returned "insufficient resources".
 // When a probe is in this set, the crafting reserve is dropped to 0 so all
@@ -1230,6 +1231,12 @@ async function poll(runRoles: boolean): Promise<void> {
   });
 }
 
+/** Wake drone-role automation on the next core poll instead of waiting for the
+ * normal role interval. Used for operator-initiated work such as emergency supply. */
+export function requestRolePoll(): void {
+  rolePollRequested = true;
+}
+
 export function startPoller(): void {
   if (started) return;
   started = true;
@@ -1254,8 +1261,11 @@ export function startPoller(): void {
     }
     ticking = true;
     const now = Date.now();
-    const runRoles = now - lastRolePollAt >= ROLE_POLL_INTERVAL_MS;
-    if (runRoles) lastRolePollAt = now;
+    const runRoles = rolePollRequested || now - lastRolePollAt >= ROLE_POLL_INTERVAL_MS;
+    if (runRoles) {
+      rolePollRequested = false;
+      lastRolePollAt = now;
+    }
     poll(runRoles)
       .catch((err) => logger.error({ err }, "poller: unexpected error"))
       .finally(() => {

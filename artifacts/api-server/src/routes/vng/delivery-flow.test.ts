@@ -314,6 +314,41 @@ test("emergency manifest discovery accepts equivalent onboard containers and 0.4
   });
 });
 
+test("emergency manifest discovery prefers the labeled full metals container over a partial generic container", async () => {
+  const { runner } = await importFresh();
+  const details: Record<string, any> = {
+    resources: {
+      inventory: {
+        resourceStocks: [
+          { type: "metals", amount: 0.5 },
+          { type: "ice", amount: 0.25 },
+          { type: "carbon_compounds", amount: 0.25 },
+        ],
+      },
+    },
+    deployment: { inventory: { items: [{ type: "scut_relay" }] } },
+    partial: { inventory: { resourceStocks: [{ type: "metals", amount: 0.75 }] } },
+    full: { inventory: { resourceStocks: [{ type: "metals", amount: 1 }] } },
+  };
+  const client = {
+    getStorageContainers: async () => ({
+      containers: [
+        { id: "resources", kind: "container", label: "delivery-resources" },
+        { id: "deployment", kind: "container", label: "delivery-deployment" },
+        { id: "partial", kind: "container", label: "Container 114" },
+        { id: "full", kind: "container", label: "delivery-metals" },
+      ],
+    }),
+    getStorageContainer: async (id: string) => details[id],
+  } as any;
+
+  assert.deepEqual(await runner.discoverCourierManifest(client), {
+    resources: "container-resources",
+    deployment: "container-deployment",
+    metals: "container-full",
+  });
+});
+
 test("SCUT network relay extraction accepts the live nested response shape", async () => {
   const { runner } = await importFresh();
   const relays = [{ id: 311 }, { id: 736 }];
