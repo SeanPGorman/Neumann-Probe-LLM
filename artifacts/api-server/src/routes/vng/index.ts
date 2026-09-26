@@ -21,8 +21,10 @@ import {
   getDroneRoles,
   addDroneRole,
   updateDroneRole,
+  updateDroneRoleState,
   deleteDroneRole,
   getDeliveryRequests,
+  updateDeliveryRequest,
   deleteDeliveryRequest,
   getEmergencySupplyOrders,
   addEmergencySupplyOrder,
@@ -41,6 +43,50 @@ import { mapSectorObjects } from "./sector-map.js";
 assertPolicyCoversTools();
 
 const router = Router();
+
+const MANUAL_ROLE_PHASES: Record<string, ReadonlySet<string>> = {
+  explorer: new Set([
+    "idle",
+    "traveling",
+    "deploying_relay",
+    "activating_relay",
+    "installing_beacon",
+    "dropping_container",
+    "waiting_for_delivery",
+  ]),
+  delivery: new Set([
+    "waiting",
+    "traveling_to_explorer",
+    "delivering",
+    "refueling_explorer",
+    "returning",
+  ]),
+  refuel: new Set([
+    "idle",
+    "traveling_to_source",
+    "refilling",
+    "traveling_to_target",
+    "servicing_sector",
+    "transferring",
+  ]),
+  ball_explorer: new Set([
+    "idle",
+    "scanning",
+    "traveling",
+    "returning_for_loadout",
+    "waiting_for_loadout",
+    "anomaly_detected",
+    "complete",
+  ]),
+  factory: new Set([
+    "idle",
+    "collecting_returned_containers",
+    "preparing_delivery_containers",
+    "loading_delivery_containers",
+    "handoff_delivery_containers",
+    "awaiting_delivery_pickup",
+  ]),
+};
 
 const openai = new OpenAI({
   baseURL: process.env.AI_INTEGRATIONS_OPENAI_BASE_URL,
@@ -300,6 +346,52 @@ router.put("/drone-roles/:id", async (req, res) => {
     const updated = await updateDroneRole(id, patch);
     if (!updated) res.status(404).json({ error: "Role not found" });
     else res.json({ role: updated });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.patch("/drone-roles/:id/phase", async (req, res): Promise<void> => {
+  try {
+    const id = parseInt(String(req.params.id), 10);
+    const phase = req.body?.phase;
+    if (!Number.isInteger(id) || typeof phase !== "string") {
+      res.status(400).json({ error: "A valid role ID and phase are required" });
+      return;
+    }
+
+    const role = (await getDroneRoles()).find((candidate) => candidate.id === id);
+    if (!role) {
+      res.status(404).json({ error: "Role not found" });
+      return;
+    }
+    if (!MANUAL_ROLE_PHASES[role.roleType]?.has(phase)) {
+      res.status(400).json({ error: `Unsupported ${role.roleType} phase: ${phase}` });
+      return;
+    }
+
+    const statePatch: Record<string, unknown> = { phase, lastError: undefined };
+    if (phase === "idle" || phase === "waiting" || phase === "scanning") {
+      statePatch.travelTarget = undefined;
+    }
+    if (role.roleType === "explorer" && phase === "idle") {
+      if (role.state.deliveryRequestId != null) {
+        await updateDeliveryRequest(role.state.deliveryRequestId, { status: "completed" });
+      }
+      statePatch.deliveryRequestId = undefined;
+    }
+    if (role.roleType === "delivery" && phase === "waiting") {
+      statePatch.assignedExplorerId = undefined;
+      statePatch.outboundContainerIds = undefined;
+    }
+
+    await updateDroneRoleState(role.id, statePatch);
+    const updated = (await getDroneRoles()).find((candidate) => candidate.id === id);
+    req.log.info(
+      { roleId: role.id, probeId: role.probeId, fromPhase: role.state.phase, toPhase: phase },
+      "Drone role phase manually changed",
+    );
+    res.json({ role: updated });
   } catch (err: any) {
     res.status(500).json({ error: err.message });
   }

@@ -1191,6 +1191,50 @@ const PHASE_COLOR: Record<string, string> = {
   complete:              "text-primary",
 };
 
+const ROLE_PHASES: Record<DroneRoleType, { value: string; label: string }[]> = {
+  explorer: [
+    { value: "idle", label: "Idle / Resume Exploration" },
+    { value: "traveling", label: "Traveling" },
+    { value: "deploying_relay", label: "Deploying Relay" },
+    { value: "activating_relay", label: "Activating Relay" },
+    { value: "installing_beacon", label: "Installing Beacon" },
+    { value: "dropping_container", label: "Dropping Container" },
+    { value: "waiting_for_delivery", label: "Waiting for Delivery" },
+  ],
+  delivery: [
+    { value: "waiting", label: "Waiting / Ready" },
+    { value: "traveling_to_explorer", label: "Traveling to Explorer" },
+    { value: "delivering", label: "Delivering" },
+    { value: "refueling_explorer", label: "Refueling Explorer" },
+    { value: "returning", label: "Returning" },
+  ],
+  refuel: [
+    { value: "idle", label: "Idle / Evaluate" },
+    { value: "traveling_to_source", label: "Traveling to Source" },
+    { value: "refilling", label: "Refilling" },
+    { value: "traveling_to_target", label: "Traveling to Target" },
+    { value: "servicing_sector", label: "Servicing Sector" },
+    { value: "transferring", label: "Transferring" },
+  ],
+  ball_explorer: [
+    { value: "idle", label: "Idle" },
+    { value: "scanning", label: "Scanning / Resume" },
+    { value: "traveling", label: "Traveling" },
+    { value: "returning_for_loadout", label: "Returning for Loadout" },
+    { value: "waiting_for_loadout", label: "Waiting for Loadout" },
+    { value: "anomaly_detected", label: "Anomaly Detected" },
+    { value: "complete", label: "Complete" },
+  ],
+  factory: [
+    { value: "idle", label: "Idle / Evaluate" },
+    { value: "collecting_returned_containers", label: "Collecting Returned Containers" },
+    { value: "preparing_delivery_containers", label: "Preparing Delivery Containers" },
+    { value: "loading_delivery_containers", label: "Loading Delivery Containers" },
+    { value: "handoff_delivery_containers", label: "Handing Off Containers" },
+    { value: "awaiting_delivery_pickup", label: "Awaiting Delivery Pickup" },
+  ],
+};
+
 function SummaryPanel({
   probeList,
   probeListLoading,
@@ -1373,6 +1417,9 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
   const [emergencyError, setEmergencyError] = useState<string | null>(null);
   const [dispatchingTargetId, setDispatchingTargetId] = useState<number | null>(null);
   const [killingEmergencyOrder, setKillingEmergencyOrder] = useState(false);
+  const [phaseOverride, setPhaseOverride] = useState("");
+  const [changingPhase, setChangingPhase] = useState(false);
+  const [phaseError, setPhaseError] = useState<string | null>(null);
 
   const resetForm = () => {
     setSrcX(""); setSrcY(""); setSrcZ("");
@@ -1497,6 +1544,27 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
     await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
   };
 
+  const changeRolePhase = async (r: DroneRole) => {
+    if (!phaseOverride || phaseOverride === r.state.phase) return;
+    const nextLabel = ROLE_PHASES[r.roleType].find((option) => option.value === phaseOverride)?.label ?? phaseOverride;
+    if (!confirm(`Change ${r.probeName ?? `probe ${r.probeId}`} from ${r.state.phase.replace(/_/g, " ")} to ${nextLabel}?`)) return;
+    setChangingPhase(true);
+    setPhaseError(null);
+    try {
+      await fetchJson(`${BASE}/api/vng/drone-roles/${r.id}/phase`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phase: phaseOverride }),
+      });
+      await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
+      setPhaseOverride("");
+    } catch (err: any) {
+      setPhaseError(err.message);
+    } finally {
+      setChangingPhase(false);
+    }
+  };
+
   const dispatchEmergencySupply = async (target: DroneRole) => {
     if (probeId == null || activeEmergencyOrder) return;
     setDispatchingTargetId(target.probeId);
@@ -1587,6 +1655,45 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             <span className={`text-[10px] font-mono uppercase tracking-wide ${PHASE_COLOR[role.state.phase] ?? "text-foreground"}`}>
               {role.state.phase.replace(/_/g, " ")}
             </span>
+          </div>
+
+          <div className="border-t border-border/30 pt-2 space-y-1.5">
+            <div className="text-[9px] text-muted-foreground tracking-widest">MANUAL PHASE OVERRIDE</div>
+            <div className="flex gap-2">
+              <select
+                value={phaseOverride}
+                onChange={(event) => setPhaseOverride(event.target.value)}
+                disabled={changingPhase}
+                data-testid={`select-role-phase-${role.id}`}
+                className="min-w-0 flex-1 rounded border border-border bg-background px-2 py-1.5 text-[10px] text-foreground"
+              >
+                <option value="">Choose phase…</option>
+                {ROLE_PHASES[role.roleType].map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}{option.value === role.state.phase ? " (current)" : ""}
+                  </option>
+                ))}
+              </select>
+              <button
+                type="button"
+                onClick={() => changeRolePhase(role)}
+                disabled={!phaseOverride || phaseOverride === role.state.phase || changingPhase}
+                data-testid={`button-apply-role-phase-${role.id}`}
+                className="rounded border border-primary/50 px-2 py-1.5 text-[9px] font-mono tracking-wider text-primary hover:bg-primary/10 disabled:cursor-not-allowed disabled:opacity-40"
+              >
+                {changingPhase ? "APPLYING…" : "APPLY"}
+              </button>
+            </div>
+            {role.roleType === "explorer" && role.state.phase === "waiting_for_delivery" && (
+              <div className="text-[9px] text-muted-foreground">
+                Choosing Idle marks the linked delivery complete and resumes exploration.
+              </div>
+            )}
+            {phaseError && (
+              <div data-testid={`status-role-phase-error-${role.id}`} className="text-[10px] text-destructive">
+                {phaseError}
+              </div>
+            )}
           </div>
 
           {role.state.lastError && (
