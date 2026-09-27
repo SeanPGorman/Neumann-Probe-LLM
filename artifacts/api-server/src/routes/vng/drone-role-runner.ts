@@ -2026,6 +2026,9 @@ export function describeBallAnomaly(objects: any[]): string | null {
   const visit = (value: any) => {
     if (!value || typeof value !== "object") return;
     const name = String(value.name ?? value.type ?? value.id ?? "unknown object");
+    if (value.type === "dormant_construct") {
+      findings.push(`dormant construct at ${name}`);
+    }
     if (value.intelligentLife != null && value.intelligentLife !== false) {
       findings.push(`intelligent life at ${name}`);
     }

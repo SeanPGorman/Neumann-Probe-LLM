@@ -8,5 +8,15 @@
     "id": 1,
     "status": "pending",
     "createdAt": "2026-09-25T14:28:46.341Z"
+  },
+  {
+    "deliveryProbeId": 823,
+    "deliveryProbeName": "DeltaDelivers-FT1",
+    "targetProbeId": 882,
+    "targetProbeName": "EchoExplorer",
+    "targetRoleType": "explorer",
+    "id": 2,
+    "status": "assigned",
+    "createdAt": "2026-09-26T16:14:53.722Z"
   }
 ]

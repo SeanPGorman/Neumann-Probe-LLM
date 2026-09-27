@@ -142,6 +142,34 @@ test("Ball Explorer pauses when it finds an anomaly", async () => {
   assert.match(patches.at(-1)?.anomalySummary ?? "", /Unknown Signal/);
 });
 
+test("Ball Explorer stops for a low-danger dormant construct before moving", async () => {
+  const construct = {
+    id: "dormant-construct-1",
+    type: "dormant_construct",
+    name: "Thrust-anchored asteroid",
+    summary: "Dormant non-natural construct detected; function unknown.",
+    dangerLevel: "low",
+    activityStatus: "dormant",
+  };
+  assert.match(describeBallAnomaly([construct]) ?? "", /dormant construct at Thrust-anchored asteroid/);
+
+  const patches: any[] = [];
+  const { api, moves } = client([construct]);
+  await runBallExplorerRole(
+    role(),
+    loadedProbe(),
+    [],
+    new Set(),
+    api,
+    false,
+    "test",
+    deps(2, patches),
+  );
+  assert.equal(moves.length, 0);
+  assert.equal(patches.at(-1)?.phase, "anomaly_detected");
+  assert.match(patches.at(-1)?.anomalySummary ?? "", /Thrust-anchored asteroid/);
+});
+
 test("Ball Explorer cannot leave its factory without the required loadout", async () => {
   const patches: any[] = [];
   const { api, moves } = client();
