@@ -170,6 +170,56 @@ test("Ball Explorer stops for a low-danger dormant construct before moving", asy
   assert.match(patches.at(-1)?.anomalySummary ?? "", /Thrust-anchored asteroid/);
 });
 
+test("Ball Explorer retraces a recorded route one idle hop at a time and stops at the anomaly", async () => {
+  const destination = { x: 2, y: 2, z: 0 };
+  const middle = { x: 1, y: 1, z: 0 };
+  const returnRole = role({
+    phase: "returning_to_anomaly",
+    anomalyReturnPath: [CURRENT, middle, destination],
+    anomalySummary: "Dormant construct at destination",
+  });
+  const patches: any[] = [];
+  const { api, moves } = client();
+  const dependencies = deps(3, patches);
+  await runBallExplorerRole(returnRole, loadedProbe(), [], new Set(), api, false, "test", dependencies);
+  assert.deepEqual(moves, [middle]);
+  await runBallExplorerRole(
+    returnRole, { ...loadedProbe(), sector: { relative: middle } },
+    [], new Set(), api, true, "test", dependencies,
+  );
+  assert.equal(moves.length, 1);
+  await runBallExplorerRole(
+    returnRole, { ...loadedProbe(), sector: { relative: middle } },
+    [], new Set(), api, false, "test", dependencies,
+  );
+  assert.deepEqual(moves, [middle, destination]);
+  await runBallExplorerRole(
+    returnRole, { ...loadedProbe(), sector: { relative: destination } },
+    [], new Set(), api, false, "test", dependencies,
+  );
+  assert.equal(moves.length, 2);
+  assert.equal(patches.at(-1)?.phase, "anomaly_detected");
+  assert.equal(patches.at(-1)?.anomalyReturnPath, undefined);
+});
+
+test("Ball Explorer holds a return route when it is off the path or SCUT coverage is gone", async () => {
+  const patches: any[] = [];
+  const { api, moves } = client();
+  const returnRole = role({
+    phase: "returning_to_anomaly",
+    anomalyReturnPath: [CURRENT, { x: 1, y: 1, z: 0 }],
+  });
+  await runBallExplorerRole(
+    returnRole, { ...loadedProbe(), sector: { relative: { x: 3, y: 3, z: 0 } } },
+    [], new Set(), api, false, "test", deps(2, patches),
+  );
+  assert.equal(moves.length, 0);
+  assert.equal(patches.at(-1)?.phase, "anomaly_detected");
+  await runBallExplorerRole(returnRole, loadedProbe(), [], new Set(), api, false, "test", deps(0, patches));
+  assert.equal(moves.length, 0);
+  assert.match(patches.at(-1)?.lastError ?? "", /not SCUT-covered/);
+});
+
 test("Ball Explorer cannot leave its factory without the required loadout", async () => {
   const patches: any[] = [];
   const { api, moves } = client();

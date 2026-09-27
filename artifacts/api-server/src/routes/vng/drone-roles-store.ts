@@ -83,6 +83,8 @@ export type RoleState = {
   beaconRelayId?: string;
   /** Ball Explorer: sector selected from the unvisited SCUT-covered set. */
   ballDestination?: { x: number; y: number; z: number };
+  /** Ball Explorer: recorded sectors to follow back to a discovery, including the arrival and destination sectors. */
+  anomalyReturnPath?: Array<{ x: number; y: number; z: number }>;
   /** Ball Explorer: operator-visible reason automation stopped. */
   stopReason?: string;
   /** Ball Explorer: compact description of the anomaly that stopped the role. */

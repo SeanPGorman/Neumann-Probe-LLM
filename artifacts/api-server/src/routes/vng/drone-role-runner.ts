@@ -2196,6 +2196,57 @@ export async function runBallExplorerRole(
   const current = probe?.sector?.relative ?? probe?.sector;
   if (!current || isMoving || BALL_EXPLORER_PHASES_STOPPED.has(role.state.phase)) return;
 
+  if (role.state.phase === "returning_to_anomaly") {
+    const path = role.state.anomalyReturnPath;
+    const here = Array.isArray(path)
+      ? path.findIndex((sector) => sectorKey(sector) === sectorKey(current))
+      : -1;
+    if (here < 0 || !path || path.length < 2) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "anomaly_detected",
+        stopReason: "Return paused: probe is off the recorded route or the route is missing",
+        travelTarget: undefined,
+        lastError: "Cannot safely retrace to the anomaly from this sector",
+      });
+      return;
+    }
+    if (here === path.length - 1) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "anomaly_detected",
+        stopReason: "Returned to dormant construct; operator review required",
+        anomalyReturnPath: undefined,
+        travelTarget: undefined,
+        lastError: undefined,
+      });
+      return;
+    }
+    const next = path[here + 1];
+    if (!validSector(current) || !validSector(next) ||
+        !ballNeighbors(current).some((neighbor) => sectorKey(neighbor) === sectorKey(next))) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "anomaly_detected",
+        stopReason: "Return paused: next recorded step is not adjacent",
+        travelTarget: undefined,
+        lastError: "Invalid anomaly return step",
+      });
+      return;
+    }
+    const covered = await ballScutCoverage(deps);
+    if (!covered.has(sectorKey(current)) || !covered.has(sectorKey(next))) {
+      await deps.updateDroneRoleState(role.id, {
+        travelTarget: undefined,
+        lastError: "Return waiting: current or next sector is not SCUT-covered",
+      });
+      return;
+    }
+    await c.moveProbe(next.x, next.y, next.z);
+    await deps.updateDroneRoleState(role.id, {
+      travelTarget: next,
+      lastError: undefined,
+    });
+    return;
+  }
+
   const loadout = await ballLoadoutStatus(probe, c);
   const factory = await ballFactorySector(cfg, deps).catch(() => null);
   const atFactory = Boolean(factory && atSector(probe, factory));
