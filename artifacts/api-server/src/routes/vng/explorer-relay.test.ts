@@ -12,6 +12,8 @@ import assert from "node:assert/strict";
 import { promises as fs } from "node:fs";
 import os from "node:os";
 import path from "node:path";
+import express from "express";
+import type { Server } from "node:http";
 
 let tmpDir: string;
 
@@ -571,6 +573,119 @@ test("waiting_for_delivery: request marked completed → resumes exploration (ba
   await runner.runExplorerRole(freshRole, probeWith([]), IDLE_MANNY, new Set(), makeClient([]), false, "test");
 
   assert.equal((await store.getDroneRoles())[0].state.phase, "idle");
+});
+
+// Exercise the operator-facing phase endpoint against the real file-backed store.
+async function withPhaseEndpoint(run: (patch: (id: number, body: unknown) => Promise<{ status: number; body: any }>) => Promise<void>) {
+  const { default: router } = await import("./index.js");
+  const app = express();
+  app.use(express.json());
+  app.use((req, _res, next) => {
+    (req as any).log = { info: () => {} };
+    next();
+  });
+  app.use("/api/vng", router);
+  const server: Server = await new Promise((resolve) => {
+    const listener = app.listen(0, "127.0.0.1", () => resolve(listener));
+  });
+  try {
+    const address = server.address();
+    assert.ok(address && typeof address !== "string");
+    await run(async (id, body) => {
+      const response = await fetch(`http://127.0.0.1:${address.port}/api/vng/drone-roles/${id}/phase`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify(body),
+      });
+      return { status: response.status, body: await response.json() };
+    });
+  } finally {
+    server.closeAllConnections();
+    await new Promise<void>((resolve, reject) => server.close((error) => error ? reject(error) : resolve()));
+  }
+}
+
+test("manual phase endpoint rejects invalid phases for every drone role without changing durable roles", async () => {
+  const { store } = await importFresh();
+  const roles = await Promise.all([
+    store.addDroneRole({ probeId: 301, roleType: "explorer", enabled: true, config: { targetVector: { x: 2, y: 0, z: 0 } } }),
+    store.addDroneRole({ probeId: 302, roleType: "delivery", enabled: true, config: { factoryProbeId: 900 } }),
+    store.addDroneRole({ probeId: 303, roleType: "refuel", enabled: true, config: { sourceSector: { x: 0, y: 0, z: 0 }, targetProbeId: 301 } }),
+    store.addDroneRole({ probeId: 304, roleType: "ball_explorer", enabled: true, config: { factoryProbeId: 900 } }),
+    store.addDroneRole({ probeId: 305, roleType: "factory", enabled: true, config: { deliveryProbeIds: [302] } }),
+  ]);
+  const before = await store.getDroneRoles();
+  await withPhaseEndpoint(async (patch) => {
+    for (const [index, forbiddenPhase] of ["waiting", "waiting_for_delivery", "delivering", "refilling", "traveling_to_explorer"].entries()) {
+      const result = await patch(roles[index].id, { phase: forbiddenPhase });
+      assert.equal(result.status, 400, `${roles[index].roleType} must reject ${forbiddenPhase}`);
+      assert.match(result.body.error, /Unsupported/);
+    }
+    assert.equal((await patch(roles[0].id, { phase: "not_a_phase" })).status, 400);
+    assert.equal((await patch(roles[0].id, { phase: 42 })).status, 400);
+    assert.equal((await patch(9999, { phase: "idle" })).status, 404);
+  });
+  assert.deepEqual(await store.getDroneRoles(), before);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(tmpDir, "drone-roles.json"), "utf8")), before);
+});
+
+test("manual Explorer resume completes its linked delivery request and clears stale mission state", async () => {
+  const { store } = await importFresh();
+  const role = await seedExplorer(store, "waiting_for_delivery");
+  const request = await store.addDeliveryRequest({
+    explorerId: role.probeId, explorerName: role.probeName, explorerSector: { x: 1, y: 1, z: 1 },
+  });
+  await store.updateDroneRoleState(role.id, {
+    deliveryRequestId: request.id,
+    travelTarget: { x: 3, y: 1, z: 1 },
+    lastError: "old error",
+    wpCounter: 7,
+  });
+  const config = role.config;
+  await withPhaseEndpoint(async (patch) => {
+    const result = await patch(role.id, { phase: "idle" });
+    assert.equal(result.status, 200);
+    assert.equal(result.body.role.state.phase, "idle");
+    assert.equal(result.body.role.state.deliveryRequestId, undefined);
+    assert.equal(result.body.role.state.travelTarget, undefined);
+  });
+  const updated = (await store.getDroneRoles())[0];
+  assert.deepEqual(updated.config, config);
+  assert.equal(updated.state.wpCounter, 7);
+  assert.equal(updated.state.lastError, undefined);
+  assert.equal(updated.state.deliveryRequestId, undefined);
+  assert.equal(updated.state.travelTarget, undefined);
+  assert.equal((await store.getDeliveryRequests())[0].status, "completed");
+  const persisted = JSON.parse(await fs.readFile(path.join(tmpDir, "drone-roles.json"), "utf8"));
+  assert.deepEqual(persisted, await store.getDroneRoles());
+});
+
+test("manual Delivery wait clears stale assignment state but preserves mission configuration", async () => {
+  const { store } = await importFresh();
+  const role = await store.addDroneRole({
+    probeId: 306, roleType: "delivery", enabled: true, config: { factoryProbeId: 900, factoryProbeName: "Depot" },
+  });
+  await store.updateDroneRoleState(role.id, {
+    phase: "traveling_to_explorer",
+    assignedExplorerId: 301,
+    outboundContainerIds: ["cargo-1"],
+    travelTarget: { x: 1, y: 1, z: 1 },
+    lastError: "old error",
+  });
+  await withPhaseEndpoint(async (patch) => {
+    const result = await patch(role.id, { phase: "waiting" });
+    assert.equal(result.status, 200);
+    assert.equal(result.body.role.state.phase, "waiting");
+  });
+  const updated = (await store.getDroneRoles())[0];
+  assert.deepEqual(updated.config, role.config);
+  assert.equal(updated.enabled, role.enabled);
+  assert.equal(updated.state.phase, "waiting");
+  assert.equal(updated.state.assignedExplorerId, undefined);
+  assert.equal(updated.state.outboundContainerIds, undefined);
+  assert.equal(updated.state.travelTarget, undefined);
+  assert.equal(updated.state.lastError, undefined);
+  assert.deepEqual(JSON.parse(await fs.readFile(path.join(tmpDir, "drone-roles.json"), "utf8")), await store.getDroneRoles());
 });
 
 // ── full hop integration ──────────────────────────────────────────────────────
