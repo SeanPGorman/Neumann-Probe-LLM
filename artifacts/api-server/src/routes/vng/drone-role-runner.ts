@@ -2604,6 +2604,18 @@ async function runFactoryContainerWorkflow(
     if (missing) {
       if (missing === "integrated_circuit") await c.atomicPrinterCraft(missing);
       else {
+        // Item counts stay unchanged until a Manny craft completes. Without this
+        // guard, each 15-minute role poll starts the same missing recipe on a
+        // different idle Manny, accumulating duplicate long-running crafts.
+        // The VNG task snapshot does not expose a craft recipe, so serialize
+        // factory item crafts while any Manny craft is in flight.
+        const craftInProgress = mannies.some((manny: any) =>
+          manny.currentTask === "craft" ||
+          manny.currentTask === "crafting" ||
+          manny.currentTask?.type === "craft" ||
+          manny.currentTask?.type === "crafting",
+        );
+        if (craftInProgress) return true;
         const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
         await c.craftItem(manny.id, missing); claimed.add(manny.id);
       }

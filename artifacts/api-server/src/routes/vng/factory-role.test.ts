@@ -415,6 +415,58 @@ test("v130 loading moves only the exact missing resource delta", async () => {
   }]);
 });
 
+test("v130 loading does not start a duplicate item craft while one is in progress", async () => {
+  const role = factoryRole({
+    phase: "loading_delivery_containers",
+    servingDeliveryProbeId: 200,
+    deliveryContainerManifest: { resources: "r", deployment: "d", metals: "m" },
+    preparedContainerIds: ["r", "d", "m"],
+  });
+  const deployed = [
+    ...Array.from({ length: 15 }, (_, n) => ({ id: `wp-${n}`, type: "waypoint_bookmark" })),
+    { id: "beacon", type: "scut_transit_beacon" },
+    { id: "ic", type: "integrated_circuit" },
+    ...Array.from({ length: 5 }, (_, n) => ({ id: `missile-${n}`, type: "missile" })),
+  ];
+  const crafts: string[] = [];
+  const { deps } = makeDeps({
+    roles: [role, deliveryRole()],
+    deliveryProbe: { sector: SECTOR, inventory: { items: [] } },
+  });
+  const c = {
+    getStorageContainers: async () => ({
+      containers: [
+        { id: "core", kind: "probe" },
+        { id: "r", kind: "container" },
+        { id: "d", kind: "container" },
+        { id: "m", kind: "container" },
+      ],
+    }),
+    getStorageContainer: async (id: string) => ({
+      id,
+      kind: "container",
+      inventory: {
+        items: id === "d" ? deployed : [],
+        resourceStocks: id === "r" ? [{ type: "metals", amount: 0.5 }, { type: "ice", amount: 0.25 }, { type: "carbon_compounds", amount: 0.25 }] : [],
+      },
+    }),
+    craftItem: async (_mannyId: string, recipe: string) => { crafts.push(recipe); return {}; },
+  } as any;
+
+  await runFactoryRole(
+    role,
+    factoryProbe(),
+    [{ id: "busy", currentTask: "crafting" }, { id: "idle", currentTask: null }],
+    new Set(),
+    c,
+    false,
+    "t",
+    deps,
+  );
+
+  assert.deepEqual(crafts, [], "wait for the outstanding relay craft instead of starting another");
+});
+
 test("v130 loading waits for an active storage move before recalculating resources", async () => {
   const role = factoryRole({
     phase: "loading_delivery_containers",

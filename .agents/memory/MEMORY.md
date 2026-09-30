@@ -20,3 +20,4 @@
 - [Delivery jump safety](delivery-jump-safety.md) — delivery moves are ≤2 sectors unless both endpoints are active relays on the same SCUT network
 - [Ball Explorer repair reserve](ball-explorer-repair-reserve.md) — partial metals reserve supports repairs; empty reserve returns through a beaconed SCUT to factory
 - [Ball Explorer anomaly retrace](ball-explorer-anomaly-retrace.md) — a missed discovery requires a position-checked return itinerary, not independent idle movement orders
+- [Factory craft idempotency](factory-craft-idempotency.md) — account for unfinished Manny crafts before retrying a missing manifest item
