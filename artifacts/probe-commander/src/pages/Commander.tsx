@@ -1314,20 +1314,6 @@ function SummaryPanel({
                 <span className="min-w-0 truncate text-foreground font-medium">
                   {probe.name}
                   {probe.isDefault && <span className="ml-1 text-[8px] text-primary/70">MAIN</span>}
-                  <span className="mt-0.5 flex flex-wrap gap-x-2 text-[8px] font-mono font-normal">
-                    <span className="text-muted-foreground">
-                      HULL <span className={probe.integrityPercent != null && probe.integrityPercent < 30 ? "text-destructive" : "text-foreground"}>
-                        {probe.integrityPercent != null ? `${probe.integrityPercent.toFixed(0)}%` : "—"}
-                      </span>
-                    </span>
-                    <span className="text-muted-foreground">
-                      FUEL <span className="text-primary">
-                        {probe.fuelDeuterium != null
-                          ? `${probe.fuelDeuterium.toFixed(1)}${probe.fuelMaxDeuterium != null ? ` / ${probe.fuelMaxDeuterium.toFixed(1)}` : ""} u`
-                          : "—"}
-                      </span>
-                    </span>
-                  </span>
                 </span>
                 <span className="min-w-0 truncate text-muted-foreground">
                   {role ? `${ROLE_ICONS[role.roleType]} ${ROLE_LABELS[role.roleType]}` : "—"}
@@ -1338,6 +1324,20 @@ function SummaryPanel({
                 </span>
                 <span className={`min-w-0 truncate uppercase ${role ? (PHASE_COLOR[role.state.phase] ?? "text-foreground") : "text-muted-foreground/60"}`}>
                   {phase}
+                </span>
+                <span className="col-span-4 flex flex-wrap gap-x-4 gap-y-0.5 border-t border-border/20 pt-1 text-[9px] font-mono">
+                  <span className="text-muted-foreground">
+                    HULL <span className={probe.integrityPercent != null && probe.integrityPercent < 30 ? "text-destructive" : "text-foreground"}>
+                      {probe.integrityPercent != null ? `${probe.integrityPercent.toFixed(0)}%` : "—"}
+                    </span>
+                  </span>
+                  <span className="text-muted-foreground">
+                    FUEL <span className="text-primary">
+                      {probe.fuelDeuterium != null
+                        ? `${probe.fuelDeuterium.toFixed(1)}${probe.fuelMaxDeuterium != null ? ` / ${probe.fuelMaxDeuterium.toFixed(1)}` : ""} u`
+                        : "—"}
+                    </span>
+                  </span>
                 </span>
               </button>
             );
@@ -2468,6 +2468,8 @@ export default function Commander() {
     sector: p.sector,
     isMoving: p.isMoving ?? false,
     fuelDeuterium: p.fuelDeuterium,
+    fuelMaxDeuterium: p.fuelMaxDeuterium,
+    integrityPercent: p.integrityPercent,
   }));
 
   const { data: state, error: stateError } = useQuery({
