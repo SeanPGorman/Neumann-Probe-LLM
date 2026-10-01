@@ -529,7 +529,9 @@ router.get("/probes", async (_req, res) => {
           const assembledAt: string | null =
             probe.assembledAt ?? probe.createdAt ?? p.assembledAt ?? p.createdAt ?? null;
           const fuelDeuterium: number = probe.fuel?.deuterium ?? 0;
-          return { ...p, sector, isMoving, assembledAt, fuelDeuterium };
+          const fuelMaxDeuterium: number | null = probe.fuel?.maxDeuterium ?? null;
+          const integrityPercent: number | null = probe.systems?.integrityPercent ?? null;
+          return { ...p, sector, isMoving, assembledAt, fuelDeuterium, fuelMaxDeuterium, integrityPercent };
         } catch {
           return p;
         }

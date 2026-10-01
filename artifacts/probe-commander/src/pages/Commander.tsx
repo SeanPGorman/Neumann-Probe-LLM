@@ -126,7 +126,17 @@ function ScanReadinessBar({ scan }: { scan: { currentSectorResidenceSeconds: num
   );
 }
 
-type ProbeEntry = { id: number; name: string; status: string; isDefault?: boolean; sector?: { x: number; y: number; z: number }; isMoving?: boolean; fuelDeuterium?: number };
+type ProbeEntry = {
+  id: number;
+  name: string;
+  status: string;
+  isDefault?: boolean;
+  sector?: { x: number; y: number; z: number };
+  isMoving?: boolean;
+  fuelDeuterium?: number;
+  fuelMaxDeuterium?: number | null;
+  integrityPercent?: number | null;
+};
 
 function ProbeHeaderSwitch({
   probeList,
@@ -1304,6 +1314,20 @@ function SummaryPanel({
                 <span className="min-w-0 truncate text-foreground font-medium">
                   {probe.name}
                   {probe.isDefault && <span className="ml-1 text-[8px] text-primary/70">MAIN</span>}
+                  <span className="mt-0.5 flex flex-wrap gap-x-2 text-[8px] font-mono font-normal">
+                    <span className="text-muted-foreground">
+                      HULL <span className={probe.integrityPercent != null && probe.integrityPercent < 30 ? "text-destructive" : "text-foreground"}>
+                        {probe.integrityPercent != null ? `${probe.integrityPercent.toFixed(0)}%` : "—"}
+                      </span>
+                    </span>
+                    <span className="text-muted-foreground">
+                      FUEL <span className="text-primary">
+                        {probe.fuelDeuterium != null
+                          ? `${probe.fuelDeuterium.toFixed(1)}${probe.fuelMaxDeuterium != null ? ` / ${probe.fuelMaxDeuterium.toFixed(1)}` : ""} u`
+                          : "—"}
+                      </span>
+                    </span>
+                  </span>
                 </span>
                 <span className="min-w-0 truncate text-muted-foreground">
                   {role ? `${ROLE_ICONS[role.roleType]} ${ROLE_LABELS[role.roleType]}` : "—"}
