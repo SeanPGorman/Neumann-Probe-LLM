@@ -2,6 +2,7 @@ import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError, withVngReadCache } from "./client.js";
 import { runDroneRoleAutomation } from "./drone-role-runner.js";
 import { getDroneRoles } from "./drone-roles-store.js";
+import { findScheduledActionRoleConflict } from "./scheduled-action-role-compatibility.js";
 import {
   getPendingActions,
   resolvePendingAction,
@@ -816,9 +817,44 @@ async function pollProbe(
   probeId: number | null,
   actions: PendingAction[],
   runRoles: boolean,
+  droneRoles: Awaited<ReturnType<typeof getDroneRoles>>,
+  roleAssignmentsAvailable: boolean,
 ): Promise<void> {
   const c = clientFor(probeId);
   const label = probeId != null ? `probe ${probeId}` : "main probe";
+  const enabledProbeRoles = droneRoles.filter(
+    (role) => role.enabled && role.probeId === probeId,
+  );
+  // Enabled roles own the target probe's scheduled action surface. Check this
+  // every poll (not only on the slower role-automation interval) and fail
+  // closed if the persisted role assignments could not be read.
+  const runnableActions = actions.filter((action) => {
+    if (!roleAssignmentsAvailable) {
+      logger.warn(
+        { actionId: action.id, actionType: action.action.type, label },
+        "poller: role assignments unavailable — keeping scheduled action pending",
+      );
+      return false;
+    }
+
+    const conflictingRole = findScheduledActionRoleConflict(
+      action.action.type,
+      enabledProbeRoles.map((role) => role.roleType),
+    );
+    if (conflictingRole) {
+      logger.info(
+        {
+          actionId: action.id,
+          actionType: action.action.type,
+          roleType: conflictingRole,
+          label,
+        },
+        "poller: enabled role owns target probe — keeping scheduled action pending",
+      );
+      return false;
+    }
+    return true;
+  });
 
   let probeResp: any = null;
   let manniesResp: any = null;
@@ -834,7 +870,7 @@ async function pollProbe(
         { label, err: msg },
         "poller: target probe fetch failed permanently — failing its scheduled rows",
       );
-      for (const action of actions) {
+      for (const action of runnableActions) {
         await resolveQuietly(action.id, {
           status: "failed",
           error: `target ${label} unavailable: ${msg}`,
@@ -856,12 +892,8 @@ async function pollProbe(
   // drives role automation. Do not scan while the probe is in transit: the
   // sector endpoint may be unavailable or still describe the departure sector.
   const explorerRole = runRoles
-    ? (await getDroneRoles().catch(
-        (): Awaited<ReturnType<typeof getDroneRoles>> => [],
-      )).find(
+    ? enabledProbeRoles.find(
         (role) =>
-          role.enabled &&
-          role.probeId === probeId &&
           (role.roleType === "explorer" || role.roleType === "ball_explorer"),
       )
     : undefined;
@@ -925,7 +957,7 @@ async function pollProbe(
   // satisfied by current inventory.  If every pending craft is blocked on
   // missing sub-items, the reserve is 0 and mining uses all idle mannies.
   const inventoryItems: any[] = probe?.inventory?.items ?? [];
-  const priorityCraftPlan = getPriorityCraftPlan(actions, inventoryItems);
+  const priorityCraftPlan = getPriorityCraftPlan(runnableActions, inventoryItems);
   const hasReadyCrafting = priorityCraftPlan.readyActionIds.size > 0;
   const probeKey = probeId != null ? String(probeId) : "main";
 
@@ -940,7 +972,7 @@ async function pollProbe(
       { craftingReserve, totalMannies: mannies.length },
       "poller: reserving small Manny slice for crafting (mining has priority)"
     );
-  } else if (actions.some((a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft")) {
+  } else if (runnableActions.some((a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft")) {
     logger.info(
       { totalMannies: mannies.length },
       "poller: all craft actions blocked on sub-items — no reserve, all mannies available for mining"
@@ -975,7 +1007,7 @@ async function pollProbe(
     availableItemCountByType.set(type, (availableItemCountByType.get(type) ?? 0) + 1);
   }
 
-  for (const action of actions) {
+  for (const action of runnableActions) {
     let selectedMannyId: string | null = null;
 
     if (isCraftingAction(action) && hasReadyCrafting) {
@@ -1172,7 +1204,7 @@ async function pollProbe(
   // Update the blocked-by-materials flag for the next tick.
   // Blocked = every crafting attempt this tick hit "insufficient resources".
   // Unblocked = at least one succeeded (materials must have arrived).
-  const hasPendingCrafting = actions.some(
+  const hasPendingCrafting = runnableActions.some(
     (a) => a.action.type === "craft_item" || a.action.type === "atomic_printer_craft"
   );
   if (hasPendingCrafting && craftingAttempts > 0) {
@@ -1186,10 +1218,25 @@ async function pollProbe(
 
 async function poll(runRoles: boolean): Promise<void> {
   return withVngReadCache(async () => {
-  const [pending, miningAssignments] = await Promise.all([
+  const [pending, miningAssignments, roleRead] = await Promise.all([
     getPendingActions(),
     getMiningAssignments().catch(() => [] as Awaited<ReturnType<typeof getMiningAssignments>>),
+    getDroneRoles()
+      .then((roles) => ({ roles, available: true as const }))
+      .catch((error) => ({
+        roles: [] as Awaited<ReturnType<typeof getDroneRoles>>,
+        available: false as const,
+        error,
+      })),
   ]);
+  const droneRoles = roleRead.roles;
+  const roleAssignmentsAvailable = roleRead.available;
+  if (!roleRead.available) {
+    logger.warn(
+      { err: roleRead.error?.message ?? String(roleRead.error) },
+      "poller: could not read drone roles — scheduled actions will remain pending",
+    );
+  }
 
   // Group by probeId — null/undefined both mean "main probe" (key = "main")
   const byProbe = new Map<string, { probeId: number | null; actions: PendingAction[] }>();
@@ -1210,7 +1257,6 @@ async function poll(runRoles: boolean): Promise<void> {
 
   // Also include probes with active drone roles
   if (runRoles) {
-    const droneRoles = await getDroneRoles().catch(() => [] as Awaited<ReturnType<typeof getDroneRoles>>);
     for (const role of droneRoles) {
       if (!role.enabled) continue;
       const key = String(role.probeId);
@@ -1223,7 +1269,13 @@ async function poll(runRoles: boolean): Promise<void> {
   // Poll all probes in parallel
   await Promise.all(
     [...byProbe.values()].map(({ probeId, actions }) =>
-      pollProbe(probeId, actions, runRoles).catch((err) =>
+      pollProbe(
+        probeId,
+        actions,
+        runRoles,
+        droneRoles,
+        roleAssignmentsAvailable,
+      ).catch((err) =>
         logger.error({ err, probeId }, "poller: unexpected error for probe")
       )
     )
