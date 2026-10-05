@@ -10,14 +10,22 @@
 
 import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError, getScutNetwork } from "./client.js";
-import { getSectors, recordExplorerWaypointEvent } from "./file-store.js";
+import {
+  getSectors,
+  getMiningAssignments,
+  recordExplorerWaypointEvent,
+} from "./file-store.js";
+import {
+  canonicalContainerId,
+  getMiningAssignmentContainerIds,
+} from "./container-reservations.js";
 import { mapSectorObjects } from "./sector-map.js";
 import {
   getDroneRoleByProbeId,
   getDroneRoles,
   updateDroneRoleState,
   claimRefuelTarget,
-  getPendingDeliveryRequest,
+  claimPendingDeliveryRequest,
   addDeliveryRequest,
   updateDeliveryRequest,
   getDeliveryRequests,
@@ -44,6 +52,9 @@ const MOVING_STATUSES = new Set([
 const MIN_DEUTERIUM_RESERVE = 5; // always keep this much before transferring
 /** An idle refueler returns to its source at or below this share of its own tank. */
 const REFUELER_RETURN_THRESHOLD_PERCENT = 20;
+/** Wait for slow detach actions and sector snapshots before replacing a lost handoff container. */
+const FACTORY_HANDOFF_MISSING_CONTAINER_GRACE_MS = 10 * 60_000;
+type RequestRolePoll = (probeIds: number[]) => void;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
 
@@ -55,11 +66,6 @@ export function isContainerItem(i: any): boolean {
     i?.type === "additional_container" ||
     i?.category === "container"
   );
-}
-
-function canonicalContainerId(id: unknown): string {
-  const value = String(id ?? "");
-  return value.startsWith("container-") ? value : `container-${value}`;
 }
 
 function onboardContainerIds(items: any[]): Set<string> {
@@ -328,6 +334,8 @@ export async function runDroneRoleAutomation(
   mannies: any[],
   c: ReturnType<typeof clientFor>,
   onMoveIssued?: () => void,
+  onRolePollRequested?: RequestRolePoll,
+  claimedMannies?: Set<string>,
 ): Promise<void> {
   if (probeId == null) return;
 
@@ -335,7 +343,7 @@ export async function runDroneRoleAutomation(
   if (!role) return;
 
   const label = `drone-role ${role.roleType} (probe ${probeId})`;
-  const claimed = new Set<string>();
+  const claimed = claimedMannies ?? new Set<string>();
   const isMoving =
     MOVING_STATUSES.has(probe?.status ?? "") ||
     MOVING_STATUSES.has(probe?.movement?.status ?? "");
@@ -368,17 +376,39 @@ export async function runDroneRoleAutomation(
     if (role.roleType === "refuel") {
       await runRefuelRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "delivery") {
-      await runDeliveryRole(role, probe, mannies, claimed, roleClient, isMoving, label);
+      await runDeliveryRole(
+        role,
+        probe,
+        mannies,
+        claimed,
+        roleClient,
+        isMoving,
+        label,
+        onRolePollRequested
+          ? () => onRolePollRequested([probeId])
+          : undefined,
+      );
     } else if (role.roleType === "explorer") {
       await runExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "ball_explorer") {
       await runBallExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "factory") {
-      await runFactoryRole(role, probe, mannies, claimed, roleClient, isMoving, label);
+      await runFactoryRole(
+        role,
+        probe,
+        mannies,
+        claimed,
+        roleClient,
+        isMoving,
+        label,
+        undefined,
+        onRolePollRequested,
+      );
     }
   } catch (err: any) {
     if (err instanceof VngApiError && err.status === 409) {
       logger.info({ label, err: err?.message }, "drone-role: conflict (409), deferring");
+      onRolePollRequested?.([probeId]);
       return;
     }
     logger.error({ label, err: err?.message }, "drone-role: automation error");
@@ -788,6 +818,7 @@ export async function runDeliveryRole(
   c: ReturnType<typeof clientFor>,
   isMoving: boolean,
   label: string,
+  onRolePollRequested?: RequestRolePoll,
 ): Promise<void> {
   const phase = role.state.phase;
 
@@ -820,10 +851,22 @@ export async function runDeliveryRole(
     const discoveredIds = discoveredManifest
       ? [discoveredManifest.resources, discoveredManifest.deployment, discoveredManifest.metals]
       : undefined;
-    const requiredManifest =
-      role.state.outboundContainerIds ??
-      discoveredIds ??
-      myFactory?.state.preparedContainerIds;
+    const recordedManifest = role.state.outboundContainerIds;
+    const factoryManifest =
+      myFactory?.state.servingDeliveryProbeId === role.probeId &&
+      myFactory.state.preparedContainerIds?.length === 3 &&
+      ["loading_delivery_containers", "handoff_delivery_containers", "awaiting_delivery_pickup"]
+        .includes(myFactory.state.phase)
+        ? myFactory.state.preparedContainerIds.map(canonicalContainerId)
+        : undefined;
+    // A partial courier manifest can survive an earlier/manual handoff. While
+    // this factory is actively serving the courier, its complete prepared
+    // manifest is authoritative; otherwise require a complete persisted courier
+    // manifest or the semantic emergency-manifest discovery.
+    const requiredManifest = myFactory
+      ? factoryManifest ??
+        (recordedManifest?.length === 3 ? recordedManifest : discoveredIds)
+      : recordedManifest ?? discoveredIds;
     const onboardIds = onboardContainerIds(items);
     if (requiredManifest?.length === 3 && requiredManifest.some((id) => !onboardIds.has(id))) {
       if (isMoving) return;
@@ -847,10 +890,19 @@ export async function runDeliveryRole(
           try {
             await c.recoverContainer(manny.id, drifting.id);
             claimed.add(manny.id);
+            onRolePollRequested?.([role.probeId]);
           } catch (err: any) {
             logger.warn({ label, err: err?.message }, "drone-role: staged container recovery failed");
+            onRolePollRequested?.([role.probeId]);
           }
+        } else {
+          onRolePollRequested?.([role.probeId]);
         }
+      } else {
+        // The factory detach task may still be running, or the sector snapshot
+        // may lag its completion. Retry soon instead of waiting for the global
+        // role interval.
+        onRolePollRequested?.([role.probeId]);
       }
       return;
     }
@@ -930,10 +982,16 @@ export async function runDeliveryRole(
             if (!emergencyOrder) return;
             if (missingType === "integrated_circuit") {
               const printer = items.find((item: any) => item.type === "atomic_3d_printer");
-              if (printer?.currentTask) return;
+              if (printer?.currentTask) {
+                onRolePollRequested?.([role.probeId]);
+                return;
+              }
               await c.atomicPrinterCraft(missingType);
             } else {
-              if (mannies.some((manny: any) => manny.currentTask)) return;
+              if (mannies.some((manny: any) => manny.currentTask)) {
+                onRolePollRequested?.([role.probeId]);
+                return;
+              }
               const manny = pickIdleManny(mannies, claimed);
               if (!manny) return;
               await c.craftItem(manny.id, missingType);
@@ -943,6 +1001,11 @@ export async function runDeliveryRole(
               { label, itemType: missingType },
               "drone-role: crafting missing emergency supply item aboard courier",
             );
+            onRolePollRequested?.([role.probeId]);
+            return;
+          }
+          if (mannies.some((manny: any) => manny.currentTask === "moving_stockage")) {
+            onRolePollRequested?.([role.probeId]);
             return;
           }
           const manny = pickIdleManny(mannies, claimed);
@@ -959,11 +1022,13 @@ export async function runDeliveryRole(
             { label, itemType: missingType, containerId: deploymentId },
             "drone-role: packing courier-supplied item into deployment container",
           );
+          onRolePollRequested?.([role.probeId]);
           return;
         }
       }
       if ((role.state.outboundContainerIds ?? []).join(",") !== requiredManifest.join(",")) {
         await updateDroneRoleState(role.id, { outboundContainerIds: requiredManifest });
+        onRolePollRequested?.([role.probeId]);
         return;
       }
     } else if (!items.some(isContainerItem)) return;
@@ -986,33 +1051,25 @@ export async function runDeliveryRole(
           { label, orderId: emergencyOrder.id, targetProbeId: emergencyOrder.targetProbeId, targetSector },
           "drone-role: emergency supply dispatched",
         );
+        onRolePollRequested?.([role.probeId]);
       }
       return;
     }
 
-    // Poll for a pending delivery request
-    const request = await getPendingDeliveryRequest();
+    const outboundContainerIds = myFactory
+      ? requiredManifest ?? []
+      : items
+          .filter(isContainerItem)
+          .map((item: any) => canonicalContainerId(item.id));
+    // Request ownership and courier state change together. Multiple waiting
+    // drones are processed concurrently, so a read-then-update can send several
+    // couriers to the same explorer.
+    const request = await claimPendingDeliveryRequest(role.id, outboundContainerIds);
     if (!request) {
       // No requests — stay put
       return;
     }
-    // Claim this request
-    await updateDeliveryRequest(request.id, {
-      status: "assigned",
-      assignedDeliveryProbeId: role.probeId,
-    });
-    await updateDroneRoleState(role.id, {
-      phase: "traveling_to_explorer",
-      assignedExplorerId: request.explorerId,
-      travelTarget: request.explorerSector,
-      // Compatibility for pre-factory roles. Factory couriers have already
-      // persisted their exact three-ID manifest before they can dispatch.
-      ...(!myFactory ? {
-        outboundContainerIds: items
-          .filter(isContainerItem)
-          .map((item: any) => canonicalContainerId(item.id)),
-      } : {}),
-    });
+    onRolePollRequested?.([role.probeId]);
     logger.info({ label, requestId: request.id, explorerSector: request.explorerSector }, "drone-role: delivery dispatched");
     return;
   }
@@ -2392,11 +2449,17 @@ const DEPLOYMENT_CONTAINER_ITEMS = [
 
 export type FactoryDeps = {
   getDroneRoles: typeof getDroneRoles;
+  getMiningAssignments: typeof getMiningAssignments;
   updateDroneRoleState: typeof updateDroneRoleState;
   clientFor: typeof clientFor;
 };
 
-const defaultFactoryDeps: FactoryDeps = { getDroneRoles, updateDroneRoleState, clientFor };
+const defaultFactoryDeps: FactoryDeps = {
+  getDroneRoles,
+  getMiningAssignments,
+  updateDroneRoleState,
+  clientFor,
+};
 
 /** What the delivery drone is still missing for a full supply loadout. */
 export function missingSupplies(dProbe: any): { type: string; recipe: string; printer?: boolean }[] {
@@ -2425,6 +2488,7 @@ function containerFreeCapacity(container: any): number {
 async function runFactoryContainerWorkflow(
   role: DroneRole, probe: any, mannies: any[], claimed: Set<string>,
   c: ReturnType<typeof clientFor>, label: string, deps: FactoryDeps,
+  onRolePollRequested?: RequestRolePoll,
 ): Promise<boolean> {
   // Retain the legacy path for callers/tests that provide an older client; the
   // real v130 client always has this endpoint.
@@ -2439,20 +2503,52 @@ async function runFactoryContainerWorkflow(
   }
   if (!["idle", "collecting_returned_containers", "preparing_delivery_containers", "loading_delivery_containers", "handoff_delivery_containers", "awaiting_delivery_pickup"].includes(phase)) return false;
   const roles = await deps.getDroneRoles();
-  const deliveryId = role.state.servingDeliveryProbeId ??
-    cfg.deliveryProbeIds.find((id) => roles.some((r) => r.probeId === id && r.roleType === "delivery" && r.enabled && r.state.phase === "waiting"));
+  const servedIds = cfg.deliveryProbeIds ?? [];
+  const assignedId = role.state.servingDeliveryProbeId;
+  const assignedRole = roles.find(
+    (candidate) =>
+      candidate.probeId === assignedId &&
+      candidate.roleType === "delivery" &&
+      candidate.enabled,
+  );
+  const assignmentIsValid =
+    assignedId != null && servedIds.includes(assignedId) && assignedRole != null;
+  const deliveryId = assignmentIsValid
+    ? assignedId
+    : servedIds.find((id) =>
+        roles.some(
+          (candidate) =>
+            candidate.probeId === id &&
+            candidate.roleType === "delivery" &&
+            candidate.enabled &&
+            candidate.state.phase === "waiting",
+        ),
+      );
+  if (deliveryId !== assignedId) {
+    if (deliveryId == null) {
+      logger.warn(
+        { label, assignedDeliveryProbeId: assignedId },
+        "drone-role: clearing factory assignment to an unconfigured delivery drone",
+      );
+      await deps.updateDroneRoleState(role.id, { servingDeliveryProbeId: undefined });
+      return true;
+    }
+    logger.info(
+      { label, previousDeliveryProbeId: assignedId, deliveryId },
+      "drone-role: replacing stale factory courier assignment",
+    );
+    await deps.updateDroneRoleState(role.id, { servingDeliveryProbeId: deliveryId });
+    onRolePollRequested?.([role.probeId, deliveryId]);
+  }
   if (deliveryId == null) return true;
   const dc = deps.clientFor(deliveryId);
   const dProbe = (await dc.getProbe()).probe;
   const deliverySector = dProbe?.sector?.relative ?? dProbe?.sector;
-  if (!deliverySector || !atSector(probe, deliverySector)) return true;
-  if (phase === "idle") {
-    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers", servingDeliveryProbeId: deliveryId });
-    return true;
-  }
   if (phase === "awaiting_delivery_pickup") {
+    // Exact onboard IDs prove pickup even if the courier has already started
+    // its next hop before the factory receives another role poll.
     const ids = role.state.preparedContainerIds ?? [];
-    const onboard = new Set((dProbe?.inventory?.items ?? []).filter(isContainerItem).map((i: any) => String(i.id)));
+    const onboard = onboardContainerIds(dProbe?.inventory?.items ?? []);
     if (ids.length === 3 && ids.every((id) => onboard.has(id))) {
       const dRole = roles.find((r) => r.probeId === deliveryId && r.roleType === "delivery");
       // Persist the courier's own manifest before dropping factory transient
@@ -2461,21 +2557,120 @@ async function runFactoryContainerWorkflow(
       await deps.updateDroneRoleState(role.id, {
         phase: "idle", servingDeliveryProbeId: undefined, preparedContainerIds: undefined,
         deliveryContainerManifest: undefined, stagedContainerObjectId: undefined,
+        missingManifestContainerSince: undefined,
       });
+      onRolePollRequested?.([role.probeId, deliveryId]);
     }
+    return true;
+  }
+  if (!deliverySector || !atSector(probe, deliverySector)) return true;
+  if (phase === "idle") {
+    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers", servingDeliveryProbeId: deliveryId });
     return true;
   }
 
   const listed = storageContainers(await c.getStorageContainers());
   const attached = listed.filter((x: any) => isContainerItem(x) || x.kind === "container" || x.type?.includes?.("container"));
+  const attachedIds = new Set(attached.map((container: any) => canonicalContainerId(container.id)));
+  const factoryOnboard = onboardContainerIds(probe?.inventory?.items ?? []);
+  const deliveryOnboard = onboardContainerIds(dProbe?.inventory?.items ?? []);
   if (
     ["loading_delivery_containers", "handoff_delivery_containers"].includes(phase) &&
     role.state.preparedContainerIds?.length
   ) {
-    const attachedIds = new Set(attached.map((container: any) => canonicalContainerId(container.id)));
     const expectedIds = role.state.preparedContainerIds.map(canonicalContainerId);
+    const missingFromBothProbes = expectedIds.filter(
+      (id) =>
+        !attachedIds.has(id) &&
+        !factoryOnboard.has(id) &&
+        !deliveryOnboard.has(id),
+    );
+    const activeManifest = role.state.deliveryContainerManifest;
+    const missingDeploymentId = canonicalContainerId(activeManifest?.deployment);
+    if (
+      missingDeploymentId !== "container-" &&
+      missingFromBothProbes.includes(missingDeploymentId) &&
+      typeof dc.getStorageContainers === "function" &&
+      typeof dc.getStorageContainer === "function"
+    ) {
+      try {
+        const courierContainers = storageContainers(await dc.getStorageContainers());
+        const expectedIdSet = new Set(expectedIds);
+        const recoveredDeployment = courierContainers.find((container: any) => {
+          const id = canonicalContainerId(container.id);
+          const label = container.label ?? container.containerName ?? container.name;
+          return (
+            id !== missingDeploymentId &&
+            !expectedIdSet.has(id) &&
+            deliveryOnboard.has(id) &&
+            label === "delivery-deployment"
+          );
+        });
+        if (recoveredDeployment) {
+          const recoveredId = canonicalContainerId(recoveredDeployment.id);
+          const detail = await dc.getStorageContainer(recoveredId);
+          const items =
+            detail?.inventory?.items ??
+            detail?.items ??
+            detail?.container?.inventory?.items ??
+            [];
+          const deployedIds = new Set(items.map((item: any) => String(item.id)));
+          const courierItems = dProbe?.inventory?.items ?? [];
+          const canCompleteLoadout = [...new Set(DEPLOYMENT_CONTAINER_ITEMS)].every(
+            (type) => {
+              const deployedCount = items.filter((item: any) => item.type === type).length;
+              const availableOnCourier = courierItems.filter((item: any) =>
+                item.type === type &&
+                !deployedIds.has(String(item.id)) &&
+                canonicalContainerId(
+                  String(item.containerId ?? item.location?.containerId ?? ""),
+                ) !== recoveredId,
+              ).length;
+              const requiredCount = DEPLOYMENT_CONTAINER_ITEMS.filter(
+                (item) => item === type,
+              ).length;
+              return deployedCount + availableOnCourier >= requiredCount;
+            },
+          );
+          if (canCompleteLoadout) {
+            const nextManifest = {
+              ...activeManifest,
+              deployment: recoveredId,
+            };
+            const nextPreparedIds = expectedIds.map((id) =>
+              id === missingDeploymentId ? recoveredId : id,
+            );
+            const missingSince = {
+              ...(role.state.missingManifestContainerSince ?? {}),
+            };
+            delete missingSince[missingDeploymentId];
+            logger.warn(
+              {
+                label,
+                missingContainerId: missingDeploymentId,
+                recoveredContainerId: recoveredId,
+              },
+              "drone-role: restored deployment manifest to a locally completable labeled courier container",
+            );
+            await deps.updateDroneRoleState(role.id, {
+              deliveryContainerManifest: nextManifest,
+              preparedContainerIds: nextPreparedIds,
+              missingManifestContainerSince:
+                Object.keys(missingSince).length > 0 ? missingSince : undefined,
+              lastError: undefined,
+            });
+            onRolePollRequested?.([role.probeId, deliveryId]);
+            return true;
+          }
+        }
+      } catch (err: any) {
+        logger.warn(
+          { label, err: err?.message },
+          "drone-role: could not validate a recovered courier deployment container",
+        );
+      }
+    }
     if (expectedIds.some((id) => !attachedIds.has(id))) {
-      const deliveryOnboard = onboardContainerIds(dProbe?.inventory?.items ?? []);
       if (expectedIds.every((id) => deliveryOnboard.has(id))) {
         const dRole = roles.find((candidate) =>
           candidate.probeId === deliveryId && candidate.roleType === "delivery");
@@ -2488,22 +2683,273 @@ async function runFactoryContainerWorkflow(
           preparedContainerIds: undefined,
           deliveryContainerManifest: undefined,
           stagedContainerObjectId: undefined,
+          missingManifestContainerSince: undefined,
           lastError: undefined,
         });
+          onRolePollRequested?.([role.probeId, deliveryId]);
       } else {
-        logger.warn(
-          { label, expectedIds },
-          "drone-role: factory manifest containers moved or disappeared — rebuilding courier loadout",
+        const missingIds = expectedIds.filter(
+          (id) =>
+            !attachedIds.has(id) &&
+            !factoryOnboard.has(id) &&
+            !deliveryOnboard.has(id),
         );
-        await deps.updateDroneRoleState(role.id, {
-          phase: "preparing_delivery_containers",
-          preparedContainerIds: undefined,
-          deliveryContainerManifest: undefined,
-          stagedContainerObjectId: undefined,
-          lastError: undefined,
-        });
+        if (missingIds.length === 0) {
+          logger.info(
+            { label, expectedIds },
+            phase === "loading_delivery_containers"
+              ? "drone-role: continuing to load a split factory manifest"
+              : "drone-role: resuming a split factory manifest handoff",
+          );
+      } else {
+          const detachingIds = new Set(
+            mannies
+              .filter((manny: any) => manny.currentTask === "detaching_storage_container")
+              .map((manny: any) =>
+                canonicalContainerId(
+                  String(
+                    manny.task?.containerId ??
+                    manny.taskObjectId ??
+                    manny.task?.objectId ??
+                    "",
+                  ).replace(/^detached-container-/, ""),
+                ),
+              )
+              .filter((id: string) => id !== "container-"),
+          );
+          let sectorObjects: any[] = [];
+          let sectorCheckFailed = false;
+          if (missingIds.some((id) => !detachingIds.has(id))) {
+            try {
+              sectorObjects = (await c.getSector()).sector?.objects ?? [];
+            } catch (err: any) {
+              sectorCheckFailed = true;
+              logger.warn(
+                { label, err: err?.message, missingIds },
+                "drone-role: could not verify detached factory manifest containers",
+              );
+            }
+          }
+          const sectorContainerIds = new Set(
+            sectorObjects
+              .filter((object: any) =>
+                object.type === "storage_container" ||
+                object.type === "detached_container",
+              )
+              .map((object: any) =>
+                canonicalContainerId(
+                  String(object.containerId ?? object.id).replace(/^detached-container-/, ""),
+                ),
+              ),
+          );
+          const driftingIds = new Set(
+            sectorObjects
+              .filter((object: any) =>
+                (object.type === "storage_container" || object.type === "detached_container") &&
+                object.mode === "drifting",
+              )
+              .map((object: any) =>
+                canonicalContainerId(
+                  String(object.containerId ?? object.id).replace(/^detached-container-/, ""),
+                ),
+              ),
+          );
+          const accountedMissingIds = missingIds.filter(
+            (id) => detachingIds.has(id) || sectorContainerIds.has(id),
+          );
+          const hasTrackedHandoff = accountedMissingIds.length > 0;
+          const fullyAccounted =
+            accountedMissingIds.length === missingIds.length;
+          if (fullyAccounted || hasTrackedHandoff || sectorCheckFailed) {
+            logger.info(
+              {
+                label,
+                missingIds,
+                detachingIds: [...detachingIds],
+                driftingIds: [...driftingIds],
+              },
+              "drone-role: preserving factory manifest while container handoff settles",
+            );
+            if (phase === "loading_delivery_containers") {
+              onRolePollRequested?.([role.probeId, deliveryId]);
+              return true;
+            }
+            const detachStillRunning = missingIds.some((id) => detachingIds.has(id));
+            if (sectorCheckFailed || detachStillRunning || !fullyAccounted) {
+              onRolePollRequested?.([role.probeId, deliveryId]);
+              return true;
+            }
+          } else {
+            const missingWithoutLocation = missingIds.filter(
+              (id) => !detachingIds.has(id) && !sectorContainerIds.has(id),
+            );
+            const previousMissingSince =
+              role.state.missingManifestContainerSince &&
+              typeof role.state.missingManifestContainerSince === "object"
+                ? role.state.missingManifestContainerSince
+                : {};
+            const missingSince = Object.fromEntries(
+              Object.entries(previousMissingSince)
+                .map(([id, value]) => [canonicalContainerId(id), String(value)])
+                .filter(([id]) => missingWithoutLocation.includes(id)),
+            ) as Record<string, string>;
+            let missingSinceChanged =
+              JSON.stringify(missingSince) !== JSON.stringify(previousMissingSince);
+            const firstObservedAt = new Date().toISOString();
+            for (const id of missingWithoutLocation) {
+              if (!Number.isFinite(Date.parse(missingSince[id] ?? ""))) {
+                missingSince[id] = firstObservedAt;
+                missingSinceChanged = true;
+              }
+            }
+            if (missingSinceChanged) {
+              logger.info(
+                { label, missingIds: missingWithoutLocation },
+                "drone-role: recording first observation of unlocated manifest containers",
+              );
+              await deps.updateDroneRoleState(role.id, {
+                missingManifestContainerSince: missingSince,
+              });
+              onRolePollRequested?.([role.probeId, deliveryId]);
+              return true;
+            }
+            const expiredMissingIds = missingWithoutLocation.filter((id) =>
+              Date.now() - Date.parse(missingSince[id]) >=
+              FACTORY_HANDOFF_MISSING_CONTAINER_GRACE_MS,
+            );
+            let confirmedLostId: string | undefined;
+            if (
+              !sectorCheckFailed &&
+              expiredMissingIds.length > 0
+            ) {
+              for (const id of expiredMissingIds) {
+                try {
+                  await c.getStorageContainer(id);
+                } catch (err: any) {
+                  if (Number(err?.status) === 404) {
+                    confirmedLostId = id;
+                    break;
+                  }
+                  logger.warn(
+                    { label, err: err?.message, containerId: id },
+                    "drone-role: could not confirm missing manifest container",
+                  );
+                }
+              }
+            }
+            if (confirmedLostId) {
+              let miningReservedIds: Set<string>;
+              try {
+                miningReservedIds = getMiningAssignmentContainerIds(
+                  await deps.getMiningAssignments(),
+                  role.probeId,
+                );
+              } catch (err: any) {
+                logger.warn(
+                  { label, err: err?.message },
+                  "drone-role: cannot verify mining reservations for manifest recovery",
+                );
+                onRolePollRequested?.([role.probeId, deliveryId]);
+                return true;
+              }
+              const manifest = role.state.deliveryContainerManifest;
+              const manifestKey = manifest
+                ? (["resources", "deployment", "metals"] as const).find(
+                    (key) => canonicalContainerId(manifest[key]) === confirmedLostId,
+                  )
+                : undefined;
+              if (!manifest || !manifestKey) {
+                logger.warn(
+                  { label, containerId: confirmedLostId },
+                  "drone-role: lost container is not mapped to a manifest slot — preserving state",
+                );
+                onRolePollRequested?.([role.probeId, deliveryId]);
+                return true;
+              }
+              const expectedIdSet = new Set(expectedIds);
+              const replacement = attached.find((container: any) => {
+                const id = canonicalContainerId(container.id);
+                return (
+                  !expectedIdSet.has(id) &&
+                  !miningReservedIds.has(id) &&
+                  Number(container.usedCapacity ?? container.used ?? 0) <= 0
+                );
+              });
+              if (!replacement) {
+                const craftInProgress = mannies.some((manny: any) =>
+                  manny.currentTask === "craft" ||
+                  manny.currentTask === "crafting" ||
+                  manny.currentTask?.type === "craft" ||
+                  manny.currentTask?.type === "crafting",
+                );
+                const manny = craftInProgress ? undefined : pickIdleManny(mannies, claimed);
+                if (craftInProgress || !manny) {
+                  onRolePollRequested?.([role.probeId, deliveryId]);
+                  return true;
+                }
+                await c.craftItem(manny.id, "additional_container");
+                claimed.add(manny.id);
+                logger.warn(
+                  { label, lostContainerId: confirmedLostId },
+                  "drone-role: crafting a replacement for a confirmed lost manifest container",
+                );
+                onRolePollRequested?.([role.probeId, deliveryId]);
+                return true;
+              }
+              const replacementId = canonicalContainerId(replacement.id);
+              const replacementLabel = {
+                resources: "delivery-resources",
+                deployment: "delivery-deployment",
+                metals: "delivery-metals",
+              }[manifestKey];
+              if (replacement.label !== replacementLabel) {
+                await c.renameStorageContainer(replacementId, replacementLabel);
+                onRolePollRequested?.([role.probeId, deliveryId]);
+                return true;
+              }
+              const nextManifest = { ...manifest, [manifestKey]: replacementId };
+              const nextPreparedIds = expectedIds.map((id) =>
+                id === confirmedLostId ? replacementId : id,
+              );
+              const nextMissingSince = { ...missingSince };
+              delete nextMissingSince[confirmedLostId];
+              logger.warn(
+                {
+                  label,
+                  lostContainerId: confirmedLostId,
+                  replacementContainerId: replacementId,
+                  manifestSlot: manifestKey,
+                },
+                "drone-role: replacing a confirmed lost manifest container after the handoff grace period",
+              );
+              await deps.updateDroneRoleState(role.id, {
+                phase: "loading_delivery_containers",
+                deliveryContainerManifest: nextManifest,
+                preparedContainerIds: nextPreparedIds,
+                missingManifestContainerSince:
+                  Object.keys(nextMissingSince).length > 0
+                    ? nextMissingSince
+                    : undefined,
+                lastError: undefined,
+              });
+              onRolePollRequested?.([role.probeId, deliveryId]);
+              return true;
+            }
+            logger.info(
+              {
+                label,
+                expectedIds,
+                missingIds,
+                detachingIds: [...detachingIds],
+                driftingIds: [...driftingIds],
+              },
+              "drone-role: missing manifest container is not visible yet — preserving and retrying",
+            );
+            onRolePollRequested?.([role.probeId, deliveryId]);
+            return true;
+          }
       }
-      return true;
+      }
     }
   }
   if (phase === "collecting_returned_containers") {
@@ -2526,25 +2972,74 @@ async function runFactoryContainerWorkflow(
     );
     if (!returned) return true;
     const manny = pickIdleManny(mannies, claimed);
-    if (!manny) return true;
+      if (!manny) {
+        onRolePollRequested?.([role.probeId, deliveryId]);
+        return true;
+      }
     await c.recoverContainer(manny.id, returned.id);
     claimed.add(manny.id);
     return true;
   }
   if (phase === "preparing_delivery_containers") {
     const existingManifest = role.state.deliveryContainerManifest;
+    let miningReservedIds: Set<string>;
+    try {
+      miningReservedIds = getMiningAssignmentContainerIds(
+        await deps.getMiningAssignments(),
+        role.probeId,
+      );
+    } catch (err: any) {
+      logger.warn(
+        { label, err: err?.message },
+        "drone-role: cannot verify mining container reservations — deferring manifest selection",
+      );
+      onRolePollRequested?.([role.probeId, deliveryId]);
+      return true;
+    }
+    const existingManifestIds = existingManifest
+      ? [existingManifest.resources, existingManifest.deployment, existingManifest.metals]
+          .filter((id): id is string => Boolean(id))
+      : [];
+    const conflictingManifestIds = existingManifestIds.filter((id) =>
+      miningReservedIds.has(canonicalContainerId(id)),
+    );
+    if (conflictingManifestIds.length > 0) {
+      logger.warn(
+        { label, conflictingManifestIds },
+        "drone-role: existing delivery manifest overlaps mining reservations — preserving and deferring",
+      );
+      onRolePollRequested?.([role.probeId, deliveryId]);
+      return true;
+    }
     const selected = existingManifest?.resources && existingManifest.deployment && existingManifest.metals
       ? [existingManifest.resources, existingManifest.deployment, existingManifest.metals]
           .map((id) => attached.find((container: any) => String(container.id) === id))
           .filter(Boolean)
       : attached
-          .filter((container: any) => Number(container.usedCapacity ?? container.used ?? 0) <= 0)
+          .filter((container: any) =>
+            !miningReservedIds.has(canonicalContainerId(container.id)) &&
+            Number(container.usedCapacity ?? container.used ?? 0) <= 0,
+          )
           .slice(0, 3);
     if (selected.length < 3) {
+      const craftInProgress = mannies.some((manny: any) =>
+        manny.currentTask === "craft" ||
+        manny.currentTask === "crafting" ||
+        manny.currentTask?.type === "craft" ||
+        manny.currentTask?.type === "crafting",
+      );
+      if (craftInProgress) {
+        onRolePollRequested?.([role.probeId, deliveryId]);
+        return true;
+      }
       const manny = pickIdleManny(mannies, claimed);
-      if (!manny) return true;
+      if (!manny) {
+        onRolePollRequested?.([role.probeId, deliveryId]);
+        return true;
+      }
       await c.craftItem(manny.id, "additional_container");
       claimed.add(manny.id);
+      onRolePollRequested?.([role.probeId, deliveryId]);
       return true;
     }
     const manifest = existingManifest ?? {
@@ -2560,27 +3055,41 @@ async function runFactoryContainerWorkflow(
     });
     if (unlabelled) {
       await c.renameStorageContainer(manifest[unlabelled[0]]!, unlabelled[1]);
+      onRolePollRequested?.([role.probeId, deliveryId]);
       return true;
     }
     await deps.updateDroneRoleState(role.id, {
       phase: "loading_delivery_containers", deliveryContainerManifest: manifest,
       preparedContainerIds: [manifest.resources!, manifest.deployment!, manifest.metals!],
+      missingManifestContainerSince: undefined,
     });
+    onRolePollRequested?.([role.probeId, deliveryId]);
     return true;
   }
 
   const manifest = role.state.deliveryContainerManifest;
   if (!manifest?.resources || !manifest.deployment || !manifest.metals) {
-    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers" }); return true;
+    await deps.updateDroneRoleState(role.id, { phase: "preparing_delivery_containers" });
+    onRolePollRequested?.([role.probeId, deliveryId]);
+    return true;
   }
   if (phase === "loading_delivery_containers") {
     const items = probe?.inventory?.items ?? [];
+    const getManifestContainerDetail = (id: string) => {
+      const canonicalId = canonicalContainerId(id);
+      const isCourierOwned =
+        deliveryOnboard.has(canonicalId) &&
+        !attachedIds.has(canonicalId) &&
+        !factoryOnboard.has(canonicalId);
+      const owner = isCourierOwned && typeof dc.getStorageContainer === "function" ? dc : c;
+      return owner.getStorageContainer(id);
+    };
     // The list endpoint is deliberately not used as proof of contents: v130
     // exposes each container's own inventory on its GET endpoint.
     const [deploymentDetail, resourcesDetail, metalsDetail] = await Promise.all([
-      c.getStorageContainer(manifest.deployment),
-      c.getStorageContainer(manifest.resources),
-      c.getStorageContainer(manifest.metals),
+      getManifestContainerDetail(manifest.deployment),
+      getManifestContainerDetail(manifest.resources),
+      getManifestContainerDetail(manifest.metals),
     ]);
     const detailItems = (detail: any) =>
       detail?.inventory?.items ?? detail?.items ?? detail?.container?.inventory?.items ?? [];
@@ -2599,11 +3108,29 @@ async function runFactoryContainerWorkflow(
     const deliveryItems = dProbe?.inventory?.items ?? [];
     const deliveryCount = (type: string) =>
       deliveryItems.filter((item: any) => item.type === type).length;
+    if (mannies.some((manny: any) => manny.currentTask === "moving_stockage")) {
+      onRolePollRequested?.([role.probeId, deliveryId]);
+      return true;
+    }
     const missing = [...new Set(need)].find((type) =>
       deployedCount(type) + sourceCount(type) + deliveryCount(type) < wantedCount(type));
     if (missing) {
-      if (missing === "integrated_circuit") await c.atomicPrinterCraft(missing);
-      else {
+      if (missing === "integrated_circuit") {
+        const printer = items.find((item: any) => item.type === "atomic_3d_printer");
+        const printerBusy =
+          Boolean(printer?.currentTask && printer.currentTask !== "idle") ||
+          mannies.some((manny: any) =>
+            manny.currentTask === "assisting_atomic_printer" ||
+            manny.currentTask === "printing" ||
+            manny.currentTask?.type === "assisting_atomic_printer" ||
+            manny.currentTask?.type === "printing",
+          );
+        if (printerBusy) {
+          onRolePollRequested?.([role.probeId, deliveryId]);
+          return true;
+        }
+        await c.atomicPrinterCraft(missing);
+      } else {
         // Item counts stay unchanged until a Manny craft completes. Without this
         // guard, each 15-minute role poll starts the same missing recipe on a
         // different idle Manny, accumulating duplicate long-running crafts.
@@ -2615,24 +3142,37 @@ async function runFactoryContainerWorkflow(
           manny.currentTask?.type === "craft" ||
           manny.currentTask?.type === "crafting",
         );
-        if (craftInProgress) return true;
-        const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
+        if (craftInProgress) {
+          onRolePollRequested?.([role.probeId, deliveryId]);
+          return true;
+        }
+        const manny = pickIdleManny(mannies, claimed);
+        if (!manny) {
+          onRolePollRequested?.([role.probeId, deliveryId]);
+          return true;
+        }
         await c.craftItem(manny.id, missing); claimed.add(manny.id);
       }
+      onRolePollRequested?.([role.probeId, deliveryId]);
       return true;
     }
     const deploymentItem = sourceItems.find((i: any) => deployedCount(i.type) < wantedCount(i.type));
     if (deploymentItem) {
       const manny = pickIdleManny(mannies, claimed);
-      if (!manny) return true;
+      if (!manny) {
+        onRolePollRequested?.([role.probeId, deliveryId]);
+        return true;
+      }
       await c.storageMove({ actorMannyId: manny.id, kind: "item", itemIds: [deploymentItem.id], quantity: 1, toContainerId: manifest.deployment });
       claimed.add(manny.id);
+      onRolePollRequested?.([role.probeId, deliveryId]);
       return true;
     }
     // Resource moves remain invisible in container contents until the Manny
     // task completes. Recalculating from stale details would reserve the same
     // amount again and VNG rejects it with "requested amount is not available."
     if (mannies.some((manny: any) => manny.currentTask === "moving_stockage")) {
+      onRolePollRequested?.([role.probeId, deliveryId]);
       return true;
     }
     const core = listed.find((x: any) => x.kind !== "container" && !isContainerItem(x));
@@ -2640,6 +3180,12 @@ async function runFactoryContainerWorkflow(
     const resourceTarget = resourcesDetail?.container ?? resourcesDetail;
     const metalsTarget = metalsDetail?.container ?? metalsDetail;
     const stocks = probe?.inventory?.resourceStocks ?? [];
+    // These are separate courier manifest destinations, not source stock.
+    // In particular, the unlimited metals reserve must not draw the metals
+    // already allocated to the fixed 50/25/25 resource container.
+    const protectedManifestContainerIds = new Set(
+      [manifest.resources, manifest.deployment, manifest.metals].map(canonicalContainerId),
+    );
     const inContainer = (detail: any, type: string) => Number(
       (detail?.inventory?.resourceStocks ?? detail?.resourceStocks ?? detail?.container?.inventory?.resourceStocks ?? [])
         .find((s: any) => s.type === type)?.amount ?? 0,
@@ -2672,6 +3218,7 @@ async function runFactoryContainerWorkflow(
       const source = sources.find(
         (candidate: any) =>
           candidate.amount > 0.000_001 &&
+          !protectedManifestContainerIds.has(canonicalContainerId(candidate.id)) &&
           canonicalContainerId(candidate.id) !== targetId,
       );
       const amount = Math.min(
@@ -2680,27 +3227,58 @@ async function runFactoryContainerWorkflow(
         missingAmount,
       );
       if (amount > 0) {
-        const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
+        const manny = pickIdleManny(mannies, claimed);
+        if (!manny) {
+          onRolePollRequested?.([role.probeId, deliveryId]);
+          return true;
+        }
         // Metals fill is deliberately min(source stock, destination free capacity),
         // not a made-up quantity; earlier resource allocations have priority.
         await c.storageMove({ actorMannyId: manny.id, kind: "resource", resourceType: type, amount, fromContainerId: source.id, toContainerId: target.id });
-        claimed.add(manny.id); return true;
+        claimed.add(manny.id);
+        onRolePollRequested?.([role.probeId, deliveryId]);
+        return true;
       }
       // The finite 50/25/25 resource manifest is mandatory. Wait for stock
       // rather than handing off an incomplete container.
-      if (Number.isFinite(desired)) return true;
+      if (Number.isFinite(desired)) {
+        onRolePollRequested?.([role.probeId, deliveryId]);
+        return true;
+      }
     }
-    await deps.updateDroneRoleState(role.id, { phase: "handoff_delivery_containers" }); return true;
+    await deps.updateDroneRoleState(role.id, { phase: "handoff_delivery_containers" });
+    onRolePollRequested?.([role.probeId, deliveryId]);
+    return true;
   }
   // Handoff preserves the IDs in preparedContainerIds. The courier observes and
   // recovers only these IDs before recording its outbound manifest.
+  const preparedIds = new Set(
+    (role.state.preparedContainerIds ?? []).map(canonicalContainerId),
+  );
+  const detachInProgress = mannies.some(
+    (manny: any) =>
+      manny.currentTask === "detaching_storage_container" &&
+      preparedIds.has(canonicalContainerId(manny.task?.containerId)),
+  );
+  if (detachInProgress) {
+    onRolePollRequested?.([role.probeId, deliveryId]);
+    return true;
+  }
   const remaining = (role.state.preparedContainerIds ?? []).filter((id) =>
     onboardContainerIds(probe?.inventory?.items ?? []).has(id));
   if (remaining.length) {
-    const manny = pickIdleManny(mannies, claimed); if (!manny) return true;
-    await c.detachContainer(manny.id, remaining[0], "drifting"); claimed.add(manny.id); return true;
+    const manny = pickIdleManny(mannies, claimed);
+    if (!manny) {
+      onRolePollRequested?.([role.probeId, deliveryId]);
+      return true;
+    }
+    await c.detachContainer(manny.id, remaining[0], "drifting");
+    claimed.add(manny.id);
+    onRolePollRequested?.([role.probeId, deliveryId]);
+    return true;
   }
   await deps.updateDroneRoleState(role.id, { phase: "awaiting_delivery_pickup" });
+  onRolePollRequested?.([role.probeId, deliveryId]);
   return true;
 }
 
@@ -2713,8 +3291,18 @@ export async function runFactoryRole(
   isMoving: boolean,
   label: string,
   deps: FactoryDeps = defaultFactoryDeps,
+  onRolePollRequested?: RequestRolePoll,
 ): Promise<void> {
-  if (await runFactoryContainerWorkflow(role, probe, mannies, claimed, c, label, deps)) return;
+  if (await runFactoryContainerWorkflow(
+    role,
+    probe,
+    mannies,
+    claimed,
+    c,
+    label,
+    deps,
+    onRolePollRequested,
+  )) return;
   const cfg = role.config as FactoryConfig;
   const phase = role.state.phase;
   const servedIds = cfg.deliveryProbeIds ?? [];

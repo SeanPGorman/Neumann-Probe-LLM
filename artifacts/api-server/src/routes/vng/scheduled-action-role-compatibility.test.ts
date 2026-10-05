@@ -2,6 +2,11 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 
 import { findScheduledActionRoleConflict } from "./scheduled-action-role-compatibility.js";
+import { VngApiError } from "./client.js";
+import {
+  getMiningWorkerReserve,
+  handlePendingActionError,
+} from "./poller.js";
 import type { DroneRoleType } from "./drone-roles-store.js";
 import type { PendingActionPayload } from "./file-store.js";
 
@@ -45,4 +50,23 @@ test("the first enabled role is reported when multiple roles target a probe", ()
     findScheduledActionRoleConflict("move_probe", ["delivery", "factory"]),
     "delivery",
   );
+});
+
+test("scheduled action 409 conflicts stay pending for a later poll", async () => {
+  const resolutions: Array<{ id: number; patch: unknown }> = [];
+  const outcome = await handlePendingActionError(
+    31063,
+    new VngApiError(409, "The Manny is already executing an order."),
+    "test",
+    async (id, patch) => { resolutions.push({ id, patch }); },
+  );
+
+  assert.equal(outcome, "pause");
+  assert.deepEqual(resolutions, []);
+});
+
+test("mining reserves one worker for factory-role work without reducing a larger craft reserve", () => {
+  assert.equal(getMiningWorkerReserve(0, false), 0);
+  assert.equal(getMiningWorkerReserve(0, true), 1);
+  assert.equal(getMiningWorkerReserve(3, true), 3);
 });

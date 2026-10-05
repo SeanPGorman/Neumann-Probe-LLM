@@ -79,6 +79,8 @@ export type RoleState = {
   preparedContainerIds?: string[];
   /** Factory: labels keyed by delivery cargo class, retained across ticks/restarts. */
   deliveryContainerManifest?: { resources?: string; deployment?: string; metals?: string };
+  /** Factory: first observation time for each unlocated manifest container. */
+  missingManifestContainerSince?: Record<string, string>;
   /** Explorer: relay for which the transit beacon action has been requested. */
   beaconRelayId?: string;
   /** Ball Explorer: sector selected from the unvisited SCUT-covered set. */
@@ -268,6 +270,55 @@ export async function getDeliveryRequests(): Promise<DeliveryRequest[]> {
 export async function getPendingDeliveryRequest(): Promise<DeliveryRequest | null> {
   const all = await getDeliveryRequests();
   return all.find((r) => r.status === "pending") ?? null;
+}
+
+/** Atomically assign the next pending request and move its courier into travel. */
+export async function claimPendingDeliveryRequest(
+  roleId: number,
+  outboundContainerIds: string[],
+): Promise<DeliveryRequest | null> {
+  return withLock(async () => {
+    const [roles, requests] = await Promise.all([
+      readJson<DroneRole[]>(ROLES_FILE, []),
+      readJson<DeliveryRequest[]>(DELIVERY_REQUESTS_FILE, []),
+    ]);
+    const roleIndex = roles.findIndex(
+      (role) =>
+        role.id === roleId &&
+        role.enabled &&
+        role.roleType === "delivery" &&
+        role.state.phase === "waiting",
+    );
+    if (roleIndex === -1) return null;
+
+    const requestIndex = requests.findIndex((request) => request.status === "pending");
+    if (requestIndex === -1) return null;
+
+    const role = roles[roleIndex];
+    const request = requests[requestIndex];
+    const now = new Date().toISOString();
+    requests[requestIndex] = {
+      ...request,
+      status: "assigned",
+      assignedDeliveryProbeId: role.probeId,
+    };
+    roles[roleIndex] = {
+      ...role,
+      state: {
+        ...role.state,
+        phase: "traveling_to_explorer",
+        assignedExplorerId: request.explorerId,
+        travelTarget: request.explorerSector,
+        outboundContainerIds,
+        lastError: undefined,
+        lastUpdated: now,
+      },
+    };
+
+    await writeJson(DELIVERY_REQUESTS_FILE, requests);
+    await writeJson(ROLES_FILE, roles);
+    return requests[requestIndex];
+  });
 }
 
 export async function addDeliveryRequest(

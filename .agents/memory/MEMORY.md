@@ -11,6 +11,7 @@
 - [Refuel role persistence](refuel-role-persistence.md) — verify the active role store before debugging refueling; a merge can remove runtime assignments
 - [Explorer journal durability](explorer-journal-durability.md) — merge raw discoveries cumulatively and retain waypoint activity even when scan capture is unavailable
 - [Protect delivery cargo from repairs](delivery-cargo-repair-protection.md) — factory-served couriers must never consume staged metals for automatic hull repair
+- [Delivery automation scope](delivery-automation-scope.md) — leave AI command handling unchanged; keep conflicting scheduled actions pending and diagnose live state read-only
 - [Probe-idle movement phases](probe-idle-movement-phases.md) — queued travel must wait through every movement phase, not only `moving`
 - [Mining assignment migration](mining-assignment-migration.md) — freeze idle work, transfer containers first, then persist ownership; never disturb active cycles
 - [Mining-first crafting reserve](unit-sequential-crafting.md) — mining keeps at least 75% of Mannys; earliest ready crafting may reserve at most 25%

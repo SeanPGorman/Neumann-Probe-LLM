@@ -2,6 +2,10 @@ import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError, withVngReadCache } from "./client.js";
 import { runDroneRoleAutomation } from "./drone-role-runner.js";
 import { getDroneRoles } from "./drone-roles-store.js";
+import {
+  canonicalContainerId,
+  getFactoryManifestContainerIds,
+} from "./container-reservations.js";
 import { findScheduledActionRoleConflict } from "./scheduled-action-role-compatibility.js";
 import {
   getPendingActions,
@@ -25,6 +29,7 @@ const CORE_POLL_INTERVAL_MS = 30_000;
 const ROLE_POLL_INTERVAL_MS = 15 * 60 * 1_000;
 let started = false;
 let rolePollRequested = false;
+const requestedRoleProbeIds = new Set<number>();
 
 // Probes where every crafting attempt last tick returned "insufficient resources".
 // When a probe is in this set, the crafting reserve is dropped to 0 so all
@@ -45,6 +50,13 @@ function distributeAmounts(capacity: number, n: number): number[] {
   return Array.from({ length: n }, (_, i) =>
     parseFloat(((i < extraCount ? baseUnits + 1 : baseUnits) * UNIT).toFixed(4))
   );
+}
+
+export function getMiningWorkerReserve(
+  craftingReserve: number,
+  factoryRoleNeedsWorker: boolean,
+): number {
+  return Math.max(craftingReserve, factoryRoleNeedsWorker ? 1 : 0);
 }
 
 /**
@@ -68,6 +80,40 @@ async function resolveQuietly(
       "poller: could not persist action status — row may re-fire next tick",
     );
   }
+}
+
+export async function handlePendingActionError(
+  actionId: number,
+  err: unknown,
+  label: string,
+  resolve: typeof resolveQuietly = resolveQuietly,
+): Promise<"retry" | "pause" | "failed"> {
+  const msg = (err as any)?.message ?? String(err);
+  if (msg.includes("Insufficient resources") || msg.includes("insufficient resources")) {
+    logger.info(
+      { actionId, label },
+      "poller: insufficient resources — keeping pending, will retry next poll",
+    );
+    return "retry";
+  }
+  if (err instanceof VngApiError && err.status === 409) {
+    logger.info(
+      { actionId, err: msg, label },
+      "poller: VNG conflict — keeping action pending and pausing this probe until next poll",
+    );
+    return "pause";
+  }
+  if (err instanceof VngApiError && err.status === 429) {
+    logger.warn(
+      { actionId, label },
+      "poller: VNG rate limit reached — keeping action pending and pausing this probe until next poll",
+    );
+    return "pause";
+  }
+
+  logger.error({ actionId, err: msg, label }, "poller: action execution failed");
+  await resolve(actionId, { status: "failed", error: msg });
+  return "failed";
 }
 
 /**
@@ -142,11 +188,20 @@ async function runMiningAutomation(
   mannies: any[],
   claimedMannies: Set<string>,
   c: ReturnType<typeof clientFor>,
-  craftingReserve: number,
+  mannyReserve: number,
+  protectedContainerIds: Set<string>,
 ): Promise<void> {
   const allAssignments = await getMiningAssignments().catch(() => [] as MiningAssignment[]);
   const assignments = allAssignments.filter(
-    (a) => a.enabled && (a.probeId ?? null) === (probeId ?? null)
+    (a) => {
+      if (!a.enabled || (a.probeId ?? null) !== (probeId ?? null)) return false;
+      if (!protectedContainerIds.has(canonicalContainerId(a.containerId))) return true;
+      logger.info(
+        { probeId, assignmentId: a.id, containerId: a.containerId },
+        "mining: skipping container reserved by factory delivery manifest",
+      );
+      return false;
+    },
   );
   if (assignments.length === 0) return;
 
@@ -196,9 +251,9 @@ async function runMiningAutomation(
   for (const assignment of assignments) {
     try {
       if (assignment.assignmentMode === "drift") {
-        await runDriftCycle(assignment, probe, mannies, claimedMannies, c, craftingReserve);
+        await runDriftCycle(assignment, probe, mannies, claimedMannies, c, mannyReserve);
       } else {
-        await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, craftingReserve);
+        await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, mannyReserve);
       }
       // Successful cycle — reset the consecutive sector-error counter if it was
       // nonzero so past transient failures don't count against future ticks.
@@ -255,13 +310,13 @@ async function runMiningAutomation(
 function miningCandidates(
   mannies: any[],
   claimedMannies: Set<string>,
-  craftingReserve: number,
+  mannyReserve: number,
   candidates: any[] = mannies,
 ): any[] {
   const available = mannies.filter(
     (m: any) => !m.currentTask && !claimedMannies.has(m.id as string),
   );
-  const claimableCount = Math.max(0, available.length - craftingReserve);
+  const claimableCount = Math.max(0, available.length - mannyReserve);
   const candidateIds = new Set(candidates.map((m: any) => m.id as string));
   return available
     .filter((m: any) => candidateIds.has(m.id as string))
@@ -279,7 +334,7 @@ async function runDriftCycle(
   mannies: any[],
   claimedMannies: Set<string>,
   c: ReturnType<typeof clientFor>,
-  craftingReserve: number,
+  mannyReserve: number,
 ): Promise<void> {
   const label = `drift assignment ${assignment.id} (${assignment.material})`;
   const invContainers: any[] = (probe?.inventory?.containers ?? []).filter(
@@ -306,7 +361,7 @@ async function runDriftCycle(
     const [manny] = miningCandidates(
       mannies,
       claimedMannies,
-      craftingReserve,
+      mannyReserve,
     );
     if (!manny) {
       logger.info({ label }, "drift: no idle manny available — deferring");
@@ -360,7 +415,7 @@ async function runMiningCycle(
   c: ReturnType<typeof clientFor>,
   asteroids: any[],
   rawSectorObjects: any[],
-  craftingReserve: number,
+  mannyReserve: number,
 ): Promise<void> {
   const label = `mining assignment ${assignment.id} (${assignment.material})`;
 
@@ -412,7 +467,7 @@ async function runMiningCycle(
           const [recoverer] = miningCandidates(
             mannies,
             claimedMannies,
-            craftingReserve,
+            mannyReserve,
           );
           if (!recoverer) {
             logger.info({ label }, "mining: no idle manny for recovery, deferring");
@@ -459,18 +514,17 @@ async function runMiningCycle(
       return;
     }
 
-    // Claim N idle mannies (unclaimed, no currentTask).
-    // Respect the crafting reserve: leave at least `craftingReserve` mannies
-    // free for the scheduled-task queue so mining never fully starves crafting.
+    // Claim N idle mannies (unclaimed, no currentTask). Leave the requested
+    // reserve free for higher-priority scheduled crafting or factory-role work.
     const available = miningCandidates(
       mannies,
       claimedMannies,
-      craftingReserve,
+      mannyReserve,
     );
     if (available.length === 0) {
       logger.info(
-        { label, have: available.length, reserved: craftingReserve },
-        "mining: no mannies available after crafting reserve, deferring"
+        { label, have: available.length, reserved: mannyReserve },
+        "mining: no mannies available after worker reserve, deferring"
       );
       return;
     }
@@ -625,7 +679,7 @@ async function runMiningCycle(
         const [recoverer] = miningCandidates(
           mannies,
           claimedMannies,
-          craftingReserve,
+          mannyReserve,
         );
         if (recoverer) {
           claimedMannies.add(recoverer.id as string);
@@ -654,7 +708,7 @@ async function runMiningCycle(
     const pendingToDispatch = miningCandidates(
       mannies,
       claimedMannies,
-      craftingReserve,
+      mannyReserve,
       pendingDispatch,
     );
     if (!containerFull && pendingToDispatch.length > 0 && effectiveAsteroidId) {
@@ -712,7 +766,7 @@ async function runMiningCycle(
       const extraAvailable = miningCandidates(
         mannies,
         claimedMannies,
-        craftingReserve,
+          mannyReserve,
       );
       if (extraAvailable.length > 0) {
         const toAdd = extraAvailable.slice(0, stillNeeded);
@@ -776,7 +830,7 @@ async function runMiningCycle(
     const [recoverer] = miningCandidates(
       mannies,
       claimedMannies,
-      craftingReserve,
+      mannyReserve,
     );
     if (!recoverer) {
       logger.info({ label }, "mining: no idle manny for recovery, deferring");
@@ -979,12 +1033,28 @@ async function pollProbe(
     );
   }
 
+  const factoryRoleNeedsWorker =
+    runRoles && enabledProbeRoles.some((role) => role.roleType === "factory");
+  const protectedFactoryContainerIds = getFactoryManifestContainerIds(droneRoles, probeId);
+  const miningWorkerReserve = getMiningWorkerReserve(
+    craftingReserve,
+    factoryRoleNeedsWorker,
+  );
+
   // Track crafting outcomes this tick so we can update craftingMaterialsBlocked.
   let craftingAttempts = 0;
   let craftingInsufficientCount = 0;
 
   // Mining automation runs first — claims mannies before crafting queue can
-  await runMiningAutomation(probeId, probe, mannies, claimedMannies, c, craftingReserve).catch((err) =>
+  await runMiningAutomation(
+    probeId,
+    probe,
+    mannies,
+    claimedMannies,
+    c,
+    miningWorkerReserve,
+    protectedFactoryContainerIds,
+  ).catch((err) =>
     logger.error({ err: err?.message, probeId }, "poller: mining automation error")
   );
 
@@ -992,7 +1062,7 @@ async function pollProbe(
   if (runRoles) {
     await runDroneRoleAutomation(probeId, probe, mannies, c, () => {
       probeMoveClaimed = true;
-    }).catch((err) =>
+    }, requestRolePoll, claimedMannies).catch((err) =>
       logger.error({ err: err?.message, probeId }, "poller: drone role automation error")
     );
   }
@@ -1174,29 +1244,14 @@ async function pollProbe(
       }
       if (craftingAction) craftingAttempts++;  // succeeded — not insufficient
     } catch (err: any) {
-      const msg = err?.message ?? String(err);
-      // 422 "Insufficient resources" — keep pending and retry next cycle
-      if (msg.includes("Insufficient resources") || msg.includes("insufficient resources")) {
-        logger.info(
-          { actionId: action.id, label },
-          "poller: insufficient resources — keeping pending, will retry next poll"
-        );
+      const outcome = await handlePendingActionError(action.id, err, label);
+      if (outcome === "retry") {
         if (craftingAction) {
           craftingAttempts++;
           craftingInsufficientCount++;
         }
-      } else if (err instanceof VngApiError && err.status === 429) {
-        // Rate limiting is transient. Keep this row pending and stop issuing
-        // more actions for this probe during the current tick; otherwise every
-        // remaining row is immediately failed against the same exhausted token.
-        logger.warn(
-          { actionId: action.id, label },
-          "poller: VNG rate limit reached — keeping action pending and pausing this probe until next poll",
-        );
+      } else if (outcome === "pause") {
         break;
-      } else {
-        logger.error({ actionId: action.id, err: msg, label }, "poller: action execution failed");
-        await resolveQuietly(action.id, { status: "failed", error: msg });
       }
     }
   }
@@ -1216,7 +1271,10 @@ async function pollProbe(
   }
 }
 
-async function poll(runRoles: boolean): Promise<void> {
+async function poll(
+  runRoles: boolean,
+  onlyRoleProbeIds?: Set<number>,
+): Promise<void> {
   return withVngReadCache(async () => {
   const [pending, miningAssignments, roleRead] = await Promise.all([
     getPendingActions(),
@@ -1266,9 +1324,14 @@ async function poll(runRoles: boolean): Promise<void> {
 
   if (byProbe.size === 0) return;
 
+  const probesToPoll = [...byProbe.values()].filter(({ probeId }) =>
+    onlyRoleProbeIds == null ||
+    (probeId != null && onlyRoleProbeIds.has(probeId)),
+  );
+
   // Poll all probes in parallel
   await Promise.all(
-    [...byProbe.values()].map(({ probeId, actions }) =>
+    probesToPoll.map(({ probeId, actions }) =>
       pollProbe(
         probeId,
         actions,
@@ -1283,10 +1346,16 @@ async function poll(runRoles: boolean): Promise<void> {
   });
 }
 
-/** Wake drone-role automation on the next core poll instead of waiting for the
- * normal role interval. Used for operator-initiated work such as emergency supply. */
-export function requestRolePoll(): void {
-  rolePollRequested = true;
+/** Wake roles for specific probes on the next core poll. A no-argument request
+ * preserves the full role poll for operator-initiated work and startup. */
+export function requestRolePoll(probeIds?: number[]): void {
+  if (!probeIds?.length) {
+    rolePollRequested = true;
+    return;
+  }
+  for (const probeId of probeIds) {
+    if (Number.isInteger(probeId)) requestedRoleProbeIds.add(probeId);
+  }
 }
 
 export function startPoller(): void {
@@ -1313,12 +1382,20 @@ export function startPoller(): void {
     }
     ticking = true;
     const now = Date.now();
-    const runRoles = rolePollRequested || now - lastRolePollAt >= ROLE_POLL_INTERVAL_MS;
-    if (runRoles) {
+    const runAllRoles =
+      rolePollRequested || now - lastRolePollAt >= ROLE_POLL_INTERVAL_MS;
+    const roleProbeIds = new Set(requestedRoleProbeIds);
+    requestedRoleProbeIds.clear();
+    if (runAllRoles) {
       rolePollRequested = false;
       lastRolePollAt = now;
     }
-    poll(runRoles)
+    const pollPromise = runAllRoles
+      ? poll(true)
+      : roleProbeIds.size > 0
+        ? poll(true, roleProbeIds)
+        : poll(false);
+    pollPromise
       .catch((err) => logger.error({ err }, "poller: unexpected error"))
       .finally(() => {
         ticking = false;
