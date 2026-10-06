@@ -91,6 +91,10 @@ export type RoleState = {
   stopReason?: string;
   /** Ball Explorer: compact description of the anomaly that stopped the role. */
   anomalySummary?: string;
+  /** Explorer / Ball Explorer: sector where the anomaly was detected. */
+  anomalySector?: { x: number; y: number; z: number };
+  /** Sector whose anomaly the operator acknowledged; ignored until the probe leaves it. */
+  ignoredAnomalySector?: { x: number; y: number; z: number };
   /** Delivery: one-time emergency supply order currently being executed. */
   emergencySupplyOrderId?: number;
 };

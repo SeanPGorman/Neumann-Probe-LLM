@@ -168,6 +168,33 @@ test("Ball Explorer stops for a low-danger dormant construct before moving", asy
   assert.equal(moves.length, 0);
   assert.equal(patches.at(-1)?.phase, "anomaly_detected");
   assert.match(patches.at(-1)?.anomalySummary ?? "", /Thrust-anchored asteroid/);
+  assert.deepEqual(patches.at(-1)?.anomalySector, CURRENT);
+});
+
+test("Ball Explorer does not re-pause for an acknowledged construct in the same sector", async () => {
+  const construct = {
+    id: "dormant-construct-1",
+    type: "dormant_construct",
+    name: "Thrust-anchored asteroid",
+    summary: "Dormant non-natural construct detected; function unknown.",
+    dangerLevel: "low",
+  };
+  const patches: any[] = [];
+  const { api, moves } = client([construct]);
+
+  await runBallExplorerRole(
+    role({ phase: "scanning", ignoredAnomalySector: CURRENT }),
+    loadedProbe(),
+    [],
+    new Set(),
+    api,
+    false,
+    "test",
+    deps(0, patches),
+  );
+
+  assert.equal(moves.length, 0);
+  assert.equal(patches.at(-1)?.phase, "complete");
 });
 
 test("Ball Explorer retraces a recorded route one idle hop at a time and stops at the anomaly", async () => {

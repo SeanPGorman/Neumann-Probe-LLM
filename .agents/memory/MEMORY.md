@@ -22,3 +22,4 @@
 - [Ball Explorer repair reserve](ball-explorer-repair-reserve.md) — partial metals reserve supports repairs; empty reserve returns through a beaconed SCUT to factory
 - [Ball Explorer anomaly retrace](ball-explorer-anomaly-retrace.md) — a missed discovery requires a position-checked return itinerary, not independent idle movement orders
 - [Factory craft idempotency](factory-craft-idempotency.md) — account for unfinished Manny crafts before retrying a missing manifest item
+- [Explorer anomaly acknowledgment](explorer-anomaly-acknowledgment.md) — resume suppresses the acknowledged sector until the probe leaves, preventing an immediate repeat stop

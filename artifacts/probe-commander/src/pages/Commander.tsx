@@ -1549,21 +1549,12 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
     await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
   };
 
-  const resumeBallExplorer = async (r: DroneRole) => {
-    await fetchJson(`${BASE}/api/vng/drone-roles/${r.id}`, {
-      method: "PUT",
+  const resumeExplorerRole = async (r: DroneRole) => {
+    const phase = r.roleType === "ball_explorer" ? "scanning" : "idle";
+    await fetchJson(`${BASE}/api/vng/drone-roles/${r.id}/phase`, {
+      method: "PATCH",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        state: {
-          ...r.state,
-          phase: "scanning",
-          stopReason: undefined,
-          anomalySummary: undefined,
-          ballDestination: undefined,
-          travelTarget: undefined,
-          lastError: undefined,
-        },
-      }),
+      body: JSON.stringify({ phase }),
     });
     await queryClient.invalidateQueries({ queryKey: ["drone-roles"] });
   };
@@ -1680,6 +1671,41 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
               {role.state.phase.replace(/_/g, " ")}
             </span>
           </div>
+
+          {(role.roleType === "explorer" || role.roleType === "ball_explorer") &&
+            role.state.phase === "anomaly_detected" && (
+              <div
+                role="alert"
+                aria-live="assertive"
+                data-testid={`alert-role-anomaly-${role.id}`}
+                className="rounded border border-red-500/60 bg-red-950/30 p-2 space-y-1.5"
+              >
+                <div className="text-[10px] font-mono font-bold tracking-widest text-red-300">
+                  ⚠ ANOMALY DETECTED
+                </div>
+                <div className="text-[11px] text-red-200 break-words">
+                  {(role.state as any).anomalySummary ?? "Anomaly detected in this sector."}
+                </div>
+                {(role.state as any).anomalySector && (
+                  <div className="text-[10px] font-mono text-red-200/80">
+                    Sector [{(role.state as any).anomalySector.x}, {(role.state as any).anomalySector.y}, {(role.state as any).anomalySector.z}]
+                  </div>
+                )}
+                {(role.state as any).stopReason && (
+                  <div className="text-[10px] text-red-200/80">
+                    Stopped: {(role.state as any).stopReason}
+                  </div>
+                )}
+                <button
+                  type="button"
+                  data-testid={`button-resume-anomaly-${role.id}`}
+                  onClick={() => resumeExplorerRole(role)}
+                  className="mt-1 w-full rounded border border-red-400/50 px-2 py-1.5 text-[9px] font-mono tracking-wider text-red-200 hover:bg-red-500/10"
+                >
+                  ACKNOWLEDGE & RESUME EXPLORATION
+                </button>
+              </div>
+            )}
 
           <div className="border-t border-border/30 pt-2 space-y-1.5">
             <div className="text-[9px] text-muted-foreground tracking-widest">MANUAL PHASE OVERRIDE</div>
@@ -1799,7 +1825,7 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
             {role.roleType === "ball_explorer" && (() => {
               const cfg = role.config as any;
               const factory = probeList.find((p) => p.id === cfg.factoryProbeId);
-              const stopped = role.state.phase === "anomaly_detected" || role.state.phase === "complete";
+              const stopped = role.state.phase === "complete";
               return (
                 <>
                   <div className="text-[10px] text-muted-foreground">
@@ -1813,23 +1839,13 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                   <div className="text-[10px] text-muted-foreground">
                     Route: <span className="text-foreground">random unvisited sectors, SCUT coverage only</span>
                   </div>
-                  {(role.state as any).anomalySummary && (
-                    <div className="text-[10px] text-red-400">
-                      Anomaly: {(role.state as any).anomalySummary}
-                    </div>
-                  )}
-                  {(role.state as any).stopReason && (
-                    <div className="text-[10px] text-muted-foreground">
-                      Stopped: <span className="text-foreground">{(role.state as any).stopReason}</span>
-                    </div>
-                  )}
                   {stopped && (
                     <button
                       type="button"
-                      onClick={() => resumeBallExplorer(role)}
+                      onClick={() => resumeExplorerRole(role)}
                       className="mt-1 w-full rounded border border-primary/50 px-2 py-1.5 text-[9px] font-mono tracking-wider text-primary hover:bg-primary/10"
                     >
-                      ACKNOWLEDGE & RESUME EXPLORATION
+                      START ANOTHER EXPLORATION
                     </button>
                   )}
                 </>

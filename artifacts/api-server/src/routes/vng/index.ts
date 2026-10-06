@@ -381,6 +381,20 @@ router.patch("/drone-roles/:id/phase", async (req, res): Promise<void> => {
       }
       statePatch.deliveryRequestId = undefined;
     }
+    if (
+      (role.roleType === "explorer" && phase === "idle") ||
+      (role.roleType === "ball_explorer" && phase === "scanning")
+    ) {
+      statePatch.stopReason = undefined;
+      statePatch.anomalySummary = undefined;
+      statePatch.ignoredAnomalySector =
+        role.state.anomalySector ?? role.state.ignoredAnomalySector;
+      statePatch.anomalySector = undefined;
+    }
+    if (role.roleType === "ball_explorer" && phase === "scanning") {
+      statePatch.ballDestination = undefined;
+      statePatch.anomalyReturnPath = undefined;
+    }
     if (role.roleType === "delivery" && phase === "waiting") {
       statePatch.assignedExplorerId = undefined;
       statePatch.outboundContainerIds = undefined;

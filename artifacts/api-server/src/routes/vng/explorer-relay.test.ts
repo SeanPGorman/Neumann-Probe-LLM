@@ -83,6 +83,67 @@ async function seedExplorer(store: any, phase: string) {
   return (await store.getDroneRoles())[0];
 }
 
+test("Explorer pauses and records the sector when a dormant construct is present", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "idle");
+  const calls: any[] = [];
+  const construct = {
+    id: "construct-1",
+    type: "dormant_construct",
+    name: "Thrust-anchored asteroid",
+    summary: "Dormant non-natural construct detected; function unknown.",
+    dangerLevel: "low",
+  };
+
+  await runner.runExplorerRole(
+    role,
+    probeWith([]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, [construct]),
+    false,
+    "test",
+  );
+
+  assert.deepEqual(calls, []);
+  const paused = (await store.getDroneRoles())[0];
+  assert.equal(paused.state.phase, "anomaly_detected");
+  assert.match(paused.state.anomalySummary ?? "", /dormant construct at Thrust-anchored asteroid/);
+  assert.deepEqual(paused.state.anomalySector, { x: 1, y: 1, z: 1 });
+  assert.equal(paused.state.stopReason, "Anomaly found; operator review required");
+});
+
+test("Explorer can resume past an acknowledged construct that remains in its sector", async () => {
+  const { runner, store } = await importFresh();
+  const role = await seedExplorer(store, "idle");
+  await store.updateDroneRole(role.id, {
+    config: { targetVector: { x: 1, y: 1, z: 1 }, scutNetworkName: "net" },
+  });
+  await store.updateDroneRoleState(role.id, {
+    ignoredAnomalySector: { x: 1, y: 1, z: 1 },
+  });
+  const currentRole = (await store.getDroneRoles())[0];
+  const calls: any[] = [];
+  const construct = {
+    id: "construct-1",
+    type: "dormant_construct",
+    name: "Thrust-anchored asteroid",
+  };
+
+  await runner.runExplorerRole(
+    currentRole,
+    probeWith([]),
+    IDLE_MANNY,
+    new Set(),
+    makeClient(calls, [construct]),
+    false,
+    "test",
+  );
+
+  assert.deepEqual(calls, []);
+  assert.equal((await store.getDroneRoles())[0].state.phase, "idle");
+});
+
 const probeWith = (items: any[]) => ({
   sector: { relative: { x: 1, y: 1, z: 1 } },
   inventory: { items },
@@ -639,6 +700,9 @@ test("manual Explorer resume completes its linked delivery request and clears st
     deliveryRequestId: request.id,
     travelTarget: { x: 3, y: 1, z: 1 },
     lastError: "old error",
+    stopReason: "Anomaly found; operator review required",
+    anomalySummary: "dormant construct at Thrust-anchored asteroid",
+    anomalySector: { x: 1, y: 1, z: 1 },
     wpCounter: 7,
   });
   const config = role.config;
@@ -655,9 +719,48 @@ test("manual Explorer resume completes its linked delivery request and clears st
   assert.equal(updated.state.lastError, undefined);
   assert.equal(updated.state.deliveryRequestId, undefined);
   assert.equal(updated.state.travelTarget, undefined);
+  assert.equal(updated.state.stopReason, undefined);
+  assert.equal(updated.state.anomalySummary, undefined);
+  assert.equal(updated.state.anomalySector, undefined);
+  assert.deepEqual(updated.state.ignoredAnomalySector, { x: 1, y: 1, z: 1 });
   assert.equal((await store.getDeliveryRequests())[0].status, "completed");
   const persisted = JSON.parse(await fs.readFile(path.join(tmpDir, "drone-roles.json"), "utf8"));
   assert.deepEqual(persisted, await store.getDroneRoles());
+});
+
+test("manual Ball Explorer resume clears the anomaly pause", async () => {
+  const { store } = await importFresh();
+  const role = await store.addDroneRole({
+    probeId: 306,
+    probeName: "Ball Explorer",
+    roleType: "ball_explorer",
+    enabled: true,
+    config: { factoryProbeId: 900 },
+  });
+  await store.updateDroneRoleState(role.id, {
+    phase: "anomaly_detected",
+    stopReason: "Anomaly found; operator review required",
+    anomalySummary: "dormant construct at Thrust-anchored asteroid",
+    anomalySector: { x: 2, y: 2, z: 0 },
+    anomalyReturnPath: [{ x: 0, y: 0, z: 0 }],
+    ballDestination: { x: 2, y: 2, z: 0 },
+    travelTarget: { x: 2, y: 2, z: 0 },
+    lastError: "old error",
+  });
+
+  await withPhaseEndpoint(async (patch) => {
+    const result = await patch(role.id, { phase: "scanning" });
+    assert.equal(result.status, 200);
+    assert.equal(result.body.role.state.phase, "scanning");
+    assert.equal(result.body.role.state.stopReason, undefined);
+    assert.equal(result.body.role.state.anomalySummary, undefined);
+    assert.equal(result.body.role.state.anomalySector, undefined);
+    assert.deepEqual(result.body.role.state.ignoredAnomalySector, { x: 2, y: 2, z: 0 });
+    assert.equal(result.body.role.state.anomalyReturnPath, undefined);
+    assert.equal(result.body.role.state.ballDestination, undefined);
+    assert.equal(result.body.role.state.travelTarget, undefined);
+    assert.equal(result.body.role.state.lastError, undefined);
+  });
 });
 
 test("manual Delivery wait clears stale assignment state but preserves mission configuration", async () => {

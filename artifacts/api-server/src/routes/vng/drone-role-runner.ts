@@ -1565,6 +1565,57 @@ export async function runExplorerRole(
   const currentSector = probe?.sector?.relative ?? null;
   const playerName = cfg.playerName ?? "Explorer";
 
+  // Keep the Explorer from taking another scheduled step after a previous
+  // anomaly. An operator must explicitly resume it from the role card.
+  if (phase === "anomaly_detected") return;
+
+  // The poller journals the same VNG sector data for display, but the role
+  // runner must independently gate movement so an anomaly stops automation
+  // before the next hop or relay action.
+  if (!isMoving && currentSector) {
+    const ignoredSector = role.state.ignoredAnomalySector;
+    const ignoredCurrentSector = Boolean(
+      ignoredSector && sectorKey(ignoredSector) === sectorKey(currentSector),
+    );
+    if (ignoredSector && !ignoredCurrentSector) {
+      await updateDroneRoleState(role.id, { ignoredAnomalySector: undefined });
+    }
+
+    let sectorObjects: any[];
+    try {
+      const response = await c.getSector();
+      if (!Array.isArray(response?.sector?.objects)) {
+        logger.warn({ label, sector: currentSector }, "drone-role: Explorer sector scan unavailable — deferring role action");
+        return;
+      }
+      sectorObjects = response.sector.objects;
+    } catch (err: any) {
+      logger.warn(
+        { label, sector: currentSector, err: err?.message },
+        "drone-role: Explorer sector scan failed — deferring role action",
+      );
+      return;
+    }
+
+    const anomaly = ignoredCurrentSector ? null : describeBallAnomaly(sectorObjects);
+    if (anomaly) {
+      logger.warn({ label, sector: currentSector, anomaly }, "drone-role: Explorer found anomaly — paused");
+      await updateDroneRoleState(role.id, {
+        phase: "anomaly_detected",
+        stopReason: "Anomaly found; operator review required",
+        anomalySummary: anomaly,
+        anomalySector: {
+          x: currentSector.x,
+          y: currentSector.y,
+          z: currentSector.z,
+        },
+        travelTarget: undefined,
+        lastError: undefined,
+      });
+      return;
+    }
+  }
+
   // ── idle ──────────────────────────────────────────────────────────────────
   // Decision point: check SCUT coverage for next hop and either move or relay.
   if (phase === "idle") {
@@ -2368,13 +2419,23 @@ export async function runBallExplorerRole(
   const sector = response?.sector;
   const scanQuality = Number(sector?.scan?.scanQuality);
   if (Number.isFinite(scanQuality) && scanQuality < 1) return;
-  const anomaly = describeBallAnomaly(sector?.objects ?? []);
+  const ignoredSector = role.state.ignoredAnomalySector;
+  const ignoredCurrentSector = Boolean(
+    ignoredSector && sectorKey(ignoredSector) === sectorKey(current),
+  );
+  if (ignoredSector && !ignoredCurrentSector) {
+    await deps.updateDroneRoleState(role.id, { ignoredAnomalySector: undefined });
+  }
+  const anomaly = ignoredCurrentSector
+    ? null
+    : describeBallAnomaly(sector?.objects ?? []);
   if (anomaly) {
     logger.warn({ label, sector: current, anomaly }, "drone-role: Ball Explorer found anomaly — paused");
     await deps.updateDroneRoleState(role.id, {
       phase: "anomaly_detected",
       stopReason: "Anomaly found; operator review required",
       anomalySummary: anomaly,
+      anomalySector: { x: current.x, y: current.y, z: current.z },
       ballDestination: undefined,
       travelTarget: undefined,
       lastError: undefined,
