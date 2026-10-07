@@ -1107,7 +1107,13 @@ async function pollProbe(
     availableItemCountByType.set(type, (availableItemCountByType.get(type) ?? 0) + 1);
   }
 
+  let noIdleMannyAvailable = false;
   for (const action of runnableActions) {
+    // Worker availability only decreases as actions claim Mannies in this
+    // snapshot. Once none remain, later Manny actions cannot run this poll.
+    // Keep probe-idle actions eligible and avoid logging once per queued row.
+    if (noIdleMannyAvailable && action.condition.type === "manny_idle") continue;
+
     let selectedMannyId: string | null = null;
 
     if (isCraftingAction(action) && hasReadyCrafting) {
@@ -1197,9 +1203,10 @@ async function pollProbe(
         );
         if (!m) {
           logger.info(
-            { actionId: action.id, label },
-            "poller: no idle Manny available — deferring"
+            { label },
+            "poller: no idle Manny available — deferring remaining Manny actions"
           );
+          noIdleMannyAvailable = true;
           continue;
         }
         selectedMannyId = m.id;
