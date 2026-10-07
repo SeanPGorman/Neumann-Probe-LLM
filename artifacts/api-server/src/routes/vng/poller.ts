@@ -6,7 +6,10 @@ import {
   canonicalContainerId,
   getFactoryManifestContainerIds,
 } from "./container-reservations.js";
-import { findScheduledActionRoleConflict } from "./scheduled-action-role-compatibility.js";
+import {
+  canFactoryRoleShareCraftQueue,
+  findScheduledActionRoleConflict,
+} from "./scheduled-action-role-compatibility.js";
 import {
   getPendingActions,
   resolvePendingAction,
@@ -879,9 +882,10 @@ async function pollProbe(
   const enabledProbeRoles = droneRoles.filter(
     (role) => role.enabled && role.probeId === probeId,
   );
-  // Enabled roles own the target probe's scheduled action surface. Check this
-  // every poll (not only on the slower role-automation interval) and fail
-  // closed if the persisted role assignments could not be read.
+  // Enabled roles own the target probe's scheduled action surface. Explicit
+  // craft-queue rows may share a Factory probe only between role cycles while
+  // all Factory assignments are idle. Check this every poll and fail closed if
+  // the persisted role assignments could not be read.
   const runnableActions = actions.filter((action) => {
     if (!roleAssignmentsAvailable) {
       logger.warn(
@@ -891,9 +895,35 @@ async function pollProbe(
       return false;
     }
 
+    // craftOrderId is assigned only to rows created by the craft queue. Do not
+    // extend the Factory exception to individually scheduled craft actions.
+    const isCraftQueueAction =
+      Boolean(action.craftOrderId) && isCraftingAction(action);
+    const factoryRolePhases = enabledProbeRoles
+      .filter((role) => role.roleType === "factory")
+      .map((role) => role.state.phase);
+    if (
+      isCraftQueueAction &&
+      factoryRolePhases.length > 0 &&
+      !canFactoryRoleShareCraftQueue(factoryRolePhases, runRoles)
+    ) {
+      logger.info(
+        {
+          actionId: action.id,
+          actionType: action.action.type,
+          factoryRolePhases,
+          roleAutomationRunning: runRoles,
+          label,
+        },
+        "poller: factory role active — keeping queued craft pending",
+      );
+      return false;
+    }
+
     const conflictingRole = findScheduledActionRoleConflict(
       action.action.type,
       enabledProbeRoles.map((role) => role.roleType),
+      { isCraftQueueAction },
     );
     if (conflictingRole) {
       logger.info(

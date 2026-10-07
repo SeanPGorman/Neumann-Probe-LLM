@@ -1,7 +1,10 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
 
-import { findScheduledActionRoleConflict } from "./scheduled-action-role-compatibility.js";
+import {
+  canFactoryRoleShareCraftQueue,
+  findScheduledActionRoleConflict,
+} from "./scheduled-action-role-compatibility.js";
 import { VngApiError } from "./client.js";
 import {
   getMiningWorkerReserve,
@@ -33,16 +36,39 @@ test("scheduled actions are allowed when the target has no enabled role", () => 
   }
 });
 
-test("every enabled role defers every scheduled action type", () => {
+test("every enabled role defers scheduled actions except Factory craft-queue actions", () => {
   for (const roleType of ROLE_TYPES) {
     for (const actionType of ACTION_TYPES) {
+      const isCraftQueueAction =
+        actionType === "craft_item" || actionType === "atomic_printer_craft";
+      const shouldBeAllowed =
+        roleType === "factory" && isCraftQueueAction;
       assert.equal(
-        findScheduledActionRoleConflict(actionType, [roleType]),
-        roleType,
-        `${roleType} should reserve the probe from ${actionType}`,
+        findScheduledActionRoleConflict(actionType, [roleType], {
+          isCraftQueueAction: true,
+        }),
+        shouldBeAllowed ? null : roleType,
+        `${roleType} compatibility for ${actionType}`,
       );
     }
   }
+});
+
+test("Factory does not allow standalone crafts through the queue exception", () => {
+  assert.equal(findScheduledActionRoleConflict("craft_item", ["factory"]), "factory");
+  assert.equal(
+    findScheduledActionRoleConflict("atomic_printer_craft", ["factory"]),
+    "factory",
+  );
+});
+
+test("Factory shares craft-queue work only during idle non-role polls", () => {
+  assert.equal(canFactoryRoleShareCraftQueue(["idle"], false), true);
+  assert.equal(canFactoryRoleShareCraftQueue(["preparing_delivery_containers"], false), false);
+  assert.equal(canFactoryRoleShareCraftQueue(["idle"], true), false);
+  assert.equal(canFactoryRoleShareCraftQueue([], false), false);
+  assert.equal(canFactoryRoleShareCraftQueue(["idle", "supplying"], false), false);
+  assert.equal(canFactoryRoleShareCraftQueue([undefined], false), false);
 });
 
 test("the first enabled role is reported when multiple roles target a probe", () => {
