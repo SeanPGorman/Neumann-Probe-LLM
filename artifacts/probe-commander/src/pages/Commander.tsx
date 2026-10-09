@@ -1199,6 +1199,7 @@ const PHASE_COLOR: Record<string, string> = {
   waiting_for_loadout:   "text-purple-400",
   returning_for_fuel:    "text-yellow-400",
   waiting_for_fuel:      "text-purple-400",
+  mining_for_repair:     "text-amber-400",
   anomaly_detected:      "text-red-400",
   complete:              "text-primary",
 };
@@ -1236,6 +1237,7 @@ const ROLE_PHASES: Record<DroneRoleType, { value: string; label: string }[]> = {
     { value: "waiting_for_loadout", label: "Waiting for Loadout" },
     { value: "returning_for_fuel", label: "Returning for Fuel" },
     { value: "waiting_for_fuel", label: "Waiting for Fuel" },
+    { value: "mining_for_repair", label: "Mining for Hull Repair" },
     { value: "anomaly_detected", label: "Anomaly Detected" },
     { value: "complete", label: "Complete" },
   ],

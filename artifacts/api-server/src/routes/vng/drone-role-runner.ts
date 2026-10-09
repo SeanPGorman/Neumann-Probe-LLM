@@ -2009,7 +2009,7 @@ export async function runExplorerRole(
 // ── Ball Explorer Role ────────────────────────────────────────────────────────
 
 const BALL_EXPLORER_MISSILES = 20;
-const BALL_EXPLORER_RETURN_FUEL_PERCENT = 50;
+export const BALL_EXPLORER_RETURN_FUEL_PERCENT = 50;
 const BALL_EXPLORER_PHASES_STOPPED = new Set(["anomaly_detected", "complete"]);
 
 type SectorCoord = { x: number; y: number; z: number };

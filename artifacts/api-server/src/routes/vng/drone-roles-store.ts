@@ -90,6 +90,8 @@ export type RoleState = {
   fuelReturnBeacon?: { x: number; y: number; z: number };
   /** Ball Explorer: phase to restore after fuel resupply. */
   fuelReturnResumePhase?: string;
+  /** Ball Explorer: phase to restore after emergency hull-repair mining. */
+  emergencyMetalMiningResumePhase?: string;
   /** Ball Explorer: recorded sectors to follow back to a discovery, including the arrival and destination sectors. */
   anomalyReturnPath?: Array<{ x: number; y: number; z: number }>;
   /** Ball Explorer: operator-visible reason automation stopped. */

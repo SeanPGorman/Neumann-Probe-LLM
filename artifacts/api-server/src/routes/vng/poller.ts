@@ -2,6 +2,7 @@ import { logger } from "../../lib/logger.js";
 import { clientFor, VngApiError, withVngReadCache } from "./client.js";
 import { runDroneRoleAutomation } from "./drone-role-runner.js";
 import { getDroneRoles } from "./drone-roles-store.js";
+import { syncBallExplorerEmergencyMining } from "./ball-explorer-emergency-mining.js";
 import {
   canonicalContainerId,
   getFactoryManifestContainerIds,
@@ -193,6 +194,7 @@ async function runMiningAutomation(
   c: ReturnType<typeof clientFor>,
   mannyReserve: number,
   protectedContainerIds: Set<string>,
+  stopEmergencyMining = false,
 ): Promise<void> {
   const allAssignments = await getMiningAssignments().catch(() => [] as MiningAssignment[]);
   const assignments = allAssignments.filter(
@@ -256,7 +258,17 @@ async function runMiningAutomation(
       if (assignment.assignmentMode === "drift") {
         await runDriftCycle(assignment, probe, mannies, claimedMannies, c, mannyReserve);
       } else {
-        await runMiningCycle(assignment, probe, mannies, claimedMannies, c, asteroids, sectorObjects, mannyReserve);
+        await runMiningCycle(
+          assignment,
+          probe,
+          mannies,
+          claimedMannies,
+          c,
+          asteroids,
+          sectorObjects,
+          mannyReserve,
+          stopEmergencyMining && assignment.emergencyRepairProbeId != null,
+        );
       }
       // Successful cycle — reset the consecutive sector-error counter if it was
       // nonzero so past transient failures don't count against future ticks.
@@ -419,6 +431,7 @@ async function runMiningCycle(
   asteroids: any[],
   rawSectorObjects: any[],
   mannyReserve: number,
+  stopEmergencyMining = false,
 ): Promise<void> {
   const label = `mining assignment ${assignment.id} (${assignment.material})`;
 
@@ -714,7 +727,12 @@ async function runMiningCycle(
       mannyReserve,
       pendingDispatch,
     );
-    if (!containerFull && pendingToDispatch.length > 0 && effectiveAsteroidId) {
+    if (
+      !stopEmergencyMining &&
+      !containerFull &&
+      pendingToDispatch.length > 0 &&
+      effectiveAsteroidId
+    ) {
       const trackedTotal = stillActive.length + pendingToDispatch.length;
       const amounts = distributeAmounts(cap, trackedTotal);
       // IMPORTANT: snapshot length before the loop — stillActive.push() inside the
@@ -765,7 +783,13 @@ async function runMiningCycle(
     // mannyCount is the max; fill up to that cap (or fewer if the reserve limits it).
     // Skip entirely if the container is full — fall through to recovery.
     const stillNeeded = assignment.mannyCount - miningIds.length;
-    if (!containerFull && stillNeeded > 0 && effectiveAsteroidId && containerInSector) {
+    if (
+      !stopEmergencyMining &&
+      !containerFull &&
+      stillNeeded > 0 &&
+      effectiveAsteroidId &&
+      containerInSector
+    ) {
       const extraAvailable = miningCandidates(
         mannies,
         claimedMannies,
@@ -1084,6 +1108,24 @@ async function pollProbe(
     c,
     miningWorkerReserve,
     protectedFactoryContainerIds,
+    (
+      await syncBallExplorerEmergencyMining({
+        probeId,
+        role: droneRoles.find(
+          (role) => role.probeId === probeId && role.roleType === "ball_explorer",
+        ),
+        probe,
+        isMoving: isProbeMoving,
+        protectedContainerIds: protectedFactoryContainerIds,
+        requestRolePoll,
+      }).catch((err: any) => {
+        logger.error(
+          { probeId, err: err?.message },
+          "poller: Ball Explorer emergency metals mining sync failed",
+        );
+        return { stopAfterCycle: false };
+      })
+    ).stopAfterCycle,
   ).catch((err) =>
     logger.error({ err: err?.message, probeId }, "poller: mining automation error")
   );

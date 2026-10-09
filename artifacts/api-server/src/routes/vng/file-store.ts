@@ -860,6 +860,8 @@ export type MiningAssignment = {
   lastError?: string;
   /** Consecutive "current sector" 422 count — reset to 0 on any successful cycle. */
   sectorErrorCount?: number;
+  /** Internal auto-assignment owned by a Ball Explorer's low-hull recovery. */
+  emergencyRepairProbeId?: number;
 };
 
 export async function getMiningAssignments(): Promise<MiningAssignment[]> {
