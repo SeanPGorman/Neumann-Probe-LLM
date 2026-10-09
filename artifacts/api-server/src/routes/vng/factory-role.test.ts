@@ -1569,3 +1569,80 @@ test("v130 factory finalizes pickup when courier departs before its next poll", 
   ]);
   assert.deepEqual(rolePollRequests, [[100, 200]]);
 });
+
+test("v130 factory adopts a complete courier loadout instead of staging another set", async () => {
+  const ids = ["container-resources", "container-deployment", "container-metals"];
+  const role = factoryRole({ phase: "idle" });
+  const courier = deliveryRole();
+  const deploymentItems = [
+    ...Array.from({ length: 15 }, (_, index) => ({
+      id: `bookmark-${index}`,
+      type: "waypoint_bookmark",
+    })),
+    { id: "relay", type: "scut_relay" },
+    { id: "beacon", type: "scut_transit_beacon" },
+    { id: "circuit", type: "integrated_circuit" },
+    ...Array.from({ length: 5 }, (_, index) => ({
+      id: `missile-${index}`,
+      type: "missile",
+    })),
+  ];
+  const { deps, statePatches } = makeDeps({
+    roles: [role, courier],
+    deliveryProbe: {
+      sector: SECTOR,
+      inventory: {
+        items: ids.map((id) => ({ id, type: "additional_container" })),
+      },
+    },
+  });
+  const details: Record<string, any> = {
+    [ids[0]]: {
+      inventory: {
+        resourceStocks: [
+          { type: "metals", amount: 0.5 },
+          { type: "ice", amount: 0.25 },
+          { type: "carbon_compounds", amount: 0.25 },
+        ],
+      },
+    },
+    [ids[1]]: { inventory: { items: deploymentItems } },
+    [ids[2]]: {
+      container: { freeCapacity: 0 },
+      inventory: { resourceStocks: [{ type: "metals", amount: 1 }] },
+    },
+  };
+  deps.clientFor = (() => ({
+    getProbe: async () => ({
+      probe: {
+        sector: SECTOR,
+        inventory: { items: ids.map((id) => ({ id, type: "additional_container" })) },
+      },
+    }),
+    getMannies: async () => ({ mannies: [] }),
+    getStorageContainers: async () => ({
+      containers: [
+        { id: ids[0], kind: "container", label: "delivery-resources" },
+        { id: ids[1], kind: "container", label: "delivery-deployment" },
+        { id: ids[2], kind: "container", label: "delivery-metals" },
+      ],
+    }),
+    getStorageContainer: async (id: string) => details[id],
+  })) as any;
+  const factoryClient = {
+    getStorageContainers: async () => ({ containers: [] }),
+  } as any;
+
+  await runFactoryRole(
+    role,
+    factoryProbe(),
+    [],
+    new Set(),
+    factoryClient,
+    false,
+    "test",
+    deps,
+  );
+
+  assert.deepEqual(statePatches, [{ outboundContainerIds: ids }]);
+});

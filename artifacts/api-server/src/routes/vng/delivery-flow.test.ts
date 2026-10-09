@@ -73,6 +73,84 @@ function makeClient(calls: any[], sectorObjects: any[] = []) {
 
 const IDLE_MANNY = [{ id: "m-1", currentTask: null, integrityPercent: 100 }];
 
+async function seedFactoryCourier(store: any) {
+  const manifest = {
+    resources: "container-delivery-resources",
+    deployment: "container-delivery-deployment",
+    metals: "container-delivery-metals",
+  };
+  const deliveryRole = await store.addDroneRole({
+    probeId: 200,
+    roleType: "delivery",
+    enabled: true,
+    config: { factoryProbeId: 100 },
+  });
+  await store.updateDroneRoleState(deliveryRole.id, {
+    outboundContainerIds: [manifest.resources, manifest.deployment, manifest.metals],
+  });
+  const factoryRole = await store.addDroneRole({
+    probeId: 100,
+    roleType: "factory",
+    enabled: true,
+    config: { deliveryProbeIds: [200] },
+  });
+  await store.addDeliveryRequest({
+    explorerId: 300,
+    explorerName: "Explorer",
+    explorerSector: EXPLORER_SECTOR,
+  });
+
+  const deploymentItems = [
+    ...Array.from({ length: 15 }, (_, index) => ({
+      id: `manifest-bookmark-${index}`,
+      type: "waypoint_bookmark",
+    })),
+    { id: "manifest-relay", type: "scut_relay" },
+    { id: "manifest-beacon", type: "scut_transit_beacon" },
+    { id: "manifest-circuit", type: "integrated_circuit" },
+    ...Array.from({ length: 5 }, (_, index) => ({
+      id: `manifest-missile-${index}`,
+      type: "missile",
+    })),
+  ];
+  const containers = [
+    ...[
+      [manifest.resources, "delivery-resources"],
+      [manifest.deployment, "delivery-deployment"],
+      [manifest.metals, "delivery-metals"],
+      ["container-extra-resources", "delivery-resources1"],
+      ["container-extra-deployment", "delivery-deployment1"],
+      ["container-extra-metals", "delivery-metals1"],
+    ].map(([id, label]) => ({ id, kind: "container", label })),
+  ];
+  const details: Record<string, any> = {
+    [manifest.resources]: {
+      inventory: {
+        resourceStocks: [
+          { type: "metals", amount: 0.5 },
+          { type: "ice", amount: 0.25 },
+          { type: "carbon_compounds", amount: 0.25 },
+        ],
+      },
+    },
+    [manifest.deployment]: { inventory: { items: deploymentItems } },
+    [manifest.metals]: {
+      container: { freeCapacity: 0 },
+      inventory: { resourceStocks: [{ type: "metals", amount: 1 }] },
+    },
+  };
+  const probe = {
+    sector: FACTORY_SECTOR,
+    inventory: {
+      items: [manifest.resources, manifest.deployment, manifest.metals].map((id) => ({
+        id,
+        type: "additional_container",
+      })),
+    },
+  };
+  return { manifest, deliveryRole, factoryRole, containers, details, probe };
+}
+
 test("delivery e2e: dispatch → safe short-hop travel → detach additional_container for explorer", async () => {
   const { runner, store } = await importFresh();
 
@@ -347,6 +425,235 @@ test("emergency manifest discovery prefers the labeled full metals container ove
     deployment: "container-deployment",
     metals: "container-full",
   });
+});
+
+test("courier manifest discovery selects the deployment container with the most required items", async () => {
+  const { runner, store } = await importFresh();
+  const scenario = await seedFactoryCourier(store);
+  const client = {
+    getStorageContainers: async () => ({ containers: scenario.containers }),
+    getStorageContainer: async (id: string) => scenario.details[id] ?? { inventory: { items: [] } },
+  } as any;
+
+  assert.deepEqual(await runner.discoverCourierManifest(client), scenario.manifest);
+});
+
+test("factory-served courier returns one labeled surplus container per poll after detach jobs finish", async () => {
+  const { runner, store } = await importFresh();
+  const scenario = await seedFactoryCourier(store);
+  const calls: any[] = [];
+  const polls: number[][] = [];
+  const client = {
+    getStorageContainers: async () => ({ containers: scenario.containers }),
+    getStorageContainer: async (id: string) => scenario.details[id],
+    detachContainer: async (
+      mannyId: string,
+      containerId: string,
+      mode: string,
+      targetProbeId?: string,
+    ) => calls.push({ op: "detach", mannyId, containerId, mode, targetProbeId }),
+  } as any;
+
+  await runner.runDeliveryRole(
+    (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!,
+    scenario.probe,
+    IDLE_MANNY,
+    new Set(),
+    client,
+    false,
+    "test",
+    (probeIds: number[]) => polls.push(probeIds),
+    {
+      clientFor: (() => ({
+        getProbe: async () => ({ probe: { sector: FACTORY_SECTOR } }),
+      })) as any,
+    },
+  );
+
+  assert.deepEqual(calls, [{
+    op: "detach",
+    mannyId: "m-1",
+    containerId: "container-extra-resources",
+    mode: "attach_to_probe",
+    targetProbeId: "100",
+  }]);
+  assert.deepEqual(polls, [[200, 100]]);
+  assert.equal((await store.getDeliveryRequests())[0].status, "pending");
+  const roleNow = (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!;
+  assert.deepEqual(roleNow.state.outboundContainerIds, [
+    scenario.manifest.resources,
+    scenario.manifest.deployment,
+    scenario.manifest.metals,
+  ]);
+});
+
+test("courier waits for active detach and salvage jobs before returning containers", async () => {
+  const { runner, store } = await importFresh();
+  const scenario = await seedFactoryCourier(store);
+  const calls: any[] = [];
+  const polls: number[][] = [];
+  const client = {
+    getStorageContainers: async () => ({ containers: scenario.containers }),
+    getStorageContainer: async (id: string) => scenario.details[id],
+    getSector: async () => ({ sector: { objects: [] } }),
+    detachContainer: async (...args: any[]) => calls.push({ op: "detach", args }),
+  } as any;
+  const deliveryDeps = {
+    clientFor: (() => ({
+      getProbe: async () => ({ probe: { sector: FACTORY_SECTOR } }),
+    })) as any,
+  };
+
+  for (const currentTask of ["detaching_storage_container", "salvage"]) {
+    await runner.runDeliveryRole(
+      (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!,
+      scenario.probe,
+      [
+        { id: `busy-${currentTask}`, currentTask },
+        { id: "idle-manny", currentTask: null },
+      ],
+      new Set(),
+      client,
+      false,
+      "test",
+      (probeIds: number[]) => polls.push(probeIds),
+      deliveryDeps,
+    );
+  }
+
+  assert.deepEqual(calls, []);
+  assert.deepEqual(polls, [[200], [200]]);
+  assert.equal((await store.getDeliveryRequests())[0].status, "pending");
+});
+
+test("courier recovers a drifting labeled surplus container before returning it", async () => {
+  const { runner, store } = await importFresh();
+  const scenario = await seedFactoryCourier(store);
+  const calls: any[] = [];
+  const driftingObject = {
+    id: "detached-container-container-floating-surplus",
+    name: "delivery-deployment",
+    type: "detached_container",
+    mode: "drifting",
+  };
+  const client = {
+    getStorageContainers: async () => ({ containers: scenario.containers }),
+    getStorageContainer: async (id: string) => scenario.details[id],
+    getSector: async () => ({ sector: { objects: [driftingObject] } }),
+    recoverContainer: async (mannyId: string, objectId: string) =>
+      calls.push({ op: "recover", mannyId, objectId }),
+    detachContainer: async (...args: any[]) => calls.push({ op: "detach", args }),
+  } as any;
+  const deliveryDeps = {
+    clientFor: (() => ({
+      getProbe: async () => ({ probe: { sector: FACTORY_SECTOR } }),
+    })) as any,
+  };
+
+  await runner.runDeliveryRole(
+    (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!,
+    scenario.probe,
+    IDLE_MANNY,
+    new Set(),
+    client,
+    false,
+    "test",
+    undefined,
+    deliveryDeps,
+  );
+  await runner.runDeliveryRole(
+    (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!,
+    scenario.probe,
+    [{ id: "m-1", currentTask: "recovering_storage_container" }],
+    new Set(),
+    client,
+    false,
+    "test",
+    undefined,
+    deliveryDeps,
+  );
+
+  assert.deepEqual(calls, [{
+    op: "recover",
+    mannyId: "m-1",
+    objectId: driftingObject.id,
+  }]);
+  assert.equal((await store.getDeliveryRequests())[0].status, "pending");
+});
+
+test("courier does not return surplus containers unless it is co-located with the factory", async () => {
+  const { runner, store } = await importFresh();
+  const scenario = await seedFactoryCourier(store);
+  const calls: any[] = [];
+  const client = {
+    getStorageContainers: async () => ({ containers: scenario.containers }),
+    getStorageContainer: async (id: string) => scenario.details[id],
+    detachContainer: async (...args: any[]) => calls.push({ op: "detach", args }),
+  } as any;
+
+  await runner.runDeliveryRole(
+    (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!,
+    scenario.probe,
+    IDLE_MANNY,
+    new Set(),
+    client,
+    false,
+    "test",
+    undefined,
+    {
+      clientFor: (() => ({
+        getProbe: async () => ({ probe: { sector: EXPLORER_SECTOR } }),
+      })) as any,
+    },
+  );
+
+  assert.deepEqual(calls, []);
+  assert.equal((await store.getDeliveryRequests())[0].status, "assigned");
+});
+
+test("courier preserves an existing assigned request instead of claiming another", async () => {
+  const { runner, store } = await importFresh();
+  const scenario = await seedFactoryCourier(store);
+  const [existingRequest] = await store.getDeliveryRequests();
+  await store.updateDeliveryRequest(existingRequest.id, {
+    status: "assigned",
+    assignedDeliveryProbeId: 200,
+  });
+  await store.addDeliveryRequest({
+    explorerId: 301,
+    explorerName: "Next Explorer",
+    explorerSector: EXPLORER_SECTOR,
+  });
+  await store.updateDroneRoleState(scenario.deliveryRole.id, {
+    assignedExplorerId: existingRequest.explorerId,
+    travelTarget: EXPLORER_SECTOR,
+  });
+
+  const manifestIds = new Set(Object.values(scenario.manifest));
+  const client = {
+    getStorageContainers: async () => ({
+      containers: scenario.containers.filter((container: any) => manifestIds.has(container.id)),
+    }),
+    getStorageContainer: async (id: string) => scenario.details[id],
+  } as any;
+  await runner.runDeliveryRole(
+    (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!,
+    scenario.probe,
+    IDLE_MANNY,
+    new Set(),
+    client,
+    false,
+    "test",
+  );
+
+  const requests = await store.getDeliveryRequests();
+  assert.equal(requests[0].status, "assigned");
+  assert.equal(requests[0].assignedDeliveryProbeId, 200);
+  assert.equal(requests[1].status, "pending");
+  const roleNow = (await store.getDroneRoles()).find((role: any) => role.probeId === 200)!;
+  assert.equal(roleNow.state.phase, "waiting");
+  assert.equal(roleNow.state.assignedExplorerId, existingRequest.explorerId);
+  assert.deepEqual(roleNow.state.travelTarget, EXPLORER_SECTOR);
 });
 
 test("SCUT network relay extraction accepts the live nested response shape", async () => {
