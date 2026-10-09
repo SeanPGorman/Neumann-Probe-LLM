@@ -1123,7 +1123,7 @@ async function pollProbe(
           { probeId, err: err?.message },
           "poller: Ball Explorer emergency metals mining sync failed",
         );
-        return { stopAfterCycle: false };
+        return { stopAfterCycle: true };
       })
     ).stopAfterCycle,
   ).catch((err) =>

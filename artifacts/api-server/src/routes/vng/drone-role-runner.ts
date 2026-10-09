@@ -2189,6 +2189,7 @@ async function ballLoadoutStatus(
   ready: boolean;
   missileCount: number;
   fullMetalsContainer: boolean;
+  repairReserveContainerId?: string;
   metalsAmount: number;
 }> {
   const missileIds = new Set(
@@ -2197,6 +2198,7 @@ async function ballLoadoutStatus(
       .map((item: any) => String(item.id)),
   );
   let fullMetalsContainer = false;
+  let repairReserveContainerId: string | undefined;
   if (
     typeof (c as any).getStorageContainers === "function" &&
     typeof (c as any).getStorageContainer === "function"
@@ -2224,6 +2226,7 @@ async function ballLoadoutStatus(
         !otherResources
       ) {
         fullMetalsContainer = true;
+        repairReserveContainerId ??= canonicalContainerId(container.id);
       }
     }
   }
@@ -2253,6 +2256,7 @@ async function ballLoadoutStatus(
     ready: missileIds.size >= BALL_EXPLORER_MISSILES && fullMetalsContainer,
     missileCount: missileIds.size,
     fullMetalsContainer,
+    repairReserveContainerId,
     metalsAmount,
   };
 }
@@ -2560,6 +2564,14 @@ export async function runBallExplorerRole(
   }
 
   const loadout = await ballLoadoutStatus(probe, c);
+  if (
+    loadout.repairReserveContainerId &&
+    loadout.repairReserveContainerId !== role.state.ballRepairReserveContainerId
+  ) {
+    await deps.updateDroneRoleState(role.id, {
+      ballRepairReserveContainerId: loadout.repairReserveContainerId,
+    });
+  }
   const factory = await ballFactorySector(cfg, deps).catch(() => null);
   const atFactory = Boolean(factory && atSector(probe, factory));
 

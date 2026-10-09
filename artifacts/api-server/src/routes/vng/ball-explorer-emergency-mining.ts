@@ -4,7 +4,6 @@ import {
   getMiningAssignments,
   removeMiningAssignment,
   upsertMiningAssignment,
-  type MiningAssignment,
 } from "./file-store.js";
 import {
   updateDroneRoleState,
@@ -14,7 +13,7 @@ import { BALL_EXPLORER_RETURN_FUEL_PERCENT } from "./drone-role-runner.js";
 
 export const BALL_EXPLORER_REPAIR_MINING_HULL_PERCENT = 25;
 
-type EmergencyMiningDeps = {
+export type EmergencyMiningDeps = {
   getMiningAssignments: typeof getMiningAssignments;
   removeMiningAssignment: typeof removeMiningAssignment;
   upsertMiningAssignment: typeof upsertMiningAssignment;
@@ -52,7 +51,7 @@ function containerInventory(probe: any): any[] {
 
 function isEmptyContainer(container: any): boolean {
   const capacity = Number(container?.capacity);
-  const usedCapacity = Number(container?.usedCapacity);
+  const usedCapacity = Number(container?.usedCapacity ?? container?.used);
   return Number.isFinite(capacity) &&
     capacity > 0 &&
     Number.isFinite(usedCapacity) &&
@@ -114,13 +113,21 @@ export async function syncBallExplorerEmergencyMining(
   );
 
   if (shouldWaitForRepair && role && role.state.phase !== "mining_for_repair") {
+    const resumePhase = role.state.phase;
+    const status = manualMetalsAssignment
+      ? "Hull below 25%; using the configured metals mining assignment"
+      : "Hull below 25%; preparing to mine metals for hull repair";
     await deps.updateDroneRoleState(role.id, {
       phase: "mining_for_repair",
-      emergencyMetalMiningResumePhase: role.state.phase,
-      lastError: manualMetalsAssignment
-        ? "Hull below 25%; using the configured metals mining assignment"
-        : "Hull below 25%; preparing to mine metals for hull repair",
+      emergencyMetalMiningResumePhase: resumePhase,
+      lastError: status,
     });
+    role.state = {
+      ...role.state,
+      phase: "mining_for_repair",
+      emergencyMetalMiningResumePhase: resumePhase,
+      lastError: status,
+    };
     requestRolePoll?.([probeId]);
   }
 
@@ -131,12 +138,19 @@ export async function syncBallExplorerEmergencyMining(
       ),
     );
     const protectedIds = new Set(
-      [...protectedContainerIds].map(canonicalContainerId),
+      [
+        ...protectedContainerIds,
+        ...(role.state.ballRepairReserveContainerId
+          ? [role.state.ballRepairReserveContainerId]
+          : []),
+      ].map(canonicalContainerId),
     );
     const spare = inventory.find((container) => {
       const id = canonicalContainerId(container.id);
+      const label = String(container.name ?? container.label ?? "").toLowerCase();
       return (
         isEmptyContainer(container) &&
+        !/\b(metal|repair|reserve)\b/.test(label) &&
         !assignedContainerIds.has(id) &&
         !protectedIds.has(id)
       );
@@ -172,8 +186,11 @@ export async function syncBallExplorerEmergencyMining(
       }
     }
 
-    if (!automaticAssignment && role.state.lastError !==
-      "Hull below 25%; waiting for an unused empty container to mine metals") {
+    if (
+      !automaticAssignment &&
+      role.state.lastError !==
+        "Hull below 25%; waiting for an unused empty container to mine metals"
+    ) {
       await deps.updateDroneRoleState(role.id, {
         lastError:
           "Hull below 25%; waiting for an unused empty container to mine metals",
@@ -208,11 +225,18 @@ export async function syncBallExplorerEmergencyMining(
     !automaticAssignment &&
     integrity >= BALL_EXPLORER_REPAIR_MINING_HULL_PERCENT
   ) {
+    const resumePhase = role.state.emergencyMetalMiningResumePhase ?? "scanning";
     await deps.updateDroneRoleState(role.id, {
-      phase: role.state.emergencyMetalMiningResumePhase ?? "scanning",
+      phase: resumePhase,
       emergencyMetalMiningResumePhase: undefined,
       lastError: undefined,
     });
+    role.state = {
+      ...role.state,
+      phase: resumePhase,
+      emergencyMetalMiningResumePhase: undefined,
+      lastError: undefined,
+    };
     requestRolePoll?.([probeId]);
   }
 
@@ -221,4 +245,3 @@ export async function syncBallExplorerEmergencyMining(
   };
 }
 
-export type { MiningAssignment };

@@ -1724,11 +1724,13 @@ function RolesPanel({ probeId, probeList }: { probeId: number | null; probeList:
                 className="min-w-0 flex-1 rounded border border-border bg-background px-2 py-1.5 text-[10px] text-foreground"
               >
                 <option value="">Choose phase…</option>
-                {ROLE_PHASES[role.roleType].map((option) => (
+                {ROLE_PHASES[role.roleType]
+                  .filter((option) => option.value !== "mining_for_repair")
+                  .map((option) => (
                   <option key={option.value} value={option.value}>
                     {option.label}{option.value === role.state.phase ? " (current)" : ""}
                   </option>
-                ))}
+                  ))}
               </select>
               <button
                 type="button"
