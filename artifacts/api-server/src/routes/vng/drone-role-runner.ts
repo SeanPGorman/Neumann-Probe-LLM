@@ -391,7 +391,17 @@ export async function runDroneRoleAutomation(
     } else if (role.roleType === "explorer") {
       await runExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
     } else if (role.roleType === "ball_explorer") {
-      await runBallExplorerRole(role, probe, mannies, claimed, roleClient, isMoving, label);
+      await runBallExplorerRole(
+        role,
+        probe,
+        mannies,
+        claimed,
+        roleClient,
+        isMoving,
+        label,
+        undefined,
+        onRolePollRequested,
+      );
     } else if (role.roleType === "factory") {
       await runFactoryRole(
         role,
@@ -1999,13 +2009,22 @@ export async function runExplorerRole(
 // ── Ball Explorer Role ────────────────────────────────────────────────────────
 
 const BALL_EXPLORER_MISSILES = 20;
+const BALL_EXPLORER_RETURN_FUEL_PERCENT = 50;
 const BALL_EXPLORER_PHASES_STOPPED = new Set(["anomaly_detected", "complete"]);
 
 type SectorCoord = { x: number; y: number; z: number };
 
+function ballFuelPercent(probe: any): number {
+  const capacity = Number(probe?.fuel?.maxDeuterium);
+  const fuel = Number(probe?.fuel?.deuterium);
+  const maxFuel = Number.isFinite(capacity) && capacity > 0 ? capacity : 100;
+  return (Math.max(0, Number.isFinite(fuel) ? fuel : 0) / maxFuel) * 100;
+}
+
 export type BallExplorerDeps = {
   getSectors: typeof getSectors;
   getScutNetwork: typeof getScutNetwork;
+  getDroneRoles?: typeof getDroneRoles;
   updateDroneRoleState: typeof updateDroneRoleState;
   clientFor: typeof clientFor;
   random: () => number;
@@ -2015,6 +2034,7 @@ export type BallExplorerDeps = {
 const defaultBallExplorerDeps: BallExplorerDeps = {
   getSectors,
   getScutNetwork,
+  getDroneRoles,
   updateDroneRoleState,
   clientFor,
   random: Math.random,
@@ -2290,6 +2310,69 @@ async function ballReturnStep(
   return null;
 }
 
+type BallFuelReturnPlan = {
+  stage: "to_beacon" | "to_factory";
+  beacon?: SectorCoord;
+  step?: SectorCoord;
+  waitReason?: string;
+};
+
+async function ballFuelReturnStep(
+  current: SectorCoord,
+  factory: SectorCoord,
+  stage: "to_beacon" | "to_factory" | undefined,
+  savedBeacon: SectorCoord | undefined,
+  deps: BallExplorerDeps,
+  label: string,
+): Promise<BallFuelReturnPlan> {
+  const nextWaypoint = deps.nextDeliveryWaypoint ?? nextDeliveryWaypoint;
+
+  if (stage === "to_factory") {
+    const step = await nextWaypoint(current, factory, label);
+    return reachedTarget(step, current)
+      ? { stage: "to_factory", waitReason: "Waiting for a SCUT route toward Factory-2" }
+      : { stage: "to_factory", step };
+  }
+
+  const beacons = await ballBeaconSectors(deps);
+  const beacon =
+    (savedBeacon && beacons.find((candidate) => sectorKey(candidate) === sectorKey(savedBeacon))) ??
+    [...beacons].sort(
+      (a, b) => chebyshevDist(current, a) - chebyshevDist(current, b),
+    )[0];
+
+  if (!beacon) {
+    return {
+      stage: "to_beacon",
+      waitReason: "Fuel reserve reached; waiting for an active beaconed SCUT relay",
+    };
+  }
+
+  if (reachedTarget(current, beacon)) {
+    const step = await nextWaypoint(current, factory, label);
+    return reachedTarget(step, current)
+      ? {
+          stage: "to_factory",
+          waitReason: "At the transit beacon; waiting for a route toward Factory-2",
+        }
+      : { stage: "to_factory", step };
+  }
+
+  const covered = await ballScutCoverage(deps);
+  const scutStep = firstBallStep(current, beacon, covered);
+  if (scutStep && !reachedTarget(scutStep, current)) {
+    return { stage: "to_beacon", beacon, step: scutStep };
+  }
+  if (chebyshevDist(current, beacon) <= 2) {
+    return { stage: "to_beacon", beacon, step: beacon };
+  }
+  return {
+    stage: "to_beacon",
+    beacon,
+    waitReason: "Fuel reserve reached; waiting for a SCUT-covered route to the transit beacon",
+  };
+}
+
 export async function runBallExplorerRole(
   role: DroneRole,
   probe: any,
@@ -2299,10 +2382,131 @@ export async function runBallExplorerRole(
   isMoving: boolean,
   label: string,
   deps: BallExplorerDeps = defaultBallExplorerDeps,
+  onRolePollRequested?: RequestRolePoll,
 ): Promise<void> {
   const cfg = role.config as BallExplorerConfig;
   const current = probe?.sector?.relative ?? probe?.sector;
-  if (!current || isMoving || BALL_EXPLORER_PHASES_STOPPED.has(role.state.phase)) return;
+  const fuelPercent = ballFuelPercent(probe);
+  const fuelReturnPhase =
+    role.state.phase === "returning_for_fuel" ||
+    role.state.phase === "waiting_for_fuel";
+  const fuelReturnNeeded =
+    fuelReturnPhase || fuelPercent <= BALL_EXPLORER_RETURN_FUEL_PERCENT;
+  if (!current) return;
+  if (isMoving) {
+    if (fuelReturnNeeded) onRolePollRequested?.([role.probeId]);
+    return;
+  }
+  if (BALL_EXPLORER_PHASES_STOPPED.has(role.state.phase) && !fuelReturnNeeded) return;
+
+  const requestFuelFollowUp = async (includeRefuelers = false) => {
+    const probeIds = [role.probeId];
+    if (includeRefuelers && deps.getDroneRoles) {
+      const roles = await deps.getDroneRoles().catch(() => [] as DroneRole[]);
+      for (const refuelRole of roles) {
+        if (
+          refuelRole.enabled &&
+          refuelRole.roleType === "refuel" &&
+          (refuelRole.config as RefuelConfig).targetProbeId === cfg.factoryProbeId
+        ) {
+          probeIds.push(refuelRole.probeId);
+        }
+      }
+    }
+    onRolePollRequested?.([...new Set(probeIds)]);
+  };
+
+  if (fuelReturnNeeded) {
+    const factory = await ballFactorySector(cfg, deps).catch(() => null);
+    const atFactory = Boolean(factory && atSector(probe, factory));
+    const resumePhase =
+      role.state.fuelReturnResumePhase ??
+      (fuelReturnPhase ? "scanning" : role.state.phase);
+
+    if (atFactory) {
+      if (fuelPercent <= BALL_EXPLORER_RETURN_FUEL_PERCENT) {
+        await deps.updateDroneRoleState(role.id, {
+          phase: "waiting_for_fuel",
+          fuelReturnResumePhase: resumePhase,
+          fuelReturnStage: undefined,
+          fuelReturnBeacon: undefined,
+          travelTarget: undefined,
+          ballDestination: undefined,
+          lastError: `Fuel at ${fuelPercent.toFixed(0)}%; waiting for ${cfg.factoryProbeName ?? "the factory"} to refuel above ${BALL_EXPLORER_RETURN_FUEL_PERCENT}%`,
+        });
+        await requestFuelFollowUp(true);
+        return;
+      }
+
+      const interruptedAnomalyReturn = resumePhase === "returning_to_anomaly";
+      const restoredPhase =
+        interruptedAnomalyReturn
+          ? "anomaly_detected"
+          : resumePhase === "anomaly_detected" || resumePhase === "complete"
+            ? resumePhase
+            : "scanning";
+      await deps.updateDroneRoleState(role.id, {
+        phase: restoredPhase,
+        fuelReturnResumePhase: undefined,
+        fuelReturnStage: undefined,
+        fuelReturnBeacon: undefined,
+        travelTarget: undefined,
+        ballDestination: undefined,
+        anomalyReturnPath: interruptedAnomalyReturn ? undefined : role.state.anomalyReturnPath,
+        stopReason: interruptedAnomalyReturn
+          ? "Returned to the factory for fuel; operator review is required before resuming the anomaly route"
+          : role.state.stopReason,
+        lastError: undefined,
+      });
+      return;
+    }
+
+    if (!factory) {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "returning_for_fuel",
+        fuelReturnResumePhase: resumePhase,
+        travelTarget: undefined,
+        ballDestination: undefined,
+        lastError: "Fuel reserve reached; Factory-2 sector is unavailable, holding position",
+      });
+      await requestFuelFollowUp();
+      return;
+    }
+
+    const plan = await ballFuelReturnStep(
+      current,
+      factory,
+      role.state.fuelReturnStage,
+      role.state.fuelReturnBeacon,
+      deps,
+      label,
+    );
+    if (plan.step) {
+      await c.moveProbe(plan.step.x, plan.step.y, plan.step.z);
+      await deps.updateDroneRoleState(role.id, {
+        phase: "returning_for_fuel",
+        fuelReturnResumePhase: resumePhase,
+        fuelReturnStage: plan.stage,
+        fuelReturnBeacon: plan.beacon,
+        travelTarget: plan.step,
+        ballDestination: undefined,
+        lastError: undefined,
+      });
+      await requestFuelFollowUp();
+    } else {
+      await deps.updateDroneRoleState(role.id, {
+        phase: "returning_for_fuel",
+        fuelReturnResumePhase: resumePhase,
+        fuelReturnStage: plan.stage,
+        fuelReturnBeacon: plan.beacon,
+        travelTarget: undefined,
+        ballDestination: undefined,
+        lastError: plan.waitReason,
+      });
+      await requestFuelFollowUp();
+    }
+    return;
+  }
 
   if (role.state.phase === "returning_to_anomaly") {
     const path = role.state.anomalyReturnPath;

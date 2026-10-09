@@ -19,7 +19,7 @@
 - [Emergency courier loadout recovery](emergency-courier-loadout-recovery.md) — reconcile cargo by live onboard contents; factory container IDs become stale after handoff
 - [Emergency courier semantic containers](emergency-courier-semantic-containers.md) — prefer labeled delivery containers over earlier generic partial containers
 - [Delivery jump safety](delivery-jump-safety.md) — delivery moves are ≤2 sectors unless both endpoints are active relays on the same SCUT network
-- [Ball Explorer repair reserve](ball-explorer-repair-reserve.md) — partial metals reserve supports repairs; empty reserve returns through a beaconed SCUT to factory
+- [Ball Explorer reserve and returns](ball-explorer-repair-reserve.md) — preserve partial metals for repairs; low fuel returns via beacon to factory and waits for refueling
 - [Ball Explorer anomaly retrace](ball-explorer-anomaly-retrace.md) — a missed discovery requires a position-checked return itinerary, not independent idle movement orders
 - [Factory craft idempotency](factory-craft-idempotency.md) — account for unfinished Manny crafts before retrying a missing manifest item
 - [Explorer anomaly acknowledgment](explorer-anomaly-acknowledgment.md) — resume suppresses the acknowledged sector until the probe leaves, preventing an immediate repeat stop

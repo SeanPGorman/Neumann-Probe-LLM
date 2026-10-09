@@ -27,6 +27,7 @@ function role(state: DroneRole["state"] = { phase: "scanning" }): DroneRole {
 function loadedProbe() {
   return {
     status: "idle",
+    fuel: { deuterium: 100, maxDeuterium: 100 },
     sector: { relative: CURRENT },
     inventory: {
       items: Array.from({ length: 20 }, (_, index) => ({
@@ -339,6 +340,108 @@ test("Ball Explorer returns toward a beaconed SCUT when its metals reserve is em
   );
   assert.deepEqual(empty.moves, [{ x: 2, y: 2, z: 0 }]);
   assert.equal(patches.at(-1)?.phase, "returning_for_loadout");
+});
+
+test("Ball Explorer returns for fuel via a transit beacon, continues to the factory, and waits to refuel", async () => {
+  const patches: any[] = [];
+  const origin = { x: 2, y: 2, z: 0 };
+  const factory = { x: 4, y: 4, z: 0 };
+  const { api, moves } = client();
+  const returnDeps = deps(5, patches, factory);
+  returnDeps.getScutNetwork = async () => ({
+    network: {
+      relays: [{
+        status: "on",
+        isTransitBeacon: true,
+        coverageRadiusSectors: 5,
+        sector: { relative: CURRENT },
+      }],
+    },
+  });
+  returnDeps.getDroneRoles = async () => [{
+    id: 19,
+    probeId: 943,
+    roleType: "refuel",
+    enabled: true,
+    createdAt: "",
+    config: { sourceSector: CURRENT, targetProbeId: 100 },
+    state: { phase: "idle" },
+  }];
+  returnDeps.nextDeliveryWaypoint = async (from) =>
+    from.x === CURRENT.x && from.y === CURRENT.y ? { x: 2, y: 2, z: 0 } : factory;
+
+  const lowFuel = { ...loadedProbe(), sector: { relative: origin }, fuel: { deuterium: 80, maxDeuterium: 200 } };
+  await runBallExplorerRole(role(), lowFuel, [], new Set(), api, false, "test", returnDeps);
+  assert.deepEqual(moves[0], { x: 1, y: 1, z: 0 });
+  assert.equal(patches.at(-1)?.phase, "returning_for_fuel");
+  assert.equal(patches.at(-1)?.fuelReturnStage, "to_beacon");
+  assert.deepEqual(patches.at(-1)?.fuelReturnBeacon, CURRENT);
+
+  await runBallExplorerRole(
+    role({ phase: "returning_for_fuel", fuelReturnResumePhase: "scanning", fuelReturnStage: "to_beacon", fuelReturnBeacon: CURRENT }),
+    { ...lowFuel, sector: { relative: { x: 1, y: 1, z: 0 } } },
+    [], new Set(), api, false, "test", returnDeps,
+  );
+  assert.deepEqual(moves[1], CURRENT);
+
+  await runBallExplorerRole(
+    role({ phase: "returning_for_fuel", fuelReturnResumePhase: "scanning", fuelReturnStage: "to_beacon", fuelReturnBeacon: CURRENT }),
+    { ...lowFuel, sector: { relative: CURRENT } },
+    [], new Set(), api, false, "test", returnDeps,
+  );
+  assert.deepEqual(moves[2], { x: 2, y: 2, z: 0 });
+  assert.equal(patches.at(-1)?.fuelReturnStage, "to_factory");
+
+  await runBallExplorerRole(
+    role({ phase: "returning_for_fuel", fuelReturnResumePhase: "scanning", fuelReturnStage: "to_factory" }),
+    { ...lowFuel, sector: { relative: { x: 2, y: 2, z: 0 } } },
+    [], new Set(), api, false, "test", returnDeps,
+  );
+  assert.deepEqual(moves[3], factory);
+
+  await runBallExplorerRole(
+    role({ phase: "returning_for_fuel", fuelReturnResumePhase: "scanning", fuelReturnStage: "to_factory" }),
+    { ...lowFuel, sector: { relative: factory } },
+    [], new Set(), api, false, "test", returnDeps,
+  );
+  assert.equal(moves.length, 4);
+  assert.equal(patches.at(-1)?.phase, "waiting_for_fuel");
+
+  const requestedPolls: number[][] = [];
+  await runBallExplorerRole(
+    role({ phase: "waiting_for_fuel", fuelReturnResumePhase: "scanning" }),
+    { ...lowFuel, fuel: { deuterium: 110, maxDeuterium: 200 }, sector: { relative: factory } },
+    [], new Set(), api, false, "test", returnDeps,
+    (probeIds) => requestedPolls.push(probeIds),
+  );
+  assert.equal(moves.length, 4);
+  assert.equal(patches.at(-1)?.phase, "scanning");
+  assert.equal(patches.at(-1)?.fuelReturnResumePhase, undefined);
+
+  await runBallExplorerRole(
+    role({ phase: "waiting_for_fuel", fuelReturnResumePhase: "scanning" }),
+    { ...lowFuel, sector: { relative: factory } },
+    [], new Set(), api, false, "test", returnDeps,
+    (probeIds) => requestedPolls.push(probeIds),
+  );
+  assert.deepEqual(requestedPolls, [[200, 943]]);
+});
+
+test("Ball Explorer requests another role poll while its fuel return move is in flight", async () => {
+  const { api } = client();
+  const requestedPolls: number[][] = [];
+  await runBallExplorerRole(
+    role({ phase: "returning_for_fuel" }),
+    { ...loadedProbe(), fuel: { deuterium: 80, maxDeuterium: 200 } },
+    [],
+    new Set(),
+    api,
+    true,
+    "test",
+    deps(2, []),
+    (probeIds) => requestedPolls.push(probeIds),
+  );
+  assert.deepEqual(requestedPolls, [[200]]);
 });
 
 test("Ball Explorer pauses when every reachable SCUT sector is visited", async () => {

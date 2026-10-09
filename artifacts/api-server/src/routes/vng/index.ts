@@ -76,6 +76,8 @@ const MANUAL_ROLE_PHASES: Record<string, ReadonlySet<string>> = {
     "traveling",
     "returning_for_loadout",
     "waiting_for_loadout",
+    "returning_for_fuel",
+    "waiting_for_fuel",
     "anomaly_detected",
     "complete",
   ]),
