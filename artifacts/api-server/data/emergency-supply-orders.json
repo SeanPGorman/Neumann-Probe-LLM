@@ -1,1 +1,12 @@
-[]
+[
+  {
+    "deliveryProbeId": 823,
+    "deliveryProbeName": "DeltaDelivers-FT1",
+    "targetProbeId": 716,
+    "targetProbeName": "BravoExplorer",
+    "targetRoleType": "explorer",
+    "id": 1,
+    "status": "pending",
+    "createdAt": "2026-10-10T00:00:59.587Z"
+  }
+]
